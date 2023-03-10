@@ -118,7 +118,7 @@
                                         @{
                                             if (Course != null)
                                             {
-                                                foreach (var item in Course)
+                                                foreach (var item in Course.Where(wh=>wh.Name=="1").ToList())
                                                 {
                                                     <option value=@item.Id data-image="~/images/404.png">@item.text</option>
 

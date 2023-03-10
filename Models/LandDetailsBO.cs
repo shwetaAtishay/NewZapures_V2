@@ -91,10 +91,13 @@ namespace NewZapures_V2.Models
         public string dtOrd { get; set; }
         public string OwnedBldgnDoc { get; set; }
         public string dtAgrExp { get; set; }
+        public string rentedOrderNo { get; set; }
         public string AgrExpDoc { get; set; }
+        public string rentedCertificateDoc { get; set; }
         public string dtFireFrom { get; set; }
         public string dtFireTo { get; set; }
         public string FireNOCDoc { get; set; }
+        public string sPWDOrderNo { get; set; }
         public string dtPWDFrom { get; set; }
         public string dtPWDTo { get; set; }
         public string PWDNOCDoc { get; set; }

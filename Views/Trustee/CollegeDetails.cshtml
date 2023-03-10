@@ -75,6 +75,11 @@
         .fop h4 {
             color: white !important;
         }
+
+
+    .noc-layouts-tbl table.table td {
+        white-space: revert !important;
+    }
 </style>
 <div class="row">
     <div class="col-sm-12">
@@ -114,9 +119,8 @@
                     <tr>
                         <th>#</th>
                         <th>College</th>
-                        <th>Subject And Course Got TNOC</th>
-                        <th>Subject And Course Got PNOC</th>
-                       
+                        <th style="width:30%">Subject And Course Got TNOC</th>
+                        <th style="width:30%">Subject And Course Got PNOC</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -145,7 +149,7 @@
 
 
                                             @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
-                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
+                                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
                                         </td>
                                     </tr>
                                     i++;
@@ -158,7 +162,7 @@
                                         <td>
                                             @item.TNOCStatus
                                         </td>
-                                        <td>  @item.CourseName :-<br/> @item.subjectName</td>
+                                        <td>  @item.CourseName :-<br /> @item.subjectName</td>
 
                                         <td class="text-center">
                                             <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text','@item.Id');"><i class="fas fa-file-edit"></i></button>
@@ -167,7 +171,7 @@
 
 
                                             @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
-                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
+                                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
                                         </td>
                                     </tr>
                                     i++;
@@ -188,15 +192,15 @@
 
 
                     @*<tr>
-            <th>1</th>
-            <th>19.12.2022</th>
-            <th>Trust 1</th>
-            <th>College 1</th>
-            <th>Department 1</th>
-            <th>Course 1</th>
-            <th>In-process</th>
-            <th><a href="@Url.Action("EditApplication","Trustee")"><i class="fas fa-pencil"></i></a></th>
-        </tr>*@
+                            <th>1</th>
+                            <th>19.12.2022</th>
+                            <th>Trust 1</th>
+                            <th>College 1</th>
+                            <th>Department 1</th>
+                            <th>Course 1</th>
+                            <th>In-process</th>
+                            <th><a href="@Url.Action("EditApplication","Trustee")"><i class="fas fa-pencil"></i></a></th>
+                        </tr>*@
 
 
                 </tbody>
