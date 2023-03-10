@@ -712,7 +712,7 @@
     <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">PreView</button>
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Submit</button>
     <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;">Reset</button>
-    <a href="@Url.Action("DeptMasterApplicationList","Trustee")" type="button" class="theme-discard-btn" style="background: gray;border: 1px solid gray !important;float: right;">Back To List</a>
+    <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: gray;border: 1px solid gray !important;float: right;">Back To List</a>
 </div>
 
 <div class="card noc-layouts mt-0" id="divPrint" style="display:none">
@@ -2115,7 +2115,7 @@
 
     }
 
-    function GetExistingNOCForCollege(collegeID,selectionType) {
+      function GetExistingNOCForCollege(collegeID,selectionType) {
         var htmlString = ``;
         var Data = {
             collegeID: collegeID,
@@ -2137,14 +2137,7 @@
                 console.log(mainData);
                 if (mainData != null && mainData.length > 0) {
                     mainData.forEach(function (item, index) {
-                        htmlString += `<tr><td>${index + 1}</td><td>${item.PKID}</td><td>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td><input type="checkbox" name="" id="checkNOCData_${item.PKID}" onChange="CreateNOCData(this,'${selectionType}','${item.PKID}','${item.courseID}','${item.iFk_SbjID}')" /></td></tr>`;
-                    })
-                }
-
-                var htmlStringTNOC = '';
-                if (mainData != null && mainData.length > 0) {
-                    mainData.forEach(function (item, index) {
-                        htmlStringTNOC += `<tr><td>${index + 1}</td><td>${item.PKID}</td><td>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td></tr>`;
+                        htmlString += `<tr><td>${index + 1}</td><td hidden>${item.PKID}</td><td hidden>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td><input type="checkbox" name="" id="checkNOCData_${item.iFk_SbjID}_${selectionType}" onChange="CreateNOCData(this,'${selectionType}','${item.PKID}','${item.courseID}','${item.iFk_SbjID}')" /></td></tr>`;
                     })
                 }
 
@@ -2153,31 +2146,25 @@
                     $('#tblTNOCList tbody').html('');
                     $('#tblTNOCList tbody').html(htmlString);
 
-                    $('#tblTNOCListNew tbody').html('');
-                    $('#tblTNOCListNew tbody').html(htmlStringTNOC);
-
-                    if (mainData.length <= 0) {
+                    @*if (mainData.length <= 0) {
                         $('#divTNOCUnAvailable').html('');
                         $('#divTNOCUnAvailable').html('We not found any latest details application against this course and subject for TNOC Extention. Kindly Fill New Application to apply for noc Click here <a href="@Url.Action("Collegedetails","Trustee")" style="color:blue"><i class="fas fa-file-edit"></i> Fill New Application </a> and choose full details option and complete the application.');
                     }
                     else {
                         $('#divTNOCUnAvailable').html('');
-                    }
+                    }*@
                 }
                 if (selectionType == 'PNOC') {
                     $('#tblPNOCList tbody').html('');
                     $('#tblPNOCList tbody').html(htmlString);
 
-                    $('#tblPNOCListNew tbody').html('');
-                    $('#tblPNOCListNew tbody').html(htmlStringTNOC);
-
-                    if (mainData.length <= 0) {
+                    @*if (mainData.length <= 0) {
                         $('#divPNOCUnAvailable').html('');
                         $('#divPNOCUnAvailable').html('We not found any latest details application against this course and subject for Permanent NOC. Kindly Fill New Application to apply for noc Click here <a href="@Url.Action("Collegedetails","Trustee")" style="color:blue"><i class="fas fa-file-edit"></i> Fill New Application </a> and choose full details option and complete the application.');
                     }
                     else {
                         $('#divPNOCUnAvailable').html('');
-                    }
+                    }*@
                 }
 
             },
@@ -2196,10 +2183,15 @@
 
             var TNOCCost = $('#spnTNOCFee').text().split(' ')[1];
 
-            if ($('#' + chkItem.id).is(':checked'))
+            if ($('#' + chkItem.id).is(':checked')) {
+                $(`#checkNOCData_${subjID}_PNOC`).prop('checked', false);
+                $(`#checkNOCData_${subjID}_PNOC`).prop('disabled', true);
                 $('#' + chkItem.id).attr('checked', true);
-            else
-                $('#' + chkItem.id).removeAttr('checked');
+            }
+            else {
+                $('#' + chkItem.id).prop('checked', false);
+                $(`#checkNOCData_${subjID}_PNOC`).prop('disabled', false);
+            }
 
 
 
@@ -2248,10 +2240,15 @@
                 PNOCPKIDs += ipkID
             }
 
-            if ($('#' + chkItem.id).is(':checked'))
+            if ($('#' + chkItem.id).is(':checked')) {
                 $('#' + chkItem.id).attr('checked', true);
-            else
-                $('#' + chkItem.id).removeAttr('checked');
+                $(`#checkNOCData_${subjID}_TNOC`).prop('checked', false);
+                $(`#checkNOCData_${subjID}_TNOC`).prop('disabled', true);
+            }
+            else {
+                $('#' + chkItem.id).prop('checked', false);
+                $(`#checkNOCData_${subjID}_TNOC`).prop('disabled', false);
+            }
 
             $('#tblPNOCList > tbody  > tr ').each(function () {
 
