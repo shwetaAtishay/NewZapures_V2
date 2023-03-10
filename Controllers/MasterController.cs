@@ -1401,8 +1401,10 @@ namespace NewZapures_V2.Controllers
             if (response.StatusCode.ToString() == "OK")
             {
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse != null)
+                if (objResponse.Data != null)
+                {
                     departments = JsonConvert.DeserializeObject<List<FeeTRN>>(objResponse.Data.ToString());
+                }
             }
             return departments;
         }

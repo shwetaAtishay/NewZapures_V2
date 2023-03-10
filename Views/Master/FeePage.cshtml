@@ -363,9 +363,9 @@
                 if (NOCData.length > 0) {
 
                     NOCData.forEach(function (item) {
-                        var obj = { Id: item.Id, Text: item.Text };
+                        var obj = { Id: item.Id, Text: item.Text, ID1: item.ID1 };
                         formarr.push(obj);
-                        NocSelectData += `<option id="Form-${item.Id}" value=${item.Id}>${item.Text}</option>`;
+                        NocSelectData += `<option id="Form-${item.Id}" value=${item.Id}>${item.Text} (${item.ID1})</option>`;
                     })
                 }
                 console.log("formarr");
@@ -851,9 +851,10 @@
             console.log(formarr[i]);
             var Idss = formarr[i].Id;
             var datt = formarr[i].Text;
+
             var match = datalist.filter(x => x.iFK_FrmID === Idss);
             if (match.length == 0) {
-                NocSelectData1 += `<option id="Form-${formarr[i].Id}" value=${formarr[i].Id}>${formarr[i].Text}</option>`;
+                NocSelectData1 += `<option id="Form-${formarr[i].Id}" value=${formarr[i].Id}>${formarr[i].Text} (${formarr[i].ID1})</option>`;
             }
         }
         $('#ddlNOCDetails').html('');
