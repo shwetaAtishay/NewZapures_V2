@@ -51,7 +51,7 @@ namespace NewZapures_V2.Models
             Lst.Add(new GlobalClass
             {
                 Id = 1,
-                Text = "Temporary",
+                Text = "TNOC",
                 label = "radio-danger"
 
             });
@@ -59,7 +59,7 @@ namespace NewZapures_V2.Models
             Lst.Add(new GlobalClass
             {
                 Id = 2,
-                Text = "Permanent",
+                Text = "PNOC",
                 label = "radio-primary"
 
             });
@@ -70,7 +70,13 @@ namespace NewZapures_V2.Models
                 label = "radio-success"
 
             });
+            Lst.Add(new GlobalClass
+            {
+                Id = 4,
+                Text = "Extension TNOC",
+                label = "radio-success"
 
+            });
             return Lst;
 
         }
