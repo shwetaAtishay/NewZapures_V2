@@ -41,6 +41,7 @@
 <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link href="~/Content/JitendraCSS/jquery-confirm.min.css" rel="stylesheet" />
 <link href="~/Content/JitendraCSS/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/NewArchtech/jquery-confirm.min.css" rel="stylesheet" />
 <style>
     .space {
         width: 8.666667%;
@@ -240,11 +241,11 @@
 
                                                 <td>
                                                     @{
-                                                        if (item.PNOC == 1 || item.TNOC == 1)
+                                                        if (item.Fk_StatusId == 1)
                                                         {
                                                             <span class="statuscss">Running Course</span>
                                                         }
-                                                        else
+                                                        if (item.Fk_StatusId == 3)
                                                         {
                                                             <span class="statuscss" style="background-color:aqua !important;color:black !important;">Apply Course</span>
                                                         }
@@ -254,10 +255,15 @@
 
                                                 <td class="d-flex" style="gap:2px;">
                                                     @{
-                                                        if (item.TNOC == 0 && item.PNOC == 0)
+                                                        if (item.Fk_StatusId == 3)
                                                         {
                                                             <a id="@item.iPk_AddCourseId" class="theme-edit-btn" title="Edit" onclick="EditCourse(@item.iPk_AddCourseId,@item.iFK_DeptId,@item.ClgId,@item.iFK_CourseId,'@item.Sublist');"><i class="fas fa-edit"></i></a>
                                                             <a id="@item.iPk_AddCourseId" class="theme-delete-btn" title="Delete" onclick="DeleteCourseDetails(@item.iPk_AddCourseId,'Get','NULL');"><i class="far fa-trash-alt"></i></a>
+
+                                                        }
+                                                        if (item.Fk_StatusId == 0 || item.Fk_StatusId == 2)
+                                                        {
+                                                            <a id="@item.iPk_AddCourseId" class="theme-delete-btn" title="ApplyStatus" onclick="OpenModel(@item.iPk_AddCourseId);"><i class="far fa-marker"></i> Apply Status</a>
 
                                                         }
                                                     }
@@ -300,7 +306,44 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Change Status of Course</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <input type="hidden" id="changeid" value="0" />
+                    <div class="form-group  is-empty ">
 
+                        <div class="radio space" style="width: auto;">
+                            <input type="radio" name="iMark" id="radio_1" value="3" checked>
+                            <label for="radio_1" style="font-weight:bold;" class="col-sm-6" id="lable_3">
+                                Apply As New Course
+                            </label>
+                        </div>
+                        <div class="radio space" style="width: auto;">
+                            <input type="radio" name="iMark" id="radio_2" value="1">
+                            <label for="radio_2" style="font-weight:bold;" class="col-sm-6" id="lable_1">
+                                Apply As Running
+                            </label>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="savechanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section Scripts{
@@ -322,9 +365,76 @@
     <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
     <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
     <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="~/Content/NewArchtech/ConformjqueryABI.js"></script>
     <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
-    $(document).ready(function () {
+        $(document).ready(function () {
+            $("#savechanges").click(function () {
+                debugger;
+                var Id = $("#changeid").val();
+               
+                var applyid = $('input:radio[name="iMark"]:checked').val();
+             
+                var data = $("#lable_" + applyid).html();
+                $.confirm({
+
+                    title: 'Apply Confirmation',
+                    content: `Are you sure to ${data}`,
+                    type: 'red',
+                    typeAnimated: true,
+                    animation: 'rotate',
+                    closeAnimation: 'scale',
+                    buttons: {
+                        Confirm: {
+                            text: 'YES',
+                            btnClass: 'btn-red',
+                            action: function () {
+
+
+
+                                var Params = JSON.stringify({
+                                    TableId: 'DEPTVSCURS_APPLY',
+                                    Id: Id,
+                                    type: applyid
+
+
+                                });
+                                /* ShowBALoader("LoaderBASinup1");*/
+                                $.ajax({
+                                    url: GetglobalDomain() + "/Role/ChangeStatus",
+                                    type: 'POST',
+                                    dataType: "json",
+                                    data: Params,
+                                    contentType: "application/json",
+                                    success: function (response) {
+
+
+
+                                        if (response.IsValid = 1) {
+                                            Swal.fire({
+                                                position: 'center',
+                                                icon: 'success',
+                                                title: `Successfully ${applyid}`,
+                                                showConfirmButton: false,
+                                                timer: 3000
+                                            })
+                                           
+                                        }
+                                        $('#exampleModal').modal('hide');
+                                        location.reload();
+                                    },
+
+                                });
+
+                            }
+                        },
+                        close: {
+                            text: 'NO',
+                            action: function () { }
+                        }
+                    }
+                });
+            });
         $(".singleselect").select2();
         $('#txtTagDegree').change(function () {
             var id = $(this).val();
@@ -385,6 +495,8 @@
         });
 
     });
+
+
         function bindCourse(deptID) {
             var html = `<option value="">Select Course</option>`;
             var VertinaryModal = {
@@ -920,7 +1032,7 @@
                 }
             });
         }
-        //End 
+        //End
         function EditCourse(iPk_AddCourseId, DeptId, CollegeId, CourseId, SubjectId) {
             debugger;
  /*           $(".loader-div").css('display', 'block');*/
@@ -950,6 +1062,12 @@
             //$("#txtTagCourse").trigger("change");
         }
 
+        function OpenModel(iPk_AddCourseId) {
+            $("#changeid").val(iPk_AddCourseId);
+            
+            $('#exampleModal').modal('show');
+            $("input:radio[value='3']").prop('checked', true);
+        }
     </script>
 
 
