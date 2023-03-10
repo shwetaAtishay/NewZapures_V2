@@ -7,6 +7,7 @@
     var Course = ViewBag.Course as List<Dropdown>;
     var AllData = ViewBag.AllData as List<DeptCourseMapTableData>;
     var Class = ViewBag.Class as List<Dropdown>;
+    var Degree = ViewBag.Degree as List<Dropdown>;
 }
 @section styles{  @*@Styles.Render("~/bundles/datatable");*@
 <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -91,6 +92,29 @@
                                                 foreach (var item in Dept)
                                                 {
                                                     <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
+
+
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group ">
+                                    <label for="example-text-input" class="noc-form-label" style="">Select Degree</label>
+
+                                    <select id="ddlDegree" class="form-control noc-input-text">
+                                        <option value="0" role=separator>Select Degree</option>
+                                        @{
+                                            if (Degree != null)
+                                            {
+                                                foreach (var item in Degree)
+                                                {
+                                                    <option value=@item.Text data-image="~/images/404.png">@item.Text</option>
 
 
 
@@ -190,6 +214,7 @@
                                 <tr>
                                     <th scope="col">ID</th>
                                     <th scope="col">Department</th>
+                                    <th scope="col">Degree</th>
                                     <th scope="col">Course</th>
                                     <th scope="col">Subject</th>
                                 </tr>
@@ -213,6 +238,7 @@
                                                 <tr>
                                                     <td>@i</td>
                                                     <td scope="col">@item.Department</td>
+                                                     <td scope="col">@item.Degree</td>
                                                     <td scope="col">@item.Course</td>
                                                     <td scope="col">@item.Subject</td>
                                                 </tr>
@@ -238,19 +264,22 @@
             $("#ddlDept").select2();
             $("#ddlCourse").select2();
             $("#ddlSubject").select2();
+            $("#ddlDegree").select2();
         });
         function SaveData() {
+            debugger
             var Dept = $('#ddlDept').val();
             var Course = $('#ddlCourse').val();
             var Subject = $('#ddlSubject').val();
             var Class = $('#ddlClass').val();
-
+            var Degree = $('#ddlDegree').val();
             var isSaved = true;
             var Data = {
                 DeptID: 0,
                 CourseID: 0,
                 SubjectID: 0,
-                ClassID: 0
+                ClassID: 0,
+                DegreeName: 0
             }
 
             if (Dept == 0) {
@@ -283,12 +312,23 @@
                 });
                 isSaved = false;
             }
+            else if (Degree == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Degree...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
 
             else {
                 Data.DeptID = parseInt(Dept);
                 Data.CourseID = parseInt(Course);
                 Data.SubjectID = parseInt(Subject);
                 Data.ClassID = parseInt(Class);
+                Data.DegreeName = Degree;
             }
             var d = JSON.stringify(Data)
             if (isSaved) {

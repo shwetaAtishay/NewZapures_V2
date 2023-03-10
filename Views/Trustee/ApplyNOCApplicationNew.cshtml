@@ -716,6 +716,10 @@
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Submit</button>
     <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;margin-right:5px">Clear Selection</button>
     <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: #dc331c;border: 1px solid #dc331c !important;float: right;">Back To Draft</a>
+
+    <button onclick="redirecturl()" class="theme-discard-btn" style="background: #2cad24; border: 1px solid #2cad24 !important; float: right; ">Edit selection</button>
+
+
     <hr />
 </div>
 
@@ -3889,6 +3893,33 @@
                 console.log('Printing done', arguments);
             })
         });
+    }
+
+    function redirecturl() {
+        debugger
+        var url = "Trustee/ApplyNOCApplicationNew";
+        GeneratePage(url);
+        function GeneratePage(url) {
+
+            debugger
+            $("#divMain").show();
+            $("#tblLandInfo tbody").hide();
+            $("#tblStaffInfo tbody").hide();
+            $("#tblAcadmicInfo tbody").hide();
+            $("#tblSubjectInfo tbody").hide();
+            $("#tblProof tbody").hide();
+            $("#tblCollageFacility tbody").hide();
+            //$("#tblCollageFeeInfo tbody").html(Data.ColgFeehtml);
+
+            $("#tblArch tbody").hide();
+            $("#tblOtherInformation tbody").hide();
+
+            $("#dtnSubmit").hide();
+            $("#divPrint").hide();
+            $("#btnPreview").show();
+
+            return true;
+        }
     }
 
  //   function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
