@@ -154,15 +154,24 @@
             <div class="card-body row">
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-lg-3 trustee-file-height form-group">
+                        <div class="col-lg-1 trustee-file-height form-group">
                             <div class="">
                                 <h4 class="mt-0 header-title noc-form-label">Profile Photo</h4>
                                 <input type="file" id="input-file-now" class="dropify" name="profilefile" />
                             </div>
                         </div>
+                        <div class="col-lg-4 trustee-file-height form-group">
+                            <div class="">
+                                <h4 class="mt-0 header-title noc-form-label">College</h4>
+                                <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
+                                    <option value="0">Select College</option>
+                                   
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-lg-9">
                             <div class="row">
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Name of Person</lable>
                                         <span style="color:red;">*</span>
@@ -171,7 +180,7 @@
                                         @Html.ValidationMessage("Name", "", new { @class = "label label-danger", id = "lblName" })
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Role</lable>
                                         <span style="color:red;">*</span>
@@ -187,7 +196,18 @@
                                         <label for="error" class="col-sm-12" id="errorRole" style="display:none;"></label>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Occupation</lable>
+                                        <span style="color:red;">*</span>
+                                        <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
+                                            <option value="0">Select Occupation</option>
+                                            
+                                        </select>
+                                        <label for="error" class="col-sm-12" id="errorRole" style="display:none;"></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Mobile No</lable>
                                         <span style="color:red;">*</span>
@@ -197,13 +217,35 @@
                                         @*@Html.ValidationMessage("Mobile", "", new { @class = "label label-danger" })*@
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+
+                                <div class="col-lg-2">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Email</lable>
                                         <span style="color:red;">*</span>
                                         <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtemail" name="Email">
                                         <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
                                         @Html.ValidationMessage("Email", "", new { @class = "label label-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Gender</lable>
+                                        <span style="color:red;">*</span>
+                                        <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
+                                            <option value="0">Select Gender</option>
+
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Father Name</lable>
+                                        <span style="color:red;">*</span>
+                                        <input class="form-control noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtaadharno" name="AadhaarNo" maxlength="12">
+                                        <label for="error" class="col-sm-12" id="errorAadhaar" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorAadhaarvalid" style="display:none;"></label>
+                                        @Html.ValidationMessage("AadhaarNo", "", new { @class = "label label-danger" })
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -227,9 +269,24 @@
                                         <span id="aadhaarfile"></span>
                                     </div>
                                 </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Signature Pic(upload Max Size 50KB)</lable>
+                                        <span style="color:red;">*</span>
+                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
+                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
+                                        <span id="aadhaarfile"></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    @* new field *@
+
+
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="form-group">
