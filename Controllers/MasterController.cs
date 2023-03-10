@@ -1217,7 +1217,7 @@ namespace NewZapures_V2.Controllers
 
             return View(obj1);
         }
-
+        
         //Changes date 06/02/2022  Abhishek
         public ActionResult FeePage(int Id = 0)
         {
@@ -1358,8 +1358,10 @@ namespace NewZapures_V2.Controllers
             if (response.StatusCode.ToString() == "OK")
             {
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse != null)
+                if (objResponse.Data != null)
+                { 
                     departments = JsonConvert.DeserializeObject<List<FeeMst>>(objResponse.Data.ToString());
+                }
             }
             return departments;
         }
