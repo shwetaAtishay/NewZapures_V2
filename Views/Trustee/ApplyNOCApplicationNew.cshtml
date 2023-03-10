@@ -37,9 +37,12 @@
     <div class="card-body">
         <div class="row col-lg-12">
             <span class="spanLabel">
-                Disclaimer -<br />
-                <span> 1. Dear applicant here only those subjects and courses will be visible for which you have successfully submitted the incomplete information, If your course or subject is not then you need to submit complete details of it from ( <a style="color: #000fe5;" href="@Url.Action("CollegeDetails","Trustee")"> Complete Your Information</a> )</span>
-                <br /><span> 2. if you want noc for change name, merge , women to co-edu, ....  You need to send amendment request from <a style="color: #000fe5;" href="@Url.Action("Index","CollegeAmendment")"> College Ammendment</a> </span>
+                Disclaimer -
+                <br/><span> 1. Submit your application with appropriate option like- new course, new subject, tnoc, pnoc.</span>
+                <br/><span> 2. Once the application is submitted you have to print challen or download. </span>
+                <br/><span> 3. Once you did the payment you need to upload proof of payment (receipt) from applied noc, <a href="@Url.Action("DeptMasterApplicationList","Trustee")" style="color: blue;"> Upload Reciept</a></span>
+                <br/><span> 4. Note: here only those subjects or courses will be visible for which draft is complete. </span>
+                <br/><span> 5. If NOC is for name change, location change, merger, coed to girl please fill details in <a href="@Url.Action("DeptMasterApplicationList","Trustee")" style="color: blue;"> College Amendment</a> </span>
             </span>
 
         </div>
@@ -709,10 +712,11 @@
 </div>
 
 <div class="w-100 float-left mt-3 text-right">
-    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">PreView</button>
+    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">Preview</button>
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Submit</button>
-    <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;">Reset</button>
-    <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: gray;border: 1px solid gray !important;float: right;">Back To List</a>
+    <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;margin-right:5px">Clear Selection</button>
+    <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: #dc331c;border: 1px solid #dc331c !important;float: right;">Back To Draft</a>
+<hr/>
 </div>
 
 <div class="card noc-layouts mt-0" id="divPrint" style="display:none">
