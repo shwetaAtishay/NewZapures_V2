@@ -1359,7 +1359,7 @@ namespace NewZapures_V2.Controllers
             {
                 ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                 if (objResponse.Data != null)
-                {
+                { 
                     departments = JsonConvert.DeserializeObject<List<FeeMst>>(objResponse.Data.ToString());
                 }
             }
