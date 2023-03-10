@@ -1,0 +1,92 @@
+﻿.modalHeader {
+    display: flex;
+    align-items: center;
+    width: 99%;
+    place-content: space-between;
+}
+
+.AcctualChallaBody {
+    border: 2px solid black;
+    padding: 0 5px;
+    padding-bottom: 0px;
+    color: black !important
+}
+
+.HeaderText {
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 17px;
+}
+
+.tblHeader {
+    background: #b8b8b8;
+}
+
+.hrSeparator {
+    border: 1px solid;
+    width: 100%;
+    /*margin-left: -25px;*/
+}
+
+.hrSeparator2 {
+    border: 1px solid;
+    width: 100%;
+    /*margin-left: -25px;*/
+    margin-top: -10px;
+}
+
+.divRow1 {
+    display: flex;
+    align-items: center;
+    place-content: space-between;
+    margin-top: -12px;
+    padding: 5px 3px;
+}
+
+.divRow1Containt {
+    font-size: 15px;
+    color: black !important;
+    font-weight: 500;
+}
+
+.divRow2 {
+    display: flex;
+    align-items: center;
+    place-content: space-between;
+    margin-top: -12px;
+    padding: 5px 3px;
+}
+
+.divRow3Table {
+    /*margin-left: -20px;*/
+    margin-top: -12px;
+    color: black !important;
+}
+
+.divRow4 {
+    height: 10rem;
+}
+
+.divRow4Table {
+    /*margin-left: -20px;*/
+    margin-top: -12px;
+    width: 100%;
+    color: black !important
+}
+
+.tblFooter {
+    border-top: 1px solid black
+}
+
+.table th {
+    color: #000000;
+    font-weight: 500;
+    vertical-align: middle;
+    border-color: #eaf0f7;
+    font-weight: 700;
+}
+
+.tblFooterContaint {
+    padding: 2px;
+}

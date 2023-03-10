@@ -1,0 +1,510 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Master Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var mstApplication = (List<TrusteeBO.DeptMasterApplication>)ViewBag.deptMstList;
+
+    string[] badgeData = { "badge badge-pill badge-primary", "badge badge-pill badge-danger", "badge badge-pill badge-success", "badge badge-pill badge-warning" };
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<link href="~/Content/JitendraCSS/newCustom.css" rel="stylesheet" />
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+
+<style type="text/css">
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+        .table thead > tr > th {
+            color: white
+        }
+
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Master Application</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card">
+    <div class="card-header">
+        <h4 class="mt-0 header-title float-left">Application List</h4>
+    </div>
+    <input type="hidden" id="hdnGUID" />
+    <input type="hidden" id="hdnDueAMT" />
+    <div class="card-body row">
+        <div class="form-group col-lg-12">
+
+            <table class="table table-borderless table-striped table-hover">
+                <thead class="dark">
+                    <tr>
+                        <th>#</th>
+                        <th hidden>ipkMstID</th>
+                        <th>Application Number</th>
+                        <th>Application Type</th>
+                        <th hidden>stypeID</th>
+                        <th hidden>iFK_ClgID</th>
+                        <th>CollegeName</th>
+                        <th hidden>iFK_DeptID</th>
+                        <th>Department</th>
+                        <th hidden>iFK_TrstID</th>
+                        <th>Trust Name</th>
+                        <th>Total Fee</th>
+                        <th>Total Paid</th>
+                        <th>Due Fee</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (mstApplication != null && mstApplication.Count > 0)
+                        {
+                            var i = 1;
+                            var j = 0;
+                            foreach (var item in mstApplication)
+                            {
+                                var stype = item.stypeName.Split(',');
+                                var stypeForModal = "";
+                                <tr>
+                                    <td>@i</td>
+                                    <td hidden>@item.ipkMstID</td>
+                                    <td><span style="color: deepskyblue;font-size: 18px;font-weight: 600;cursor: pointer;" onclick="OpenPayModal('@item.sApplID')">@item.sApplID</span></td>
+                                    <td style="display:flex;gap: 10px;flex-wrap: wrap;">
+                                        @{
+                                            if (stype.Length > 0)
+                                            {
+
+                                                foreach (var stypeItem in stype)
+                                                {
+                                                    if (stypeForModal.Length <= 0)
+                                                    {
+                                                        stypeForModal = stypeItem;
+                                                    }
+                                                    else
+                                                    {
+                                                        stypeForModal += "," + stypeItem;
+                                                    }
+
+
+                                                    <span class="@badgeData[j]">@stypeItem</span>
+                                                    j++;
+                                                    if (j == 4)
+                                                    {
+                                                        j = 0;
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                    </td>
+                                    <td hidden>@item.stypeID</td>
+                                    <td hidden>@item.iFK_ClgID</td>
+                                    <td>@item.CollegeName</td>
+                                    <td hidden>@item.iFK_DeptID</td>
+                                    <td>@item.Dept</td>
+                                    <td hidden>@item.iFK_TrstID</td>
+                                    <td>@item.Trust</td>
+                                    <td>&#8377; @item.dTotalFee</td>
+                                    <td>&#8377; @item.PaidAmnt</td>
+                                    <td>&#8377; @item.DueAMT</td>
+
+                                    <td>
+                                        @*<a href="@Url.Action("PaymentDetails","PartiallyPayment")" id="btnUpload" class="btn btn-sm btn-outline-dark"><i class="fas fa-upload"></i></a>*@
+                                        <button id="btnUpload" class="btn btn-sm btn-outline-dark" onclick="SetGUID('@item.sApplID','@item.DueAMT','@item.dTotalFee','@stypeForModal')"><i class="fas fa-upload"></i></button>
+                                        <button id="btnOpenModal" style="display:none" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal"><i class="fas fa-upload"></i></button>
+
+
+                                    </td>
+                                </tr>
+                                i++;
+
+                            }
+                        }
+
+                        else
+                        {
+                            <tr>
+                                <td colspan="10" class="text-center">No Data Available</td>
+                            </tr>
+
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row col-lg-12" style="margin-top:20px">
+            <div class="col-lg-12 loat-right">
+
+                @* <button class="btn" style="color:white!important;float:right;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-save"></i> Save</button>*@
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ThankyouTitle">Upload Receipt</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row col-lg-12 mb-2">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><b>Your Applicable Charges For the followings :</b></label>
+
+                    </div>
+                    <div class="row col-lg-12" id="divApplicationTypeContainer" style="gap: 10px;">
+
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-lg-12 d-flex">
+                            <label for="example-text-input" class="col-sm-3" style="margin-left:-10px"><b>Total Fee : </b></label><span id="spnTotalAMT" style="font-family: sans-serif;"></span>
+                            <label for="example-text-input" class="col-sm-3" style="margin-left:-10px"></label>
+                            <label for="example-text-input" class="col-sm-3" style="margin-left:-10px"><b>Yet To Be Paid : </b></label><span id="spnTotalPayableAMT" style="font-family: sans-serif;"></span>
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><b>Enter Fee Amount</b></label>
+                            <div style="display: flex !important;align-items: center;">
+                                <span class="col-sm-1" style="font-size: 25px;font-family: sans-serif;background: #bdbdbd;height: 36px;border-radius: 4px;"> &#8377;</span>
+                                <input class="form-control col-sm-10" type="number" id="txtAmt" autocomplete="off" style="margin-left: -4px;">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 mt-3">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><b>Upload Reciept</b></label>
+                            <input type="file" id="fluUpload" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                            <input type="hidden" id="hdnConvertedDoc" />
+                            <input type="hidden" id="hdnConvertedDocExten" />
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer" id="divmodalFooter">
+                    @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                        <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+
+                    <button type="button" class="btn btn-primary" onclick="UploadReciept()">Upload</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button id="btnOpenModalPayment" style="display:none" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#paymentHistory" data-dismiss="modal"><i class="fas fa-upload"></i>Payment History</button>
+    <div class="modal fade" id="paymentHistory" tabindex="-1" role="dialog" aria-labelledby="paymentHistory" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentHistoryTitle">Payment History For : <span id="spnAppNumber"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row" style="text-align: justify;">
+                        <table class="table table-borderless table-striped" id="tblPaymentHistory">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Due Amount</th>
+                                    <th>Paid Amount</th>
+                                    <th>Payment Date</th>
+                                    <th>Receipt</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer" id="divmodalFooter">
+                    @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                        <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script>
+    var imagebase64 = "";
+
+    function Verify(applGUID, applNumber) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are You Sure?',
+            html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
+            showDenyButton: true,
+            showCancelButton: false,
+            denyButtonText: 'No',
+            confirmButtonText: 'Yes, I am',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                CancelApplication(applGUID);
+            } else if (result.isDenied) {
+
+            }
+        });
+    }
+
+    function SetGUID(iD, payabletotalAMT, totalAmt, stype) {
+        $('#hdnGUID').val('');
+        $('#hdnGUID').val(iD);
+
+        $('#hdnDueAMT').val('');
+        $('#hdnDueAMT').val(payabletotalAMT);
+
+        $('#spnTotalPayableAMT').html('');
+        $('#spnTotalPayableAMT').html('&#8377; ' + payabletotalAMT);
+
+
+        $('#spnTotalAMT').html('');
+        $('#spnTotalAMT').html('&#8377; ' + totalAmt);
+
+
+        $('#ThankyouTitle').html('');
+        $('#ThankyouTitle').html('Upload Receipt For : ' + iD);
+
+        var ulList = `<ul style="list-style:decimal-leading-zero;margin-left: -18px;font-size: 15px;">`;
+        var d = stype.split(',');
+        if (d.length > 0) {
+            d.forEach(function (item) {
+                ulList += "<li>" + item + "</li>";
+            })
+        }
+
+
+        $('#divApplicationTypeContainer').html('');
+        $('#divApplicationTypeContainer').html(ulList + "</ul>");
+
+
+
+        if (payabletotalAMT == 0) {
+            $('#divmodalFooter').css('display', 'none');
+        } else {
+
+            $('#divmodalFooter').css('display', 'flex');
+        }
+
+
+        $('#btnOpenModal').click();
+
+    }
+
+    function UploadReciept() {
+        var paidAMT = $('#txtAmt').val();
+        var imagelength = ($('#hdnConvertedDoc').val() === undefined || $('#hdnConvertedDoc') === null) ? "" : $('#hdnConvertedDoc').val();
+        if (paidAMT.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `Error`,
+                html: `<p>Please Enter the amount</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+            $('#txtAmt').focus();
+        }
+        else if (imagelength.length > 0) {
+            var applGUID = $('#hdnGUID').val();
+            var dueAMT = $('#hdnDueAMT').val();
+
+            var fullBase64DataIMG = $('#hdnConvertedDoc').val();
+
+            var Data = {
+                AppGUID: applGUID,
+                paidAMT: parseFloat(paidAMT),
+                dueAMT: parseFloat(dueAMT),
+                fullBase64Data: fullBase64DataIMG
+            }
+            var d = JSON.stringify(Data)
+            //console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Trustee/UploadMasterPaymentReceipt",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Data),
+                success: function (data) {
+                    console.log(data.Type);
+                    console.log(data);
+                    if (data.StatusCode == 1) {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: `Success`,
+                            html: `<p>${data.msg}</p>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000)
+                    }
+                },
+                error: function (d) {
+                    //alert(d);
+                }
+            });
+        }
+        else {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: `Error`,
+                html: `<p>Please Select Receipt To Upload First</p>`,
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            });
+        }
+
+    }
+
+    function PaymentHistory(appNumber) {
+
+        var Data = {
+            ApplicationNumber: appNumber
+        }
+        var d = JSON.stringify(Data)
+        //console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/PaymentHistoryForApplication",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var htmlString = "";
+                var mainData = data.Data;
+                //console.log(mainData);
+
+                var jData = JSON.parse(mainData);
+                if (jData.length > 0) {
+                    jData.forEach(function (item, index) {
+                        if (item.sRecptData == "NA" && item.dPaidAMT == "NA")
+                            htmlString += `<tr><td>${index + 1}</td><td>&#8377; ${item.dDueAMT}</td><td>${item.dPaidAMT}</td><td>${item.dtPaidOn}</td><td>NA</td></tr>`;
+                        else
+                            htmlString += `<tr><td>${index + 1}</td><td>&#8377; ${item.dDueAMT}</td><td>&#8377; ${item.dPaidAMT}</td><td>${item.dtPaidOn}</td><td><div><img src='${item.sRecptData}' style="height: 80px;width: 80px;" alt="reciept"/></div></td></tr>`;
+                    })
+                }
+                else {
+                    htmlString = `<tr><td colspan="5" class="text-center"></td></tr>`;
+                }
+                $('#tblPaymentHistory tbody').html('');
+                $('#tblPaymentHistory tbody').html(htmlString);
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+
+    }
+
+    function OpenPayModal(appNumber) {
+
+        setTimeout(function () {
+            $('#spnAppNumber').html('');
+            $('#spnAppNumber').html(appNumber);
+
+            PaymentHistory(appNumber);
+
+            $('#btnOpenModalPayment').click();
+        }, 1000);
+    }
+
+
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            $('#' + hdnExtnID).val(file.name);
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+
+</script>

@@ -1,0 +1,771 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Management Committee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.TrusteeBO.Trustee> trusteelist = ViewBag.TrusteeList as List<NewZapures_V2.Models.TrusteeBO.Trustee>;
+    //List<CustomMaster> TrustList = new List<CustomMaster>();
+    //if (ViewBag.TrustList != null)
+    //{
+    //    TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    //}
+    List<CustomMaster> RoleType = new List<CustomMaster>();
+    if (ViewBag.RoleType != null)
+    {
+        RoleType = (List<CustomMaster>)ViewBag.RoleType;
+    }
+}
+
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+   @* .label:empty {
+        display: none;
+    }
+
+    .label-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    label {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }*@
+</style>
+@section styles {
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">*@
+    <link href="~/Content/JitendraCSS/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/Content/JitendraCSS/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+}
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    /* .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <div class="float-right d-none">
+                @*<ol class="breadcrumb">
+                <li class="breadcrumb-item">NOC</li>
+                <li class="breadcrumb-item">Master</li>
+                <li class="breadcrumb-item active">Trustee</li>
+            </ol>*@
+            </div>
+            <h4 class="page-title w-75">(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)-@ViewBag.Title</h4>
+            <div class="w-25 text-right">
+                <a href="~/Dashboard/DashboardUser" title="Back" value="Go back!" class="theme-button-mockup"><i class="fas fa-arrow-left"></i></a>
+
+                <a href="~/Trustee/CollageListForApply" title="Next" class="theme-button-mockup"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card noc-layouts mt-0">
+    <div class="card-header title-heading p-0">
+        <h4 class="mt-0 title-heading float-left">@ViewBag.Title </h4>
+    </div>
+    <div id="">
+        @using (Html.BeginForm("Index", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data", novalidate = "novalidate" }))
+        {
+            <div id="validation-summary" class="alert-danger"></div>
+            <div class="card-body row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-lg-3 trustee-file-height form-group">
+                            <div class="">
+                                <h4 class="mt-0 header-title noc-form-label">Profile Photo</h4>
+                                <input type="file" id="input-file-now" class="dropify" name="profilefile" />
+                            </div>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Name of Person</lable>
+                                        <span style="color:red;">*</span>
+                                        <input class="form-control col-sm-12 alphaspace noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtname" name="Name">
+                                        <label for="error" class="col-sm-12" id="errortxtName" style="display:none;"></label>
+                                        @Html.ValidationMessage("Name", "", new { @class = "label label-danger", id = "lblName" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Role</lable>
+                                        <span style="color:red;">*</span>
+                                        <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
+                                            <option value="0">Select Role</option>
+                                            @{
+                                                foreach (var item in RoleType)
+                                                {
+                                                    <option value="@item.Id">@item.text</option>
+                                                }
+                                            }
+                                        </select>
+                                        <label for="error" class="col-sm-12" id="errorRole" style="display:none;"></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Mobile No</lable>
+                                        <span style="color:red;">*</span>
+                                        <input class="form-control col-sm-12 numberonly noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtmobile" name="Mobile" maxlength="10">
+                                        <label for="error" class="col-sm-12" id="errorMobile" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorMobileten" style="display:none;"></label>
+                                        @*@Html.ValidationMessage("Mobile", "", new { @class = "label label-danger" })*@
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Email</lable>
+                                        <span style="color:red;">*</span>
+                                        <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtemail" name="Email">
+                                        <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
+                                        @Html.ValidationMessage("Email", "", new { @class = "label label-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Aadhaar No</lable>
+                                        <span style="color:red;">*</span>
+                                        <input class="form-control noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtaadharno" name="AadhaarNo" maxlength="12">
+                                        <label for="error" class="col-sm-12" id="errorAadhaar" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorAadhaarvalid" style="display:none;"></label>
+                                        @Html.ValidationMessage("AadhaarNo", "", new { @class = "label label-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Aadhaar Card(upload Max Size 50KB)</lable>
+                                        <span style="color:red;">*</span>
+                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
+                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
+                                        <span id="aadhaarfile"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Pan No</lable>
+                                <span style="color:red;">*</span>
+                                <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtpanno" name="PanNo" pattern="/([A-Z]){5}([0-9]){4}([A-Z]){1}$/" maxlength="12">
+                                <label for="error" class="col-sm-12" id="errorPanNo" style="display:none;"></label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Pan Card (upload Max Size 50KB)</lable>
+                                <span style="color:red;">*</span>
+                                <input type="file" id="filepan" name="panfile" data-input="true" data-buttonname="btn btn-info" accept=".jpg,.jpeg,.png" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                <span id="panfile"></span>
+                                <label for="error" class="col-sm-12" id="errorPanCardfile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorPanCardfileSize" style="display:none;"></label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chkIsPrime" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <input type="hidden" id="hdnchkIsPrime" name="isPrimary">
+                                <label class="custom-control-label noc-form-label" for="chkIsPrime">Is Primary</label>
+
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3" id="filediv">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="chkIsAuthorized" data-parsley-multiple="groups" data-parsley-mincheck="2">
+                                <input type="hidden" id="hdnchkIsAuthorized" name="isAuthorize">
+                                <label class="custom-control-label noc-form-label" for="chkIsAuthorized">Is Authorized</label>
+                            </div>
+                            <div class="form-group" id="divfileAuth" style="display:none">
+                                <lable class="noc-form-label">Upload Authorized Document (upload Max Size 50KB)</lable>
+                                <span style="color:red;">*</span>
+                                <input type="file" id="fileAuth" name="Authfile" accept=".jpg,.jpeg,.png" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control" />
+                                <span id="panfile"></span>
+                                <label for="error" class="col-sm-12" id="errorIsAuthfile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorIsAuthfileSize" style="display:none;"></label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row w-100" style="">
+                    <div class="col-lg-12 text-right">
+                        @*onclick="return CheckValidation()"*@
+                        <button class="theme-button-mockup" id="btnCapitalAdd" type="button" onclick="return CheckValidation()"><i class="fa fa-plus"></i> ADD</button>
+                    </div>
+
+                </div>
+            </div>
+
+            @Html.AntiForgeryToken()
+        }
+    </div>
+    <div class="card-body p-0 ">
+
+        <h4 class="mt-0 mb-3 header-title title-heading rounded-0">Management Commitee Members</h4>
+        <div class="noc-admin-menu">
+            <div class="noc-layouts-tbl" style="overflow-x:auto;">
+                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive word-wrap mt-3">
+                    <thead>
+                        <tr>
+                            <th>SNo</th>
+                            <th>Profile</th>
+                            @*<th>Trust Name</th>*@
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Mobile No</th>
+                            <th>Email</th>
+                            <th>AadhaarNo</th>
+                            <th>PanNo</th>
+                            <th>Is Primary</th>
+                            <th>Is Authorize</th>
+                            <th style="text-align:center">Aadhaar</th>
+                            <th style="text-align:center">Pan</th>
+                            <th style="text-align:center">Authorized Doc</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (trusteelist.Count() > 0)
+                        {
+                            int i = 1;
+                            foreach (var item in trusteelist)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>
+                                        @if (@item.ProfileContentType != "")
+                                        {
+                                            <img src="data:@item.ProfileContentType;base64,@item.Profilefile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                        }
+                                    </td>
+                                    @*<td>@item.trustName</td>*@
+                                    <td>@item.Name</td>
+                                    <td>@item.RoleId</td>
+                                    <td>@item.Mobile</td>
+                                    <td>@item.Email</td>
+                                    <td>@item.AadhaarNo</td>
+                                    <td>@item.PanNo</td>
+                                    <td>@item.isPrimary</td>
+                                    <td>@item.isAuthorize</td>
+                                    <td style="text-align:center">
+                                        @if (item.Aadhaar != "")
+                                        {
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                        }
+                                    </td>
+                                    <td style="text-align:center">
+                                        @if (item.Pan != "")
+                                        {
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                        }
+                                    </td>
+                                    <td style="text-align:center">
+                                        @if (item.Authorized != "")
+                                        {
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Authorized })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a id="" class="Deleteclass theme-delete-btn" name="2" data-id="@item.Id" href="@Url.Action("DeleteTrustMemeber", "Trustee", new { Id = item.Id })" title="Delete"><i class="fas fa-times font-16"></i></a>
+                                    </td>
+
+
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="14" style="text-align:center;">No Data Available</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@if (trusteelist.Count() > 0)
+{
+    <div class="row">
+        <div class="w-100 float-left" style="margin-top:20px">
+            <div class="w-100 float-left text-right mb-4">
+                <a href="@Url.Action("CreateDetails", "BasicDetails")" class="theme-button-mockup" style="" id="Reset">Proceed To Add Collage Details</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery-validation/jquery.validate.js"></script>
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    var MB = 1048576; //= 1MD
+    var KB = 50000;    //50KB Bytes(in decimal)
+    //50 KB = 51200 Bytes(in binary)
+    $('.cutcopypaste').on("cut copy paste", function (e) {
+        e.preventDefault();
+    });
+    var isAlreadyPrimary = 0;
+    $(document).ready(function () {
+        $('#txtname').keypress(function (e) { $('#txtname').removeClass('errr-highlight').addClass('sucess-highlight'); });
+        $('.alphaspace').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+            else {
+
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+
+        });
+
+        $('.numberonly').keypress(function (e) {
+
+            var charCode = (e.which) ? e.which : event.keyCode
+
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+
+                return false;
+
+        });
+        $('#tblCapital > tbody  > tr ').each(function () {
+
+            var itemName = $(this).find('td:eq(9)').html();
+
+            if (itemName == 'Yes') {
+                isAlreadyPrimary = 1;
+            }
+
+
+            if (isAlreadyPrimary == 1) {
+                $('#chkIsPrime').attr('disabled', true);
+            }
+
+        });
+
+
+    });
+    //$('#txtaadharno').keyup(function () {
+    //    var value = $(this).val();
+    //    value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
+    //    $(this).val(value);
+    //});
+
+    $('#chkIsPrime').click(function () {
+        var status = $("#chkIsPrime").is(':checked');
+        if (status) {
+            $('#hdnchkIsPrime').val(1);
+
+        } else {
+            $('#hdnchkIsPrime').val(0);
+        }
+        //IsGSTApplicable
+        //IsTDSApplicable
+    });
+
+    $('#chkIsAuthorized').click(function () {
+        var status = $("#chkIsAuthorized").is(':checked');
+        //alert(status);
+        if (status) {
+            $('#hdnchkIsAuthorized').val(1);
+            $('#divfileAuth').attr("style", "display:block");
+            //$('#fileAuth').closest('.form-control').removeClass('success-highlight').addClass('errr-highlight');
+            //$('#fileAuth').attr("required", true);
+        } else {
+            $('#hdnchkIsAuthorized').val(0);
+            $('#divfileAuth').attr("style", "display:none");
+            //$('#fileAuth').addClass('valid').closest('.form-control').removeClass('errr-highlight').addClass('success-highlight');
+            //$('#fileAuth').attr("required", false);
+        }
+
+        //alert($('#hdnchkTDSApplicable').val());
+
+    });
+
+
+    // Valodation
+    //$('#txtmobile').blur(function () {
+    //    var mobile = $('#txtmobile').val();
+    //    if (mobile.length > 0) {
+    //        if (mobile.substr(0, 1) == 0 || mobile.length < 10) {
+    //            Swal.fire({
+    //                position: 'center',
+    //                icon: 'error',
+    //                title: 'Mobile Number Is Not Valid, Must Be 10 Digits Long',
+    //                allowOutsideClick: false,
+    //                showCloseButton: true,
+    //                showConfirmButton: false,
+    //            });
+    //        }
+    //    }
+    //});
+    $(".allow_numeric").on("input", function (evt) {
+        var self = $(this);
+        self.val(self.val().replace(/\D/g, ""));
+        if ((evt.which < 48 || evt.which > 57)) {
+            evt.preventDefault();
+        }
+    });
+
+    function ValidateEmail() {
+        debugger;
+        var email = document.getElementById("txtemail").value;
+        var lblError = document.getElementById("lblError");
+
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        debugger
+        if (!expr.test(email)) {
+            $('label[for="error"]').show();
+            //errorEmail.textContent = "Invalid email address.";
+            status = false;
+            $('#errorEmail').addClass('colordiv');
+            errorEmail.innerHTML = "Invalid email address.";
+
+        }
+        else {
+            $('#txtemail').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorEmail').html('');
+        }
+    }
+
+    function CheckValidation() {
+        //alert("in");
+        var status = true;
+        var Name = $('#txtname').val();
+        var role = $('#txtrole option:selected').val();
+        var mobile = $('#txtmobile').val();
+        var aadharno = $('#txtaadharno').val();
+        var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
+        var Email = $('#txtEmail').val();
+        if (Name.length <= 0) {
+            $('label[for="error"]').show();
+            errortxtName.textContent = "Please Enter Name";
+            /* errortxtName.style.color = "red";*/
+            $('#errortxtName').addClass('colordiv');
+            $('#txtname').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtname').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errortxtName').html('');
+        }
+        if (role == 0) {
+            $('label[for="error"]').show();
+            errorRole.textContent = "Please Select Role";
+            $('#errorRole').addClass('colordiv');
+            $('#txtrole').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtrole').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorRole').html('');
+        }
+        if (mobile.length <= 0) {
+            $('label[for="error"]').show();
+            errorMobile.textContent = "Please Enter Mobile No";
+            $('#errorMobile').addClass('colordiv');
+            $('#txtmobile').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;               //return status;
+
+        }
+        else {
+            $('#txtmobile').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorMobile').html('');
+        }
+        if (mobile.length > 0) {
+            if (mobile.substr(0, 1) == 0 || mobile.length < 10) {
+                $('label[for="error"]').show();
+
+                errorMobileten.textContent = "Please Enter ten digit Mobile No";
+                $('#errorMobileten').addClass('colordiv');
+                $('#txtmobile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+
+            }
+            else {
+                $('#txtmobile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorMobileten').html('');
+            }
+        }
+        if (aadharno.length <= 0) {
+            $('label[for="error"]').show();
+            errorAadhaar.textContent = "Please Enter Aadhaar Number";
+            $('#errorAadhaar').addClass('colordiv');
+            $('#txtaadharno').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtaadharno').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorAadhaar').html('');
+        }
+        if (aadharno.length > 0) {
+            if (aadharno.substr(0, 1) == 0 || aadharno.length < 12) {
+                errorAadhaarvalid.textContent = "Please Enter twelve digit Aadhaar Number";
+                $('#errorAadhaarvalid').addClass('colordiv');
+                $('#txtaadharno').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#errorAadhaarvalid').html('');
+                $('#txtaadharno').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+        }
+        if (!regex.test($("#txtpanno").val().toUpperCase())) {
+            errorPanNo.textContent = "Please Enter Correct Pan No";
+            $('#errorPanNo').addClass('colordiv');
+            $('#txtpanno').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#errorPanNo').html('');
+            $('#txtpanno').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        if ($('#fileaadhaar').val() == '') {
+            errorAadhaarfile.textContent = "Please attched Aadhaar Card file";
+            $('#errorAadhaarfile').addClass('colordiv');
+            $('#fileaadhaar').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#errorAadhaarfile').html('');
+            $('#fileaadhaar').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var fileaadhaar = $('#fileaadhaar').val();
+        if (fileaadhaar.length > 0) {
+            var aadhfile_size = $('#fileaadhaar')[0].files[0].size;
+            if (aadhfile_size > KB) {
+                $('label[for="error"]').show();
+                errorAadhaarfileSize.textContent = "Please attched Valid Size file";
+                $('#errorAadhaarfileSize').addClass('colordiv');
+                $('#fileaadhaar').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#fileaadhaar').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorAadhaarfileSize').html('');
+            }
+        }
+
+        //alert($('#filepan').val());
+        if ($('#filepan').val() == '') {
+            errorPanCardfile.textContent = "Please attched Pan Card file";
+            $('#errorPanCardfile').addClass('colordiv');
+            $('#filepan').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#errorPanCardfile').html('');
+            $('#filepan').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var Panfile = $('#filepan').val();
+        if (Panfile.length > 0) {
+            var PANfile_size = $('#filepan')[0].files[0].size;
+            if (PANfile_size > KB) {
+                $('label[for="error"]').show();
+                errorPanCardfileSize.textContent = "Please attched Valid Size file";
+                $('#errorPanCardfileSize').addClass('colordiv');
+                $('#filepan').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#filepan').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorPanCardfileSize').html('');
+            }
+        }
+
+        if ($('#txtemail').val().length <= 0) {
+            errorEmail.textContent = "Please Enter Email Id";
+            $('#errorEmail').addClass('colordiv');
+            $('#txtemail').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            ValidateEmail();
+            // $('#txtemail').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var IsAuth = $("#chkIsAuthorized").is(':checked');
+        //alert(status);
+        if (IsAuth) {
+            $('#hdnchkIsAuthorized').val(1);
+            var fileAuth = $('#fileAuth').val();
+            if (fileAuth.length > 0) {
+                var autfile_size = $('#fileAuth')[0].files[0].size;
+                if (autfile_size > KB) {
+                    $('label[for="error"]').show();
+                    errorIsAuthfileSize.textContent = "Please attched Valid Size file";
+                    $('#errorIsAuthfileSize').addClass('colordiv');
+                    $('#fileAuth').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#fileAuth').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#errorIsAuthfileSize').removeClass();
+                    $('#errorIsAuthfileSize').html('');
+                }
+            }
+            else {
+                errorIsAuthfileSize.textContent = "Please attched Valid Size file";
+                $('#errorIsAuthfileSize').addClass('colordiv');
+                $('#fileAuth').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            //$('#fileAuth').attr("required", true);
+        } else {
+            $('#hdnchkIsAuthorized').val(0);
+            $('#fileAuth').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorIsAuthfile').html('');
+            //$('#fileAuth').attr("required", false);
+        }
+        //var fileAuth = $('#fileAuth').val();
+        //if (fileAuth.length > 0) {
+        //    var autfile_size = $('#fileAuth')[0].files[0].size;
+        //    if (autfile_size > KB) {
+        //        $('label[for="error"]').show();
+        //        errorIsAuthfileSize.textContent = "Please attched Valid Size file";
+        //        $('#errorIsAuthfileSize').addClass('colordiv');
+        //        $('#fileAuth').removeClass('sucess-highlight').addClass('errr-highlight');
+        //        status = false;
+        //    }
+        //    else {
+        //        $('#fileAuth').removeClass('errr-highlight').addClass('sucess-highlight');
+        //        $('#errorIsAuthfileSize').removeClass();
+        //        $('#errorIsAuthfileSize').html('');
+        //    }
+        //}
+        //else {
+        //    $('#fileAuth').removeClass('errr-highlight').addClass('sucess-highlight');
+        //    $('#errorIsAuthfileSize').removeClass();
+        //    $('#errorIsAuthfileSize').html('');
+        //}
+
+        console.log(status);
+
+        if (status) {
+            $('#Trusteeform').submit();
+        }
+        return status;
+    }
+</script>

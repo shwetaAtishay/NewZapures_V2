@@ -1,0 +1,722 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Edit Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var guiid = (string)ViewBag.guid;
+    var collegeID = (int)ViewBag.clgId;
+    var departmentID = (int)ViewBag.departmentID;
+    var collegeStatus = (string)ViewBag.clgStatus;
+}
+
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
+
+@*<link href="~/Content/select2/css/select2.css" rel="stylesheet" />*@
+@*<link href="~/Content/Architecturefile.css" rel="stylesheet" />*@
+@*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
+
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .applicationBtn1 {
+        width: 20em;
+        text-align: start;
+        display: flex;
+        align-items: center;
+    }
+
+    .applicationBtn {
+        width: 20em;
+        text-align: start;
+        display: flex;
+        align-items: center;
+    }
+    /*
+    .active {
+        background-color: #ffbf68;
+        color: black;
+        border-bottom-right-radius: 33px;
+        text-align: start;
+    }*/
+
+    ul li {
+        list-style: none;
+        margin-bottom: 10px
+    }
+
+        ul li button i {
+            font-size: 20px;
+        }
+    /*
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+        .table thead > tr > th {
+            color: white
+        }
+    */
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Edit Application</li>
+                </ol>
+            </div>
+            @* <h4 class="page-title">@ViewBag.Title</h4>*@
+        <div class="d-flex align-items-center justify-content-between w-100 float-left">
+            <h4 class="page-title"><a href="@Url.Action("DraftApplication", "Trustee")" class="theme-button-mockup"><i class="fa fa-arrow-left"></i> Back To Draft List</a></h4>
+            <div class="w-100 float-left mt-3 text-right">
+                <button class="theme-edit-btn" id="btnFinalSubmit"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+                <button class="theme-button-mockup" id="btnFinalSubmitM" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal" style="display:none"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+            </div>
+        </div>
+
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="row d-none">
+    <div class="col-lg-4">
+        <div class="noc-layouts">
+            <h4 class="m-0 title-heading">Edit Application</h4>
+
+            <div class="noc-layouts-tbl min-height220">
+                <table class="table table-responsive-md">
+                    <tr>
+                        <th style="color:black!important;font-weight:500">Application Number :</th>
+                        <th hidden style="color:black!important;font-weight:500">Trust Name</th>
+                        <th style="color:black!important;font-weight:500">Department Name</th>
+                    </tr>
+                    <tr>
+                        <td>-</td>
+                        <td hidden>-</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="noc-layouts">
+            <h4 class="m-0 title-heading">Trust Comitee Members</h4>
+            <div class="noc-layouts-tbl min-height220">
+                <table class="table table-responsive-md">
+                    <tr>
+                        <th>Member Name</th>
+                        <th>Is Primary</th>
+                    </tr>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" class="text-center">No Data Available</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="noc-layouts">
+            <h4 class="m-0 title-heading">College Information</h4>
+            <div class="noc-layouts-tbl min-height220">
+                <table class="table table-responsive-md">
+                    <tr>
+                        <th>College Name :</th>
+                        <th>Course</th>
+                    </tr>
+                    <tr>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="noc-layouts">
+            <h3 class="title-heading">Application Forms</h3>
+            <div class="noc-layout-list">
+                <ul>
+
+                    @{
+                        if (collegeStatus == "existing")
+                        {
+                            <li><button class="applicationBtn" id="btn_Land" data-id="@Url.Action("Index", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Land Information</button></li>
+                            <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
+                            <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
+                            <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
+                            <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
+                            <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
+                            <li><button class="applicationBtn" id="btn_Staff" data-id="@Url.Action("Index", "Staff",new {guid=guiid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
+                            <li><button class="applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst",new {guid=guiid,clgId=collegeID})"><i class="fa fa-school"></i> &nbsp;Academic Information</button></li>
+                            <li><button class="applicationBtn" id="btn_OldNOC" data-id="@Url.Action("OldNOC1", "Admin",new { guid=guiid,clgId=collegeID})"><i class="fa fa-paste"></i> &nbsp;OLD NOC Details</button></li>
+
+                            if (departmentID != 8)
+                            {
+                                <li><button class="applicationBtn" data-id="@Url.Action("Index", "FeeDetails")"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
+                            }
+                            if (departmentID == 12)
+                            {
+                                <li><button class="applicationBtn" id="btnEA_Vertinary" data-id="@Url.Action("Index", "Vertinary", new {AppGuid=guiid})"><i class="fa fa-kiwi-bird"></i> &nbsp;Vertinary Details</button></li>
+                            }
+                        }
+                        if (collegeStatus == "new")
+                        {
+                            <li><button class="applicationBtn" id="btn_Land" data-id="@Url.Action("Index", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Land Information</button></li>
+                            <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
+                            <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
+                            <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
+                            <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
+                            <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
+                        }
+                    }
+
+                    <!--<li><button class="applicationBtn" id="btn_Land" data-id="@Url.Action("Index", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Land Information</button></li>
+                <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
+                <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
+                @{
+                    if (departmentID != 8)
+                    {
+                        <li><button class="applicationBtn" data-id="@Url.Action("Index", "FeeDetails")"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
+                    }
+                }
+                <li><button class="applicationBtn" id="btn_Staff" data-id="@Url.Action("Index", "Staff",new {guid=guiid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
+
+                <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
+
+                <li><button class="applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst",new {guid=guiid,clgId=collegeID})"><i class="fa fa-school"></i> &nbsp;Academic Information</button></li>
+                <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
+                <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
+                <li><button class="applicationBtn" id="btn_OldNOC" data-id="@Url.Action("OldNOC1", "Admin",new { guid=guiid,clgId=collegeID})"><i class="fa fa-paste"></i> &nbsp;OLD NOC Details</button></li>
+                @{
+                    if (departmentID == 12)
+                    {
+
+                        <li><button class="applicationBtn" id="btnEA_Vertinary" data-id="@Url.Action("Index", "Vertinary", new {AppGuid=guiid})"><i class="fa fa-kiwi-bird"></i> &nbsp;Vertinary Details</button></li>
+                    }
+                }-->
+                    @*<li></li>*@
+                </ul>
+            </div>
+        </div>
+        @*<a class="btn btn-primary" href="@Url.Action("ApplyNOCApplicationNew", "Trustee")" style="width: 100%;margin-top: 10px;"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</a>*@
+      @*  <div class="w-100 float-left mt-3 text-right">
+            <button class="theme-button-mockup" id="btnFinalSubmit"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+            <button class="theme-button-mockup" id="btnFinalSubmitM" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal" style="display:none"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+        </div>*@
+    </div>
+    <div class="col-lg-12">
+        <div class="noc-layouts">
+            <h3 class="title-heading d-none">Application Preview</h3>
+
+            <div class="w-100 float-left" id="divFormContainer1" style="">
+                <div id="divFormContainer">
+
+                </div>
+                <p style="font-size: 30px;color: red;" id="pNote">
+                    @*Please Select Any Form from the left side to fill
+                        <img src="~/Content/LoginSignUp/img/NOC Process flow.jpeg" class="img-fluid" />*@
+                </p>
+                <div id="divLoader" style="display:none;padding:15px"><span><i class="fa fa-4x fa-circle-notch fa-spin fa-fade" style="color: #506ee4;"></i></span></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade bd-example-modal-lg" id="ThankYou" tabindex="-1" role="dialog" aria-labelledby="Thankyou" aria-hidden="true" style="display:none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Thankyou">Application Submition</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <h2>Thank You</h2>
+
+                    <i class='far fa-3x fa-smile' style="color: #87b2d6"></i><br />
+
+                    <div style="margin-top: 20px;font-size:18px">
+                        Your application has been submited successfully :-)
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-primary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">OK</button>
+                        <button type="button" class="btn btn-secondary" onclick="ChangeForm('Login', 'Next'); hidesmenu('hide'); clearAll();" data-dismiss="modal">Cancel</button>*@
+                    <a href="@Url.Action("ApplyNOCApplicationNew", "Trustee")" class="theme-discard-btn">Proceed To Apply NOC</a>
+                    <a href="@Url.Action("DraftApplication", "Trustee")" class="theme-button-mockup">Will Do Later</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    @*<script src="~/Content/select2/js/select2.js"></script>*@
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('#btnToggal').click();
+        btnLand();
+        function btnLand() {
+            $('#divFormContainer').html('');
+            $('#divFormContainer1').css('place-content', 'center').css('display', 'flex').css('align-items', 'center')
+            $('#divLoader').css('display', 'block');
+            $('#pNote').css('display', 'none');
+            //$(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            //$(this).css('background-color', '#ffbf68').css('color', 'black');
+            //$(this).css('border-bottom-right-radius', '33px');
+            $('#btn_Land').addClass("active");
+            var url = $('#btn_Land').data('id');
+
+            //console.log(url);
+            setTimeout(function () {
+
+                GenerateArchtableNew(url);
+            }, 1000);
+
+            //}
+        }
+
+
+
+        $('.applicationBtn').click(function () {
+            debugger;
+            $('#divFormContainer').html('');
+            $('#divFormContainer1').css('place-content', 'center').css('display', 'flex').css('align-items', 'center')
+            $('#divLoader').css('display', 'block');
+            $('#pNote').css('display', 'none');
+            //$(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            //$(this).css('background-color', '#ffbf68').css('color', 'black');
+            //$(this).css('border-bottom-right-radius', '33px');
+            $(this).addClass("active");
+            var url = $(this).data('id');
+
+            //console.log(url);
+            setTimeout(function () {
+
+                GenerateArchtableNew(url);
+            }, 1000);
+            /* $('#divLoader').css('display', 'none');*/
+        });
+    });
+
+    //function refreshData() {
+    //    window.location.reload();
+    //    setTimeout(function () {
+    //        $('#openModalWithData').click();
+    //    },1000)
+    //}
+
+    $('#btnFinalSubmit').click(function () {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are You Sure?',
+            //html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
+            html: `<div style="color: black;text-align: justify;background: #cdcdcd;padding: 15px;border-radius: 10px;">Dear Applicant, Are you sure you want to submit you application. Once the application is submitted you can't edit it. In case if you forget some information and wish to edit you need to create your application again.</div>`,
+            showDenyButton: true,
+            showCancelButton: false,
+            denyButtonText: '<i class="fa fa-thumbs-down"></i> &nbsp No, don`t submit',
+            confirmButtonText: '<i class="fa fa-thumbs-up"></i> &nbsp Yes I am sure to submit my draft.',
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                ValidateApplicationSubmission();
+
+
+                //UpdateApplicationStatus();
+            } else if (result.isDenied) {
+
+            }
+        });
+    });
+
+    function GenerateArchtableNew(url) {
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "text",
+            success: function (response) {
+                //$('#divFormContainer').html('');
+                $('#divFormContainer1').removeAttr("style");
+                $('#divFormContainer').html(response);
+                $('#divLoader').css('display', 'none');
+
+                return;
+                /*  $("#AddSection").html(response);*/
+            }
+        });
+
+        return false;
+    }
+
+     function UpdateApplicationStatus() {
+
+        var Data = {
+            AppGUID: '@guiid'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/UpdateApplicationStatus",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+               console.log(data);
+                $('#btnFinalSubmitM').click();
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
+    function ValidateApplicationSubmission() {
+
+        @*var Data = {
+            "clgID": parseInt('@collegeID')
+        }*@
+        var Data = {
+            "clgID": '@guiid'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/ValidateApplicationSubmission",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                //console.log(data);
+                var mainData = data.Data;
+                console.log(mainData);
+                var F_Totalrowcnt = mainData[0].Totalrowcnt;
+                var F_AcedmicCNT = mainData[0].AcedmicCNT;
+                var F_ArchitectureCNT = mainData[0].ArchitectureCNT;
+                var F_FacilityCNT = mainData[0].FacilityCNT;
+                //var F_FeeCNT = mainData[0].FeeCNT;
+                var F_LandDataCNT = mainData[0].LandDataCNT;
+                var F_ProofOfDOCCNT = mainData[0].ProofOfDOCCNT;
+                var F_StaffCNT = mainData[0].StaffCNT;
+                var F_OldNOCCNT = mainData[0].OldNOCCNT;
+                var F_BuildingCNT = mainData[0].BuildingCNT;
+
+                if ('@collegeStatus' == 'new') {
+
+                    if (
+                        (F_LandDataCNT == F_Totalrowcnt)
+                        && (F_FacilityCNT == F_Totalrowcnt)
+                        && (F_ProofOfDOCCNT == F_Totalrowcnt)
+                        && (F_ArchitectureCNT == F_Totalrowcnt)
+                        && (F_BuildingCNT == F_Totalrowcnt)
+                    ) {
+                        UpdateApplicationStatus();
+                        $('#btnFinalSubmitM').click();
+                    }
+                    else {
+
+                        var formName = "";
+
+                        if (F_Totalrowcnt != F_LandDataCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Land Information";
+                            }
+                            else {
+                                formName = "Land Information";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_FacilityCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Facility";
+                            }
+                            else {
+                                formName = "Facility";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_ProofOfDOCCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Required Documents";
+                            }
+                            else {
+                                formName = "Required Documents";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_ArchitectureCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Room Details";
+                            }
+                            else {
+                                formName = "Room Details";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_BuildingCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Building Documents";
+                            }
+                            else {
+                                formName = "Building Documents";
+                            }
+                        }
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: `Error`,
+                            html: `<p>"Dear applicant we found that you have not filled all mandatory fields and forms , kindly fill all the mandatory information and try again to submit"</p><br/><span style="font-weight: 700;color: red;">${formName}</span>`,
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: true,
+                        });
+                    }
+                }
+                if ('@collegeStatus' == 'existing') {
+                    if (
+                         (F_LandDataCNT == F_Totalrowcnt)
+                        && (F_FacilityCNT == F_Totalrowcnt)
+                        && (F_ProofOfDOCCNT == F_Totalrowcnt)
+                        && (F_ArchitectureCNT == F_Totalrowcnt)
+                        && (F_BuildingCNT == F_Totalrowcnt)
+                        && (F_StaffCNT == F_Totalrowcnt)
+                        && (F_AcedmicCNT == F_Totalrowcnt)
+                        && (F_OldNOCCNT == F_Totalrowcnt)
+                    ) {
+                        UpdateApplicationStatus();
+                        $('#btnFinalSubmitM').click();
+                    }
+                    else {
+                        var formName = "";
+
+                        if (F_Totalrowcnt != F_LandDataCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Land Information";
+                            }
+                            else {
+                                formName ="Land Information";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_FacilityCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Facility";
+                            }
+                            else {
+                                formName = "Facility";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_ProofOfDOCCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Required Documents";
+                            }
+                            else {
+                                formName = "Required Documents";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_ArchitectureCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Room Details";
+                            }
+                            else {
+                                formName = "Room Details";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_BuildingCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Building Documents";
+                            }
+                            else {
+                                formName = "Building Documents";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_StaffCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Staff Details";
+                            }
+                            else {
+                                formName = "Staff Details";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_AcedmicCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "Academic Information";
+                            }
+                            else {
+                                formName = "Academic Information";
+                            }
+                        }
+                        if (F_Totalrowcnt != F_OldNOCCNT) {
+
+                            if (formName.length > 0) {
+                                formName += ", " + "OLD NOC Details";
+                            }
+                            else {
+                                formName = "OLD NOC Details";
+                            }
+                        }
+
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: `Error`,
+                            html: `<p>"Dear applicant we found that you have not filled all mandatory fields and forms , kindly fill all the mandatory information and try again to submit"</p><br/><span style="font-weight: 700;color: red;">${formName}</span>`,
+                            allowOutsideClick: false,
+                            showCloseButton: false,
+                            showConfirmButton: true,
+                        });
+                    }
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
+
+   @*function getLandInfo() {
+
+        var Data = {
+            AppGUID: '@draftAppl.ApplGuid'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetLandDetails",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var tableHTML = "";
+                var landData = data.Data;
+
+                landData.forEach(function (item) {
+                    tableHTML += `<tr><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td>${item.dTotalArea}</td></tr>`;
+                })
+
+                $('#tblLandInfo tbody').html('')
+                $('#tblLandInfo tbody').html(tableHTML);
+
+                    setTimeout(function () {
+            $('#openModalWithData').click();
+        },1000)
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }*@
+
+
+
+
+    function printDiv(divName) {
+        alert(divName);
+        //var printContents = document.getElementById(divName).innerHTML;
+
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>

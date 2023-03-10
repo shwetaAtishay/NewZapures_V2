@@ -1,0 +1,574 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Academic Information";
+    Layout = null;
+
+    var FromYear = ViewBag.FromYear as List<Dropdown>;
+    var ToYear = ViewBag.ToYear as List<Dropdown>;
+    var Result = ViewBag.Result as List<Dropdown>;
+    //var Course = ViewBag.Course as List<Dropdown>;
+    var AllData = ViewBag.AllData as List<AcdmcTableData>;
+    var GUIId = ViewBag.GUIId as string;
+    var collegeID = (int)ViewBag.clgID;
+
+    List<CustomMaster> Course = new List<CustomMaster>();
+    if (ViewBag.Course != null)
+    {
+        Course = (List<CustomMaster>)ViewBag.Course;
+    }
+
+}
+@section styles{  @*@Styles.Render("~/bundles/datatable");*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+
+}
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+
+<style>
+    .sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+</style>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="row d-none">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                @*<div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">NOC</li>
+                            <li class="breadcrumb-item">Master</li>
+                            <li class="breadcrumb-item active">Academic Master</li>
+                        </ol>
+                    </div>*@
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <div class="noc-layouts mt-0">
+        <div class="title-heading">@ViewBag.Title</div>
+        <div class="row">
+            <div class="col-12">
+                <div class="">
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Select  Year</label>
+
+                                    <select id="ddlFromYear" class="form-control noc-input-text">
+                                        <option value="0" role=separator> Year</option>
+                                        @{
+                                            if (FromYear != null)
+                                            {
+                                                foreach (var item in FromYear)
+                                                {
+                                                    <option data-image="~/images/404.png">@item.Text</option>
+
+
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Select  Courses</label>
+
+                                    <select id="ddlCourse" class="form-control noc-input-text">
+                                        <option value="0" role=separator>Select Courses</option>
+                                        @{
+                                            if (Course != null)
+                                            {
+                                                foreach (var item in Course)
+                                                {
+                                                    <option value=@item.Id data-image="~/images/404.png">@item.text</option>
+
+
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="example-text-input" class="noc-form-label" style="">Total Student Admitted</label>
+                                <input class="form-control noc-input-text" type="text" id="txtTotOfStudentAppear" placeholder="Total Student Admitted" autocomplete="off" required>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="example-text-input" class="noc-form-label" style="">No Of Student Appear </label>
+                                <input class="form-control noc-input-text" type="text" id="txtNoOfStudentAppear" placeholder="No Of Student Appear" autocomplete="off" required>
+                                <label for="error" class="col-sm-12" id="errorAppear" style="display:none;"></label>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Select  Result</label>
+
+                                <select id="ddlResult" class="form-control noc-input-text">
+                                    <option value="0" role=separator>Select Result</option>
+                                    @{
+                                        if (Result != null)
+                                        {
+                                            foreach (var item in Result)
+                                            {
+                                                <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
+
+
+
+                                            }
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                            <div class="col-lg-4 form-group">
+
+                                <label for="example-text-input" class="noc-form-label" style="">No Of Student Passed</label>
+
+                                @*<div>&nbsp;</div>*@
+                                <input class="form-control noc-input-text" type="text" id="txtNoOfStudentPassed" placeholder="No Of Student Passed" autocomplete="off" required>
+                                <label for="error" class="col-sm-12" id="errorPassed" style="display:none;"></label>
+
+                            </div>
+                            <div class="col-lg-12 text-right">
+                                <button type="button" class="theme-edit-btn " id="btnSaveData" onclick="SaveData();"><i class="fas fa-plus"></i>ADD</button>
+                                <button type="button" class="theme-button-mockup " id="btnNext"><i class="fas fa-save"></i> Save & Next</button>
+                            </div>
+
+
+                        </div>
+                       
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body w-100 float-left">
+            <div class="noc-layouts-tbl" style="overflow-x:auto;">
+
+                <table id="datatable-buttons" class="table table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                    <thead class="sticky">
+                        <tr>
+                            <th scope="col">Sr No</th>
+                            <th scope="col">Year</th>
+
+                            <th scope="col">Courses</th>
+                            <th scope="col">Total Student Appear</th>
+                            <th scope="col">No Of Student Appear</th>
+                            <th scope="col">Result</th>
+                            <th scope="col">No Of Student Passed</th>
+                            <th scope="col">Percentage</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+
+                            if (AllData != null)
+                            {
+                                if (AllData.Count <= 0)
+                                {
+                                    <tr>
+                                        <td colspan="9" rowspan="1" style="text-align:center">No Data Available</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    var i = 1;
+                                    foreach (var item in AllData)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td scope="col">@item.FromYear</td>
+
+                                            <td scope="col">@item.Course</td>
+                                            <td scope="col">@item.TotalStudent</td>
+                                            <td scope="col">@item.NoOfStudent</td>
+                                            <td scope="col">@item.Result</td>
+                                            <td scope="col">@item.NoOfStudentPass</td>
+                                            <td scope="col">@item.Percentage</td>
+                                            <td>
+
+                                                @{
+                                                    <a id="@item.iPk_AcdmcId" class="theme-edit-btn" name="2" data-id="@item.iPk_AcdmcId" title="Edit" onclick="EditAcdmcData(@item.iPk_AcdmcId);"><i class="fas fa-edit"></i></a>
+                                                    <a id="btnDeactive_@item.iPk_AcdmcId" class="Deleteclass theme-delete-btn" name="2" data-id="@item.iPk_AcdmcId" onclick="DeleteData(@item.iPk_AcdmcId)" title="Delete"><i class="fas fa-times"></i></a>
+
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+
+
+                <input type="hidden" id="hddPkId">
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ddlResult").select2();
+            $("#ddlToYear").select2();
+            $("#ddlFromYear").select2();
+            $("#ddlCourse").select2();
+               if ('@AllData.Count' > 0) {
+                   $("#btnEA_Acadmic").css({ "background": "rgb(13, 148, 13)", "color": "#fff" });
+          }
+          else {
+              debugger
+                 $("#btnEA_Acadmic").css({ "background": "rgb(189, 0, 0)", "color": "#fff" });
+            }
+            $("#btnNext").click(function () {
+
+                $('#btn_OldNOC').click();
+            });
+
+            $("#txtNoOfStudentAppear").change(function () {
+                var Student = $('#txtTotOfStudentAppear').val();
+                var TotalStudent = parseInt(Student);
+                var studentapp = $('#txtNoOfStudentAppear').val();
+                var NoOfStdntApp = parseInt(studentapp);
+                debugger
+                if (TotalStudent < NoOfStdntApp) {
+                    $('label[for="error"]').show();
+                    errorAppear.textContent = "Please Enter No Of Student less than  of Total Student Admitted..!"
+                    errorAppear.style.color = "red"
+                    txtNoOfStudentAppear.style.border = "1px solid red"
+                    $('#txtNoOfStudentAppear').focus();
+                    $('#txtNoOfStudentAppear').val('');
+                    status = false;
+                    //alert("Please Enter No Of Student less than Equal of Total Student Admitted..!");
+                }
+                else {
+                    $('#errorAppear').remove();
+                    $("#txtNoOfStudentAppear").css({ 'border': '' });
+                    status = true;
+                }
+            });
+            $("#txtNoOfStudentPassed").change(function () {
+
+
+                var studentapp = $('#txtNoOfStudentAppear').val();
+                var NoOfStdntApp = parseInt(studentapp);
+                var Pass = $('#txtNoOfStudentPassed').val();
+                var NoOfStdntPass = parseInt(Pass);
+                debugger
+                if (NoOfStdntApp < NoOfStdntPass) {
+                    $('label[for="error"]').show();
+                    errorPassed.textContent = "Please Enter No Of Student Passed less than  of No Of Student Appear..!"
+                    errorPassed.style.color = "red"
+                    txtNoOfStudentPassed.style.border = "1px solid red"
+                    $('#txtNoOfStudentPassed').focus();
+                    $('#txtNoOfStudentPassed').val('');
+                    status = false;
+                    //alert("Please Enter No Of Student less than Equal of Total Student Admitted..!");
+                }
+                else {
+                    $('#errorPassed').remove();
+                    $("#txtNoOfStudentPassed").css({ 'border': '' });
+                    status = true;
+                }
+            });
+
+        });
+        function SaveData() {
+              debugger
+            var Type = $('#btnSaveData').text();
+            var FromYear = $('#ddlFromYear').val();
+            var ToYear = $('#ddlToYear').val();
+            var Result = $('#ddlResult').val();
+            var NoOfStdntApp = $('#txtNoOfStudentAppear').val();
+            var NoOfStdntPass = $('#txtNoOfStudentPassed').val();
+            var TotalStudent = $('#txtTotOfStudentAppear').val();
+            var Course = $('#ddlCourse').val();
+            var GUIID = '@GUIId';
+            var clgID = '@collegeID';
+            var iPk_AcdmcId = $('#hddPkId').val();
+
+
+            var isSaved = true;
+            var Data = {
+                FromYear: '',
+                ToYear: 0,
+                NoOfStudent: 0,
+                NoOfStudentPass: 0,
+                Fk_Result: 0,
+                TotalStudent: 0,
+                Course: 0,
+                GUIID: '',
+                clgID: 0,
+                Type: '',
+                iPk_AcdmcId:0
+
+
+            }
+
+            if (FromYear == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select FromYear...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+            else if (ToYear == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select ToYear...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+            else if (Result == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Result...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+            else if (NoOfStdntApp == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Enter Value...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+            else if (NoOfStdntPass == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Enter Value...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+
+            else {
+                Data.FromYear = FromYear;
+                Data.ToYear = parseInt(ToYear);
+                Data.Fk_Result = parseInt(Result);
+                Data.NoOfStudent = parseInt(NoOfStdntApp);
+                Data.NoOfStudentPass = parseInt(NoOfStdntPass);
+                Data.TotalStudent = TotalStudent;
+                Data.Course = Course;
+                Data.GUIID = GUIID;
+                Data.clgID = clgID;
+                Data.Type = Type;
+                Data.iPk_AcdmcId = iPk_AcdmcId
+            }
+            var d = JSON.stringify(Data)
+            if (isSaved) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/AcdmcMst/SaveData",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(Data),
+                    success: function (data) {
+
+                        var type = data.Type;
+                        if (data.StatusCode === 1 && data.Message == " Already Exists") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: type + data.Message + '...!',
+                                allowOutsideClick: false,
+                                showCloseButton: true
+                            });
+                        }
+                        if (data.StatusCode === 1 && data.Message == " Inserted Successfully") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: type + data.Message + '...!',
+                                allowOutsideClick: false,
+                                showCloseButton: true
+                            });
+                        }
+
+                        setTimeout(function () {
+                            $('#btnEA_Acadmic').click();
+                            //var url = GetglobalDomain() + "/AcdmcMst/Index";
+                            //window.location.href = url;
+                        }, 700)
+
+
+                    },
+                    error: function (d) {
+                        //alert(d);
+                    }
+                });
+            }
+        }
+
+        function EditAcdmcData(AcdmcId) {
+            var Model = {
+                AcdmcID: AcdmcId,
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/AcdmcMst/EditAcdmcMSt",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(Model),
+                success: function (data) {
+                    console.log('ajax');
+                    //console.log(data);
+
+                    if (data.StatusCode == 1) {
+                        debugger;
+
+                        var dataAcdmcId = data.Data[0].iPk_AcdmcId;
+                        var dataFromYearId = data.Data[0].FromYear;
+                        var dataTotOfStudentAppear = data.Data[0].NoOfStudent;
+                        var dataNoOfStudentPassed = data.Data[0].NoOfStudentPass;
+                        var dataPercentage = data.Data[0].Percentage;
+                        var dataResult = data.Data[0].Fk_Result;
+                        var dataTotalStudent = data.Data[0].TotalStudent;
+                        var dataCourseId = data.Data[0].Course;
+                        // console.log(dataDept);
+
+                        $("#ddlFromYear").select2('destroy');
+                        $('#ddlFromYear').val(dataFromYearId);
+                        $("#ddlFromYear").select2();
+                        $('#hddPkId').val(dataAcdmcId);
+
+
+                        $('#txtTotOfStudentAppear').val(dataTotalStudent);
+                        $('#txtNoOfStudentAppear').val(dataTotOfStudentAppear);
+                        $('#txtNoOfStudentPassed').val(dataNoOfStudentPassed);
+
+                        $('#txtPercentage').val(dataPercentage);
+
+                        $("#ddlResult").select2('destroy');
+                        $('#ddlResult').val(dataResult);
+                        $("#ddlResult").select2();
+
+                        $("#ddlCourse").select2('destroy');
+                        // $('#ddlFromYear').val(dataTotalStudent);
+                        $('#ddlCourse').val(dataCourseId);
+                        $("#ddlCourse").select2();
+
+                        $('#btnSaveData').html('');
+                        $('#btnSaveData').html('Update');
+                          DisableDelete(0);
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                    //alert("404. Please wait until the File is Loaded.");
+
+                }
+            });
+        }
+        function DisableDelete(opacity) {
+            var validate_inputs = document.querySelectorAll('.Deleteclass');
+            validate_inputs.forEach(function (input_valid) {
+
+                $(input_valid).css('opacity', opacity);
+
+            });
+        }
+        function DeleteData(AcdmcId) {
+
+
+            var Model = {
+                AcdmcId: AcdmcId
+            }
+            /* ShowBALoader("LoaderBASinup1");*/
+            $.ajax({
+                url: GetglobalDomain() + "/AcdmcMst/GetACDMCDataDelete",
+                type: 'POST',
+                dataType: "json",
+                data: JSON.stringify(Model),
+                contentType: "application/json",
+                success: function (response) {
+                    if (response.IsValid = 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Record Deleted Successfully!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000)
+                    }
+
+                },
+
+            });
+
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1199 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Trust/Company/Other Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //TrusteeBO.TrusteeInfo TrustDetails = ViewBag.TrustDetails as TrusteeBO.TrusteeInfo;
+    List<CustomMaster> TrusteeType = new List<CustomMaster>();
+    if (ViewBag.TrusteeType != null)
+    {
+        TrusteeType = (List<CustomMaster>)ViewBag.TrusteeType;
+    }
+}
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+
+    .labels:empty {
+        display: none;
+    }
+
+    .labels-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    labels {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+
+    .delete-row, h2 {
+        margin: 0px !important;
+    }
+
+    .filestyle {
+        border: 0px !important;
+    }
+</style>
+@section styles {
+    <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+    @*<link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">*@
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+}
+<style type="text/css">
+    .btnpink {
+        color: white !important;
+        background: #f953c6;
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6);
+        background: linear-gradient(to left, #b91d73, #f953c6);
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+    /*   table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    /*.table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Trust/Company Detils</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card noc-layouts mt-0">
+    <div class="card-header fsc title-heading p-0" style="">
+        <h4 class="m-0 float-left title-heading">Socity/Trust/Company Details</h4>
+    </div>
+    <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+        <div class="col-12">
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Trust/Company/Other Type</label>
+                    <select class="form-control" name="TrustType" id="TrustType">
+                        <option value="">Select</option>
+                        @if (TrusteeType != null)
+                        {
+                            foreach (var item in TrusteeType)
+                            {
+                                <option value="@item.Id">@item.text</option>
+                            }
+                        }
+                    </select>
+                    <label for="error" class="col-sm-12" id="errorTrustType" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input " class="col-sm-12 noc-form-label" style="margin-left:-10px">Name</label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text alphaspace cutcopypaste" type="text" autocomplete="off" id="Name" name="Name" maxlength="50">
+                        <label for="error" class="col-sm-12" id="errorName" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Registration Number</label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="RegNo" name="RegNo" maxlength="50">
+                        <label for="error" class="col-sm-12" id="errorRegNo" style="display:none;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Status</label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text alphaspace cutcopypaste" type="text" autocomplete="off" id="Status" name="Status" maxlength="50">
+                        <label for="error" class="col-sm-12" id="errorStatus" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">District</label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="District" name="District" maxlength="50">
+                        <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Act</label>
+                    <div>
+                        <div>
+                            <input class="form-control noc-input-text col-sm-12" type="text" autocomplete="off" id="Act" name="Act" maxlength="50">
+                            <label for="error" class="col-sm-12" id="errorAct" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Date Of Registration</label>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control noc-input-text cutcopypaste" name="RegistrationDate" id="RegistrationDate" placeholder="DD/MM/YYYY">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                        </div>
+                    </div>
+                    <label for="error" class="col-sm-12" id="errorRegistrationDate" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Date of Election of Present Management Committee <span style="color:red;">*</span></label>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control noc-input-text cutcopypaste" name="ElectionDate" id="ElectionDate" placeholder="DD/MM/YYYY">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                        </div>
+                    </div>
+                    <label for="error" class="col-sm-12" id="errorElectionDate" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Address</label>
+                    <div>
+                        <textarea rows="2" class="form-control col-sm-12 noc-input-text cutcopypaste" cols="75" id="Address" name="Address" maxlength="500"></textarea>
+                        <label for="error" class="col-sm-12" id="errorAddress" style="display:none;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4" id="filediv">
+                    <div class="col-lg-12">
+                        <label for="file2" class="noc-form-label">Trust Logo (upload only jpg/jpeg/png files)</label>
+                        <span style="color:red;">*</span>
+                        <div>
+                            <input type="file" id="trustfile" class="form-control" name="trustfile" accept=".jpg,.jpeg,.png" onchange="return encodeImageFileAsURL(this,'hdntrustfileDoc','hdntrustfileExten')" />
+                            <input type="hidden" id="hdntrustfileDoc" />
+                            <input type="hidden" id="hdntrustfileExten" />
+                            <label for="error" class="col-sm-12" id="errortrustfile" style="display:none;"></label>
+                            <label for="error" class="col-sm-12" id="errortrustfileSize" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4" id="filediv">
+                    <div class="col-lg-12">
+                        <label for="file2" class="noc-form-label">Trustee Member Proof (upload only pdf files)</label>
+                        <span style="color:red;">*</span>
+                        <div>
+                            <input type="file" id="TMProfffile" class="form-control" name="TMProfffile" accept=".pdf" onchange="return encodeImageFileAsURL(this,'hdnTMProfffileDoc','hdnTMProfffileDocExten')" />
+                            <input type="hidden" id="hdnTMProfffileDoc" />
+                            <input type="hidden" id="hdnTMProfffileDocExten" />
+                            <label for="error" class="col-sm-12" id="errorTMProfffile" style="display:none;"></label>
+                            <label for="error" class="col-sm-12" id="errorTMProfffileSize" style="display:none;"></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Other Institution run by the Society <span style="color:red;">*</span></label>
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio16" value="1" name="OtherInstitute" class="custom-control-input">
+                            <label class="custom-control-label noc-form-label" for="customRadio16">Yes</label>
+                        </div>
+                    </div>
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio17" value="0" name="OtherInstitute" class="custom-control-input">
+                            <label class="custom-control-label noc-form-label" for="customRadio17">No</label>
+                        </div>
+                    </div>
+                    <label for="error" class="col-sm-12" id="errorOtherInstitute" style="display:none;"></label>
+                    @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblOtherInstitute" })
+                </div>
+
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Women members of management committee is more than 30% of total members <span style="color:red;">*</span></label>
+
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio12" value="1" name="MemberofMngComt" class="custom-control-input">
+                            <label class="custom-control-label noc-form-label" for="customRadio12">Yes</label>
+                        </div>
+                    </div>
+
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio13" value="0" name="MemberofMngComt" class="custom-control-input">
+                            <label class="custom-control-label noc-form-label" for="customRadio13">No</label>
+                        </div>
+                    </div>
+                    <label for="error" class="col-sm-12" id="errorMemberofMngComt" style="display:none;"></label>
+                    @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMemberofMngComt" })
+
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Date of election of Management committee not more than 3 years <span style="color:red;">*</span></label>
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio14" value="1" name="Morethentree" class="custom-control-input">
+                            <label class="custom-control-label noc-form-label" for="customRadio14">Yes</label>
+                        </div>
+                    </div>
+                    <div class="form-check-inline my-1">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="customRadio15" value="0" name="Morethentree" class="custom-control-input">
+                            <label class="custom-control-label noc-form-label" for="customRadio15">No</label>
+                        </div>
+                    </div>
+                    <label for="error" class="col-sm-12" id="errorMorethentree" style="display:none;"></label>
+                    @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMorethentree" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">
+                        Management Commitee certified By Registrar
+                    </label>
+                    <select class="form-control" name="CertifiedByRegistrar" id="CertifiedByRegistrar">
+                        <option value="">Select</option>
+                        <option value="1" selected>Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <label for="error" class="col-sm-12" id="errorCertifiedByRegistrar" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input " class="col-sm-12 noc-form-label" style="margin-left:-10px">Mobile<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text numberonly cutcopypaste" type="text" autocomplete="off" id="Mobile" name="Mobile" maxlength="10">
+                        <label for="error" class="col-sm-12" id="errorMobile" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Email<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="Email" name="Email">
+                        <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input " class="col-sm-12 noc-form-label" style="margin-left:-10px">Aadhaar Number<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="AadhaarNo" name="AadhaarNo" maxlength="12">
+                        <label for="error" class="col-sm-12" id="errorAadhaar" style="display:none;"></label>
+                        <label for="error" class="col-sm-12" id="errorAadhaarvalid" style="display:none;"></label>
+                    </div>
+
+                </div>
+                <div class="form-group col-lg-4" id="filediv">
+                    <div class="col-lg-12">
+                        <label for="file2" class="noc-form-label">Aadhaar Proof (upload only jpg/jpeg/png files)</label>
+                        <span style="color:red;">*</span>
+                        <div>
+                            <input type="file" id="aadaarfile" class="form-control" name="aadaarfile" accept=".jpg,.jpeg,.png" onchange="return encodeImageFileAsURL(this,'hdnaadaarfileDoc','hdnaadaarfileExten')" />
+                            <input type="hidden" id="hdnaadaarfileDoc" />
+                            <input type="hidden" id="hdnaadaarfileExten" />
+                            <label for="error" class="col-sm-12" id="erroraadaarfile" style="display:none;"></label>
+                            <label for="error" class="col-sm-12" id="erroraadaarfileSize" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12  noc-form-label" style="margin-left:-10px">TAN<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text alphanumeric cutcopypaste" type="text" autocomplete="off" id="TAN" name="TAN" maxlength="12">
+                        <label for="error" class="col-sm-12" id="errorTAN" style="display:none;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input " class="col-sm-12 noc-form-label" style="margin-left:-10px">PAN<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 noc-input-text alphanumeric cutcopypaste" type="text" autocomplete="off" id="PAN" name="PAN" maxlength="10">
+                        <label for="error" class="col-sm-12" id="errorPAN" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4" id="filediv">
+                    <div class="col-lg-12">
+                        <label for="file2" class="noc-form-label">Pan Proof (upload only jpg/jpeg/png files)</label>
+                        <span style="color:red;">*</span>
+                        <div>
+                            <input type="file" id="panfile" class="form-control" name="panfile" accept=".jpg,.jpeg,.png" onchange="return encodeImageFileAsURL(this,'hdnpanfileDoc','hdnpanfileExten')" />
+                            <input type="hidden" id="hdnpanfileDoc" />
+                            <input type="hidden" id="hdnpanfileExten" />
+                        </div>
+                        <label for="error" class="col-sm-12" id="errorpanfile" style="display:none;"></label>
+                        <label for="error" class="col-sm-12" id="errorpanfileSize" style="display:none;"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="divinstitute">
+            <div class="card-header p-0">
+                <h4 class="m-0 title-heading float-left rounded-0">Institute Details</h4>
+            </div>
+            <div>
+                <div class="noc-layouts-tbl">
+                    <table class="table table-borderless" id="contactsData">
+                        <thead>
+                            <tr>
+                                <td>
+                                    <input type="text" id="InstituteName" name="InstituteName" placeholder="Institute Name" class="form-control alphaspace noc-input-text cutcopypaste" maxlength="50">
+                                    <label for="error" class="col-sm-12" id="lblcontactdeatils" style="display:none;"></label>
+                                </td>
+                                <td>
+                                    <input type="text" id="PersonName" name="PersonName" placeholder="Contact Person Name" maxlength="50" class="form-control alphaspace noc-input-text cutcopypaste">
+                                    <label for="error" class="col-sm-12" id="PersonNameContact" style="display:none;" />
+                                </td>
+                                <td>
+                                    <input type="text" id="Number" name="Number" placeholder="Contact Number" minlength="10" maxlength="10" class="form-control numberonly noc-input-text cutcopypaste">
+                                    <label for="error" class="col-sm-12" id="ContactNumber" style="display:none;" />
+                                </td>
+                                <td><input type="button" class="theme-button-mockup add-row " value="Add Row"></td>
+                            </tr>
+                            @*<tr><td colspan="4">@Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblcontactdeatils" })</td></tr>*@
+                        </thead>
+                        <tbody style="background-color: #646d91 !important;">
+                            <tr>
+                                <th>Institute Name</th>
+                                <th>Conatct Person Name</th>
+                                <th>Contact Number</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </tbody>
+                        <tfoot>
+                            @*@if (TrustDetails.InstituteDetails != null)
+                                {
+                                    if (TrustDetails.InstituteDetails.Count > 0)
+                                    {
+                                        foreach (var item in TrustDetails.InstituteDetails)
+                                        {
+                                            <tr>
+                                                <td>@item.InstituteName</td>
+                                                <td>@item.ContactPerson</td>
+                                                <td>@item.Number</td>
+                                                <td><input class='delete-row theme-delete-btn' type='button' name='delete' value='Remove' /></td>
+                                            </tr>
+                                        }
+                                    }
+                                }*@
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="row">
+                <div class="col-lg-12 w-100 float-left">
+                    <div class="w-100 float-left" style="margin-top:40px">
+                        <button class="theme-button-mockup" style="float:right" type="button" id="btnSave">Save & Proceed To Add Commitee Member</button>
+                        @*<button class="btn btn-primary waves-effect waves-light" style="float:right" id="btnSave">Save</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/DashboardCss/AdminLTE2/plugins/jquery-validation/jquery.validate.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#TrustType').select2();
+            $("#RegistrationDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#ElectionDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+
+        $('.cutcopypaste').on("cut copy paste", function (e) {
+            e.preventDefault();
+        });
+
+        var MB = 1048576; //= 1MD
+        var KB = 50000;    //50KB Bytes(in decimal)
+        //50 KB = 51200 Bytes(in binary)
+
+        var imagebase64 = "";
+        function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+            var elementID = element.id;
+            var file = element.files[0];
+            console.log(file.name);
+            //console.log(elementID);
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                imagebase64 = reader.result;
+                $('#' + hdnId).val(imagebase64);
+                $('#' + hdnExtnID).val(file.name);
+                //console.log(imagebase64)
+                //console.log(hdnId)
+            }
+            reader.readAsDataURL(file);
+            return imagebase64;
+        }
+        $('.alphaspace').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+        });
+        $('.alphanumeric').keypress(function (e) {
+            var regEx = /^[0-9a-zA-Z ]+$/;
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regEx.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+
+        });
+        $('.numberonly').keypress(function (e) {
+            var charCode = (e.which) ? e.which : event.keyCode
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                return false;
+        });
+        $(".add-row").click(function () {
+            var markup = "";
+            var name = $("#InstituteName").val();
+            var number = $("#PersonName").val();
+            var email = $("#Number").val();
+            var len = email.length;
+            if (name != '' && number != '' && email != '') {
+                if (len >= 10) {
+                    $('#ContactNumber').remove();
+                    $("#Number").css({ 'border': '' });
+                    markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' name='delete' value='Remove' /></td></tr>";
+                    $("#contactsData tfoot").append(markup);
+                    $('#InstituteName').val('');
+                    $('#PersonName').val('');
+                    $('#Number').val('');
+
+                    $('#lblcontactdeatils').remove();
+                    $("#InstituteName").removeClass("redborder");
+                    $('#PersonNameContact').remove();
+                    $("#PersonName").removeClass("redborder");
+
+                }
+                else {
+                    $('label[for="error"]').show();
+                    ContactNumber.textContent = "Please Enter Ten digit Contact Number"
+                    $("#ContactNumber").addClass('colordiv');
+                    document.getElementById('Number').style.border = "1px solid red";
+                    $('#Number').focus();
+                    $('#Number').val('');
+
+                    $('#lblcontactdeatils').remove();
+                    $("#InstituteName").removeClass("redborder");
+                    $('#PersonNameContact').remove();
+                    $("#PersonName").removeClass("redborder");
+                }
+            }
+            else {
+                debugger
+                if (!$('#InstituteName').val()) {
+                    $('label[for="error"]').show();
+                    lblcontactdeatils.textContent = "Please Enter Institute Name"
+                    $("#InstituteName").addClass('redborder');// css(".redborder");
+                    $("#lblcontactdeatils").addClass('colordiv');// css(".redborder");
+                    $('#InstituteName').focus();
+                    $('#InstituteName').val('');
+                }
+                else {
+                    $('#lblcontactdeatils').remove();
+                    $("#InstituteName").removeClass("redborder");
+                }
+                if (!$('#PersonName').val()) {
+                    $('label[for="error"]').show();
+                    PersonNameContact.textContent = "Please Enter PersonName"
+                    $("#PersonName").addClass('redborder');
+                    $("#PersonNameContact").addClass('colordiv');
+                    $('#PersonName').focus();
+                    $('#PersonName').val('');
+                }
+                else {
+                    $('#PersonNameContact').remove();
+                    $("#PersonName").removeClass("redborder");
+                }
+                if (!$('#Number').val()) {
+                    $('label[for="error"]').show();
+                    ContactNumber.textContent = "Please Enter Contact Number"
+                    $("#ContactNumber").addClass('colordiv');
+                    document.getElementById('Number').style.border = "1px solid red";
+                    $('#Number').focus();
+                    $('#Number').val('');
+                }
+            }
+            //$("#InstituteName").val('');
+            //$("#PersonName").val('');
+            //$("#Number").val('');
+            //$('#lblcontactdeatils').html("");
+        });
+        $("#contactsData").on("click", ".delete-row", function () {
+            $(this).closest("tr").remove();
+        });
+        $("input[name='OtherInstitute']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divinstitute').show();
+            } else if ($(this).val() === '0') {
+                $('#contactsData tfoot').html('');
+                $('#divinstitute').hide();
+            }
+        });
+
+        function CheckValid() {
+            //alert("in");
+            var status = true;
+            debugger;
+            var TrustType = $('#TrustType option:selected').val();
+            //alert(TrustType.length);
+            if (TrustType.length <= 0) {
+                $('label[for="error"]').show();
+                errorTrustType.textContent = "Please Select Trust Type";
+                $('#errorTrustType').addClass('colordiv');
+                $('#TrustType').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#errorTrustType').remove();
+                $('#TrustType').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+            var Name = $('#Name').val();
+            if (Name.length <= 0) {
+                $('label[for="error"]').show();
+                errorName.textContent = "Please Enter Name";
+                $('#errorName').addClass('colordiv');
+                $('#Name').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Name').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorName').remove();
+            }
+            var RegNo = $('#RegNo').val();
+            if (RegNo.length <= 0) {
+                $('label[for="error"]').show();
+                errorRegNo.textContent = "Please Enter Registration Number";
+                $('#errorRegNo').addClass('colordiv');
+                $('#RegNo').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#RegNo').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorRegNo').remove();
+            }
+            var Status = $('#Status').val();
+            if (Status.length <= 0) {
+                $('label[for="error"]').show();
+                errorStatus.textContent = "Please Enter Status";
+                $('#errorStatus').addClass('colordiv');
+                $('#Status').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Status').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorStatus').remove();
+            }
+            var District = $('#District').val();
+            if (District.length <= 0) {
+                $('label[for="error"]').show();
+                errorDistrict.textContent = "Please Enter District";
+                $('#errorDistrict').addClass('colordiv');
+                $('#District').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#District').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorDistrict').remove();
+            }
+            var Act = $('#Act').val();
+            if (Act.length <= 0) {
+                $('label[for="error"]').show();
+                errorAct.textContent = "Please Enter Act";
+                $('#errorAct').addClass('colordiv');
+                $('#Act').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Act').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorAct').remove();
+            }
+            var RegistrationDate = $('#RegistrationDate').val();
+            if (RegistrationDate.length <= 0) {
+                $('label[for="error"]').show();
+                errorRegistrationDate.textContent = "Please Enter Date";
+                $('#errorRegistrationDate').addClass('colordiv');
+                $('#RegistrationDate').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#RegistrationDate').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorRegistrationDate').remove();
+            }
+            var date = $('#ElectionDate').val();
+            if (date.length <= 0) {
+                $('label[for="error"]').show();
+                errorElectionDate.textContent = "Please Enter Date";
+                $('#errorElectionDate').addClass('colordiv');
+                $('#ElectionDate').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#ElectionDate').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorElectionDate').remove();
+            }
+            var Address = $('#Address').val();
+            if (Address.length <= 0) {
+                $('label[for="error"]').show();
+                errorAddress.textContent = "Please Enter Address";
+                $('#errorAddress').addClass('colordiv');
+                $('#Address').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Address').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorAddress').remove();
+            }
+
+            var trustfile = $('#trustfile').val();
+            if (trustfile.length <= 0) {
+                $('label[for="error"]').show();
+                errortrustfile.textContent = "Please upload Trust Logo image";
+                $('#errortrustfile').addClass('colordiv');
+                $('#trustfile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#trustfile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errortrustfile').remove();
+            }
+            if (trustfile.length > 0) {
+                var file_size = $('#trustfile')[0].files[0].size;
+                if (file_size > KB) {
+                    $('label[for="error"]').show();
+                    errortrustfileSize.textContent = "Please upload Max 50KB file";
+                    $('#errortrustfileSize').addClass('colordiv');
+                    $('#trustfile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#trustfile').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#errortrustfileSize').remove();
+                }
+            }
+
+            var TMProfffile = $('#TMProfffile').val();
+            if (TMProfffile.length <= 0) {
+                $('label[for="error"]').show();
+                errorTMProfffile.textContent = "Please upload Trustee member proof Document";
+                $('#errorTMProfffile').addClass('colordiv');
+                $('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#TMProfffile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorTMProfffile').remove();
+            }
+            if (TMProfffile.length > 0) {
+                var tmpfile_size = $('#TMProfffile')[0].files[0].size;
+                if (tmpfile_size > MB) {
+                    $('label[for="error"]').show();
+                    errorTMProfffileSize.textContent = "Please upload Max 1MB file";
+                    $('#errorTMProfffileSize').addClass('colordiv');
+                    $('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#TMProfffile').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#errorTMProfffileSize').remove();
+                }
+            }
+
+            var contactsInfo = new Array();
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+            var OtherInstitute = $('input[name="OtherInstitute"]:checked').val();
+            //alert(OtherInstitute);
+            if (OtherInstitute == "0") {
+                $('#errorOtherInstitute').remove();
+                $('#lblOtherInstitute').html("");
+            }
+            else if (OtherInstitute == "1") {
+                $('#errorOtherInstitute').remove();
+                if (contactsInfo.length <= 0) {
+                    $('#lblcontactdeatils').html("Add atlest one row in contact deatils");
+                    status = false;
+                    //alert("");
+                }
+                else {
+                    //$('label[for="error"]').show();
+                    //errorOtherInstitute.textContent = "Please Select";
+                    //$('#errorOtherInstitute').addClass('colordiv');
+                    //$('#lblOtherInstitute').html("select ");
+                }
+            }
+            else if (typeof (OtherInstitute) == "undefined") {
+                $('label[for="error"]').show();
+                errorOtherInstitute.textContent = "Please Select field";
+                $('#errorOtherInstitute').addClass('colordiv');
+                //$('#lblOtherInstitute').html("select field");
+            }
+
+            var MemberofMngComt = $('input[name="MemberofMngComt"]:checked').val();
+            //alert(MemberofMngComt);
+            if (typeof (MemberofMngComt) == "undefined") {
+                $('label[for="error"]').show();
+                errorMemberofMngComt.textContent = "Please Select field";
+                $('#errorMemberofMngComt').addClass('colordiv');
+                //$('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#errorMemberofMngComt').remove();
+            }
+
+            var Morethentree = $('input[name="Morethentree"]:checked').val();
+            //alert(Morethentree);
+            if (typeof (Morethentree) == "undefined") {
+                $('label[for="error"]').show();
+                errorMorethentree.textContent = "Please Select field";
+                $('#errorMorethentree').addClass('colordiv');
+                status = false;
+            }
+            else {
+                $('#errorMorethentree').remove();
+            }
+
+            var CertifiedByRegistrar = $('#CertifiedByRegistrar option:selected').val();
+            //alert(CertifiedByRegistrar.length);
+            if (CertifiedByRegistrar.length <= 0) {
+                $('label[for="error"]').show();
+                errorCertifiedByRegistrar.textContent = "Please select field";
+                $('#errorCertifiedByRegistrar').addClass('colordiv');
+                $('#CertifiedByRegistrar').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#CertifiedByRegistrar').removeClass('errr-highlight').addClass('sucess-highlight');
+
+                $('#errorCertifiedByRegistrar').remove();
+            }
+
+            var Mobile = $('#Mobile').val();
+            //alert(Mobile);
+            if (Mobile.length <= 0) {
+                $('label[for="error"]').show();
+                errorMobile.textContent = "Please Enter Mobile Number";
+                $('#errorMobile').addClass('colordiv');
+                $('#Mobile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Mobile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorMobile').remove();
+            }
+            var Email = $('#Email').val();
+            //alert(Email);
+            if (Email.length <= 0) {
+                $('label[for="error"]').show();
+                errorEmail.textContent = "Please Enter Email";
+                $('#errorEmail').addClass('colordiv');
+                $('#Email').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Email').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorEmail').remove();
+            }
+
+            var aadharno = $('#AadhaarNo').val();
+
+            if (aadharno.length <= 0) {
+                $('label[for="error"]').show();
+                errorAadhaar.textContent = "Please Enter Aadhaar Number";
+                $('#errorAadhaar').addClass('colordiv');
+                $('#AadhaarNo').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#AadhaarNo').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorAadhaar').remove();
+            }
+            if (aadharno.length > 0) {
+                if (aadharno.substr(0, 1) == 0 || aadharno.length < 12) {
+                    errorAadhaarvalid.textContent = "Please Enter twelve digit Aadhaar Number";
+                    $('#errorAadhaarvalid').addClass('colordiv');
+                    $('#AadhaarNo').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#errorAadhaarvalid').remove();
+                    $('#AadhaarNo').removeClass('errr-highlight').addClass('sucess-highlight');
+                }
+            }
+
+            var aadaarfile = $('#aadaarfile').val();
+            if (aadaarfile.length <= 0) {
+                $('label[for="error"]').show();
+                erroraadaarfile.textContent = "Please Upload aadhaar document";
+                $('#erroraadaarfile').addClass('colordiv');
+                $('#aadaarfile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#aadaarfile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#erroraadaarfile').remove();
+            }
+            if (aadaarfile.length > 0) {
+                var aadfile_size = $('#aadaarfile')[0].files[0].size;
+                if (aadfile_size > KB) {
+                    $('label[for="error"]').show();
+                    erroraadaarfileSize.textContent = "Please upload Max 50KB file";
+                    $('#erroraadaarfileSize').addClass('colordiv');
+                    $('#aadaarfile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#aadaarfile').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#erroraadaarfileSize').remove();
+                }
+            }
+
+            var TAN = $('#TAN').val();
+            if (TAN.length <= 0) {
+                $('label[for="error"]').show();
+                errorTAN.textContent = "Please Enter Tan Number";
+                $('#errorTAN').addClass('colordiv');
+                $('#TAN').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#TAN').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorTAN').remove();
+            }
+
+            var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
+            if (!regex.test($("#PAN").val().toUpperCase())) {
+                errorPAN.textContent = "Please Enter Correct Pan No";
+                $('#errorPAN').addClass('colordiv');
+                $('#PAN').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#errorPAN').remove();
+                $('#PAN').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+
+            var panfile = $('#panfile').val();
+            if (panfile.length <= 0) {
+                $('label[for="error"]').show();
+                errorpanfile.textContent = "Please upload Pan document";
+                $('#errorpanfile').addClass('colordiv');
+                $('#panfile').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#panfile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorpanfile').remove();
+            }
+            if (panfile.length > 0) {
+                var panfile_size = $('#panfile')[0].files[0].size;
+                if (panfile_size > KB) {
+                    $('label[for="error"]').show();
+                    errorpanfileSize.textContent = "Please upload Max 50KB file";
+                    $('#errorpanfileSize').addClass('colordiv');
+                    $('#panfile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#panfile').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#errorpanfileSize').remove();
+                }
+            }
+            return status;
+        }
+
+        $("#btnSave").click(function () {
+            debugger;
+            var TrustType = $('#TrustType option:selected').val();
+            var Name = $('#Name').val();
+            var RegNo = $('#RegNo').val();
+            var Status = $('#Status').val();
+            var District = $('#District').val();
+            var Act = $('#Act').val();
+            var RegistrationDate = $('#RegistrationDate').val();
+            var ElectionDate = $('#ElectionDate').val();
+            var Address = $('#Address').val();
+            //var trustfile = $('#trustfile').val();
+            //var TMProfffile = $('#TMProfffile').val();
+            var OtherInstitute = $('input[name="OtherInstitute"]:checked').val();
+            var MemberofMngComt = $('input[name="MemberofMngComt"]:checked').val();
+            var Morethentree = $('input[name="Morethentree"]:checked').val();
+            var CertifiedByRegistrar = $('#CertifiedByRegistrar option:selected').val();
+            var Mobile = $('#Mobile').val();
+            var Email = $('#Email').val();
+            var aadharno = $('#AadhaarNo').val();
+            //var aadaarfile = $('#aadaarfile').val();
+            var TAN = $('#TAN').val();
+            var PAN = $('#PAN').val();
+            //var panfile = $('#panfile').val();
+
+            //Trustee Logo
+            var TrusteeContentType = $('#hdntrustfileDoc').val().split(',')[0];
+            var TrusteeLogo = $('#hdntrustfileDoc').val().split(',')[1];
+            var TrusteeExtension = $('#hdntrustfileExten').val().split('.')[1];
+
+            if (TrusteeContentType != "")
+                TrusteeContentType = $('#hdntrustfileDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            else
+                TrusteeContentType = $('#hdntrustfileDoc').val().split(',')[0];
+
+            //Trustee Member Proof
+            var TRMPContenttype = $('#hdnTMProfffileDoc').val().split(',')[0];
+            var TRMP = $('#hdnTMProfffileDoc').val().split(',')[1];
+            var TRMPExtension = $('#hdnTMProfffileDocExten').val().split('.')[1];
+            if (TRMPContenttype != "")
+                TRMPContenttype = $('#hdnTMProfffileDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            else
+                TRMPContenttype = $('#hdnTMProfffileDoc').val().split(',')[0];
+
+            //Aadhaar file Proof
+            var AadhaarContenttype = $('#hdnaadaarfileDoc').val().split(',')[0];
+            var aadaarfile = $('#hdnaadaarfileDoc').val().split(',')[1];
+            var AadhaarExtension = $('#hdnaadaarfileExten').val().split('.')[1];
+            if (AadhaarContenttype != "")
+                AadhaarContenttype = $('#hdnaadaarfileDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            else
+                AadhaarContenttype = $('#hdnaadaarfileDoc').val().split(',')[0];
+
+            //Pan file Proof
+            var PanContenttype = $('#hdnpanfileDoc').val().split(',')[0];
+            var Panfile = $('#hdnpanfileDoc').val().split(',')[1];
+            var PanExtension = $('#hdnpanfileExten').val().split('.')[1];
+            if (PanContenttype != "")
+                PanContenttype = $('#hdnpanfileDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            else
+                PanContenttype = $('#hdnpanfileDoc').val().split(',')[0];
+
+
+            var ElectionDate = $('#ElectionDate').val();
+            var MemberofMngComt = $('input[name="MemberofMngComt"]:checked').val();
+            var Morethentree = $('input[name="Morethentree"]:checked').val();
+            var OtherInstitute = $('input[name="OtherInstitute"]:checked').val();
+
+            var contactsInfo = new Array();
+            //Loop through the Table rows and build a JSON array.
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.InstituteName = row.find("td").eq(0).html();
+                contactInfo.ContactPerson = row.find("td").eq(1).html();
+                contactInfo.Number = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+
+            var modal = {
+                TrustType: TrustType,
+                Name: Name,
+                RegistrationNo: RegNo,
+                Status: Status,
+                District: District,
+                Act: Act,
+                RegistrationDate: RegistrationDate,
+                ElectionDate: ElectionDate,
+                Address: Address,
+
+                TrusteeLogo: TrusteeLogo,
+                TrusteeExtension: TrusteeExtension,
+                TrusteeContentType: TrusteeContentType,
+
+                TRMP: TRMP,
+                TRMPExtension: TRMPExtension,
+                TRMPContenttype: TRMPContenttype,
+
+                OtherInstitute: OtherInstitute,
+                MemberofMngCommtee: MemberofMngComt,
+                Morethentree: Morethentree,
+                CertiFiedBy: CertifiedByRegistrar,
+                Mobile: Mobile,
+                Email: Email,
+                AadhaarNo: aadharno,
+
+                Aadhaarfile: aadaarfile,
+                AadhaarExtension: AadhaarExtension,
+                AadhaarContenttype: AadhaarContenttype,
+
+                Panfile: Panfile,
+                PanExtension: PanExtension,
+                PanContenttype: PanContenttype,
+
+                TAN: TAN,
+                PAN: PAN,
+
+                InstituteDetails: contactsInfo
+            }
+            console.log(modal);
+
+            if (CheckValid()) {
+                $.ajax({
+                    type: "POST",
+                    url: GetglobalDomain() + "/OtherTrust/TrustDetails",
+                    data: modal,
+                    success: function (result) {
+                        if (result.StatusCode == '1') {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: result.Message,
+                                allowOutsideClick: false,
+                                showCancelButton: false,
+                                showCloseButton: true,
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    var url = GetglobalDomain() + "/Trustee/Index";
+                                    window.location.href = url;
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                result.Message,
+                                'Data not Saved'
+                            )
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

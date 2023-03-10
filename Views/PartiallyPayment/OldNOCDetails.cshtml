@@ -1,0 +1,135 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "OldNOCDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var tracklist = (List<ApplicationTrack>)ViewBag.Applicationtrack;
+    //var ApplicationNumber = ViewBag.applGUID;
+}
+@section styles{
+    <link href="~/Content/JitendraCSS/newCustom.css" rel="stylesheet" />   
+}
+
+<div class="noc-layouts">
+    <div class="title-heading">Old NOC Details</div>
+    <div class="card-body w-100 float-left">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">College Name</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="College Name">
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Course</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="Course">
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Type</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="TNOC/PNOC" placeholder="Type">
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Session Year</label>
+                <div class="row">
+                    <div class="col-6">
+                        <input type="text" class="form-control noc-input-text" name="RegistrationDate" value="" id="RegistrationDate" placeholder="From Date" autocomplete="off" readonly disabled>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form-control noc-input-text" name="RegistrationDate" value="" id="RegistrationDate" placeholder="To Date" autocomplete="off" readonly disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">NOC No.</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="NOC No.">
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">NOC Received On</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="NOC Received On">
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">NOC Expire Date</label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="" name="" value="" placeholder="NOC Expore Date">
+            </div>
+            <div class="col-lg-3 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Upload NOC</label>
+                <div>
+                    <input type="file" id="" class="form-control" name="" />
+                    <input type="hidden" id="" />
+                    <input type="hidden" id="" />
+                </div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Remark</label>
+                <textarea class="form-control noc-input-text" autocomplete="off" id="" name="" value="" placeholder="Remark Here..." style="height:80px;resize:none;"></textarea>
+            </div>
+            <div class="col-lg-12  text-right">
+                <button type="submit" class="theme-button-mockup">Submit</button>
+            </div>
+        </div>
+        <div class="noc-layouts-tbl mt-3" style="overflow-x:auto;">
+            <table class="table ">
+                <tr>
+                    <th>College Name</th>
+                    <th>Course</th>
+                    <th>Type</th>
+                    <th>Session From Year</th>
+                    <th>Session To Year</th>
+                    <th>NOC No.</th>
+                    <th>NOC Received On</th>
+                    <th>NOC Expire Date</th>
+                    <th>NOC Document</th>
+                    <th>Remark</th>
+                </tr>
+                <tr>
+                    <td>Raj College</td>
+                    <td>MCA</td>
+                    <td>TNOC/PNOC</td>
+                    <td>2021</td>
+                    <td>2023</td>
+                    <td>0123456789</td>
+                    <td>01/01/2021</td>
+                    <td>31/12/2023</td>
+                    <td><a href="javascript:void(0)" class="noc-upload-btn"><i class="fas fa-download"></i></a></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                </tr>
+                <tr>
+                    <td>Raj College</td>
+                    <td>MCA</td>
+                    <td>TNOC/PNOC</td>
+                    <td>2021</td>
+                    <td>2023</td>
+                    <td>0123456789</td>
+                    <td>01/01/2021</td>
+                    <td>31/12/2023</td>
+                    <td><a href="javascript:void(0)" class="noc-upload-btn"><i class="fas fa-download"></i></a></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                </tr>
+                <tr>
+                    <td>Raj College</td>
+                    <td>MCA</td>
+                    <td>TNOC/PNOC</td>
+                    <td>2021</td>
+                    <td>2023</td>
+                    <td>0123456789</td>
+                    <td>01/01/2021</td>
+                    <td>31/12/2023</td>
+                    <td><a href="javascript:void(0)" class="noc-upload-btn"><i class="fas fa-download"></i></a></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                </tr>
+                <tr>
+                    <td>Raj College</td>
+                    <td>MCA</td>
+                    <td>TNOC/PNOC</td>
+                    <td>2021</td>
+                    <td>2023</td>
+                    <td>0123456789</td>
+                    <td>01/01/2021</td>
+                    <td>31/12/2023</td>
+                    <td><a href="javascript:void(0)" class="noc-upload-btn"><i class="fas fa-download"></i></a></td>
+                    <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </td>
+                </tr>   
+            </table>
+        </div>
+    </div>
+
+
+</div>
+

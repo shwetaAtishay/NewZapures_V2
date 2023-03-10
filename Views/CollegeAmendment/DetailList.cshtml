@@ -1,0 +1,2887 @@
+﻿@using NewZapures_V2.Models
+@model CollegeAmendmentListEdit
+@{
+    List<CustomMaster> TrustList = new List<CustomMaster>();
+    if (ViewBag.TrustList != null)
+    {
+        TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    }
+    ViewBag.Title = "DetailList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var DistrictList = ViewBag.DistrictList as List<Dropdown>;
+    var CollageDetails = ViewBag.amendmentlistedit as List<CollegeAmendmentListEdit>;
+    var type = ViewBag.type;
+
+    List<NewZapures_V2.Models.AmendmentBO> CoEduDataList = ViewBag.CoEduDataList as List<NewZapures_V2.Models.AmendmentBO>;
+    List<NewZapures_V2.Models.AmendmentBO> NameOfClg = ViewBag.NameOfCollegeList as List<NewZapures_V2.Models.AmendmentBO>;
+    List<NewZapures_V2.Models.AmendmentBO> ClgPlaceName = ViewBag.CollegePlaceChnageList as List<NewZapures_V2.Models.AmendmentBO>;
+    List<NewZapures_V2.Models.AmendmentBO> ManagementClg = ViewBag.ManagementCollegeList as List<NewZapures_V2.Models.AmendmentBO>;
+    List<NewZapures_V2.Models.AmendmentBO> MergerClg = ViewBag.MergerDetailsList as List<NewZapures_V2.Models.AmendmentBO>;
+}
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+
+    .labels:empty {
+        display: none;
+    }
+
+    .labels-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    labels {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+
+    .delete-row, h2 {
+        margin: 0px !important;
+    }
+</style>
+<style>
+
+    body {
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    a {
+        text-decoration: none;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #e8e9e9 darkgrey;
+    }
+
+        *::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: #e8e9e9;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background-color: darkgrey;
+            border-radius: 35px;
+        }
+
+
+    .noc-layouts {
+        width: 100%;
+        float: left;
+        background: #fff;
+        margin-top: 30px;
+        border-radius: 10px;
+        border: 1px solid #dcd9d9;
+        box-shadow: 0 1px 2px 0 rgb(234 240 249 / 50%);
+    }
+
+        .noc-layouts .title-heading {
+            background: #6c757d;
+            width: 100%;
+            float: left;
+            padding: 12px 15px;
+            color: #fff;
+            margin: 0;
+            font-size: 18px;
+            border-radius: 10px 10px 0 0;
+        }
+
+    .noc-selections {
+        width: 100%;
+        float: left;
+        padding: 15px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+        .noc-selections .form-group {
+            margin: 0px;
+        }
+
+        .noc-selections .noc-submit-btn {
+            min-width: 100px;
+        }
+
+
+
+        .noc-selections .noc-selections-select {
+            width: 28%;
+            float: left;
+        }
+
+    .noc-layouts-tbl {
+        width: 100%;
+        float: left;
+    }
+
+        .noc-layouts-tbl table.table {
+            width: 100%;
+            margin-bottom: 0px;
+            margin-top: 15px;
+        }
+
+            .noc-layouts-tbl table.table th {
+                background: #c7d9f0;
+                font-size: 14px;
+                color: #474545;
+                white-space: nowrap;
+            }
+
+            .noc-layouts-tbl table.table td {
+                color: #474646;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .noc-layouts-tbl table.table tr:nth-child(even) {
+                background: #f4f9ff;
+            }
+
+    .theme-edit-btn {
+        color: #fff !important;
+        background: #96cc6a;
+        border: 1px solid #96cc6a;
+        border-radius: 5px;
+        padding: 8px 15px;
+        transition: all 500ms ease;
+        display: inline-block;
+    }
+
+        .theme-edit-btn:hover {
+            color: #96cc6a !important;
+            background: #fff;
+        }
+
+    .theme-discard-btn {
+        color: #fff !important;
+        background: #000;
+        border: 1px solid #000;
+        border-radius: 5px;
+        padding: 8px 15px;
+        transition: all 500ms ease;
+        display: inline-block;
+    }
+
+        .theme-discard-btn:hover {
+            color: #000 !important;
+            background: #fff;
+        }
+
+    .theme-delete-btn {
+        color: #fff !important;
+        background: #f96363;
+        border: 1px solid #f96363;
+        border-radius: 5px;
+        padding: 8px 15px;
+        transition: all 500ms ease;
+        display: inline-block;
+    }
+
+        .theme-delete-btn:hover {
+            color: #f96363 !important;
+            background: #fff;
+        }
+    /*============Form Change=========*/
+
+    /*===========NOC Detail Form Start============*/
+
+    .noc-general-details {
+        width: 100%;
+        float: left;
+    }
+
+        .noc-general-details table th {
+            padding: 5px 10px;
+            font-size: 13px !important;
+        }
+
+        .noc-general-details table td {
+            padding: 5px 10px;
+            font-size: 13px !important;
+        }
+
+    .noc-general-form {
+        width: 100%;
+        float: left;
+        padding: 0px 15px;
+    }
+
+    .noc-form-label {
+        font-size: 14px;
+        color: rgba(0,0,0,.5);
+    }
+
+    .noc-input-text {
+        color: rgba(0,0,0,.8);
+        font-size: 14px;
+        height: 38px;
+    }
+
+        .noc-input-text::placeholder {
+            color: rgba(0,0,0,.4);
+        }
+
+        .noc-input-text.form-control:disabled, .noc-input-text.form-control[readonly] {
+            background-color: #fff;
+        }
+
+    .noc-pending-btn {
+        background: #a0a6ab;
+        color: #fff;
+        padding: 5px 20px;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 12px;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .noc-upload-btn {
+        background: #74c687;
+        color: #fff;
+        border: 1px solid #74c687;
+        padding: 5px 20px;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 12px;
+        text-align: center;
+    }
+
+        .noc-upload-btn:hover {
+            color: #74c687;
+            background: #fff;
+        }
+
+    .noc-download-btn {
+        background: #69c3d1;
+        border: 1px solid #69c3d1;
+        color: #fff;
+        padding: 5px 20px;
+        border-radius: 5px;
+        display: inline-block;
+        font-size: 12px;
+        min-width: 120px;
+        text-align: center;
+        line-height: 22px;
+    }
+
+        .noc-download-btn:hover {
+            background: #fff;
+            color: #69c3d1;
+        }
+
+    .noc-input-upload {
+        height: 38px;
+        border: 1px solid #e8ebf3;
+        border-bottom: 1px solid #e8ebf3;
+        border-radius: .25rem;
+    }
+
+    .noc-input-text:disabled {
+        background: #fff;
+    }
+
+    .noc-input-upload .custom-file-input:focus, .custom-file-label:focus {
+        border: 1px solid #506ee4;
+        border-color: #506ee4;
+    }
+
+    .min-height670 {
+        min-height: 670px;
+    }
+
+    .min-height480 {
+        min-height: 480px;
+    }
+    /*===========NOC Detail Form End============*/
+
+    /*========Start design view==========*/
+    .noc-welcome-layout {
+        width: 100% !important;
+        float: left;
+        padding: 0;
+        margin: 0;
+        height: 100vh;
+    }
+
+    .noc-welcome-layout-posi {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+        .noc-welcome-layout-posi .sub-form {
+            width: 100%;
+            max-width: 450px;
+            display: table;
+            margin: 0 auto;
+            border-radius: 10px;
+            border: 1px solid #dcd9d9;
+            padding: 0;
+            box-shadow: 0 1px 2px 0 rgb(234 240 249 / 50%);
+        }
+
+        .noc-welcome-layout-posi .welcm-txt {
+            width: 100%;
+            float: left;
+            border: none;
+            background: #686767;
+            border-radius: 10px 10px 0 0;
+            margin: 0;
+            padding: 15px
+        }
+
+            .noc-welcome-layout-posi .welcm-txt h2 {
+                font-size: 16px;
+                margin: 0;
+                line-height: 20px;
+                text-align: center;
+                color: #fff;
+            }
+
+            .noc-welcome-layout-posi .welcm-txt p {
+                font-size: 12px;
+                margin: 0;
+                text-align: center;
+                color: #fff;
+            }
+
+        .noc-welcome-layout-posi .card-body {
+            width: 100%;
+            float: left;
+            padding: 0px;
+        }
+
+    .page-content-tab {
+        background: #f4f6f9;
+    }
+
+    .theme-button-mockup {
+        display: inline-block;
+        font-weight: 400;
+        color: rgb(255, 255, 255) !important;
+        text-align: center;
+        vertical-align: middle;
+        user-select: none;
+        background-color: rgb(0, 123, 255);
+        font-size: 1rem;
+        line-height: 1.5;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgb(0, 123, 255) !important;
+        border-image: initial;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+        box-shadow: none;
+        cursor: pointer;
+    }
+
+        .theme-button-mockup:hover {
+            background-color: rgb(0, 105, 217) !important;
+            border-color: rgb(0, 98, 204) !important;
+        }
+    /*
+    .theme-button-mockup {
+        font-size: 16px;
+        color: #fff !important;
+        background: #62a7ff;
+        border: 1px solid #62a7ff !important;
+        min-height: 38px;
+        border-radius: 5px;
+        padding: 5px 25px;
+        transition: all 500ms ease;
+        text-align: center;
+        cursor: pointer;
+    }
+
+
+        .theme-button-mockup:focus {
+            color: #fff !important;
+            background: #62a7ff;
+            border: 1px solid #62a7ff !important;
+            box-shadow: inherit;
+        }
+
+        .theme-button-mockup:active {
+            color: #fff !important;
+            background: #62a7ff;
+            border: 1px solid #62a7ff !important;
+            box-shadow: inherit;
+        }
+
+        .theme-button-mockup:hover {
+            background: #fff;
+            color: #62a7ff !important;
+        }
+        */
+    .swal2-popup .swal2-title {
+        font-size: 20px;
+        font-weight: 500;
+        color: #494a4b;
+    }
+
+    .swal2-popup .swal2-styled.swal2-confirm {
+        font-size: 16px;
+        color: #fff !important;
+        background: #62a7ff;
+        border: 1px solid #62a7ff;
+        min-height: 38px;
+        border-radius: 5px;
+        padding: 5px 25px;
+        transition: all 500ms ease;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .swal2-popup .swal2-styled.swal2-confirm:hover {
+            background: #fff !important;
+            color: #62a7ff !important;
+        }
+
+    .swal2-styled.swal2-confirm:focus {
+        box-shadow: inherit !important;
+    }
+
+    .swal2-styled.swal2-deny {
+        font-size: 16px;
+        color: #fff !important;
+        background: #dc3545;
+        border: 1px solid #dc3545 !important;
+        min-height: 38px;
+        border-radius: 5px;
+        padding: 5px 25px;
+        transition: all 500ms ease;
+        text-align: center;
+        cursor: pointer;
+    }
+
+        .swal2-styled.swal2-deny:hover {
+            background: #fff !important;
+            color: #dc3545 !important;
+        }
+
+        .swal2-styled.swal2-deny:focus {
+            box-shadow: inherit !important;
+        }
+
+    .noc-welcome-design {
+        width: 100%;
+        float: left;
+        background: #fff;
+        border-radius: 10px;
+        border: 1px solid #dcd9d9;
+        padding: 0;
+        box-shadow: 0 1px 2px 0 rgb(234 240 249 / 50%);
+    }
+    /*======Trustee General info Start========*/
+    .page-title-box .breadcrumb {
+        font-size: 12px;
+        color: #9e9e9e;
+    }
+
+        .page-title-box .breadcrumb .breadcrumb-item.active {
+            color: #000;
+        }
+
+    .page-title-box .page-title {
+        font-size: 18px;
+        margin: 0;
+        color: #49494a;
+        width: 60%;
+    }
+    /*======Trustee General info End========*/
+    /*========College List for Apply Start==========*/
+    .modal-close-button {
+        position: absolute;
+        right: 0px;
+        top: 0;
+        color: #fff !important;
+        opacity: 1;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 40px;
+        height: 40px;
+    }
+    /*========College List for Apply End==========*/
+    /*========Left bar Start==========*/
+    .page-title-box .breadcrumb {
+        display: none;
+    }
+
+    .leftbar-tab-menu .main-icon-menu {
+        background-color: #25282a;
+    }
+
+    .main-menu-inner {
+        background-color: #343a40;
+        box-shadow: 0 14px 28px rgba(0,0,0,.25),0 10px 10px rgba(0,0,0,.22);
+        left: 0;
+        width: 250px;
+    }
+
+    .navbar-custom {
+        margin-left: 250px;
+    }
+
+    .page-content-tab {
+        width: calc(100% - 250px);
+    }
+
+    .main-menu-inner .topbar-left {
+        background-color: #343a40;
+    }
+
+    .dashb-menu .btn.btn-link.collapsed {
+        background: #343a40;
+        border: none;
+        color: #c2c7d0;
+    }
+
+        .dashb-menu .btn.btn-link.collapsed:hover {
+            background: #494e53;
+            color: #fff;
+        }
+
+        .dashb-menu .btn.btn-link.collapsed .fas.fa-angle-left {
+            transform: rotate(0deg);
+        }
+
+    .dashb-menu .card {
+        margin-bottom: 0;
+    }
+
+    .dashb-menu .btn.btn-link {
+        padding: 15px 15px 15px 40px;
+        border-radius: 3px;
+        position: relative;
+        text-decoration: none;
+    }
+
+        .dashb-menu .btn.btn-link i {
+            position: absolute;
+            left: 15px;
+            top: 19px;
+            font-size: 16px;
+        }
+
+        .dashb-menu .btn.btn-link .fas.fa-angle-left {
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            font-size: 14px;
+            left: inherit;
+            transition: -webkit-transform ease-in-out .3s;
+            transition: transform ease-in-out .3s;
+            transition: transform ease-in-out .3s,-webkit-transform ease-in-out .3s;
+        }
+
+    .dashb-menu .btn.btn-link {
+        background: #494e53;
+        color: #fff;
+        width: 100%;
+        text-align: left;
+        box-shadow: inherit;
+    }
+
+        .dashb-menu .btn.btn-link .fas.fa-angle-left {
+            transform: rotate(-90deg);
+        }
+
+    .dashb-menu .card {
+        background: none;
+        border: none;
+        box-shadow: none;
+    }
+
+    .dashb-menu .collapse.show {
+        border-bottom: none;
+    }
+
+    .dashb-menu .card-body {
+        padding: 0;
+    }
+
+        .dashb-menu .card-body .nav-item {
+            padding: 15px;
+            background: #343a40;
+        }
+
+        .dashb-menu .card-body .nav-link {
+            background: #343a40;
+            color: #c2c7d0;
+            padding: 0px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: auto;
+        }
+
+            .dashb-menu .card-body .nav-link.active {
+                color: #c2c7d0 !important;
+            }
+
+        .dashb-menu .card-body .nav-item:hover {
+            background: #494e53;
+            color: #fff;
+            width: 100%;
+        }
+
+            .dashb-menu .card-body .nav-item:hover .nav-link {
+                color: #fff;
+                width: 100%;
+                background: none;
+            }
+
+            .dashb-menu .card-body .nav-item:hover i {
+                color: #fff;
+            }
+
+    .topbar-left-img-logo {
+        text-align: center;
+        padding-left: 0 !important;
+    }
+
+        .topbar-left-img-logo img {
+            width: 50px !important;
+        }
+
+    .button-menu-mobile.nav-link.waves-effect.waves-light {
+        color: rgba(0,0,0,.5) !important;
+    }
+
+        .button-menu-mobile.nav-link.waves-effect.waves-light:hover {
+            color: #000 !important;
+        }
+
+    .navbar-custom .nav-link {
+        color: rgba(0,0,0,.5);
+    }
+
+        .navbar-custom .nav-link:hover {
+            color: #000;
+        }
+
+    .card .card-header {
+        background-color: #343a40 !important;
+    }
+    /*========Left bar End==========*/
+    /*========Edit Application Start==========*/
+    .noc-layout-list {
+        width: 100%;
+        float: left;
+    }
+
+        .noc-layout-list ul {
+            width: 100%;
+            float: left;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+            .noc-layout-list ul li {
+                float: left;
+                margin: 0;
+                padding: 0;
+            }
+
+                .noc-layout-list ul li button {
+                    width: 100%;
+                    float: left;
+                    text-align: left;
+                    padding: 15px;
+                    border: none;
+                    position: relative;
+                    border-bottom: 1px solid #dcd9d9;
+                    background: #fff;
+                }
+
+                    .noc-layout-list ul li button:hover {
+                        background: #f0f0f0;
+                    }
+
+                .noc-layout-list ul li .active {
+                    background: rgb(0, 123, 255);
+                    color: #fff;
+                }
+
+                .noc-layout-list ul li:last-child button {
+                    border-bottom: none;
+                    border-radius: 0px 0px 10px 10px
+                }
+    /*========Edit Application End==========*/
+    /*========Design view End==========*/
+    .min-height220 {
+        min-height: 220px
+    }
+
+    .min-height410 {
+        min-height: 410px
+    }
+
+    .noc-form-view-custom .panel-heading {
+        background: #f0eeee !important;
+        border: 1px solid #dcd9d9 !important;
+        border-color: #dcd9d9 !important;
+    }
+
+        .noc-form-view-custom .panel-heading .panel-title {
+            font-size: 16px;
+            margin: 0;
+        }
+
+    /*=======RoleController== MenuIndex=============*/
+    .noc-admin-menu .dt-buttons.btn-group .btn.btn-primary {
+        background: #e0e0e0;
+        border-color: #a9a7a7;
+        color: #343434;
+        box-shadow: none;
+    }
+
+    .noc-admin-menu .dropdown-menu {
+        border: 1px solid #000;
+        padding: 0;
+    }
+
+        .noc-admin-menu .dropdown-menu .dropdown-item {
+            background-color: #edebeb;
+            color: #716e6e;
+            font-size: 14px
+        }
+
+            .noc-admin-menu .dropdown-menu .dropdown-item:hover {
+                background-color: #5a5c5e;
+                color: #fff;
+            }
+
+        .noc-admin-menu .dropdown-menu .buttons-pdf:hover {
+            background-color: #5a5c5e;
+            color: #fff;
+        }
+
+    .pagination .paginate_button a {
+        color: #787676;
+        font-size: 14px;
+    }
+
+    .pagination .paginate_button.active a {
+        color: #fff;
+        background: #62a7ff;
+    }
+
+    .pagination .paginate_button a:hover {
+        color: #fff;
+        background: #62a7ff;
+    }
+
+    .pagination .paginate_button.disabled a {
+        color: #787676;
+        font-size: 14px;
+    }
+
+    .main-menu-inner .menu-body .nav-item .nav-link.active i, .main-menu-inner .menu-body .nav-item .nav-link.active {
+        color: #fff;
+    }
+
+    #divUsernamInitials {
+        background: #838383;
+    }
+
+    .enlarge-menu .topbar .navbar-custom.noc-topbar-slides-back {
+        margin-left: 0px;
+    }
+
+    .enlarge-menu .page-content-tab {
+        width: 100%;
+    }
+
+    .noc-trustee-layout {
+        gap: 20px;
+        align-items: center;
+        display: flex;
+    }
+
+    .noc-trustee-form {
+        width: 30%;
+        float: left;
+    }
+
+    .trustee-file-height .dropify-wrapper {
+        height: 110px;
+    }
+</style>
+@section styles {
+    <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+    <link href="~/Content/NewArchtech/jquery-confirm.min.css" rel="stylesheet" />
+}
+@{
+    foreach (var item in CollageDetails)
+    {
+        @*<option value="@item.iPk_ClgID">@item.</option>*@
+        <input type="hidden" id="hiddenone" value="@item.iPk_ClgID" />
+
+    }
+
+}
+
+@if (CollageDetails.Count > 0)
+{
+    foreach (var clgitem in CollageDetails)
+    {
+        <br />
+        <div class="noc-layouts">
+            <div class="title-heading mb-3 d-flex align-items-center justify-content-between">
+                <span>Choose College Amendment</span>
+                @*<a href="@Url.Action("ViewDetail", "CollegeAmendment")" class="buttons-right theme-button-mockup" title="View Details File">Back To List</a>*@
+            </div>
+
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <input type="checkbox" id="Education" name="Education" value="41">
+                        <label for="vehicle1"> @type</label>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <input type="checkbox" id="College" name="College" value="42">
+                        <label for="vehicle1">Change in Name of College</label>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <input type="checkbox" id="CollegePlacecheck" name="CollegePlacecheck" value="43">
+                        <label for="vehicle1">College Place Change</label>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <input type="checkbox" id="Management" name="Management" value="44">
+                        <label for="vehicle1">Change in College Management</label>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <input type="checkbox" id="MergerDetails" name="MergerDetails" value="45">
+                        <label for="vehicle1">Merger Details- Applicant College Informatio</label>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="noc-layouts">
+                <div style="display:none" id="women">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Change in Women to Co-Education</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-5 form-group" id="ConsentManagement">
+                                <label for="noc-text-input " class="noc-form-label" style="">Document for Consent of Management (Only pdf/image file) (Min. Size 500KB) (MAx. Size 2MB)<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" id="txtConsentofManagement" class="form-control" name="ConsentofManagement" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                                    <input type="hidden" id="hdnConvertedDoc" />
+                                    <input type="hidden" id="hdnConvertedDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-5 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">Document for Consent of 25% parents of student (min.100) in this previous year (Only pdf/image file) (Min. Size 500KB) (MAx. Size 2MB)<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" id="txtDocumentConsent" class="form-control" name="DocumentConsent" onchange="return encodeImageFileAsURLConsent(this,'hdnConvertedDocConsent','hdnConvertedDocConsentExten')" />
+                                    <input type="hidden" id="hdnConvertedDocConsent" />
+                                    <input type="hidden" id="hdnConvertedDocConsentExten" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                                <button type="submit" id="btnSaveCoEDU" class="theme-button-mockup"><i class="fas fa-plus"></i> Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="noc-layouts-tbl" id="womenTable" style="display:none">
+                    <h4 class="p-0 title-heading m-0 ">Change in Women to Co-Education</h4>
+                    <div class="form-group">
+                        <table class="table table-striped table-bordered dt-responsive word-wrap" id="tbleEdu">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th hidden>stypeId</th>
+                                    <th hidden>iPk_AplcnAttch</th>
+                                    <th>Collage Name</th>
+                                    <th>Document</th>
+                                    <th hidden>CollegeId</th>
+                                    <th>DocFile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (CoEduDataList != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in CoEduDataList)
+                                    {
+                                        <tr id="tr_@item.iPk_ClgAmdId">
+                                            <td>@i</td>
+                                            <td hidden>@item.iPk_AplcnAttch</td>
+                                            <td hidden>@item.stypeId</td>
+                                            <td>@item.sNameOfClg</td>
+                                            <td>@item.ImageTypeName</td>
+                                            <td hidden>@item.iCollegeId</td>
+                                            <td>
+                                                @if (item.docFile != null)
+                                                {
+                                                    <div>
+                                                        <img src="data:@item.DocumentContent;base64,@item.docFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                        <a href="@Url.Action("DownloadDocuments", "CollegeAmendment", new { id = item.iPk_AplcnAttch })" title="Document File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteDocumentDetails(@item.iPk_ClgAmdId,@item.iPk_AplcnAttch,'CollegeEdu');"><i class="far fa-trash-alt"></i></a>
+                                                @*<a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete"><i class="far fa-trash-alt"></i></a>*@
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts">
+                <div style="display:none" id="CollegeName">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Change in Name of College</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">CollegeNew Name in English<span style="color:red;">*</span></label>
+                                <input class="form-control noc-input-text" type="text" autocomplete="off" id="txtEnglishname" name="Englishname" placeholder="New Name in English">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">New Name in Hindi<span style="color:red;">*</span></label>
+                                <input class="form-control noc-input-text" type="text" autocomplete="off" id="txtHindiName" name="HindiName" placeholder="New Name in Hindi">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label">Document for Resolution of Management Committe<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" id="txtCollegeAttch" class="form-control" name="CollegeAttch" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                                    <input type="hidden" id="hdnConvertedDoc" />
+                                    <input type="hidden" id="hdnConvertedDocExten" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                                <button type="submit" id="btnSaveCollege" class="theme-button-mockup"><i class="fas fa-plus"></i> Add</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="noc-layouts-tbl" id="nameOfCollege" style="display:none">
+                    <h4 class="p-0 title-heading m-0 ">Change in Name of College</h4>
+                    <div class="form-group">
+                        <table class="table table-striped table-bordered dt-responsive word-wrap" id="tbleCollegeName">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th hidden>stypeId</th>
+                                    <th>Current Collage Name</th>
+                                    <th>Collage Name English</th>
+                                    <th>Collage Name Hindi</th>
+                                    <th hidden>CollegeId</th>
+                                    <th>DocFile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (NameOfClg != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in NameOfClg)
+                                    {
+                                        <tr id="tr_@item.iPk_ClgAmdId">
+                                            <td>@i</td>
+                                            <td hidden>@item.stypeId</td>
+                                            <td>@item.sNameOfClg</td>
+                                            <td>@item.Englishname</td>
+                                            <td>@item.HindiName</td>
+                                            <td hidden>@item.iCollegeId</td>
+                                            <td>
+                                                @if (item.docFile != null)
+                                                {
+
+                                                    <div>
+                                                        <img src="data:@item.DocumentContent;base64,@item.docFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                        <a href="@Url.Action("DownloadNameOfCollege", "CollegeAmendment", new { id = item.iPk_AplcnAttch })" title="Document File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteDocumentDetails(@item.iPk_ClgAmdId,@item.iPk_AplcnAttch,'CollegeName');"><i class="far fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts">
+                <div style="display:none" id="Place">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">College Place Change</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">District<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control noc-input-text singleselect" id="DistrictId" name="DistrictId">
+                                        <option value="0">Select District</option>
+                                        @{
+                                            if (DistrictList != null)
+                                            {
+                                                foreach (var item in DistrictList)
+                                                {
+                                                    if (clgitem.iFk_DistId.ToString() == item.Id)
+                                                    {
+                                                        <option value="@item.Id" selected> @item.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.Id">@item.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <div>
+                                        <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-lg-4" id="divRural">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control" id="TehsilId" name="TehsilId">
+                                        <option value="0"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">old Place Name and Addressone</label>
+                                <input class="form-control noc-input-text" type="text" autocomplete="off" id="oneold" name="oneold" value="@clgitem.Addressoneold" placeholder="New Place Name and Address" readonly>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">old Place Name and Addresstwo</label>
+                                <input class="form-control noc-input-text" type="text" autocomplete="off" id="twoold" name="twoold" value="@clgitem.Addresstwoold" placeholder="New Place Name and Address" readonly>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">New Place Name and Addressone</label>
+                                <input class="form-control noc-input-text" type="text" autocomplete="off" id="NewAddressone" name="NewAddressone" value="" placeholder="New Place Name and Address">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">New Place Name and Addresstwo</label>
+                                <input class="form-control noc-input-text" type="text" autocomplete="off" id="NewAddresstwo" name="NewAddresstwo" value="" placeholder="New Place Name and Address">
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
+                                <div>
+                                    <input type="file" id="txtPlaceAttch" name="PlaceAttch" class="form-control" onchange="return encodeImageFileAsURL(this,'PlaceDoc','PlaceDocExten')" />
+                                    <input type="hidden" id="PlaceDoc" />
+                                    <input type="hidden" id="PlaceDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">Document for new place in same tehsil certified by Tehshildar</label>
+                                <div>
+                                    <input type="file" id="txtplacetehsilAttch" class="form-control" name="placetehsilAttch" onchange="return encodeImageFileAsURL(this,'PlaceDoctehsil','PlaceDocExtentehsil')" />
+                                    <input type="hidden" id="PlaceDoctehsil" />
+                                    <input type="hidden" id="PlaceDocExtentehsil" />
+                                </div>
+                            </div>
+                            <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                                <button type="submit" id="btnSavePlace" class="theme-button-mockup"><i class="fas fa-plus"></i> Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="noc-layouts-tbl" id="PlaceChange" style="display:none">
+                    <h4 class="p-0 title-heading m-0 ">College Place Change</h4>
+                    <div class="form-group">
+                        <table class="table table-striped table-bordered dt-responsive word-wrap">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>DistName</th>
+                                    <th>TehsilName</th>
+                                    <th>Addreslineoneold</th>
+                                    <th>AddreslineoneNew</th>
+                                    <th>Addresslinetwoold</th>
+                                    <th>AddresslinetwoNew</th>
+                                    <th>NameOfClg</th>
+                                    <th hidden>CollegeId</th>
+                                    <th>DocFile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ClgPlaceName != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in ClgPlaceName)
+                                    {
+                                        <tr id="tr_@item.iPk_ClgAmdId">
+                                            <td>@i</td>
+                                            <td>@item.DistName</td>
+                                            <td>@item.tehsilName</td>
+                                            <td>@item.sAddreslineoneold</td>
+                                            <td>@item.sAddreslineoneNew</td>
+                                            <td>@item.sAddresslinetwoold</td>
+                                            <td>@item.sAddresslinetwoNew</td>
+                                            <td>@item.sNameOfClg</td>
+                                            <td hidden>@item.iCollegeId</td>
+                                            <td>
+                                                @if (item.docFile != null)
+                                                {
+                                                    <div>
+                                                        <img src="data:@item.DocumentContent;base64,@item.docFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                        <a href="@Url.Action("DownloadCollegePlaceChnageDetail", "CollegeAmendment", new { id = item.iPk_AplcnAttch })" title="Document File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteDocumentDetails(@item.iPk_ClgAmdId,@item.iPk_AplcnAttch,'CollegePlace');"><i class="far fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="noc-layouts">
+                <div id="CollegeManagement" style="display:none">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Change in College Management</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">Name of New Society</label>
+                                @*<input class="form-control noc-input-text" type="text" autocomplete="off" id="txtNewSosityName" name="NewSosityName" placeholder="New Name in English">*@
+                                <select class="form-control" name="NewSosityName" id="txtNewSosityName">
+                                    <option value="0">Select Trust</option>
+                                    @{
+
+                                        if (TrustList != null)
+                                        {
+                                            foreach (var item in TrustList)
+                                            {
+                                                if (clgitem.iFk_TrstInfoId.ToString() == item.Id.ToString())
+                                                {
+                                                    <option value="@item.Id" selected> @item.text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.Id">@item.text</option>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label">Document for Resolution of Management Committe<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtResolutionMagtCommitte" name="ResolutionMagtCommitte" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                                    <input type="hidden" id="hdnConvertedDoc" />
+                                    <input type="hidden" id="hdnConvertedDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label for="noc-text-input " class="noc-form-label">Document for Annexure 8 For Change Management<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtChangeManagement" name="ChangeManagement" onchange="return encodeImageFileAsURLMang(this,'hdnConvertedDocMng','hdnConvertedDocMngExten')" />
+                                    <input type="hidden" id="hdnConvertedDocMng" />
+                                    <input type="hidden" id="hdnConvertedDocMngExten" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                                <button type="submit" id="btnSaveMangment" class="theme-button-mockup"><i class="fas fa-plus"></i> Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="noc-layouts-tbl" id="clgManagement" style="display:none">
+                    <h4 class="p-0 title-heading m-0 ">Change in College Management</h4>
+                    <div class="form-group">
+                        <table class="table table-striped table-bordered dt-responsive word-wrap">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th hidden>stypeId</th>
+                                    <th>NameOfClg</th>
+                                    @*<th>Document</th>*@
+                                    <th hidden>CollegeId</th>
+                                    <th>DocFile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ManagementClg != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in ManagementClg)
+                                    {
+                                        <tr id="tr_@item.iPk_ClgAmdId">
+                                            <td>@i</td>
+                                            <td hidden>@item.stypeId</td>
+                                            <td>@item.sNameOfClg</td>
+                                            @*<td>@item.ImageTypeName</td>*@
+                                            <td hidden>@item.iCollegeId</td>
+                                            <td>
+                                                @if (item.docFile != null)
+                                                {
+                                                    <div>
+                                                        <img src="data:@item.DocumentContent;base64,@item.docFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                        <a href="@Url.Action("DownloadCollegeManagment", "CollegeAmendment", new { id = item.iPk_AplcnAttch })" title="Document File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteDocumentDetails(@item.iPk_ClgAmdId,@item.iPk_AplcnAttch,'CollegeManagement');"><i class="far fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="noc-layouts">
+                <div id="Merger" style="display:none">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Merger Details- Applicant College Information</h4>
+                    </div>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-3 form-group">
+                                <label for="noc-text-input " class="noc-form-label">Proposal of Society for merger <span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtProposalSocietyformerger" name="ProposalSocietyMerger" onchange="return encodeImageFileAsURLSocityMerger(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                                    <input type="hidden" id="hdnConvertedDoc" />
+                                    <input type="hidden" id="hdnConvertedDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">All NOCs issued in single pdf file<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtNOCsissued" name="NOCsissued" onchange="return encodeImageFileAsURLNOCissued(this,'hdnNOCissuedConvertedDoc','hdnNOCissuedConvertedDocExten')" />
+                                    <input type="hidden" id="hdnNOCissuedConvertedDoc" />
+                                    <input type="hidden" id="hdnNOCissuedConvertedDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">Latest University Affiliation of college<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtLstUnivsityAffiliationCollege" name="LstUnivsityAffiliationCollege" onchange="return encodeImageFileAsURLLST(this,'hdnLSTConvertedDoc','hdnLSTConvertedDocExten')" />
+                                    <input type="hidden" id="hdnLSTConvertedDoc" />
+                                    <input type="hidden" id="hdnLSTConvertedDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">NOC of the affiliating university for merger<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtAffidavitconsent" name="Affidavitconsent" onchange="return encodeImageFileAsURLAffilt(this,'hdnAffiltConvertedDoc','hdnAffiltConvertedDocExten')" />
+                                    <input type="hidden" id="hdnAffiltConvertedDoc" />
+                                    <input type="hidden" id="hdnAffiltConvertedDocExten" />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <label for="noc-text-input " class="noc-form-label" style="">Affidavit of Consent of 100% Parents<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="file" class="form-control" id="txtAffidavitParents" name="AffidavitParents" onchange="return encodeImageFileAsURLAffiltParents(this,'hdnAffiltParentsConvertedDoc','hdnAffiltParentsConvertedDocExten')" />
+                                    <input type="hidden" id="hdnAffiltParentsConvertedDoc" />
+                                    <input type="hidden" id="hdnAffiltParentsConvertedDocExten" />
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="title-heading d-flex align-items-center justify-content-between rounded-0">
+                        <h4 class="p-0 title-heading m-0 ">Merger Details- Other College information</h4>
+                    </div>
+
+                    <div class="card-body row">
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label">All NOCs issued in single pdf file<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" id="txtAllNOCIssue" class="form-control" name="AllNOCsIssued" onchange="return encodeImageFileAsURLAllNoc(this,'hdnAllNOCIssueConvertedDoc','hdnAllNOCIssueConvertedDocExten')" />
+                                <input type="hidden" id="hdnAllNOCIssueConvertedDoc" />
+                                <input type="hidden" id="hdnAllNOCIssueConvertedDocExten" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label">Latest University Affilliation of college<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" id="txtLatestUniversityAffilliation" class="form-control" name="LatestUniversityAffilliation" onchange="return encodeImageFileAsURLLatestNoc(this,'hdnLatestUniAffilliationDoc','hdnLatestUniAffilliationDocExten')" />
+                                <input type="hidden" id="hdnLatestUniAffilliationDoc" />
+                                <input type="hidden" id="hdnLatestUniAffilliationDocExten" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label">NOC of the affiliating university for merger<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" class="form-control" id="txtNOCAffiliatting" name="NOCAffiliatting" onchange="return encodeImageFileAsURLNOCAffiliating(this,'hdnLatestNOCAffiliattingDoc','hdnLatestNOCAffiliattingDocExten')" />
+                                <input type="hidden" id="hdnLatestNOCAffiliattingDoc" />
+                                <input type="hidden" id="hdnLatestNOCAffiliattingDocExten" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Affidavit of consent of 100% Parents<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" class="form-control" id="txtAffidavitConsentParents" name="AffidavitConsentParents" onchange="return encodeImageFileAsURLAffidavitConsentPRNT(this,'hdnLatestAffidavitConsentPPDoc','hdnLatestAffidavitConsentPPDocExten')" />
+                                <input type="hidden" id="hdnLatestAffidavitConsentPPDoc" />
+                                <input type="hidden" id="hdnLatestAffidavitConsentPPDocExten" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Land title Certificate<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" id="txtLandCertificate" class="form-control" name="LandCertificate" onchange="return encodeImageFileAsURLLandCertificate(this,'hdnLandCertificatePPDoc','hdnLandCertificatePPDocExten')" />
+                                <input type="hidden" id="hdnLandCertificatePPDoc" />
+                                <input type="hidden" id="hdnLandCertificatePPDocExten" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Blue print of building<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" class="form-control" id="txtBluePrintBuilding" name="BluePrintBuilding" onchange="return encodeImageFileAsURLBluePrint(this,'hdnBluePrintDoc','hdnBluePrintDocExten')" />
+                                <input type="hidden" id="hdnBluePrintDoc" />
+                                <input type="hidden" id="hdnBluePrintDocExten" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="noc-text-input " class="noc-form-label" style="">Staff information (Teaching and non-teaching)<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="file" class="form-control" id="txtStaffInformation" name="StaffInformation" onchange="return encodeImageFileAsURLStaffInformation(this,'hdnStaffInformationDoc','hdnStaffInformationDocExten')" />
+                                <input type="hidden" id="hdnStaffInformationDoc" />
+                                <input type="hidden" id="hdnStaffInformationDocExten" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 w-100 float-left pt-3 text-right">
+                            <button type="submit" id="btnSaveMerger" class="theme-button-mockup"><i class="fas fa-save"></i> Save</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="noc-layouts-tbl" id="mergerDetails" style="display:none">
+                    <h4 class="p-0 title-heading m-0 ">Merger Details- Applicant College Information</h4>
+                    <div class="form-group">
+                        <table class="table table-striped table-bordered dt-responsive word-wrap">
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th hidden>stypeId</th>
+                                    <th>NameOfClg</th>
+                                    <th hidden>CollegeId</th>
+                                    <th>DocFile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (MergerClg != null)
+                                {
+                                    int i = 1;
+                                    foreach (var item in MergerClg)
+                                    {
+                                        <tr id="tr_@item.iPk_ClgAmdId">
+                                            <td>@i</td>
+                                            <td hidden>@item.stypeId</td>
+                                            <td>@item.sNameOfClg</td>
+                                            <td hidden>@item.iCollegeId</td>
+                                            <td>
+                                                @if (item.docFile != null)
+                                                {
+                                                    <div>
+                                                        <img src="data:@item.DocumentContent;base64,@item.docFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                                        <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.iPk_AplcnAttch })" title="Document File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteDocumentDetails(@item.iPk_ClgAmdId,@item.iPk_AplcnAttch,'CollegeMerger');"><i class="far fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    }
+}
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script src="~/Content/NewArchtech/ConformjqueryABI.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+}
+<!--Trigger-->
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        debugger;
+        $('#womenTable').show();
+        $('#nameOfCollege').show();
+        $('#PlaceChange').show();
+        $('#clgManagement').show();
+        $('#mergerDetails').show();
+        $('input[type="checkbox"]').click(function () {
+            debugger
+         // debugger
+            let Education = $('#Education').is(':checked');
+            let College = $('#College').is(':checked');
+            let Place = $('#CollegePlacecheck').is(':checked');
+            let CollegeManagement = $('#Management').is(':checked');
+            let Merger = $('#MergerDetails').is(':checked');
+
+            if (Education == true) {
+                $('#women').show();
+                $('#womenTable').hide();
+                $("#women").removeAttr("style");
+            }
+            else {
+                $('#women').hide();
+                $('#womenTable').show();
+            }
+            if (College == true) {
+                $('#CollegeName').show();
+                $('#nameOfCollege').hide();
+                $("#CollegeName").removeAttr("style");
+            }
+            else {
+                $('#CollegeName').hide();
+                $('#nameOfCollege').show();
+            }
+            if (Place == true) {
+                $('#Place').show();
+                $('#PlaceChange').hide();
+                $("#Place").removeAttr("style");
+            }
+            else {
+                $('#Place').hide();
+                $('#PlaceChange').show();
+            }
+            if (CollegeManagement == true) {
+                $('#CollegeManagement').show();
+                $('#clgManagement').hide();
+                $("#CollegeManagement").removeAttr("style");
+            }
+            else {
+                $('#CollegeManagement').hide();
+                $('#clgManagement').show();
+            }
+            if (Merger == true) {
+                $('#Merger').show();
+                $('#mergerDetails').hide();
+                $("#Merger").removeAttr("style");
+            }
+            else {
+                $('#Merger').hide();
+                $('#mergerDetails').show();
+            }
+
+
+        });
+        if ('@CollageDetails[0].iFk_DistId' != null)
+        {
+            //debugger
+             var Districtid = $("#DistrictId option:selected").val();
+            if (Districtid > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetTehsilList",
+                    data: { DistrictId: Districtid },
+                    success: function (data) {
+
+                        $("#TehsilId").html("<option value = \"0\">Select Tehsil</option>")
+                        $.each(data, function (index, value) {
+                            debugger
+                            if (@CollageDetails[0].iFk_ThslId == value.Value)
+                            {
+                                debugger
+                                 $("#TehsilId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                 $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                            });
+                    }
+                });
+            }
+        }
+    });
+
+    $("#DistrictId").change(function () {
+        //debugger
+        var Districtid = $("#DistrictId option:selected").val();
+        //alert(Districtid);
+        if (Districtid > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/CollegeAmendment/GetTehsilList",
+                data: { DistrictId: Districtid },
+                success: function (data) {
+                   // console.log('data is', data);
+                    $("#TehsilId").html("<option value = \"0\">Select Tehsil</option>")
+                    $.each(data, function (index, value) {
+                        $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+
+        }
+    });
+</script>
+<!----General Girls Start -->
+<script type="text/javascript">
+    var imagebase64 = "";
+    var imagesbase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name);
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    function encodeImageFileAsURLConsent(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagesbase64 = reader.result;
+            $('#' + hdnId).val(imagesbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name);
+
+        }
+        reader.readAsDataURL(file);
+        return imagesbase64;
+    }
+
+    function CheckValidEdu() {
+        var status = true;
+        debugger;
+        console.log(status);
+        var ConsentofManagement = $('#txtConsentofManagement').val();
+        if (ConsentofManagement.length <= 0) {
+            $('#txtConsentofManagement').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtConsentofManagement').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var DocumentConsent = $('#txtDocumentConsent').val();
+        if (DocumentConsent.length <= 0) {
+            $('#txtDocumentConsent').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtDocumentConsent').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        return status;
+    }
+
+    $("#btnSaveCoEDU").click(function () {
+        var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+        var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+        var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        if (convertedDocContent != "") {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        }
+
+        var convertedDocM = $('#hdnConvertedDocConsent').val().split(',')[1];
+        var convertedDocExteM = $('#hdnConvertedDocConsentExten').val().split('.')[1];
+        var convertedDocContentM = $('#hdnConvertedDocConsent').val().split(',')[0];
+        if (convertedDocContentM != "") {
+            convertedDocContentM = $('#hdnConvertedDocConsent').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContentM = $('#hdnConvertedDocConsent').val().split(',')[0];
+        }
+        var id = $("#hiddenone").val();
+
+        var model = {
+            ConsentofManagement: convertedDoc,
+            ConsentofManagementExtension: convertedDocExte,
+            ConsentofManagementContenttype: convertedDocContent,
+            DocumentConsent: convertedDocM,
+            DocumentConsentExtension: convertedDocExteM,
+            DocumentConsentContenttype: convertedDocContentM,
+            iCollegeId: id
+        }
+
+        if (CheckValidEdu()) {
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/CollegeAmendment/SaveDetails",
+                data: model,
+                success: function (result) {
+                    if (result.StatusCode == "1") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        })
+                        //debugger
+                        document.getElementById("txtConsentofManagement").value = "";
+                        document.getElementById("txtDocumentConsent").value = "";
+                        location.reload(true);
+                        $('#women').show();
+                        $('#womenTable').hide();
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+
+                }
+            });
+        }
+    });
+
+</script>
+
+<!----General Girls End-->
+<!---name Of College Start-->
+<script type="text/javascript">
+    //College Place Name
+    var imagebase64 = "";
+
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name);
+
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    function CheckValidNameCollege() {
+        var status = true;
+
+        var Englishname = $('#txtEnglishname').val();
+        if (Englishname.length <= 0) {
+            $('#txtEnglishname').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtEnglishname').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var HindiName = $('#txtHindiName').val();
+        if (HindiName.length <= 0) {
+            $('#txtHindiName').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtHindiName').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var CollegeAttch = $('#txtCollegeAttch').val();
+        if (CollegeAttch.length <= 0) {
+            $('#txtCollegeAttch').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtCollegeAttch').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        return status;
+    }
+
+    $("#btnSaveCollege").click(function () {
+        debugger;
+        var Englishname = $('#txtEnglishname').val();
+        var HindiName = $('#txtHindiName').val();
+        var CollegeAttch = $('#txtCollegeAttch').val();
+        var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+        var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+        var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        if (convertedDocContent != "") {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        }
+        var id = $("#hiddenone").val();
+
+        var model = {
+            Englishname: Englishname,
+            HindiName: HindiName,
+            CollegeAttch: convertedDoc,
+            CollegeAttchExtensionExtension: convertedDocExte,
+            CollegeAttchContenttype: convertedDocContent,
+            iCollegeId: id
+        }
+
+        if (CheckValidNameCollege()) {
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/CollegeAmendment/NameCollege",
+                data: model,
+                success: function (result) {
+                    debugger;
+                    if (result.StatusCode == "1") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        })
+                        document.getElementById("txtEnglishname").value = "";
+                        document.getElementById("txtHindiName").value = "";
+                        document.getElementById("txtCollegeAttch").value = "";
+                        location.reload(true);
+                        $('#CollegeName').hide();
+                        $('#nameOfCollege').show();
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+
+                }
+            });
+        }
+    });
+
+</script>
+
+<!---name Of College END-->
+<!--College Place Change Start-->
+<script type="text/javascript">
+    var imagebase64 = "";
+    var imageMngbase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name);
+
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+    function encodeImageFileAsURLMang(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        // console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name);
+
+        }
+        reader.readAsDataURL(file);
+        return imageMngbase64;
+    }
+
+    function CheckValidPlace() {
+        var status = true;
+        var DistrictId = $('#DistrictId').val();
+        if (DistrictId.length <= 0) {
+            $('#DistrictId').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#DistrictId').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var Tehsil = $('#TehsilId').val();
+        if (Tehsil.length <= 0) {
+            $('#TehsilId').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#TehsilId').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var NewAddressone = $('#NewAddressone').val();
+        if (NewAddressone.length <= 0) {
+            $('#NewAddressone').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+
+        }
+        else {
+            $('#NewAddressone').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var NewAddresstwo = $('#NewAddresstwo').val();
+        if (NewAddresstwo.length <= 0) {
+            $('#NewAddresstwo').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+
+        }
+        else {
+            $('#NewAddresstwo').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var PlaceAttch = $('#txtPlaceAttch').val();
+        if (PlaceAttch.length <= 0) {
+            $('#txtPlaceAttch').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtPlaceAttch').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var placetehsil = $('#txtplacetehsilAttch').val();
+        if (placetehsil.length <= 0) {
+            $('#txtplacetehsilAttch').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtplacetehsilAttch').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        return status;
+    }
+
+    $("#btnSavePlace").click(function () {
+
+        var DistrictId = $('#DistrictId').val();
+        var Tehsil = $('#TehsilId').val();
+        var oldAddressone = $('#oneold').val();
+        var oldAddresstwo = $('#twoold').val();
+        var NewAddressone = $('#NewAddressone').val();
+        var NewAddresstwo = $('#NewAddresstwo').val();
+        var PlaceDoc = $('#PlaceDoc').val().split(',')[1];
+        var PlaceDocExte = $('#PlaceDocExten').val().split('.')[1];
+        var PlaceDocContent = $('#PlaceDoc').val().split(',')[0];
+        if (PlaceDocContent != "") {
+            PlaceDocContent = $('#PlaceDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            PlaceDocContent = $('#PlaceDoc').val().split(',')[0];
+        }
+
+        //Mangment
+        var ConvertedDocPlace = $('#PlaceDoctehsil').val().split(',')[1];
+        var ConvertedDocPlaceExten = $('#PlaceDocExtentehsil').val().split('.')[1];
+        var convertedDocContentPlace = $('#PlaceDoctehsil').val().split(',')[0];
+        if (convertedDocContentPlace != "") {
+            convertedDocContentPlace = $('#PlaceDoctehsil').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContentM = $('#PlaceDoctehsil').val().split(',')[0];
+        }
+
+        var id = $("#hiddenone").val();
+
+        var model = {
+            District: DistrictId,
+            Tehsil: Tehsil,
+            oldPlaceAddressone: oldAddressone,
+            oldPlaceAddresstwo: oldAddresstwo,
+            NewPlaceAddressone: NewAddressone,
+            NewPlaceAddresstwo: NewAddresstwo,
+            PlaceAttch: PlaceDoc,
+            PlaceAttchExtension: PlaceDocExte,
+            PlaceAttchContenttype: PlaceDocContent,
+
+            ChangePlace: ConvertedDocPlace,
+            ChangeManagementPlace: ConvertedDocPlaceExten,
+            ChangeManagementtePlace: convertedDocContentPlace,
+            iCollegeId: id
+        }
+
+        if (CheckValidPlace()) {
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/CollegeAmendment/MergerDetailsPlace",
+                data: model,
+                success: function (result) {
+                    //debugger;
+                    if (result.StatusCode == "1") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        })
+                        document.getElementById("DistrictId").value = "";
+                        document.getElementById("TehsilId").value = "";
+                        document.getElementById("oneold").value = "";
+                        document.getElementById("twoold").value = "";
+                        document.getElementById("NewAddressone").value = "";
+                        document.getElementById("NewAddresstwo").value = "";
+                        document.getElementById("PlaceDoc").value = "";
+                        document.getElementById("PlaceDoctehsil").value = "";
+                        location.reload(true);
+                        $('#Place').hide();
+                        $('#PlaceChange').show();
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+<!--College Place Change End-->
+<!--College Managment Start--->
+<script type="text/javascript">
+    //College Management
+    var imagebase64 = "";
+    var imageMngbase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imagebase64);
+            // console.log(hdnId);
+            // console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+    function encodeImageFileAsURLMang(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            console.log(imageMngbase64);
+            console.log(hdnId);
+            console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageMngbase64;
+    }
+
+    function CheckValidManagment() {
+        var status = true;
+        debugger;
+        console.log(status);
+        var NewSosityName = $('#txtNewSosityName').val();
+        if (NewSosityName.length <= 0) {
+            $('#txtNewSosityName').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtNewSosityName').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var ResolutionMagtCommitte = $('#txtResolutionMagtCommitte').val();
+        if (ResolutionMagtCommitte.length <= 0) {
+            $('#txtResolutionMagtCommitte').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtResolutionMagtCommitte').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var ChangeManagement = $('#txtChangeManagement').val();
+        if (ChangeManagement.length <= 0) {
+            $('#txtChangeManagement').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtChangeManagement').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        return status;
+    }
+
+    $("#btnSaveMangment").click(function () {
+        //debugger;
+
+        var NewSosityName = $('#txtNewSosityName').val();
+
+        var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+        var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+        var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        if (convertedDocContent != "") {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        }
+
+        //Mangment
+        var ConvertedDocMng = $('#hdnConvertedDocMng').val().split(',')[1];
+        var ConvertedDocMngExten = $('#hdnConvertedDocMngExten').val().split('.')[1];
+        var convertedDocContentMng = $('#hdnConvertedDocMng').val().split(',')[0];
+        if (convertedDocContentMng != "") {
+            convertedDocContentMng = $('#hdnConvertedDocMng').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContentM = $('#hdnConvertedDocMng').val().split(',')[0];
+        }
+
+        var id = $("#hiddenone").val();
+
+        var model = {
+            NewSosityName: NewSosityName,
+            ResolutionMagtCommitte: convertedDoc,
+            ResolutionMagtCommitteExtension: convertedDocExte,
+            ResolutionMagtCommittetype: convertedDocContent,
+            ChangeManagement: ConvertedDocMng,
+            ChangeManagementExtension: ConvertedDocMngExten,
+            ChangeManagementtetype: convertedDocContentMng,
+            iCollegeId: id
+        }
+
+        if (CheckValidManagment()) {
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/CollegeAmendment/Managment",
+                data: model,
+                success: function (result) {
+                    //debugger;
+                    if (result.StatusCode == "1") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        })
+                        document.getElementById("txtNewSosityName").value = "";
+                        document.getElementById("txtResolutionMagtCommitte").value = "";
+                        document.getElementById("txtChangeManagement").value = "";
+                        $('#CollegeManagement').hide();  //form
+                        $('#clgManagement').show(); //div
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+                }
+            });
+        }
+    });
+</script>
+<!--College Managment END--->
+<!--College Merger Start--->
+<script type="text/javascript">
+    //Merger Details- Applicant College Information
+    var imagebase64 = "";
+    var imageMngbase64 = "";
+    var imageLstbase64 = "";
+    var imageAffiltbase64 = "";
+    var imageAffiltParentsbase64 = "";
+    var imageAllNOCbase64 = "";
+    var imageLatestNOCbase64 = "";
+    var imageNOCAffiliatingbase64 = "";
+    var imagePRNTbase64 = "";
+    var imageLandCertificatebase64 = "";
+    var imageBluePrintbase64 = "";
+    var imageStaffCertificatebase64 = "";
+    function encodeImageFileAsURLSocityMerger(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imagebase64);
+            //console.log(hdnId);
+            // console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+    function encodeImageFileAsURLNOCissued(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageMngbase64);
+            //console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageMngbase64;
+    }
+    function encodeImageFileAsURLLST(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageMngbase64);
+            //console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageLstbase64;
+    }
+    function encodeImageFileAsURLAffilt(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageMngbase64);
+            //console.log(hdnId);
+            // console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageAffiltbase64;
+    }
+    function encodeImageFileAsURLAffiltParents(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            // console.log(imageMngbase64);
+            // console.log(hdnId);
+            // console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageAffiltParentsbase64;
+    }
+    function encodeImageFileAsURLALLNOC(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageAllNOCbase64 = reader.result;
+            $('#' + hdnId).val(imageAllNOCbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageAllNOCbase64);
+            // console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageAllNOCbase64;
+    }
+    function encodeImageFileAsURLLatestNoc(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageLatestNOCbase64 = reader.result;
+            $('#' + hdnId).val(imageLatestNOCbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageLatestNOCbase64);
+            //console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageLatestNOCbase64;
+    }
+    function encodeImageFileAsURLNOCAffiliating(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageNOCAffiliatingbase64 = reader.result;
+            $('#' + hdnId).val(imageNOCAffiliatingbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageNOCAffiliatingbase64);
+            //console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageNOCAffiliatingbase64;
+    }
+    function encodeImageFileAsURLAffidavitConsentPRNT(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagePRNTbase64 = reader.result;
+            $('#' + hdnId).val(imagePRNTbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imagePRNTbase64);
+            //console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imagePRNTbase64;
+    }
+    function encodeImageFileAsURLLandCertificate(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageLandCertificatebase64 = reader.result;
+            $('#' + hdnId).val(imageLandCertificatebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageLandCertificatebase64);
+            // console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageLandCertificatebase64;
+    }
+    function encodeImageFileAsURLBluePrint(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageBluePrintbase64 = reader.result;
+            $('#' + hdnId).val(imageBluePrintbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageBluePrintbase64);
+            //console.log(hdnId);
+            // console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageBluePrintbase64;
+    }
+    function encodeImageFileAsURLStaffInformation(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        //console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageStaffCertificatebase64 = reader.result;
+            $('#' + hdnId).val(imageStaffCertificatebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            //console.log(imageStaffCertificatebase64);
+            // console.log(hdnId);
+            // console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageStaffCertificatebase64;
+    }
+    function CheckValidMerger() {
+        var status = true;
+        debugger;
+        console.log(status);
+        var ProposalSocietyformerger = $('#txtProposalSocietyformerger').val();
+        if (ProposalSocietyformerger.length <= 0) {
+            $('#txtProposalSocietyformerger').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtProposalSocietyformerger').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var NOCsissued = $('#txtNOCsissued').val();
+        if (NOCsissued.length <= 0) {
+            $('#txtNOCsissued').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtNOCsissued').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var LstUnivsityAffiliationCollege = $('#txtLstUnivsityAffiliationCollege').val();
+        if (LstUnivsityAffiliationCollege.length <= 0) {
+            $('#txtLstUnivsityAffiliationCollege').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtLstUnivsityAffiliationCollege').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        // return status;
+
+        var Affidavitconsent = $('#txtAffidavitconsent').val();
+        if (Affidavitconsent.length <= 0) {
+            $('#txtAffidavitconsent').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtAffidavitconsent').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        //return status;
+
+        var AffidavitParents = $('#txtAffidavitParents').val();
+        if (AffidavitParents.length <= 0) {
+            $('#txtAffidavitParents').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtAffidavitParents').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        //other merger
+        var AllNOCIssue = $('#txtAllNOCIssue').val();
+        if (AllNOCIssue.length <= 0) {
+            $('#txtAllNOCIssue').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtAllNOCIssue').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var LatestUniversityAffilliation = $('#txtLatestUniversityAffilliation').val();
+        if (LatestUniversityAffilliation.length <= 0) {
+            $('#txtLatestUniversityAffilliation').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtLatestUniversityAffilliation').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var NOCAffiliatting = $('#txtNOCAffiliatting').val();
+        if (NOCAffiliatting.length <= 0) {
+            $('#txtNOCAffiliatting').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtNOCAffiliatting').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var AffidavitConsentParents = $('#txtAffidavitConsentParents').val();
+        if (AffidavitConsentParents.length <= 0) {
+            $('#txtAffidavitConsentParents').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtAffidavitConsentParents').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var LandCertificate = $('#txtLandCertificate').val();
+        if (LandCertificate.length <= 0) {
+            $('#txtLandCertificate').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtLandCertificate').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var BluePrintBuilding = $('#txtBluePrintBuilding').val();
+        if (BluePrintBuilding.length <= 0) {
+            $('#txtBluePrintBuilding').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtBluePrintBuilding').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        var StaffInformation = $('#txtStaffInformation').val();
+        if (StaffInformation.length <= 0) {
+            $('#txtStaffInformation').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+            //return status;
+        }
+        else {
+            $('#txtStaffInformation').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        return status;
+    }
+
+    $("#btnSaveMerger").click(function () {
+        debugger;
+        ////ProposalSocietyMerger
+        var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+        var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+        var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        if (convertedDocContent != "") {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+        }
+
+        //NOC Issue
+        var ConvertedDocNocIssue = $('#hdnNOCissuedConvertedDoc').val().split(',')[1];
+        var ConvertedDocNocissueExten = $('#hdnNOCissuedConvertedDocExten').val().split('.')[1];
+        var convertedDocContentNocContent = $('#hdnNOCissuedConvertedDoc').val().split(',')[0];
+        if (convertedDocContentNocContent != "") {
+            convertedDocContentNocContent = $('#hdnNOCissuedConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContentNocContent = $('#hdnNOCissuedConvertedDoc').val().split(',')[0];
+        }
+
+        //LstUniverSity
+        var ConvertedDocLst = $('#hdnLSTConvertedDoc').val().split(',')[1];
+        var ConvertedDocLstExten = $('#hdnLSTConvertedDocExten').val().split('.')[1];
+        var convertedDocContentLSTContent = $('#hdnLSTConvertedDoc').val().split(',')[0];
+        if (convertedDocContentLSTContent != "") {
+            convertedDocContentLSTContent = $('#hdnLSTConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocContentLSTContent = $('#hdnLSTConvertedDoc').val().split(',')[0];
+        }
+
+        //Affidavit Consent
+        var ConvertedDocAffidavitconsent = $('#hdnAffiltConvertedDoc').val().split(',')[1];
+        var ConvertedDocAffidavitConExten = $('#hdnAffiltConvertedDocExten').val().split('.')[1];
+        var convertedDocAffidavitConsenContent = $('#hdnAffiltConvertedDoc').val().split(',')[0];
+        if (convertedDocAffidavitConsenContent != "") {
+            convertedDocAffidavitConsenContent = $('#hdnAffiltConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocAffidavitConsenContent = $('#hdnAffiltConvertedDoc').val().split(',')[0];
+        }
+        //Affidavit Parents
+        var ConvertedDocAffidavitParents = $('#hdnAffiltParentsConvertedDoc').val().split(',')[1];
+        var ConvertedDocAffidavitParentsExten = $('#hdnAffiltParentsConvertedDocExten').val().split('.')[1];
+        var convertedDocAffidavitParentsContent = $('#hdnAffiltParentsConvertedDoc').val().split(',')[0];
+        if (convertedDocAffidavitParentsContent != "") {
+            convertedDocAffidavitParentsContent = $('#hdnAffiltParentsConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            convertedDocAffidavitParentsContent = $('#hdnAffiltParentsConvertedDoc').val().split(',')[0];
+        }
+        //NOC Issue
+        var hdnAllNOCIssueConvertedDoc = $('#hdnAllNOCIssueConvertedDoc').val().split(',')[1];
+        var hdnAllNOCIssueConvertedDocExten = $('#hdnAllNOCIssueConvertedDocExten').val().split('.')[1];
+        var hdnAllNOCIssueConvertedDocContent = $('#hdnAllNOCIssueConvertedDoc').val().split(',')[0];
+        if (hdnAllNOCIssueConvertedDocContent != "") {
+            hdnAllNOCIssueConvertedDocContent = $('#hdnAllNOCIssueConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnAllNOCIssueConvertedDocContent = $('#hdnAllNOCIssueConvertedDoc').val().split(',')[0];
+        }
+        //LatestUniversityAffilliation
+        var hdnLatestUniAffilliationDoc = $('#hdnLatestUniAffilliationDoc').val().split(',')[1];
+        var hdnLatestUniAffilliationDocExten = $('#hdnLatestUniAffilliationDocExten').val().split('.')[1];
+        var hdnLatestUniAffilliationContent = $('#hdnLatestUniAffilliationDoc').val().split(',')[0];
+        if (hdnLatestUniAffilliationContent != "") {
+            hdnLatestUniAffilliationContent = $('#hdnLatestUniAffilliationDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnLatestUniAffilliationContent = $('#hdnLatestUniAffilliationDoc').val().split(',')[0];
+        }
+        //NOC of the affiliating university for merger
+        var hdnLatestNOCAffiliattingDoc = $('#hdnLatestNOCAffiliattingDoc').val().split(',')[1];
+        var hdnLatestNOCAffiliattingDocExten = $('#hdnLatestNOCAffiliattingDocExten').val().split('.')[1];
+        var hdnLatestNOCAffiliattingContent = $('#hdnLatestNOCAffiliattingDoc').val().split(',')[0];
+        if (hdnLatestNOCAffiliattingContent != "") {
+            hdnLatestNOCAffiliattingContent = $('#hdnLatestNOCAffiliattingDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnLatestNOCAffiliattingContent = $('#hdnLatestNOCAffiliattingDoc').val().split(',')[0];
+        }
+        //Affidavit of consent
+        var hdnLatestAffidavitConsentPPDoc = $('#hdnLatestAffidavitConsentPPDoc').val().split(',')[1];
+        var hdnLatestAffidavitConsentPPDocExten = $('#hdnLatestAffidavitConsentPPDocExten').val().split('.')[1];
+        var hdnLatestAffidavitConsentPPContent = $('#hdnLatestAffidavitConsentPPDoc').val().split(',')[0];
+        if (hdnLatestAffidavitConsentPPContent != "") {
+            hdnLatestAffidavitConsentPPContent = $('#hdnLatestAffidavitConsentPPDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnLatestAffidavitConsentPPContent = $('#hdnLatestAffidavitConsentPPDoc').val().split(',')[0];
+        }
+        //Land CertificatePPDoc
+        var hdnLandCertificatePPDoc = $('#hdnLandCertificatePPDoc').val().split(',')[1];
+        var hdnLandCertificatePPDocExten = $('#hdnLandCertificatePPDocExten').val().split('.')[1];
+        var hdnLandCertificatePPContent = $('#hdnLandCertificatePPDoc').val().split(',')[0];
+        if (hdnLandCertificatePPContent != "") {
+            hdnLandCertificatePPContent = $('#hdnLandCertificatePPDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnLandCertificatePPContent = $('#hdnLandCertificatePPDoc').val().split(',')[0];
+        }
+
+        //BluePrintBuilding
+        var hdnBluePrintDoc = $('#hdnBluePrintDoc').val().split(',')[1];
+        var hdnBluePrintDocExten = $('#hdnBluePrintDocExten').val().split('.')[1];
+        var hdnBluePrintDocContent = $('#hdnBluePrintDoc').val().split(',')[0];
+        if (hdnBluePrintDocContent != "") {
+            hdnBluePrintDocContent = $('#hdnBluePrintDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnBluePrintDocContent = $('#hdnBluePrintDoc').val().split(',')[0];
+        }
+        //hdnStaffInformationDoc
+        var hdnStaffInformationDoc = $('#hdnStaffInformationDoc').val().split(',')[1];
+        var hdnStaffInformationDocExten = $('#hdnStaffInformationDocExten').val().split('.')[1];
+        var hdnStaffInformationDocContent = $('#hdnStaffInformationDoc').val().split(',')[0];
+        if (hdnStaffInformationDocContent != "") {
+            hdnStaffInformationDocContent = $('#hdnStaffInformationDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            hdnStaffInformationDocContent = $('#hdnStaffInformationDoc').val().split(',')[0];
+        }
+        var id = $("#hiddenone").val();
+        var model = {
+
+            ProposalSocietyMerger: convertedDoc,
+            ProposalSocietyMergerExtension: convertedDocExte,
+            ProposalSocietyMergertetype: convertedDocContent,
+
+            NOCsissued: ConvertedDocNocIssue,
+            NOCsissuedExtension: ConvertedDocNocissueExten,
+            NOCsissuedtetype: convertedDocContentNocContent,
+
+            LstUnivsityAffiliationCollege: ConvertedDocLst,
+            LstUnivsityAffiliationCollegeExtension: ConvertedDocLstExten,
+            LstUnivsityAffiliationCollegetype: convertedDocContentLSTContent,
+
+            Affidavitconsent: ConvertedDocAffidavitconsent,
+            AffidavitconsentExtension: ConvertedDocAffidavitConExten,
+            Affidavitconsenttype: convertedDocAffidavitConsenContent,
+
+            AffidavitParents: ConvertedDocAffidavitParents,
+            AffidavitParentsExtension: ConvertedDocAffidavitParentsExten,
+            AffidavitParentstype: convertedDocAffidavitParentsContent,
+
+            //IN other Noc model
+            AllNOCsIssued: hdnAllNOCIssueConvertedDoc,
+            AllNOCsIssuedExtension: hdnAllNOCIssueConvertedDocExten,
+            AllNOCsIssuedstype: hdnAllNOCIssueConvertedDocContent,
+            //Letest NOC
+            LatestUniversityAffilliation: hdnLatestUniAffilliationDoc,
+            LatestUniversityAffilliationExtension: hdnLatestUniAffilliationDocExten,
+            LatestUniversityAffilliationtype: hdnLatestUniAffilliationContent,
+            //NOCAffiliatting
+            NOCAffiliatting: hdnLatestNOCAffiliattingDoc,
+            NOCAffiliattingExtension: hdnLatestNOCAffiliattingDocExten,
+            NOCAffiliattingtype: hdnLatestNOCAffiliattingContent,
+            //AffidavitConsentParents
+            AffidavitConsentParents: hdnLatestAffidavitConsentPPDoc,
+            AffidavitConsentParentsExtension: hdnLatestAffidavitConsentPPDocExten,
+            AffidavitConsentParentstype: hdnLatestAffidavitConsentPPContent,
+            //land details
+            LandCertificate: hdnLandCertificatePPDoc,
+            LandCertificateExtension: hdnLandCertificatePPDocExten,
+            LandCertificatetype: hdnLandCertificatePPContent,
+            //BluePrintBuilding
+            BluePrintBuilding: hdnBluePrintDoc,
+            BluePrintBuildingExtension: hdnBluePrintDocExten,
+            BluePrintBuildingtype: hdnBluePrintDocContent,
+            //Staf
+            StaffInformation: hdnStaffInformationDoc,
+            StaffInformationExten: hdnStaffInformationDocExten,
+            StaffInformationContent: hdnStaffInformationDocContent,
+            iCollegeId: id
+        }
+
+        if (CheckValidMerger()) {
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain()+"/CollegeAmendment/MergerDetails",
+                data: model,
+                success: function (result) {
+                    debugger;
+                    if (result.StatusCode == "1") {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        })
+                        document.getElementById("txtProposalSocietyformerger").value = "";
+                        document.getElementById("txtNOCsissued").value = "";
+                        document.getElementById("txtLstUnivsityAffiliationCollege").value = "";
+                        document.getElementById("txtAffidavitconsent").value = "";
+                        document.getElementById("txtAffidavitParents").value = "";
+                        document.getElementById("txtAllNOCIssue").value = "";
+                        document.getElementById("txtLatestUniversityAffilliation").value = "";
+                        document.getElementById("txtNOCAffiliatting").value = "";
+                        document.getElementById("txtAffidavitConsentParents").value = "";
+                        document.getElementById("txtLandCertificate").value = "";
+                        document.getElementById("txtBluePrintBuilding").value = "";
+                        document.getElementById("txtStaffInformation").value = "";
+                        location.reload(true);
+                        $('#Merger').hide();
+                        $('#mergerDetails').show();
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+                }
+            });
+        }
+    });
+</script>
+<!--College Managment END--->
+<!---Delete Functionlity Start-->
+<script type="text/javascript">
+    function DeleteDocumentDetails(iPk_ClgAmdId, iPk_AplcnAttch, Deletetype) {
+        debugger
+        var deleteType = Deletetype;
+        console.log("delete Type==", deleteType);
+        var Model = {
+            //type: itemType,
+            CollegeId: parseInt(iPk_ClgAmdId),
+            iCollegeId: parseInt(iPk_AplcnAttch)
+        }
+        var d = JSON.stringify(Model);
+        console.log(d);
+        Swal.fire({
+            title: 'Are You Delete Confirmation ?',
+            showDenyButton: true, showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/CollegeAmendment/UpdateDetails",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(Model),
+                    success: function (data) {
+
+                        if (data.StatusCode == 1) {
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Delete Successfully',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            location.reload(true);
+                            //$(window).load(function () {
+
+                            //if (deleteType == 'CollegeEdu') {
+                            //    $('#womenTable').load('#womenTable')
+                            //}
+                            //if (deleteType == 'CollegeName') {
+                            //    $('#nameOfCollege').load('#nameOfCollege')
+                            //}
+                            //if (deleteType == 'CollegePlace') {
+
+                            //    $('#PlaceChange').load('#PlaceChange')
+                            //}
+                            //if (deleteType == 'CollegeManagement') {
+
+                            //    $('#clgManagement').load('#clgManagement')
+                            //}
+                            //if (deleteType == 'CollegeMerger') {
+
+                            //    $('#mergerDetails').load('#mergerDetails')
+                            //}
+                            //});
+
+
+                        }
+                    },
+                    error: function (d) {
+                        console.log(d);
+                        alert("404. Please wait until the File is Loaded.");
+
+                    }
+                });
+            }
+
+        });
+    }
+
+</script>
+<!---Delete Functionlity End-->

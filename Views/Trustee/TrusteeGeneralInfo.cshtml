@@ -1,0 +1,1053 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "General Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TrusteeBO.TrusteeInfo TrustDetails = ViewBag.TrustDetails as TrusteeBO.TrusteeInfo;
+    List<CustomMaster> TrusteeType = new List<CustomMaster>();
+    if (ViewBag.TrusteeType != null)
+    {
+        TrusteeType = (List<CustomMaster>)ViewBag.TrusteeType;
+    }
+}
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+
+    .labels:empty {
+        display: none;
+    }
+
+    .labels-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    labels {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+
+    .delete-row, h2 {
+        margin: 0px !important;
+    }
+
+    .filestyle {
+        border: 0px !important;
+    }
+</style>
+@section styles {
+    <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+    @*<link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">*@
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+}
+<style type="text/css">
+    .btnpink {
+        color: white !important;
+        background: #f953c6;
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6);
+        background: linear-gradient(to left, #b91d73, #f953c6);
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+    /*   table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    /*.table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <div class="float-right d-none">
+                <ol class="breadcrumb">
+
+                    <li class="breadcrumb-item active">Trustee General Information</li>
+                </ol>
+            </div>
+            <h4 class="page-title w-75">@ViewBag.Title-(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)</h4>
+            <div class="w-25 text-right">
+                <a href="~/Dashboard/DashboardUser" title="Back" value="Go back!" class="theme-button-mockup"><i class="fas fa-arrow-left"></i></a>
+
+                <a href="~/BasicDetails/CollageList" title="Next" class="theme-button-mockup"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card noc-layouts mt-0">
+    <div class="card-header  title-heading p-0" style="">
+        <h4 class="m-0 float-left title-heading">Trustee General Information</h4>
+    </div>
+    @*@using (Html.BeginForm("TrusteeGeneralInfo", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data" }))
+        {*@
+    <div class="card-body">
+        <div class="col-12">
+            <div class="row">
+                <table class="table table-bordered m-0" id="tblsummery" style="font-size: 14px;">
+
+                    <tr>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Name of Trust</th>
+                        <td>
+                            <span id="spnTrustReg">@TrustDetails.Name</span>
+                        </td>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Trust Type</th>
+                        <td><span id="spnName">@TrustDetails.TrustType</span></td>
+
+                    </tr>
+                    <tr>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Registration Number</th>
+                        <td><span id="spnName">@TrustDetails.RegistrationNo</span></td>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">SSOID</th>
+                        <td><span id="spnBRN">@TrustDetails.SSOID</span></td>
+
+                    </tr>
+                    <tr>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">District</th>
+                        <td><span id="spnDate">@TrustDetails.District</span></td>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Act</th>
+                        <td><span id="spnDate">@TrustDetails.Act</span></td>
+                    </tr>
+                    <tr>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Status</th>
+                        <td><span id="spnDistrict">@TrustDetails.Status</span></td>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Date Of Registration</th>
+                        <td><span id="spnAct">@TrustDetails.RegistrationDate</span></td>
+                    </tr>
+
+                </table>
+                <br />
+                <hr />
+
+                <div class="form-group col-lg-4 col-md-6" id="filediv" style="margin-top: 26px;">
+                    <div class="col-10">
+                        <label for="file2" class="noc-form-label">Trustee Member Proof (Upload Max size 1MB)</label>
+                        <span style="color:red;">*</span>
+                        <div>
+                            <input type="file" id="TMProfffile" class="form-control" name="TMProfffile" accept=".pdf" onchange="return encodeImageFileAsURL(this,'hdnTMProfffileDoc','hdnTMProfffileDocExten')" />
+                            <input type="hidden" id="hdnTMProfffileDoc" />
+                            <input type="hidden" id="hdnTMProfffileDocExten" />
+                            <label for="error" class="col-sm-12" id="errorTTMPfile" style="display:none;"></label>
+                            <label for="error" class="col-sm-12" id="errorTTMPfileSize" style="display:none;"></label>
+                            <label for="error" class="col-sm-12" id="errorTTMPfileSize1" style="display:none;"></label>
+                        </div>
+                    </div>
+                    @if (TrustDetails.TRMP != "")
+                    {
+                        <div class="Col-2" style="margin-top:-36px;float:right">
+                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = TrustDetails.TRMP })" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group col-lg-4 col-md-6" id="filediv" style="margin-top: 26px;">
+                    <div class="col-10">
+                        <label for="file2" class="noc-form-label">Trust Logo(Upload Max size 50KB)</label>
+                        <span style="color:red;">*</span>
+                        <div>
+                            <input type="file" id="trustfileDoc" class="form-control" name="trustfileDoc" accept=".png,.jpg,.jpeg" onchange="return encodeImageFileAsURL(this,'hdntrustfileDoc','hdntrustfileDocExten')" />
+                            <input type="hidden" id="hdntrustfileDoc" />
+                            <input type="hidden" id="hdntrustfileDocExten" />
+
+                            <label for="error" class="col-sm-12" id="errortrustfileDoc" style="display:none;"></label>
+                            <label for="error" class="col-sm-12" id="errortrustfileDocSize" style="display:none;"></label>
+                        </div>
+                    </div>
+                    @if (TrustDetails.TrusteeLogo != "")
+                    {
+                        <div class="Col-2" style="margin-top:-36px;float:right">
+                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = TrustDetails.TrusteeLogo })" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                        </div>
+                    }
+                </div>
+                <div class="form-group col-lg-4 col-md-6" style="margin-top: 26px;">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Date of Election of Present Management Committee <span style="color:red;">*</span></label>
+                    @if (ViewData["ElectionDate"] != null && ViewData["ElectionDate"] != "")
+                    {
+                        <div class="input-group">
+                            <input type="text" class="form-control noc-input-text" name="ElectionDate" id="ElectionDate" value="@ViewData["ElectionDate"]">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="input-group">
+                            <input type="text" class="form-control noc-input-text" name="ElectionDate" id="ElectionDate">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="dripicons-calendar"></i></span>
+                            </div>
+                        </div>
+                    }
+                    <label for="error" class="col-sm-12" id="errorElectionDate" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Women members of management committee is more than 30% of total members <span style="color:red;">*</span></label>
+                    @if (TrustDetails.MemberofMngCommtee == "1")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio12" value="1" name="MemberofMngComt" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio12">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio13" value="0" name="MemberofMngComt" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio13">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMemberofMngComt" })
+                    }
+                    else if (TrustDetails.MemberofMngCommtee == "0")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio12" value="1" name="MemberofMngComt" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio12">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio13" value="0" name="MemberofMngComt" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio13">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMemberofMngComt" })
+                    }
+                    else
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio12" value="1" name="MemberofMngComt" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio12">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio13" value="0" name="MemberofMngComt" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio13">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMemberofMngComt" })
+                    }
+                    <label for="error" class="col-sm-12" id="errorMemberofMngComt" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Date of election of Management committee not more than 3 years <span style="color:red;">*</span></label>
+                    @if (TrustDetails.Morethentree == "1")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio14" value="1" name="Morethentree" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio14">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio15" value="0" name="Morethentree" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio15">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMorethentree" })
+                    }
+                    else if (TrustDetails.Morethentree == "0")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio14" value="1" name="Morethentree" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio14">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio15" value="0" name="Morethentree" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio15">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMorethentree" })
+                    }
+                    else
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio14" value="1" name="Morethentree" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio14">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio15" value="0" name="Morethentree" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio15">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblMorethentree" })
+                    }
+                    <label for="error" class="col-sm-12" id="errorMorethentree" style="display:none;"></label>
+                </div>
+                <div class="form-group col-lg-4 col-md-6">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Other Institution run by the Society <span style="color:red;">*</span></label>
+                    @if (TrustDetails.OtherInstitute == "1")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio16" value="1" name="OtherInstitute" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio16">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio17" value="0" name="OtherInstitute" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio17">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblOtherInstitute" })
+                    }
+                    else if (TrustDetails.OtherInstitute == "0")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio16" value="1" name="OtherInstitute" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio16">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio17" value="0" name="OtherInstitute" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio17">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblOtherInstitute" })
+                    }
+                    else
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio16" value="1" name="OtherInstitute" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio16">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio17" value="0" name="OtherInstitute" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio17">No</label>
+                            </div>
+                        </div>
+                        <br />
+                        @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblOtherInstitute" })
+                    }
+                    <label for="error" class="col-sm-12" id="errorOtherInstitute" style="display:none;"></label>
+                </div>
+
+
+            </div>
+
+
+        </div>
+    </div>
+    <div id="divinstitute">
+        <div class="card-header p-0">
+            <h4 class="m-0 title-heading float-left rounded-0">Institute Details</h4>
+        </div>
+        <div id="contactsData">
+            <div class="noc-trustee-layout p-3" style="">
+                <div class="noc-trustee-form">
+                    <input type="text" id="InstituteName" name="InstituteName" placeholder="Institute Name" class="form-control alphaspace noc-input-text cutcopypaste" maxlength="50">
+                    <label for="error" class="col-sm-12" id="lblcontactdeatils" style="display:none;"></label>
+                </div>
+                <div class="noc-trustee-form">
+                    <input type="text" id="PersonName" name="PersonName" placeholder="Contact Person Name" maxlength="50" class="form-control alphaspace noc-input-text cutcopypaste">
+                    <label for="error" class="col-sm-12" id="PersonNameContact" style="display:none;" />
+                </div>
+                <div class="noc-trustee-form">
+                    <input type="text" id="Number" name="Number" placeholder="Contact Number" minlength="10" maxlength="10" class="form-control numberonly noc-input-text cutcopypaste">
+                    <label for="error" class="col-sm-12" id="ContactNumber" style="display:none;" />
+                </div>
+                <div class="noc-trustee-form text-right" style="width:65px;">
+                    <input type="button" class="theme-button-mockup add-row " value="+ Add">
+                </div>
+            </div>
+            <div class="">
+                @* @Html.ValidationMessage("InstituteList", "", new { @class = "labels labels-danger", id = "lblcontactdeatils" })*@
+            </div>
+
+
+            <div class="noc-layouts-tbl" style="overflow-x:auto;">
+                <table class="table table-borderless">
+
+                    <tbody style="">
+                        <tr>
+                            <th>Institute Name</th>
+                            <th>Conatct Person Name</th>
+                            <th>Contact Number</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        @if (TrustDetails.InstituteDetails != null)
+                        {
+                            if (TrustDetails.InstituteDetails.Count > 0)
+                            {
+                                foreach (var item in TrustDetails.InstituteDetails)
+                                {
+                                    <tr>
+                                        <td>@item.InstituteName</td>
+                                        <td>@item.ContactPerson</td>
+                                        <td>@item.Number</td>
+                                        <td>
+                                            @*<input class='delete-row theme-delete-btn' type='button' name='delete' value='Remove' />*@
+                                            <button type='button' class='delete-row theme-delete-btn' name='delete' title='Remove'><i class='fas fa-trash-alt'></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row m-0">
+        <div class="card-body p-0 mt-2">
+            <div class="form-group">
+
+                <h4 class="mt-0 title-heading rounded-0 float-left">Trust Administrative Details</h4>
+            </div>
+            <div class="form-group noc-layouts-tbl" style="overflow-x:auto;">
+                <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                    <thead style="">
+                        <tr>
+                            <th>SNo</th>
+                            <th>Name</th>
+                            <th>Post Name</th>
+                            <th>Occupation</th>
+                            <th>Address</th>
+                            <th>Contact No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (TrustDetails.AdminList != null)
+                        {
+                            int i = 1;
+                            foreach (var item in TrustDetails.AdminList)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.PostName</td>
+                                    <td>@item.Occupation</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.ContactNo</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" style="text-align: center;">No Data Available</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row m-0">
+        <div class="card-body p-0 mt-2">
+            <div class="form-group">
+
+                <h4 class="mt-0 title-heading rounded-0 float-left">Trust Document Details</h4>
+            </div>
+            <div class="form-group noc-layouts-tbl" style="overflow-x:auto;">
+                <table class="table table-borderless table-striped table-hover" id="tblCapital">
+                    <thead style="">
+                        <tr>
+                            <th>SNo</th>
+                            <th>Document Type</th>
+                            <th>Date</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (TrustDetails != null)
+                        {
+                            int i = 1;
+                            <tr>
+                                <td>@i</td>
+                                <td>Trust Logo</td>
+                                <td>@TrustDetails.LogoCreateDated</td>
+                                <td>
+                                    @if (TrustDetails.TrusteeLogo != null)
+                                    {
+                                        <div>
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = TrustDetails.TrusteeLogo })" title="Trust Logo" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                            @*<span>@TrustDetails.LogoCreateDated</span>*@
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@i</td>
+                                <td>Member ProofDoc</td>
+                                <td>@TrustDetails.TrustMembercreatedate</td>
+                                <td>
+                                    @if (TrustDetails.TRMP != null)
+                                    {
+                                        <div>
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = TrustDetails.TRMP })" title="Trust Member Proof" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+                                            @*<span>@TrustDetails.TrustMembercreatedate</span>*@
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-100 float-left" style="margin-bottom:20px; padding:0 15px;">
+        <div class="w-100 float-left">
+            <button class="theme-button-mockup" style="float:right" type="button" id="btnSave">Save & Proceed To Add Commitee Member</button>
+            @*<button class="btn btn-primary waves-effect waves-light" style="float:right" id="btnSave">Save</button>*@
+        </div>
+    </div>
+    @*@if (TrustDetails.TRMP != "" && TrustDetails.TrusteeLogo != "")
+        {
+            <div class="row col-lg-12" style="margin-top:20px">
+                <div class="col-lg-12 loat-right">
+
+                    <a href="@Url.Action("Index","Trustee")" class="btn btn-primary" style="display: block; margin:5px; background-color: deeppink;float:right" id="Reset">Proceed To Add Commitee Member</a>
+                </div>
+
+            </div>
+        }*@
+
+</div>
+
+@section scripts {
+    <script src="~/plugins/moment/moment.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="~/plugins/select2/select2.min.js"></script>
+    <script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+    <script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.cutcopypaste').on("cut copy paste", function (e) {
+                e.preventDefault();
+            });
+            $('#TrustType').select2();
+            $("#RegistrationDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+            });
+            $("#ElectionDate").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        var MB = 1048576; //= 1MB
+        var KB = 50000;    //50KB Bytes(in decimal)
+        //50 KB = 51200 Bytes(in binary)
+        var imagebase64 = "";
+        function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+            var elementID = element.id;
+            var file = element.files[0];
+            console.log(file.name);
+            //console.log(elementID);
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                imagebase64 = reader.result;
+                $('#' + hdnId).val(imagebase64);
+                $('#' + hdnExtnID).val(file.name);
+                //console.log(imagebase64)
+                //console.log(hdnId)
+            }
+            reader.readAsDataURL(file);
+            return imagebase64;
+        }
+        $('.alphaspace').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+        });
+        $('.alphanumeric').keypress(function (e) {
+            var regEx = /^[0-9a-zA-Z ]+$/;
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regEx.test(str)) {
+                return true;
+            }
+            else {
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+
+        });
+        $('.numberonly').keypress(function (e) {
+            var charCode = (e.which) ? e.which : event.keyCode
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+                return false;
+        });
+        $(".add-row").click(function () {
+            var markup = "";
+            var name = $("#InstituteName").val();
+            var number = $("#PersonName").val();
+            var email = $("#Number").val();
+            var len = email.length;
+
+            if (name != '' && number != '' && email != '') {
+                if (len >= 10) {
+                    $('#ContactNumber').remove();
+                    $("#Number").css({ 'border': '' });
+                    markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><input class='delete-row' type='button' name='delete' value='Remove' /></td></tr>";
+                    $("#contactsData tfoot").append(markup);
+                    $('#InstituteName').val('');
+                    $('#PersonName').val('');
+                    $('#Number').val('');
+
+                    $('#lblcontactdeatils').remove();
+                    $("#InstituteName").removeClass("redborder");
+                    $('#PersonNameContact').remove();
+                    $("#PersonName").removeClass("redborder");
+
+                }
+                else {
+                    $('label[for="error"]').show();
+                    ContactNumber.textContent = "Please Enter Ten digit Contact Number"
+                    $("#ContactNumber").addClass('colordiv');
+                    document.getElementById('Number').style.border = "1px solid red";
+                    $('#Number').focus();
+                    $('#Number').val('');
+
+                    $('#lblcontactdeatils').remove();
+                    $("#InstituteName").removeClass("redborder");
+                    $('#PersonNameContact').remove();
+                    $("#PersonName").removeClass("redborder");
+                }
+            }
+            else
+            {
+                debugger
+                if (!$('#InstituteName').val()) {
+                    $('label[for="error"]').show();
+                    lblcontactdeatils.textContent = "Please Enter Institute Name"
+                    $("#InstituteName").addClass('redborder');// css(".redborder");
+                    $("#lblcontactdeatils").addClass('colordiv');// css(".redborder");
+                    $('#InstituteName').focus();
+                    $('#InstituteName').val('');
+                }
+                else {
+                    $('#lblcontactdeatils').remove();
+                    $("#InstituteName").removeClass("redborder");
+                }
+                if (!$('#PersonName').val()) {
+                    $('label[for="error"]').show();
+                    PersonNameContact.textContent = "Please Enter PersonName"
+                    $("#PersonName").addClass('redborder');
+                    $("#PersonNameContact").addClass('colordiv');
+                    $('#PersonName').focus();
+                    $('#PersonName').val('');
+                }
+                else {
+                    $('#PersonNameContact').remove();
+                    $("#PersonName").removeClass("redborder");
+                }
+                if (!$('#Number').val()) {
+                    $('label[for="error"]').show();
+                    ContactNumber.textContent = "Please Enter Contact Number"
+                    $("#ContactNumber").addClass('colordiv');
+                    document.getElementById('Number').style.border = "1px solid red";
+                    $('#Number').focus();
+                    $('#Number').val('');
+                }
+            }
+            //$("#InstituteName").val('');
+            //$("#PersonName").val('');
+            //$("#Number").val('');
+            //$('#lblcontactdeatils').html("");
+        });
+        $("#contactsData").on("click", ".delete-row", function () {
+            $(this).closest("tr").remove();
+        });
+        $("input[name='OtherInstitute']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divinstitute').show();
+            } else if ($(this).val() === '0') {
+                $('#contactsData tfoot').html('');
+                $('#divinstitute').hide();
+            }
+        });
+
+        function CheckValid() {
+            //alert("in");
+            var status = true;
+            debugger;
+            var date = $('#ElectionDate').val();
+            if (date.length <= 0) {
+                $('label[for="error"]').show();
+                errorElectionDate.textContent = "Please Select Field";
+                $('#errorElectionDate').addClass('colordiv');
+                $('#ElectionDate').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#errorElectionDate').remove();
+                $('#ElectionDate').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+            var contactsInfo = new Array();
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+            var MemberofMngComt = $('input[name="MemberofMngComt"]:checked').val();
+            if (typeof (MemberofMngComt) == 'undefined') {
+                //$('#lblMemberofMngComt').html("Please Select Field");
+                $('label[for="error"]').show();
+                errorMemberofMngComt.textContent = "Please Select Field";
+                $('#errorMemberofMngComt').addClass('colordiv');
+                status = false;
+
+            }
+            else {
+                $('#errorMemberofMngComt').remove();
+                //$('#lblMemberofMngComt').html("");
+            }
+
+            var Morethentree = $('input[name="Morethentree"]:checked').val();
+            if (typeof (Morethentree) == 'undefined') {
+                $('label[for="error"]').show();
+                errorMorethentree.textContent = "Please Select Field";
+                $('#errorMorethentree').addClass('colordiv');
+                status = false;
+                //$('#lblMorethentree').html("Please Select Field");
+            }
+            else {
+                //$('#lblMorethentree').html("");
+                $('#errorMorethentree').remove();
+            }
+
+            var OtherInstitute = $('input[name="OtherInstitute"]:checked').val();
+            if (OtherInstitute == 0) {
+                $('#errorOtherInstitute').remove();
+            }
+            else if (OtherInstitute == 1) {
+                if (contactsInfo.length <= 0) {
+                    $('label[for="error"]').show();
+                    errorOtherInstitute.textContent = "Add atlest one row in contact deatils";
+                    $('#errorOtherInstitute').addClass('colordiv');
+                    status = false;
+
+                }
+                else {
+                    $('#errorOtherInstitute').remove();
+
+                }
+            }
+            else {
+                $('label[for="error"]').show();
+                errorOtherInstitute.textContent = "Please upload Max 50KB file";
+                $('#errorOtherInstitute').addClass('colordiv');
+                status = false;
+
+            }
+
+            if ('@TrustDetails.TRMP' == "") {
+                if ($('#TMProfffile').val().length > 0) {
+                    var TMPfile_size = $('#TMProfffile')[0].files[0].size;
+                    if (TMPfile_size > MB) {
+                        $('label[for="error"]').show();
+                        errorTTMPfileSize1.textContent = "Please upload Max 1MB file";
+                        $('#errorTTMPfileSize1').addClass('colordiv');
+                        $('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                    }
+                    else {
+                        $('#TMProfffile').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errorTTMPfileSize1').remove();
+                    }
+                }
+                else {
+                    $('label[for="error"]').show();
+                    errorTTMPfileSize.textContent = "Please upload Max 1MB file";
+                    $('#errorTTMPfileSize').addClass('colordiv');
+                    $('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+            }
+            else {
+                if ($('#TMProfffile').val().length > 0) {
+                    var TMPfile_size = $('#TMProfffile')[0].files[0].size;
+                    if (TMPfile_size > MB) {
+                        $('label[for="error"]').show();
+                        errorTTMPfileSize.textContent = "Please upload Max 1MB file";
+                        $('#errorTTMPfileSize').addClass('colordiv');
+                        $('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                    }
+                    else {
+                        $('#TMProfffile').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errorTTMPfileSize').remove();
+                    }
+                }
+                else {
+                    $('label[for="error"]').show();
+                    errorTTMPfileSize.textContent = "Please upload Max 1MB file";
+                    $('#errorTTMPfileSize').addClass('colordiv');
+                    $('#TMProfffile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+            }
+
+            if ('@TrustDetails.TrusteeLogo' == "") {
+                if ($('#trustfileDoc').val().length > 0) {
+                    var aadfile_size = $('#trustfileDoc')[0].files[0].size;
+                    if (aadfile_size > KB) {
+                        $('label[for="error"]').show();
+                        errortrustfileDoc.textContent = "Please upload Max 50KB file";
+                        $('#errortrustfileDoc').addClass('colordiv');
+                        $('#trustfileDoc').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                    }
+                    else {
+                        $('#trustfileDoc').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errortrustfileDoc').remove();
+                    }
+                }
+            }
+            else {
+                if ($('#trustfileDoc').val().length > 0) {
+                    var aadfile_size = $('#trustfileDoc')[0].files[0].size;
+                    if (aadfile_size > KB) {
+                        $('label[for="error"]').show();
+                        errortrustfileDocSize.textContent = "Please upload Max 50KB file";
+                        $('#errortrustfileDocSize').addClass('colordiv');
+                        $('#trustfileDoc').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                    }
+                    else {
+                        $('#trustfileDoc').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errortrustfileDocSize').remove();
+                    }
+                }
+            }
+
+                //if (status) {
+                //    $('#Trusteeform').submit();
+                //}
+                //else {
+                //    status = false;
+                //}
+                return status;
+            }
+
+        $("#btnSave").click(function () {
+            debugger;
+            var TRMPContenttype = $('#hdnTMProfffileDoc').val().split(',')[0];
+            var TrusteeContentType = $('#hdntrustfileDoc').val().split(',')[0];
+            //LOGO
+            var TRMP = $('#hdnTMProfffileDoc').val().split(',')[1];
+            var TRMPExtension = $('#hdnTMProfffileDocExten').val().split('.')[1];
+            if (TRMPContenttype != "")
+                TRMPContenttype = $('#hdnTMProfffileDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            else
+                TRMPContenttype = $('#hdnTMProfffileDoc').val().split(',')[0];
+            //Trustee Member Proof
+            var TrusteeLogo = $('#hdntrustfileDoc').val().split(',')[1];
+            var TrusteeExtension = $('#hdntrustfileDocExten').val().split('.')[1];
+
+            if (TrusteeContentType != "")
+                TrusteeContentType = $('#hdntrustfileDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            else
+                TrusteeContentType = $('#hdntrustfileDoc').val().split(',')[0];
+
+
+
+
+            var ElectionDate = $('#ElectionDate').val();
+            var MemberofMngComt = $('input[name="MemberofMngComt"]:checked').val();
+            var Morethentree = $('input[name="Morethentree"]:checked').val();
+            var OtherInstitute = $('input[name="OtherInstitute"]:checked').val();
+
+            var contactsInfo = new Array();
+            //Loop through the Table rows and build a JSON array.
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.InstituteName = row.find("td").eq(0).html();
+                contactInfo.ContactPerson = row.find("td").eq(1).html();
+                contactInfo.Number = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+
+            var modal = {
+                TrusteeLogo: TrusteeLogo,
+                TrusteeExtension: TrusteeExtension,
+                TrusteeContentType: TrusteeContentType,
+                TRMP: TRMP,
+                TRMPExtension: TRMPExtension,
+                TRMPContenttype: TRMPContenttype,
+                ElectionDate: ElectionDate,
+                MemberofMngCommtee: MemberofMngComt,
+                Morethentree: Morethentree,
+                OtherInstitute: OtherInstitute,
+                InstituteDetails: contactsInfo
+            }
+            console.log(modal);
+
+            if (CheckValid()) {
+                $.ajax({
+                    type: "POST",
+                    url: GetglobalDomain() + "/Trustee/TrusteeGeneralInfo",
+                    data: modal,
+                    success: function (result) {
+                        if (result.StatusCode == '1') {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Data saved sussessfully!',
+                                allowOutsideClick: false,
+                                showCancelButton: false,
+                                showCloseButton: true,
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    var url = GetglobalDomain() + "/Trustee/Index";
+                                    window.location.href = url;
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Failed',
+                                'Data not Saved'
+                            )
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+}

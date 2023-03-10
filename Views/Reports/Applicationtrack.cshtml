@@ -1,0 +1,190 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Application Tracking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var tracklist = (List<ApplicationTrack>)ViewBag.Applicationtrack;
+    // List<ApplicationTrack> tracklist = ViewBag.Applicationtrack as List<ApplicationTrack>;
+    var ApplicationNumber = ViewBag.applGUID;
+}
+<style>
+
+   .noc-trackings .order-tracking {
+        width: 100%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 15px;
+    }
+
+   .noc-trackings .order-tracking .is-complete {
+            display: block;
+            position: relative;
+            border-radius: 50%;
+            height: 30px;
+            width: 30px;
+            border: 0px solid #AFAFAF;
+            background-color: #f7be16;
+            margin-right: 20px;
+            transition: background 0.25s linear;
+            -webkit-transition: background 0.25s linear;
+            z-index: 2;
+        }
+
+   .noc-trackings .order-tracking .is-complete:after {
+                display: block;
+                position: absolute;
+                content: '';
+                height: 14px;
+                width: 7px;
+                top: -2px;
+                bottom: 0;
+                left: 5px;
+                margin: auto 0;
+                border: 0px solid #AFAFAF;
+                border-width: 0px 2px 2px 0;
+                transform: rotate(45deg);
+                opacity: 0;
+            }
+
+   .noc-trackings .order-tracking.completed .is-complete {
+            border-color: #27aa80;
+            border-width: 0px;
+            background-color: #27aa80;
+        }
+
+   .noc-trackings .order-tracking.completed .is-complete:after {
+                border-color: #fff;
+                border-width: 0px 3px 3px 0;
+                width: 7px;
+                left: 11px;
+                opacity: 1;
+            }
+
+   .noc-trackings .order-tracking p {
+            color: #A4A4A4;
+            font-size: 16px;
+            margin-top: 8px;
+            margin-bottom: 0;
+            line-height: 20px;
+            width: 100%;
+        }
+
+   .noc-trackings .order-tracking p span {
+                font-size: 14px;
+            }
+
+   .noc-trackings .order-tracking.completed p {
+            color: #000;
+        }
+
+   .noc-trackings .order-tracking::before {
+            content: '';
+            display: block;
+            height: calc(100% - 0px);
+            width: 3px;
+            background-color: #f7be16;
+            top: -25px;
+            position: absolute;
+            left: calc(10px + 20px);
+            z-index: 0;
+        }
+
+   .noc-trackings .order-tracking:first-child:before {
+            display: none;
+        }
+
+   .noc-trackings .order-tracking.completed:before {
+            background-color: #27aa80;
+        }
+</style>
+
+<div class="noc-trackings">
+    <div class="row">
+        <div class="col-12 w-100 float-left">
+            @{
+                foreach (var item in tracklist)
+                {
+                        <div class="">
+                            <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="order-tracking ">
+                                                    <span class="is-complete"></span>
+                                                    <p>Level<br><span>@item.sRcvrLvlID</span></p>
+                                                </div>
+                                                <div class="order-tracking ">
+                                                    <span class="is-complete"></span>
+                                                    <p>Process Name<br><span>@item.sPrcName</span></p>
+                                                </div>
+                                                <div class="order-tracking ">
+                                                    <span class="is-complete"></span>
+                                                    <p>Date<br><span>@item.dtPrcDate</span></p>
+                                                </div>
+                                                <div class="order-tracking completed">
+                                                    <span class="is-complete"></span>
+                                                    <p>Narration<br><span>@item.sNrtn</span></p>
+                                                </div>
+                                            </div>
+                                           
+                            </div>
+                           
+                            <!--- <div class="order-tracking completed">
+        Level<span class="is-complete">@item.sRcvrLvlID</span>
+    </div>
+    <div class="order-tracking completed">
+        Process Name <span class="is-complete">@item.sPrcName</span>
+    </div>
+    <div class="order-tracking">
+        <p>Date <br><span>@item.dtPrcDate</span></p>
+    </div>
+    <div class="order-tracking">
+        <p>Narration<br><span>@item.sNrtn</span></p>
+    </div>---->
+                        </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //$(document).ready(function () {
+    //    //TrackingList();      
+    //});
+
+    //function TrackingList() {
+    //    //var urls = "/FormView/CollageList"
+    //    $.ajax({
+    //        headers: {
+    //            'Accept': 'application/json',
+    //            'Content-Type': 'application/json'
+    //        },
+    //        url: GetglobalDomain() + "/Reports/Applicationtrack",
+    //        dataType: 'json',
+    //        type: 'GET',
+    //        cache: false,
+    //        success: function (data) {
+    //            debugger
+    //            console.log(JSON.stringify(data.Data));
+    //            //$('#collegetype1').val(data.Data[0].CollegeType);
+    //            //$('#college-type-urban1').val(data.Data[0].AreaType);
+    //            //$('#college-lavel').val(data.Data[0].CollegeLevel);
+    //            //$('#college-medium').val(data.Data[0].sCollegeMedium);
+    //            //$('#College-Name').val(data.Data[0].CollageName);
+    //            //$('#University-Name').val(data.Data[0].CollageName);
+    //            //$('#mobile-no').val(data.Data[0].MobileNo);
+    //            //$('#email-adress').val(data.Data[0].Email);
+    //            //$('#address-line1').val(data.Data[0].AddressLineOne);
+    //            //$('#address-line2').val(data.Data[0].AddressLineTwo);
+    //            //$('#address-District').val(data.Data[0].DistrictName);
+    //            //$('#address-Tehsil').val(data.Data[0].TehsilName);
+    //            //$('#address-Block').val(data.Data[0].BlockName);
+
+    //        },
+    //        error: function (errormessage) {
+    //            alert(errormessage.responseText);
+    //        }
+    //    });
+    //    return false;
+    //}
+</script>

@@ -1,0 +1,165 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "CountOldNocDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.OLDNOCBO> tracklist = ViewBag.Listresult as List<NewZapures_V2.Models.OLDNOCBO>;
+
+    var tableOne = (List<OLDNOCBO>)ViewBag.ListresultOne;
+    var tableTwo = (List<OLDNOCBO>)ViewBag.ListresultTwo;
+    var tableThree = (List<OLDNOCBO>)ViewBag.ListresultThree;
+    var tableFour = (List<OLDNOCBO>)ViewBag.ListresultFour;
+   // var currentDate = DateTime.Today.ToString("dd.MM.yyyy");
+}
+@section styles{
+    <link href="~/Content/JitendraCSS/newCustom.css" rel="stylesheet" />
+}
+<div class="noc-layouts">
+    <div class="title-heading">Old NOC Details</div>
+    <div class="w-100 float-left card-body">
+        <div class="noc-layouts-tbl mt-3" style="overflow-x:auto;">
+            <!--College Wise Count--->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>SrNo.</th>
+                        <th>College Name</th>
+                        <th>Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (tracklist != null)
+                    {
+                        int i = 1;
+                        foreach (var item in tracklist)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.sNameOfClg</td>
+                                <td>@item.Numbers</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>               
+            </table>
+            <!--Clg wise course wise count table1-->
+            <table class="table ">
+                <thead class="dark">
+                    <tr>
+                        <th>SrNO.</th>
+                        <th>College Name</th>
+                        <th>Couse Name</th>
+                        <th>Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (tableOne != null)
+                    {
+                        int i = 1;
+                        foreach (var item in tableOne)
+                        {
+                            <tr>
+                                <td>@i</td>                               
+                                <td>@item.sNameOfClg</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.Numbers</td>                                
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <!-----Clg wise course wise subject wise count table2-->
+            <table class="table">
+                <thead class="dark">
+                    <tr>
+                        <th>SrNo.</th>
+                        <th>College Name</th>
+                        <th>Couse Name</th>
+                        <th>Subject Name</th>
+                        <th>Numbers</th>
+                    </tr>
+                    </thead>
+                <tbody>
+                    @if (tableThree != null)
+                    {
+                        int i = 1;
+                        foreach (var item in tableThree)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.sNameOfClg</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.SubjectName</td>
+                                <td>@item.Numbers</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <!-----Details data    table3-->
+            <table class="table ">
+                <tbody>
+                    <tr>
+                        <th>SrNo.</th>
+                        <th>College Name</th>
+                        <th>Couse Name</th>
+                        <th>Subject Name</th>
+                        <th>NOC Type</th>
+                        <th>Attachment File</th>
+                    </tr>
+                </tbody>
+                <tbody>
+                    @if (tableThree != null)
+                    {
+                        int i = 1;
+                        foreach (var item in tableThree)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.sNameOfClg</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.SubjectName</td>
+                                <td>@item.NOCType</td>
+                                <td><a class="noc-downupload-btn"><i class="fas fa-download"></i></a> @item.sAttachFile</td>
+                                @*<td>
+                                    @if (item.sAttachFile != "")
+                                    {
+                                        <img src="data:@item.ContentType;base64,@item.sAttachFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
+                                    }
+                                </td>*@
+                            </tr>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No Data Available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

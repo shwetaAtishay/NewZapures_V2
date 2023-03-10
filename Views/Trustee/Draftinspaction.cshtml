@@ -1,0 +1,554 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Inspection Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var eAppNo = (string)ViewBag.appNo;
+    //var etrustName = (string)ViewBag.trustName;
+    //var etrustID = (int)ViewBag.trustID;
+    //var eclgname = (string)ViewBag.clgname;
+    //var edept = (string)ViewBag.dept;
+    //var ecours = (string)ViewBag.cours;
+    //var deptID = (int)ViewBag.dptID;
+    //var ecourseID = (int)ViewBag.courseID;
+    //var eClgID = (int)ViewBag.clgID;
+    //var eGuid = (string)ViewBag.Guid;
+    var draftAppl = (TrusteeBO.DraftApplication)ViewBag.applicationDetails;
+    var trusteeMember = (List<TrusteeBO.TrusteeMember>)ViewBag.trusteeMember;
+    //var lands = (List<LandInfoBO>)ViewBag.LandDetails;
+    var appid = draftAppl.ApplGuid;
+    var currentDate = DateTime.Today.ToString("yyyy.MM.dd");
+    var validCurrentDate = Convert.ToDateTime(currentDate).AddYears(1).ToString("dd.MM.yyyy");
+    var partyID = (string)ViewBag.usrid;
+
+}
+
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+@*<link href="~/Content/Architecturefile.css" rel="stylesheet" />*@
+@*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">*@
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    .applicationBtn {
+        width: 20em;
+        text-align: start;
+        display: flex;
+        align-items: center;
+    }
+
+    ul li {
+        list-style: none;
+        margin-bottom: 10px
+    }
+
+        ul li button i {
+            font-size: 20px;
+        }
+
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+        .table thead > tr > th {
+            color: white
+        }
+
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Inspection Application</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card">
+    <div class="card-header fsc" style="display: flex !important; align-items: baseline !important; place-content: space-between !important;">
+        <h4 class="mt-0 header-title float-left">Inspection Application</h4>
+        <a href="@Url.Action("InspactionApplicationList", "Admin")" class="btn btn-sm btn-gradient-dark"><i class="fa fa-arrow-left"></i> Back To List</a>
+    </div>
+    <div class="card-body ">
+        <div class="row">
+            @*<table class="table table-bordered table-striped">
+                <tr>
+                    <th style="color:black!important;font-weight:500">Application Number :</th>
+                    <td>@draftAppl.ApplicationNumber</td>
+                    <th hidden style="color:black!important;font-weight:500">Trust Name</th>
+                    <td hidden>@draftAppl.TrustName</td>
+                    <th style="color:black!important;font-weight:500">Department Name</th>
+                    <td>@draftAppl.DepartmentName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><i class="fa fa-users"></i>  Trust Comitee Members</td></tr>
+                <tr>
+                    <td colspan="6">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr><th>Member Name</th><th>Is Primary</th></tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (trusteeMember != null)
+                                    {
+
+                                        foreach (var item in trusteeMember)
+                                        {
+                                            <tr><td>@item.sPrsnName</td><td>@((string.IsNullOrEmpty(item.iisprimary) || item.iisprimary=="0")?"No":"Yes" )</td></tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th style="color:black!important;font-weight:500">College Name :</th>
+                    <td>@draftAppl.CollegeName</td>
+                    <td colspan="2"></td>
+                    <th style="color:black!important;font-weight:500">Course</th>
+                    <td>@draftAppl.CourseName</td>
+                </tr>
+                <tr><td colspan="6" style="background: #bdbdbd;color:black"><div style="display: flex;place-content: space-between;align-items:baseline"><span><i class="fa fa-arrow-down"></i> Application Forms</span><a href="@Url.Action("ApplicationPreview","Trustee",new {applGUID=draftAppl.ApplGuid})" class="btn btn-sm btn-primary" style="display:none"><i class="fa fa-eye"></i> Preview My Application</a></div></td></tr>
+                          </table>*@
+            <div class="col-lg-12">
+                <div class="row">
+
+                    <div class="col-lg-3">
+                        <ul style="margin-left: -50px;">
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn"><i class="fa fa-landmark"></i> &nbsp;Trust Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn"><i class="fa fa-landmark"></i> &nbsp;College Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btn_ins_landInfo" data-id="@Url.Action("LandAreaDetails", "LandBuildingInfo", new {guid=draftAppl.ApplGuid})"><i class="fa fa-landmark"></i> &nbsp;Land Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CreateData", "SubjectMaster", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-book"></i> &nbsp;Subject Applied</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "FeeDetails", new {guid=draftAppl.ApplGuid})"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("ShowArtichForComments", "Master", new {applGUID=draftAppl.ApplGuid})"><i class="fa fa-building"></i> &nbsp;Architectrual Details</button></li>
+
+                            <!--<li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("NewArchitectureDetail", "Master", new {guid=draftAppl.ApplGuid})"><i class="fa fa-building"></i> &nbsp;Architectrual Details</button></li>-->
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageFacilitys", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-smile"></i> &nbsp;Other Facilites</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("Index", "Staff", new {guid=draftAppl.ApplGuid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst", new {guid=draftAppl.ApplGuid})"><i class="fa fa-school"></i> &nbsp;Acadmy Information</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" data-id="@Url.Action("CollageAttachment", "Trustee", new {guid=draftAppl.ApplGuid})"><i class="fa fa-address-card"></i> &nbsp;Proof Document</button></li>
+                            <li><button class="btn btn-outline-primary waves-effect waves-light" data-toggle="modal" data-target="#appSummary"><i class="fa fa-paper-plane"></i> &nbsp;Sendback / Forward Application </button></li>
+                            @*<li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" id="openModal" onclick="getLandInfo()"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>
+                                <li><button class="btn btn-outline-primary waves-effect waves-light applicationBtn" style="display:none" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModalWithData"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button></li>*@
+                        </ul>
+
+                    </div>
+
+                    <div class="col-lg-9" id="divFormContainer1" style="place-content: center;display: flex;align-items: center;">
+                        <div id="divFormContainer">
+
+                        </div>
+                        <p style="font-size: 30px;color: red;" id="pNote">
+                            @*Please Select Any Form from the left side to fill*@
+                            <img src="~/Content/LoginSignUp/img/NOC Process flow.jpeg" />
+                        </p>
+                        <div id="divLoader" style="display:none"><span><i class="fa fa-4x fa-circle-notch fa-spin fa-fade" style="color: #506ee4;"></i></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal" id="regular_modal" tabindex="-1" role="dialog" aria-labelledby="regular_modal">
+
+            </div>
+            <div class="modal modal-right" id="popassign" tabindex="-1" role="dialog" aria-labelledby="right_modal">
+
+            </div>
+            <div class="modal fade bd-example-modal-xl" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+                <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                    <div class="modal-content" style="-webkit-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); -moz-box-shadow: -28px 28px 28px -11px rgba(181,181,181,1); box-shadow: -28px 28px 28px -11px rgb(180 170 170); border-radius: 50px;">
+                        <div class="modal-header" style="border-radius: 51px;background: #22b1db;">
+                            <h5 class="modal-title" id="appSummary" style="margin-left: 20px;color:white">Sendback / Forward Application For : @draftAppl.ApplicationNumber</h5>
+                            <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" aria-label="Close" style="margin-right: 20px;width: 35px;">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 20px !important;">
+                            <div class="row">
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12"><b>Choose Application Status</b>&nbsp;&nbsp;&nbsp;<span style="color:red" id="spnAppStaus"></span></label>
+                                    <div class=" row form-group col-sm-12 mt-2" style="text-align:center">
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input" type="radio" name="appStatus" id="rbtn_approve" value="1">
+                                            <label for="rbtn_approve" class="custom-control-label" style="width: max-content;">APPROVE</label>
+                                        </div>
+
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input" type="radio" name="appStatus" id="rbtn_reject" value="2">
+                                            <label for="rbtn_reject" class="custom-control-label" style="width: max-content;">REJECT</label>
+                                        </div>
+
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input" type="radio" name="appStatus" id="rbtn_hold" value="3">
+                                            <label for="rbtn_hold" class="custom-control-label" style="width: max-content;">HOLD</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: -15px;">
+                                <div class="form-group col-lg-8">
+                                    <label for="example-text-input" class="col-sm-12"><b>Remark/Comments</b> &nbsp;&nbsp;&nbsp;<span style="color:red" id="spnAppComment"></span></label>
+                                    <div class="form-group col-sm-12" style="text-align:center">
+                                        <textarea id="txtComments" class="form-control" rows="3" style="resize:none" placeholder="Enter comments" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12"><b>Attachment</b></label>
+                                    <div class="form-group col-sm-12" style="text-align:center">
+                                        <input type="file" class="file-box" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: -10px;">
+                                <div class="form-group col-lg-4">
+                                    <label for="example-text-input" class="col-sm-12"><b>Send to</b> &nbsp;&nbsp;&nbsp;<span style="color:red" id="spnAppAction"></span></label>
+                                    <div class="row form-group col-sm-12" style="text-align:center">
+
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input appAcctionType" type="radio" name="appAcctionType" id="rbtn_sb" value="sendback">
+                                            <label for="rbtn_sb" class="custom-control-label" style="width: max-content;">Sendback</label>
+                                        </div>
+
+                                        <div class="form-group custom-control custom-radio col-sm-4">
+                                            <input class="form-group col-sm-2 custom-control-input custom-control-input appAcctionType" type="radio" name="appAcctionType" id="rbtn_fr" value="forward">
+                                            <label for="rbtn_fr" class="custom-control-label" style="width: max-content;">Forward</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-4" id="divRole" style="display:none">
+                                    <label for="example-text-input" class="col-sm-12"><b>Select Role</b></label>
+                                    <div class="form-group col-sm-12">
+                                        <select id="ddlRole" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            @*<button type="button" class="btn btn-primary" data-dismiss="modal" style="display:none" id="btnClose"></button>*@
+                            <button type="button" class="btn btn-primary" onclick="AddTrackingData()">Submit</button>
+                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+}
+<script type="text/javascript">
+    var appStatus = 0;
+    var appAction = 0;
+    function Remarkdata(Id, formName) {
+        debugger;
+        $("#popassign").html($("#preloadcreatepopupright1").html());
+        var ajaxurl = GetglobalDomain() +"/Master/RemarkComment?Id=" + Id + "&appid=" + '@appid' + "&formName=" + formName;
+        $("#popassign").load(ajaxurl).modal({
+            show: true,
+            backdrop: 'static',
+            keyboard: false,
+        });
+        return false;
+    }
+    $(document).ready(function () {
+        $('#btnToggal').click();
+
+        $('.applicationBtn').click(function () {
+            $('#divFormContainer').html('');
+            $('#divFormContainer1').css('place-content', 'center').css('display', 'flex').css('align-items', 'center')
+            $('#divLoader').css('display', 'block');
+            $('#pNote').css('display', 'none');
+            //$(this).removeClass('btn-outline-primary').addClass('btn-primary');
+            $(this).css('background-color', '#ffbf68').css('color', 'black');
+            $(this).css('border-bottom-right-radius', '33px');
+
+            var url = $(this).data('id');
+
+            //console.log(url);
+            setTimeout(function () {
+
+                GenerateArchtable(url);
+            }, 1000);
+            /* $('#divLoader').css('display', 'none');*/
+        });
+
+        $('.appAcctionType').click(function () {
+            $('#divRole').css('display', 'block');
+            $('#spnAppAction').html('');
+            appAction = $('input[name="appAcctionType"]:checked').val()
+
+            getRoleListToSendbackForward(appAction);
+        });
+
+        $('#txtComments').on('input',function () {
+            $('#spnAppComment').html('');
+        });
+
+        $('input[name="appStatus"]').click(function () {
+            $('#spnAppStaus').html('');
+            appStatus = $('input[name="appStatus"]:checked').val()
+        });
+    });
+
+    //function refreshData() {
+    //    window.location.reload();
+    //    setTimeout(function () {
+    //        $('#openModalWithData').click();
+    //    },1000)
+    //}
+
+    function GenerateArchtable(url) {
+
+        $.ajax({
+            url: GetglobalDomain() + url,
+            type: 'GET',
+            dataType: "text",
+            success: function (response) {
+                //$('#divFormContainer').html('');
+                $('#divFormContainer1').removeAttr("style");
+                $('#divFormContainer').html(response);
+                $('#divLoader').css('display', 'none');
+
+                return;
+                /*  $("#AddSection").html(response);*/
+            }
+        });
+        return false;
+    }
+
+    function getLandInfo() {
+
+        var Data = {
+            AppGUID: '@draftAppl.ApplGuid'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetLandDetails",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+
+                var tableHTML = "";
+                var landData = data.Data;
+
+                landData.forEach(function (item) {
+                    tableHTML += `<tr><td>${item.sLndArea}</td><td>${item.sLndDocType}</td><td>${item.sIsLndCnvrted}</td><td>${item.sOrdrNo}</td><td>${item.dtOrdrDate}</td><td>${item.sLndTyp}</td><td>${item.sKhasaraNo}</td><td>${item.dLndArea}</td><td>${item.dTotalArea}</td></tr>`;
+                })
+
+                $('#tblLandInfo tbody').html('')
+                $('#tblLandInfo tbody').html(tableHTML);
+
+                    setTimeout(function () {
+            $('#openModalWithData').click();
+        },1000)
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
+    function AddTrackingData() {
+        var s = checkValidate()
+        if (s) {
+
+        var comments = $('#txtComments').val();
+
+        var Data = {
+            sApplNo: '@draftAppl.ApplicationNumber',
+            sNrtn: comments,
+            sAction: appAction,
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/AddTrackingData",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        showConfirmButton: true,
+                    });
+
+                    setTimeout(function () {
+                        location.href = GetglobalDomain() + '@Url.Action("InspactionApplicationList", "Admin")';
+                    }, 1500)
+
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        }
+        return false;
+    }
+
+    function printDiv(divName) {
+        alert(divName);
+        //var printContents = document.getElementById(divName).innerHTML;
+
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+
+    function checkValidate() {
+        var status = true;
+
+        var AppComment = $('#txtComments').val()
+
+        if (appStatus<=0) {
+            $('#spnAppStaus').html('');
+            $('#spnAppStaus').html('Please Select Status');
+
+            status = false;
+        }
+
+        if (AppComment.length <= 0) {
+            $('#spnAppComment').html('');
+            $('#spnAppComment').html('Please Enter Comments');
+
+            status = false;
+        }
+        if (appAction <= 0) {
+            $('#spnAppAction').html('');
+            $('#spnAppAction').html('Please Select Action');
+
+            status = false;
+        }
+        return status;
+    }
+
+    function getRoleListToSendbackForward(appType) {
+        //appAction = $('input[name="appAcctionType"]:checked').val()
+
+        var Data = {
+            MenuId: appType,
+            PartyId: '@partyID'
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetUserSendbackForward",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data);
+                var htmlString = `<option value="">Select Role</option>`;
+                var mainData = data.Data;
+                if (mainData != null && mainData.length > 0) {
+                    mainData.forEach(function (item) {
+                        htmlString += `<option value=${item.Id}>${item.Text}</option>`
+                    });
+                $('#ddlRole').html('');
+                $('#ddlRole').html(htmlString);
+                $('#ddlRole').select2();
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+        return false;
+    }
+
+</script>

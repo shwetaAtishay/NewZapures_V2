@@ -1,0 +1,1140 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Land Details";
+    Layout = null;// "~/Views/Shared/_Layout.cshtml";
+
+    //var university = ViewBag.universityCollection as List<Dropdown>;
+    var courses = (List<CustomMaster>)ViewBag.CourseList;
+    var landData = (List<LandInfoBO>)ViewBag.landDataList;
+    var ApplGuid = (string)ViewBag.draftApplication;
+    var clgID = (int)ViewBag.collegeID;
+
+}
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
+<!-- Font Awesome -->
+@*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">*@
+<!-- Theme style -->
+@*<link rel="stylesheet" href="../../dist/css/adminlte.min.css">*@
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">*@
+<style type="text/css">
+    .spanLabel {
+        color: red
+    }
+
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+    /*
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+    */
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #ffbf68; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #ffbf68); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #ffbf68); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="title-heading">
+                <h4 class="mt-0 title-heading p-0 float-left">Land Details</h4>
+            </div>
+            <div class="card-body">
+
+
+                <div class="row mt-3">
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Select Course</strong></label>
+                        <select class="singleSelect noc-input-text" id="ddlCourse">
+                            <option value="0">Select Any One</option>
+                            <option value="1001">College Level</option>
+                            @{
+                                if (courses != null)
+                                {
+                                    foreach (var item in courses)
+                                    {
+                                        <option value=@item.Id>@item.text</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label"><strong>Land Area Situated In</strong></label>
+                        <select class="singleSelect noc-input-text" id="ddlLandArea">
+                            <option value="0">Select Area</option>
+                            <option value="Jaipur JDA AREA">Jaipur JDA AREA</option>
+                            <option value="JodhpurJDA AREA">Jodhpur JDA AREA</option>
+                            <option value="Ajmer JDA AREA">Ajmer JDA AREA</option>
+                            <option value="Division Headquater Area">Division Headquater Area</option>
+                            <option value="District Headquater Area">District Headquater Area</option>
+                            <option value="Urban Bodies">Urban Bodies</option>
+                            <option value="OTHER AREA">OTHER AREA</option>
+                        </select>
+                        <span id="spnlandArea" class="spanLabel" style="display:none">Please Select Land Area</span>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label"><strong>Land Document Type</strong></label>
+                        <select class="singleSelect noc-input-text" id="ddlLandDocType">
+                            <option value="0">Select Document Type</option>
+                            <option value="PATTA">PATTA</option>
+                            <option value="Sale DEED">Sale DEED</option>
+                            <option value="Gift DEED">Gift DEED</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span id="spnlandDocType" class="spanLabel" style="display:none">Please Select Document Type</span>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="select2-purple">
+                            <label for="example-text-input" class="noc-form-label" style=""><strong>Is Land converted to Institution/Education</strong></label>
+                            <select class="singleSelect noc-input-text" id="ddlLandConvert">
+                                <option value="0">Select Conversion</option>
+                                <option value="Fully Converted">Fully Converted</option>
+                                <option value="Partially Converted">Partially Converted</option>
+                                <option value="Not Converted">Not Converted</option>
+                            </select>
+                            <span id="spnlandconvert" class="spanLabel" style="display:none">Please Select Land Convertion</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" id="divConverted" style="display:none">
+                        <div class="row ">
+                            <div class="form-group col-lg-4">
+                                <label for="example-text-input" class="noc-form-label" style=""><strong>Order Number</strong></label>
+                                <input type="text" class="form-control noc-input-text" id="txtOrderNo" autocomplete="off" />
+                                <span id="spnlandorderNumber" class="spanLabel" style="display:none">Please Enter Order Number</span>
+                            </div>
+
+                            <div class="col-lg-4 form-group">
+                                <label for="example-text-input" class="noc-form-label" style=""><strong>Order Date</strong></label>
+                                <input type="date" class="form-control noc-input-text" id="txtOrderDate" autocomplete="off" />
+                                <span id="spnOrderDate" class="spanLabel" style="display:none">Please Select Order Date</span>
+                            </div>
+
+                            <div class="col-lg-4 form-group">
+                                <label for="example-text-input" class="noc-form-label" style=""><strong>Attach your converted Document</strong></label>
+                                <input type="file" class="form-control-file noc-input-upload" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                                <input type="hidden" id="hdnConvertedDoc" />
+                                <input type="hidden" id="hdnConvertedDocExten" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Land Type</strong></label>
+                        <select class="singleSelect noc-input-text" id="ddlLandType">
+                            <option value="0">Select Land Type</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Commercial">Commercial</option>
+                            <option value="Instituional">Instituional</option>
+                            <option value="Residencial">Residencial</option>
+                        </select>
+                        <span id="spnlandtype" class="spanLabel" style="display:none">Please Select Land Type</span>
+                    </div>
+
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Khasra No</strong></label>
+                        <input type="text" class="form-control noc-input-text" id="txtkhasaraNo" autocomplete="off" />
+                        <span id="spnkhasra" class="spanLabel" style="display:none">Please Enter Khasra No</span>
+                    </div>
+
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Land Area (sqMtr)</strong></label>
+                        <input type="text" class="form-control noc-input-text" id="txtLandArea" oninput="numberOnly(this.id)" autocomplete="off" />
+                        <span id="spnlandEntry" class="spanLabel" style="display:none">Please Enter Land Area</span>
+                    </div>
+                    @*<div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label" style=""><strong>Land Accure Type</strong></label>
+                            <div style="display:flex">
+                                <div class="form-group custom-control custom-radio col-sm-4">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_owned" value="owned">
+                                    <label for="rbtn_owned" class="custom-control-label" style="width: max-content;">Owned</label>
+                                </div>
+
+                                <div class="form-group custom-control custom-radio col-sm-4">
+                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_rented" value="rented">
+                                    <label for="rbtn_rented" class="custom-control-label" style="width: max-content;">Rented</label>
+                                </div>
+                            </div>
+                            <span id="spnlandAccureType" class="spanLabel" style="display:none">Please Select Land Accure Type</span>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label" style="" id="lblAccureType"><strong>Upload<span id="spnAccureType" style="text-transform:capitalize"></span> Certificate</strong></label>
+                            <input type="file" class="form-control-file" id="fluIsowned_RentedCertificate" onchange="return encodeImageFileAsURL(this,'hdnIsowned_RentedCertificate','hdnIsowned_RentedCertificateExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                            <input type="hidden" id="hdnIsowned_RentedCertificate" />
+                            <input type="hidden" id="hdnIsowned_RentedCertificateExten" />
+                        </div>*@
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="noc-form-label"><strong>Land Title Certificate</strong></label>
+                        <input type="file" class="form-control-file" id="flulandTitleCertificate" onchange="return encodeImageFileAsURL(this,'hdnlandTitleCertificate','hdnlandTitleCertificateExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                        <input type="hidden" id="hdnlandTitleCertificate" />
+                        <input type="hidden" id="hdnlandTitleCertificateExten" />
+                    </div>
+
+                    <div class="col-lg-4">
+                        <label for="example-text-input" class="noc-form-label"><strong>Land Document</strong></label>
+                        <input type="file" class="form-control-file" id="flulandDocument" onchange="return encodeImageFileAsURL(this,'hdnlandDocument','hdnlandDocumentExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                        <input type="hidden" id="hdnlandDocument" />
+                        <input type="hidden" id="hdnlandDocumentExten" />
+                    </div>
+                    <div class="col-lg-12 text-right">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <button class="theme-button-mockup" type="button" id="btnAdd"><i class="fa fa-plus"></i> Add</button>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row col-lg-12 mt-3">
+                    <div class="col-lg-4" id="divLandConvertDoc" style="display:none">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <a href="~/LandDocuments/Affidavit Document for Coversion.pdf" class="noc-upload-btn" id="btnDownloadConvertedDoc" download="LandConversion"><i class="fa fa-download"></i> Download Converted Document File</a>
+                    </div>
+
+                    <div class="col-lg-4" id="divLandTitleDoc">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <a href="~/LandDocuments/Land Title Certificate.pdf" class="noc-upload-btn" id="btnDownloadLandTitle" download="LandTitle"><i class="fa fa-download"></i> Download Land Title Certificate File</a>
+                    </div>
+
+                    <div class="col-lg-4" id="divLandDoc">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                        <a href="~/LandDocuments/Certificate of Land & Rented Building.pdf" class="noc-upload-btn" id="btnDownloadLandDoc" download="LandDocument"><i class="fa fa-download"></i> Download Land Document File</a>
+                    </div>
+
+                    <p style="padding: 15px;color: red;"><i>Disclaimer : please download the documents first, then fill the form accordingly and the upload the same</i></p>
+                </div>
+                <hr />
+                <div class="row  mt-3">
+                    <div class="col-lg-2">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Total Area</strong></label>
+                        <input type="text" class="form-control noc-input-text" id="txtTotalArea" autocomplete="off" value="0" disabled readonly />
+                    </div>
+                    <div class="col-lg-10" style="text-align: end;">
+                        <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"><strong>&nbsp;</strong></label>
+                        <button class="theme-button-mockup" type="button" id="btnSave"><i class="fa fa-save"></i> Save Details</button>
+                    </div>
+                    <div class="col-lg-12 noc-layouts-tbl mt-3" style="overflow-x: auto;">
+                        <table class="table table-borderless" id="tblLandInfo" style="width: max-content;">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Course</th>
+                                    <th>Land Situated</th>
+                                    <th>Land Doc Type</th>
+                                    <th>Is Convereted</th>
+                                    <th>Order No</th>
+                                    <th>Order Date</th>
+                                    <th>Land Type</th>
+                                    <th>Khasara Number</th>
+                                    <th hidden>Is Owned/Rented</th>
+                                    <th>Land Area</th>
+                                    <th>Total Area</th>
+                                    <th>Converted Doc</th>
+                                    <th>Land Title Doc</th>
+                                    <th>Land Doc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (landData != null && landData.Count > 0)
+                                    {
+                                        @*var i = 1;
+                                            foreach (var item in landData)
+                                            {
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;"><i class="far fa-trash-alt"></i></span> : @item.sLndArea</td>
+                                                    <td>@item.sLndDocType</td>
+                                                    <td>@item.sIsLndCnvrted</td>
+                                                    <td>@item.sOrdrNo</td>
+                                                    <td>@item.dtOrdrDate</td>
+                                                    <td>@item.sLndTyp</td>
+                                                    <td>@item.sKhasaraNo</td>
+                                                    <td>@item.dLndArea</td>
+                                                    <td>@item.dTotalArea</td>
+                                                    <td>""</td>
+                                                    <td>""</td>
+                                                    <td>""</td>
+                                                </tr>
+                                                i++;
+                                            }*@
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="15" class="text-center"></td>
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+                                    <td colspan="15" class="text-center">No Data Available</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+@*<script src="~/Content/jquery/jquery.js"></script>*@
+<script src="~/Content/select2/js/select2.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
+<script src="~/Content/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+
+    var landInfoData = [];
+    var imagebase64 = "";
+
+    $(document).ready(function () {
+        $('.singleSelect').select2();
+
+        SomeFunction();
+
+        $('#ddlLandConvert').change(function () {
+            var selectedItem = $(this).val();
+
+            if (selectedItem == 0) {
+                $('#spnlandconvert').css('display', 'block');
+                $('#divConverted').css('display', 'none');
+                    $('#divLandConvertDoc').css('display', 'none');
+                    $('#divLandTitleDoc').removeClass('col-lg-4').addClass('col-lg-6');
+                    $('#divLandDoc').removeClass('col-lg-4').addClass('col-lg-6');
+            }
+            else if (selectedItem != 'Not Converted') {
+                $('#spnlandconvert').css('display', 'none');
+                $('#divConverted').css('display', 'flex');
+                    $('#divLandConvertDoc').css('display', 'block').addClass('col-lg-4');
+                    $('#divLandTitleDoc').removeClass('col-lg-6').addClass('col-lg-4');
+                    $('#divLandDoc').removeClass('col-lg-6').addClass('col-lg-4');
+                }
+                else {
+                    $('#divConverted').css('display', 'none');
+                    $('#divLandConvertDoc').css('display', 'none');
+                    $('#divLandTitleDoc').removeClass('col-lg-4').addClass('col-lg-6');
+                    $('#divLandDoc').removeClass('col-lg-4').addClass('col-lg-6');
+                }
+
+        })
+
+        $('#btnAdd').click(function () {
+            var htmlString = "";
+            if (CheckValidation()) {
+                var landArea = $('#ddlLandArea option:selected').text().trim();
+                var landDocType = $('#ddlLandDocType option:selected').text().trim();
+                var landConverted = $('#ddlLandConvert option:selected').text().trim();
+                var landType = $('#ddlLandType option:selected').text().trim();
+                var orderNo = $('#txtOrderNo').val().trim();
+                var orderDate = $('#txtOrderDate').val().trim();
+                var khasaraNo = $('#txtkhasaraNo').val().trim();
+                var landAreaUnit = $('#txtLandArea').val().trim();
+                var totalArea = $('#txtTotalArea').val().trim();
+                var courseID = $('#ddlCourse').val().trim();
+                var courseName = $('#ddlCourse option:selected').text().trim();
+                var lndAccureType = "";//$('input[name="lndAccureType"]:checked').val();
+
+                //LandConverted
+                var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+                var convertedDocExte = ($('#hdnConvertedDocExten').val().split('.')[1] === undefined || $('#hdnConvertedDocExten').val().split('.')[1] === null) ? "" : "."+$('#hdnConvertedDocExten').val().split('.')[1];
+                var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+                if (convertedDocContent.length > 0) {
+                    convertedDocContent = convertedDocContent.split(':')[1];
+                    convertedDocContent = convertedDocContent.split(';')[0];
+                }
+                var convertedDocFullURL = $('#hdnConvertedDoc').val();
+
+                //Land Title
+                var landTitleDoc = $('#hdnlandTitleCertificate').val().split(',')[1];
+                var landTitleDocExte = ($('#hdnlandTitleCertificateExten').val().split('.')[1] === undefined || $('#hdnlandTitleCertificateExten').val().split('.')[1] === null) ? "" : "."+$('#hdnlandTitleCertificateExten').val().split('.')[1];
+                var landTitleDocContent = $('#hdnlandTitleCertificate').val().split(',')[0];
+                if (landTitleDocContent.length > 0) {
+                    landTitleDocContent = landTitleDocContent.split(':')[1];
+                    landTitleDocContent = landTitleDocContent.split(';')[0];
+                }
+                var landTitleDocFullURL = $('#hdnlandTitleCertificate').val();
+
+                //Land Document
+                var landDoc = $('#hdnlandDocument').val().split(',')[1];
+                var landDocExte = ($('#hdnlandDocumentExten').val().split('.')[1] === undefined || $('#hdnlandDocumentExten').val().split('.')[1] === null) ? "" : "."+$('#hdnlandDocumentExten').val().split('.')[1];
+                var landDocContent = $('#hdnlandDocument').val().split(',')[0];
+                if (landDocContent.length > 0) {
+                    landDocContent = landTitleDocContent.split(':')[1];
+                    landDocContent = landTitleDocContent.split(';')[0];
+                }
+                var landDocFullURL = $('#hdnlandDocument').val();
+
+                //Land Accure Document
+                //var landAccureDoc = $('#hdnIsowned_RentedCertificate').val().split(',')[1];
+                //var landAccureDocExte = ($('#hdnIsowned_RentedCertificateExten').val().split('.')[1] === undefined || $('#hdnIsowned_RentedCertificateExten').val().split('.')[1] === null) ? "" : "." + $('#hdnIsowned_RentedCertificateExten').val().split('.')[1];
+                //var landAccureDocContent = $('#hdnIsowned_RentedCertificate').val().split(',')[0];
+                //if (landAccureDocContent.length > 0) {
+                //    landAccureDocContent = landAccureDoc.split(':')[1];
+                //    landAccureDocContent = landAccureDoc.split(';')[0];
+                //}
+                //var landAccureDocFullURL = $('#hdnIsowned_RentedCertificate').val();
+
+                totalArea = (totalArea.length <= 0) ? 0 : parseFloat(totalArea);
+
+                //console.log('base64', convertedDoc);
+                //console.log('Exten', convertedDocExte);
+                //console.log('content', convertedDocContent);
+
+                landInfoData.push({
+                    UnQID: CreateGuid(),
+                    sApplGUID: '@ApplGuid',
+                    sLndArea: landArea,
+                    iCorsID: courseID,
+                    iClgID: '@clgID',
+                    Course: courseName,
+                    sLndDocType: landDocType,
+                    sIsLndCnvrted: landConverted,
+                    sOrdrNo: (orderNo.length <= 0) ? "": orderNo,
+                    dtOrdrDate: (orderDate.length <= 0) ? "" : orderDate,
+                    sLndTyp: landType,
+                    sKhasaraNo: khasaraNo,
+                    dLndArea: landAreaUnit,
+                    dTotalArea: (parseFloat(totalArea) + parseFloat(landAreaUnit)),
+                    sEntryType: courseName,
+                    UploadConvertedDocument: (convertedDoc === undefined || convertedDoc === null) ? "" : convertedDoc,
+                    UploadConvertedDocumentExtension: convertedDocExte,
+                    UploadConvertedDocumentContent: convertedDocContent,
+                    lndConvertURL: (convertedDocFullURL.length <= 0) ? "#" : convertedDocFullURL,
+
+                    UploadLandTitleDoc: (landTitleDoc === undefined || landTitleDoc === null) ? "" : landTitleDoc,
+                    UploadLandTitleDocExtension: landTitleDocExte,
+                    UploadLandTitleDocContent: landTitleDocContent,
+                    lndTitleURL: (landTitleDocFullURL.length <= 0) ? "#" : landTitleDocFullURL,
+
+                    UploadLandDoc: (landDoc === undefined || landDoc === null) ? "" : landDoc,
+                    UploadLandDocExtension: landDocExte,
+                    UploadLandDocContent: landDocContent,
+                    landDocURL: (landDocFullURL.length <= 0) ? "#" : landDocFullURL,
+
+
+                    //UploadLandAccureTypeDoc: (landAccureDoc === undefined || landAccureDoc === null) ? "" : landAccureDoc,
+                    //UploadLandAccureTypeDocExtension: landAccureDocExte,
+                    //UploadLandAccureTypeDocContent: landAccureDocContent,
+                    //landAccureDocURL: (landAccureDocFullURL.length <= 0) ? "#" : landAccureDocFullURL,
+                    //slndAccureTyp: lndAccureType
+
+                    UploadLandAccureTypeDoc: "",//(landAccureDoc === undefined || landAccureDoc === null) ? "" : landAccureDoc,
+                    UploadLandAccureTypeDocExtension: "",// landAccureDocExte,
+                    UploadLandAccureTypeDocContent: "",// landAccureDocContent,
+                    landAccureDocURL: "",//(landAccureDocFullURL.length <= 0) ? "#" : landAccureDocFullURL,
+                    slndAccureTyp: ""//lndAccureType
+                });
+
+                //console.table(landInfoData);
+                $('#ddlLandArea').attr('disabled', 'true');
+
+                $('#txtTotalArea').val(0);
+                if (landInfoData.length <= 0) {
+                    htmlString += `<td colspan="15" class="text-center">No Data Available</td>`
+
+                    $("#tblLandInfo tbody").html('');
+                    $("#tblLandInfo tbody").html(htmlString);
+                }
+                else {
+                    landInfoData.forEach(function (item, index) {
+                        console.log(item.UploadConvertedDocument);
+                        var landConvertedURL = (item.UploadConvertedDocument == null || item.UploadConvertedDocument=='') ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var landTitleURL = (item.UploadLandTitleDoc == null || item.UploadLandTitleDoc =='') ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc =='') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+                        htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.Course}</td>
+                                            <td>${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td hidden>${item.slndAccureTyp}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+                        $('#txtTotalArea').val(item.dTotalArea);
+                    });
+                    $("#tblLandInfo tbody").html('');
+                    $("#tblLandInfo tbody").append(htmlString);
+                    ClearAllData();
+
+                    $('#fluIsowned_RentedCertificate').attr('disabled','true')
+                    $('#rbtn_rented').attr('disabled','true')
+                    $('#rbtn_owned').attr('disabled','true')
+                }
+
+            }
+        });
+
+        $('#btnSave').click(function () {
+            saveDetails();
+        });
+
+        $('input[name="lndAccureType"]').click(function () {
+            var accureType = $(this).val();
+            $('#spnAccureType').html('');
+            $('#spnAccureType').html(' ' + accureType);
+        });
+
+        $('#ddlLandArea').change(function () {
+            var landAreaID = $(this).val();
+
+            if (landAreaID == "0") {
+                $('#spnlandArea').css('display', 'block');
+            }
+            else {
+                $('#spnlandArea').css('display', 'none');
+            }
+        })
+
+        $('#ddlLandDocType').change(function () {
+            var landAreaID = $(this).val();
+
+            if (landAreaID == 0) {
+                $('#spnlandDocType').css('display', 'block');
+            }
+            else {
+                $('#spnlandDocType').css('display', 'none');
+            }
+        })
+
+        $('#ddlLandType').change(function () {
+            var landAreaID = $(this).val();
+
+            if (landAreaID == 0) {
+                $('#spnlandtype').css('display', 'block');
+            }
+            else {
+                $('#spnlandtype').css('display', 'none');
+            }
+        })
+
+        $('input[name="lndAccureType"]').change(function () {
+            var landAreaID = $(this).val();
+
+            if (landAreaID == "owned" || landAreaID == "rented" ) {
+                $('#spnlandAccureType').css('display', 'none');
+            }
+        })
+
+        $('#txtOrderDate').change(function () {
+            var landAreaID = $(this).val();
+
+                $('#spnOrderDate').css('display', 'none');
+
+        })
+
+        $('#txtOrderNo').on('input',function () {
+            var landAreaID = $(this).val();
+            if (landAreaID.length > 0) {
+                $('#spnlandorderNumber').css('display', 'none');
+            }
+            else {
+                $('#spnlandorderNumber').css('display', 'block');
+            }
+
+        })
+
+        $('#txtkhasaraNo').on('input', function () {
+            var landAreaID = $(this).val();
+            if (landAreaID.length > 0) {
+                $('#spnkhasra').css('display', 'none');
+            }
+            else {
+                $('#spnkhasra').css('display', 'block');
+            }
+
+        })
+
+        $('#txtLandArea').on('input', function () {
+            var landAreaID = $(this).val();
+            if (landAreaID.length > 0) {
+                $('#spnlandEntry').css('display', 'none');
+            }
+            else {
+                $('#spnlandEntry').css('display', 'block');
+            }
+
+        })
+
+        @*var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }*@
+
+    });
+
+
+    function SomeFunction() {
+    var htmlString = "";
+    var array = @Html.Raw(Json.Encode(ViewBag.landDataList));
+    for(var i = 0; i < array.length; i++) {
+        landInfoData.push(array[i]);
+        }
+        landInfoData.forEach(function (item, index) {
+
+            var landConvertedURL = (item.UploadConvertedDocument == null) ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landTitleURL = (item.UploadLandTitleDoc == null) ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var landDocumentURL = (item.UploadLandDoc ==null) ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+            item.UnQID = CreateGuid();
+            console.log(item)
+            htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> : ${item.Course}</td>
+                                            <td>${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td hidden>${item.slndAccureTyp}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+            $('#txtTotalArea').val(item.dTotalArea);
+        });
+        $("#tblLandInfo tbody").html('');
+        $("#tblLandInfo tbody").html(htmlString);
+}
+
+
+    function saveDetails() {
+        var VertinaryModal = {
+            trg: landInfoData
+        }
+
+        var d = JSON.stringify(VertinaryModal);
+        //console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/LandBuildingInfo/SaveDetails",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+
+                if (data.StatusCode == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+                $('#btn_Land').click();
+
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+
+    function ClearAllData() {
+
+        //$('#ddlLandArea').select2('destroy');
+        //$('#ddlLandArea').val(0);
+        //$('#ddlLandArea').select2();
+
+        $('#ddlLandDocType').select2('destroy');
+        $('#ddlLandDocType').val(0);
+        $('#ddlLandDocType').select2();
+
+
+        $('#ddlLandConvert').select2('destroy');
+        $('#ddlLandConvert').val(0);
+        $('#ddlLandConvert').select2();
+
+        $('#ddlLandType').select2('destroy');
+        $('#ddlLandType').val(0);
+        $('#ddlLandType').select2();
+
+        $('#txtOrderNo').val('')
+        $('#txtOrderDate').val('')
+        $('#txtkhasaraNo').val('')
+        $('#txtLandArea').val('')
+
+        $('#divConverted').css('display', 'none');
+
+        //LandConverted
+        $('#hdnConvertedDocExten').val('')
+        $('#hdnConvertedDoc').val('')
+
+        //Land Title
+        $('#hdnlandTitleCertificateExten').val('')
+        $('#hdnlandTitleCertificate').val('')
+
+        //Land Document
+         $('#hdnlandDocumentExten').val('')
+        $('#hdnlandDocument').val('')
+
+        $('#flulandDocument').val('');
+        $('#flulandTitleCertificate').val('');
+        $('#fluConvertedDoc').val('');
+
+
+        //$('#fluIsowned_RentedCertificate').val('');
+
+        //$('input[name="lndAccureType"]').removeAttr('checked');
+        //$('input[name="lndAccureType"]').change();
+        //$('#hdnIsowned_RentedCertificate').val('');
+        //$('#hdnIsowned_RentedCertificateExten').val('');
+
+    }
+
+    function encodeImageFileAsURL(element,hdnId,hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        var filesize = element.files[0].size;
+        var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+        var i = 0; while (filesize > 900) { filesize /= 1024; i++; }
+        var exactSize = (Math.round(filesize * 100) / 100) + ' ' + fSExt[i];
+        console.log('FILE SIZE = ', exactSize);
+        //alert(exactSize);
+       /* console.log(file.name);*/
+
+
+        var sizeCheck = exactSize.split(' ')[0];
+        var sizeCheckExt = exactSize.split(' ')[1];
+
+        //console.log(sizeCheck);
+        //console.log(sizeCheckExt);
+
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            if (sizeCheck > 1 && sizeCheckExt=="MB") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'File size must be lesser then 1 MB...!',
+                    html: `<p>your selected file size : ${sizeCheck} ${sizeCheckExt}</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+            }
+            else {
+
+            $('#' + hdnId).val(imagebase64);
+            $('#' + hdnExtnID).val(file.name);
+            }
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    function CheckValidation() {
+        var status = true;
+        var landArea = $('#ddlLandArea option:selected').text().trim();
+        var landDocType = $('#ddlLandDocType option:selected').text().trim();
+        var landConverted = $('#ddlLandConvert option:selected').text().trim();
+        var landType = $('#ddlLandType option:selected').text().trim();
+        var orderNo = $('#txtOrderNo').val().trim();
+        var orderDate = $('#txtOrderDate').val().trim();
+        var khasaraNo = $('#txtkhasaraNo').val().trim();
+        var landAreaUnit = $('#txtLandArea').val().trim();
+        //var lndAccureType = $('input[name="lndAccureType"]:checked').val();
+        var lndAccureImg = $('#hdnIsowned_RentedCertificate').val();
+        var lndAccureTitle = $('#lblAccureType').text();
+        //var lndAccureType = $('input[name="lndAccureType"]:checked').val();
+
+
+        if (landArea == "Select Area") {
+            //Swal.fire({
+            //    position: 'center',
+            //    icon: 'error',
+            //    title: 'Please Select Land Area...!',
+            //    allowOutsideClick: false,
+            //    showCloseButton: true,
+            //    showConfirmButton: false
+            //})
+            $('#spnlandArea').css('display', 'block');
+            status = false;
+        }
+        else if (landDocType == "Select Document Type") {
+            //Swal.fire({
+            //    position: 'center',
+            //    icon: 'error',
+            //    title: 'Please Select Land Document Type...!',
+            //    allowOutsideClick: false,
+            //    showCloseButton: true,
+            //    showConfirmButton: false
+            //})
+            $('#spnlandDocType').css('display', 'block');
+            status = false;
+        }
+        else if (landConverted == "Select Conversion") {
+            //Swal.fire({
+            //    position: 'center',
+            //    icon: 'error',
+            //    title: 'Please Select Land Conversion...!',
+            //    allowOutsideClick: false,
+            //    showCloseButton: true,
+            //    showConfirmButton: false
+            //})
+            $('#spnlandconvert').css('display', 'block');
+            status = false;
+        }
+        else if (landConverted != "Not Converted") {
+            if (orderNo.length <= 0) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Enter Order Number..!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false
+                //})
+
+                $('#spnlandorderNumber').css('display', 'block');
+                status = false;
+            }
+           else if (orderDate.length <= 0) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Enter Order Date..!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false
+                //})
+
+                $('#spnOrderDate').css('display', 'block');
+                status = false;
+            }
+            else if (landType == "Select Land Type") {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Select Land Type...!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false,
+                //})
+
+                $('#spnlandtype').css('display', 'block');
+                status = false;
+            }
+            else if (khasaraNo.length <= 0) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Enter Khasara Number...!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false
+                //})
+                $('#spnkhasra').css('display', 'block');
+
+                status = false;
+            }
+            else if (landAreaUnit.length <= 0) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Enter Land Area...!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false,
+                //})
+                $('#spnlandEntry').css('display', 'block');
+
+                status = false;
+            }
+
+        }
+        else if (landType == "Select Land Type") {
+             //Swal.fire({
+             //    position: 'center',
+             //    icon: 'error',
+             //    title: 'Please Select Land Type...!',
+             //    allowOutsideClick: false,
+             //    showCloseButton: true,
+             //    showConfirmButton: false,
+             //})
+
+            $('#spnlandtype').css('display', 'block');
+             status = false;
+         }
+        else if (khasaraNo.length <= 0) {
+            //Swal.fire({
+            //    position: 'center',
+            //    icon: 'error',
+            //    title: 'Please Enter Khasara Number...!',
+            //    allowOutsideClick: false,
+            //    showCloseButton: true,
+            //    showConfirmButton: false
+            //})
+            $('#spnkhasra').css('display', 'block');
+
+            status = false;
+        }
+        else if (landAreaUnit.length <= 0) {
+            //Swal.fire({
+            //    position: 'center',
+            //    icon: 'error',
+            //    title: 'Please Enter Land Area...!',
+            //    allowOutsideClick: false,
+            //    showCloseButton: true,
+            //    showConfirmButton: false,
+            //})
+
+            $('#spnlandEntry').css('display', 'block');
+
+            status = false;
+        }
+
+        //else if (typeof(lndAccureType) == "undefined") {
+        //    //Swal.fire({
+        //    //    position: 'center',
+        //    //    icon: 'error',
+        //    //    title: 'Please Select Accure Type...!',
+        //    //    allowOutsideClick: false,
+        //    //    showCloseButton: true,
+        //    //    showConfirmButton: false,
+        //    //})
+
+        //    $('#spnlandAccureType').css('display', 'block');
+
+        //    status = false;
+        //}
+        //else if (lndAccureImg.length<=0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: `Please ${lndAccureTitle}...!`,
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //        showConfirmButton: false,
+        //    })
+        //    status = false;
+        //}
+
+        if (landInfoData.length > 0) {
+          /*  alert(landInfoData.length);*/
+            debugger;
+            landInfoData.forEach(function (item) {
+                if (landConverted != "Not Converted") {
+                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && (orderNo == item.sOrdrNo || item.sOrdrNo == "NA") && (orderDate == item.dtOrdrDate || item.dtOrdrDate == "NA") && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: "Duplicate Entry",
+                            html: "<p>The Details you have entered are already exists into the table, Please try again find different values</p>",
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        status = false;
+                    }
+                }
+                else {
+                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: "Duplicate Entry",
+                            html: "<p>The Details you have entered are already exists into the table, Please try again find different values</p>",
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        status = false;
+                    }
+                }
+            });
+        }
+        return status;
+    }
+
+    function deleteRow(UniqueID)
+    {
+        var htmlString = "";
+        landInfoData = landInfoData.filter(function (e) {
+            return e.UnQID !== UniqueID;
+        })
+
+        console.table(landInfoData);
+
+        $('#txtTotalArea').val(0);
+        if (landInfoData.length <= 0) {
+            htmlString += `<td colspan="15" class="text-center">No Data Available</td>`
+
+            $("#tblLandInfo tbody").html('');
+            $("#tblLandInfo tbody").html(htmlString);
+        }
+        else {
+            landInfoData.forEach(function (item, index) {
+                var landConvertedURL = (item.UploadConvertedDocument == null || item.UploadConvertedDocument == '') ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var landTitleURL = (item.UploadLandTitleDoc == null || item.UploadLandTitleDoc == '') ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc == '') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+                item.UnQID = CreateGuid();
+                console.log(item.UnQID)
+
+                htmlString += `<tr><td>${index + 1}</td>
+                                            <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span> :  ${item.Course}</td>
+                                            <td>${item.sLndArea}</td>
+                                            <td>${item.sLndDocType}</td>
+                                            <td>${item.sIsLndCnvrted}</td>
+                                            <td>${item.sOrdrNo}</td>
+                                            <td>${item.dtOrdrDate}</td>
+                                            <td>${item.sLndTyp}</td>
+                                            <td>${item.sKhasaraNo}</td>
+                                            <td>${item.slndAccureTyp}</td>
+                                            <td>${item.dLndArea}</td>
+                                            <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${landConvertedURL}</span></td>
+                                            <td class="text-center"><span>${landTitleURL}</span></td>
+                                            <td class="text-center"><span>${landDocumentURL}</span></td>
+                                            </tr>`
+
+                $('#txtTotalArea').val(item.dTotalArea);
+            });
+            $("#tblLandInfo tbody").html('');
+            $("#tblLandInfo tbody").append(htmlString);
+       /*     ClearAllData();*/
+        }
+
+
+    }
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+    function charecterOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^A-Za-z]/, "");
+    }
+
+    function CreateGuid() {
+        function _p8(s) {
+            var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+            return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+        }
+        return _p8() + _p8(true) + _p8(true) + _p8();
+    }
+
+</script>
+
+
+

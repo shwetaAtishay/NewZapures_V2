@@ -1,0 +1,591 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Support Ticket";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Ticket = ViewBag.TicketList as List<Dropdown>;
+    List<NewZapures_V2.Models.SupportIssue> Support = ViewBag.SupportList as List<NewZapures_V2.Models.SupportIssue>;
+
+}
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+}
+
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+    /*
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row d-none">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            @*<div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Collage Facility</li>
+                    </ol>
+                </div>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card noc-layouts m-0">
+    <div class="card-header title-heading p-0">
+        <h4 class="m-0 title-heading float-left">@ViewBag.Title</h4>
+        @*<div class="form-group" style="text-align:right">
+                <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+            </div>*@
+    </div>
+
+    @{
+        @*foreach (var item in GuidDetail)
+            {
+                <input type="hidden" id="TrustId" value="@item.TrustInfoId" />
+                <input type="hidden" id="clgId" value="@item.iCollegeId" />
+                <input type="hidden" id="DeptId" value="@item.iFK_DeptId" />
+            }*@
+    }
+    @*<input type="hidden" id="clgId" value="@TempData["clgId"]" />*@
+    <div class="card-body row" id="refer">
+        <div class="col-12">
+
+
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="noc-text-input" class="noc-form-label"><strong>Nature Of Tickets</strong><span style="color:red;">*</span></label>
+
+                        <select class="form-control noc-input-text" id="Tickets" name="Tickets" required>
+                            <option value="">Nature Of Tickets</option>
+                            @{
+                                foreach (var item in Ticket)
+                                {
+                                    <option value="@item.Id">@item.Text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label for="error" class="col-sm-12" id="errorTickets" style="display:none;"></label>
+                    </div>
+                </div>
+                @*<div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Other</strong></label>
+                        <input type="text" class="form-control noc-input-text" id="" autocomplete="off" />
+                        <span id="" class="spanLabel" style="display:none">Please Enter </span>
+                    </div>*@
+
+            <div class="col-lg-4 form-group">
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Subject</strong></label>
+                <input type="text" class="form-control noc-input-text cutcopypaste" id="Subject" autocomplete="off" />
+                <span id="spnkhasra" class="spanLabel" style="display:none">Please Enter Subject</span>
+                <div>
+                    <label for="error" class="col-sm-12" id="errorSubject" style="display:none;"></label>
+                </div>
+            </div>
+               
+            <div class="col-lg-4">
+                <label for="noc-text-input " class="noc-form-label" style=""><strong>Choose File</strong><span style="color:red;">*</span></label>
+
+                <input type="file" class="form-control" id="txtAffidavitconsent" name="Affidavitconsent" onchange="return encodeImageFileAsURL(this,'PlaceDoc','PlaceDocExten')" />
+                <input type="hidden" id="PlaceDoc" />
+                <input type="hidden" id="PlaceDocExten" />
+                <div>
+                    <label for="error" class="col-sm-12" id="errorFile" style="display:none;"></label>
+                </div>
+            </div>
+               
+            <div class="col-lg-4 form-group">
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Email</strong></label>
+                <input type="email" class="form-control noc-input-text cutcopypaste" id="txtEmail" autocomplete="off" />
+                <span id="" class="spanLabel" style="display:none">Please Enter Email Address</span>
+                <div>
+                    <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
+                </div>
+            </div>
+               
+            <div class="col-lg-4 form-group">
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Mobile No.</strong></label>
+
+                <input class="form-control noc-input-text numberonly cutcopypaste" type="text" maxlength="10" id="txtMobileNumber" name="MobileNumber" value="" autocomplete="off">
+                <span id="" class="spanLabel" style="display:none">Please Enter Mobile Number</span>
+                <div>
+                    <label for="error" class="col-sm-12" id="errorMobile" style="display:none;"></label>
+                </div>
+            </div>
+
+                
+            <div class="col-lg-12 form-group">
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Message</strong></label>
+                <textarea class="form-control noc-input-text cutcopypaste" id="message" placeholder="Please Enter Message" style="resize:none; height:80px;"></textarea>
+
+                @*<input type="text" class="form-control noc-input-text" id="Subject" autocomplete="off" />
+        <span id="spnkhasra" class="spanLabel" style="display:none">Please Enter Message</span>*@
+                <div>
+                    <label for="error" class="col-sm-12" id="errorMessage" style="display:none;"></label>
+                </div>
+            </div>
+                
+                <div class="col-lg-12 text-right">
+
+                    <button class="theme-button-mockup" id="btnSave"><i class="fas fa-save"></i> Save</button>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="noc-layouts-tbl pt-3">
+                        <div class="form-group" style="overflow-x:auto;">
+                            <table class="table table-borderless table-striped table-hover" id="tblIncome">
+                                <thead class="dark">
+                                    <tr>
+                                        <th>Sr</th>
+                                        <th>Create Date</th>
+                                        <th>Nature Of Ticket</th>
+                                        <th>Subject</th>
+                                        <th>Ticket Status</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>Message</th>
+                                        <th>File Document</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Support != null)
+                                    {
+                                        int i = 1;
+                                        foreach (var item in Support)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td>@item.dateCreate</td>
+                                                <td>@item.TicketsName</td>
+                                                <td>@item.Subject</td>
+                                                <td style="color: rgb(0, 255, 0) ">@item.TicketStatus</td>
+                                                <td>@item.MobileNumber</td>
+                                                <td>@item.Email</td>
+                                                <td>@item.Message</td>
+                                                <td>
+                                                    @if (item.TicketFile != null)
+                                                    {
+                                                        <div>
+
+                                                            <a href="@Url.Action("DownloadTicketsDocuments", "SupportTicket", new { id = item.Id })" title="Tickets File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
+
+                                                        </div>
+                                                    }
+                                                </td>
+                                                <td class="d-flex" style="gap:2px;">
+
+                                                    <a id="@item.Id" class="theme-delete-btn" title="Delete" onclick="DeleteCourseDetails(@item.Id,'Get','NULL');"><i class="far fa-trash-alt"></i></a>
+
+                                                </td>
+
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="8" style="text-align: center;">No Data Available</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-lg-12" style="margin-top:20px">
+                <div class="col-lg-12 loat-right">
+                    @*<button class="theme-button-mockup" id="btnupload" style="float:right">Upload</button>*@
+                    <button class="theme-button-mockup" id="btnSave" style="display:none;float:right">Save</button>
+                    @*<a href="@Url.Action("EditApplication","Trustee")" class="btn btn-primary d-none" style="display: block; margin-right: 5px; background-color: deeppink;float:right" id="Reset">Back</a>*@
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script type="text/javascript">
+    $('.cutcopypaste').on("cut copy paste", function (e) {
+        e.preventDefault();
+    });
+    var imagebase64 = "";
+    var imageMngbase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            console.log(imagebase64);
+            console.log(hdnId);
+            console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+    function encodeImageFileAsURLMang(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imageMngbase64 = reader.result;
+            $('#' + hdnId).val(imageMngbase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            console.log(imageMngbase64);
+            console.log(hdnId);
+            console.log("extension" + hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imageMngbase64;
+    }
+    $('.numberonly').keypress(function (e) {
+
+        var charCode = (e.which) ? e.which : event.keyCode
+
+        if (String.fromCharCode(charCode).match(/[^0-9]/g))
+
+            return false;
+
+    });
+
+
+    function CheckValid() {
+        debugger
+        var status = true;
+        var TicketsType = $("#Tickets option:selected").html();
+        if (TicketsType == "Nature Of Tickets" || TicketsType == undefined) {
+           
+            $('label[for="error"]').show();
+            errorTickets.textContent = "Please Select Tickets Issue"
+            errorTickets.style.color = "red"
+            Tickets.style.border = "1px solid red"
+            $('#Tickets').focus();
+            $('#Tickets').val('');
+            status = false;
+        }
+        else {
+            $('#errorTickets').remove();
+            $("#Tickets").css({ 'border': '' });
+        }
+      
+
+        if (!$('#Subject').val()) {
+
+            $('label[for="error"]').show();
+            errorSubject.textContent = "Please Enter Subject Issue"
+            errorSubject.style.color = "red"
+            Subject.style.border = "1px solid red"
+            $('#Subject').focus();
+            $('#Subject').val('');
+            status = false;
+        }
+        else {
+            $('#errorSubject').remove();
+            $("#Subject").css({ 'border': '' });
+        }
+
+
+        if (!$('#txtAffidavitconsent').val()) {
+
+            $('label[for="error"]').show();
+            errorFile.textContent = "Please Select Chose File"
+            errorFile.style.color = "red"
+            txtAffidavitconsent.style.border = "1px solid red"
+            $('#txtAffidavitconsent').focus();
+            $('#txtAffidavitconsent').val('');
+            status = false;
+        }
+        else {
+            $('#errorFile').remove();
+            $("#txtAffidavitconsent").css({ 'border': '' });
+        }
+
+        if (!$('#txtEmail').val()) {
+
+
+            $('label[for="error"]').show();
+            errorEmail.textContent = "Please Enter Email Id"
+            errorEmail.style.color = "red"
+            txtEmail.style.border = "1px solid red"
+            $('#txtEmail').focus();
+            $('#txtEmail').val('');
+            status = false;
+
+           
+        }
+        else {
+            ValidateEmail();
+
+        }
+        var mobile = $("#txtMobileNumber").val()
+
+       
+        if (!$('#txtMobileNumber').val()) {
+            $('label[for="error"]').show();
+            errorMobile.textContent = "Please Enter Mobile No";
+            errorMobile.style.color = "red"
+            txtMobileNumber.style.border = "1px solid red"
+            $('#txtMobileNumber').focus();
+            $('#txtMobileNumber').val('');
+           
+            status = false;
+            //return status;
+        }
+        else {
+            if (mobile.length == 10) {
+                $('#errorMobile').remove();
+                $("#txtMobileNumber").css({ 'border': '' });
+            }
+            else {
+                $('label[for="error"]').show();
+                errorMobile.textContent = "Mobile No Length Must be 10 Digits";
+                errorMobile.style.color = "red"
+                txtMobileNumber.style.border = "1px solid red"
+                //$('#txtMobileNumber').focus();
+                //$('#txtMobileNumber').val('');
+                status = false;
+            }
+        }
+
+        if (!$('#message').val()) {
+            $('label[for="error"]').show();
+            errorMessage.textContent = "Please Enter Issue Message";
+            errorMessage.style.color = "red"
+            message.style.border = "1px solid red"
+            $('#message').focus();
+            $('#message').val('');
+            status = false;
+           
+        }
+        else {
+            $('#errorMessage').remove();
+            $("#message").css({ 'border': '' });
+           
+        }
+        return status;
+    }
+    $("#btnSave").click(function () {
+        debugger
+        var TicketsName = $('#Tickets option:selected').val();
+        var SubjectName = $('#Subject').val();
+        var PlaceDoc = $('#PlaceDoc').val().split(',')[1];
+        var PlaceDocExte = $('#PlaceDocExten').val().split('.')[1];
+        var PlaceDocContent = $('#PlaceDoc').val().split(',')[0];
+        if (PlaceDocContent != "") {
+            PlaceDocContent = $('#PlaceDoc').val().split(',')[0].split(':')[1].split(';')[0];
+        }
+        else {
+            PlaceDocContent = $('#PlaceDoc').val().split(',')[0];
+        }
+        var EmailName = $('#txtEmail').val();
+        var Mobile = $('#txtMobileNumber').val();
+        var messageIssue = $('#message').val();
+        var model = {
+            Tickets: TicketsName,
+            Subject: SubjectName,
+            TicketFile: PlaceDoc,
+            TicketFileExtension: PlaceDocExte,
+            TicketFileContentType: PlaceDocContent,
+            MobileNumber: Mobile,
+            Email: EmailName,
+            Message: messageIssue,
+        }
+        if (CheckValid()) {
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/SupportTicket/SupportSaveDetails",
+                data: model, 
+                success: function (data) {
+
+                    debugger
+                    if (data.StatusCode == '1') {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Data saved sussessfully!',
+                            allowOutsideClick: false,
+                            showCancelButton: false,
+                            showCloseButton: true,
+                            showConfirmButton: true,
+                        })
+                    }
+                    else {
+                        Swal.fire(
+                            'error',
+                            'Failed',
+                            'Data not Saved'
+                        )
+                    }
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000)
+                }
+            });
+        }
+    });
+
+    function ValidateEmail() {
+
+        var email = document.getElementById("txtEmail").value;
+        var lblError = document.getElementById("lblError");
+
+        var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+        if (!expr.test(email)) {
+            $('label[for="error"]').show();
+            //errorEmail.textContent = "Invalid email address.";
+            $('#errorEmail').addClass('colordiv');
+            errorEmail.innerHTML = "Invalid email address.";
+            status = false;
+
+        }
+        else {
+            $('#errorEmail').remove();
+            $("#txtEmail").css({ 'border': '' });
+           
+        }
+    }
+
+    function DeleteCourseDetails(Id) {
+        debugger
+        var Model = {
+            //type: itemType,
+            id: parseInt(Id),
+            //sub: SubjectName
+        }
+        var d = JSON.stringify(Model);
+        console.log(d);
+        Swal.fire({
+            title: 'Are You Delete Confirmation ?',
+            showDenyButton: true, showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/SupportTicket/DeleteTickets",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(Model),
+                    success: function (data) {
+                        debugger
+                        console.log('ajax');
+                        console.log(data);
+                        if (data.StatusCode == 1) {
+
+                            $('#tblIncome').load(' #tblIncome')
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Delete Successfully',
+                                showConfirmButton: false,
+                                timer: 3000
+                            })
+                            
+                        }
+                    },
+                    error: function (d) {
+                        console.log(d);
+                        alert("404. Please wait until the File is Loaded.");
+
+                    }
+                });
+            }
+            else if (result.isDenied) {
+                Swal.fire('Cancel', '', 'info')
+                $('#continue').css("display", "none");
+                $('#btnCapitalAdd').css("display", "block");
+            }
+        });
+    }
+
+
+</script>

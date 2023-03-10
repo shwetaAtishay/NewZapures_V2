@@ -1,0 +1,935 @@
+﻿@using NewZapures_V2.Models;
+@{
+    Layout = "";
+    var servicesCollectiondata = (UserModelSession)Session["UserDetails"];
+
+    var servicesCollection = (Data)Session["UserAllDetails"];
+    var userdetails = (UserModelSession)Session["UserDetails"];
+    var BaseURL = System.Configuration.ConfigurationManager.AppSettings["BaseUrl"];
+    var profileImage = BaseURL + userdetails.profileImage;
+
+    var userName = userdetails.Username.Substring(0, 1);
+
+    var NotificationOpRequest = new NotificationOperationRequest { PartyId = userdetails.PartyId, RowID = 0, Type = "View" };
+
+    var notificationData = (List<NotificationOperationData>)ZapurseCommonlist.NotificationOperation(NotificationOpRequest);
+    var notificationNumber = notificationData.Count();
+    var i = 1;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>NOC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/images/NOCIMAGE.png">
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+    @*<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/loader.css" rel="stylesheet" />
+    
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+
+    @*@RenderSection("styles", false)*@
+    <style type="text/css">
+
+        .notificationNumber {
+            position: relative;
+            top: -14px;
+            font-size: 13px;
+            padding: 0px 7px;
+            background: red;
+            text-align: center;
+            color: white;
+            border-radius: 50%;
+            left: -14px;
+            font-family: cursive;
+            font-weight: 800;
+        }
+
+        .CartItemCount {
+            position: relative;
+            top: -14px;
+            font-size: 13px;
+            padding: 0px 7px;
+            background: red;
+            text-align: center;
+            color: white;
+            border-radius: 50%;
+            left: -14px;
+            font-family: cursive;
+            font-weight: 800;
+        }
+
+        #divUsernamInitials {
+            height: 35px;
+            width: 35px;
+            margin-right: 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            background: linear-gradient(135deg, #478bb8 0%, #9cb347 100%);
+        }
+
+        .enlarge-menu .topbar .navbar-custom {
+            margin-left: 70px !important;
+        }
+    </style>
+    <style>
+        .welcm-txt h2 {
+            color: #0000ff;
+        }
+
+        .welcm-txt {
+            border-bottom: 16px solid blue;
+            margin-bottom: 20px;
+        }
+
+        span.red {
+            color: #ef0808 !important;
+        }
+
+        .sub-form {
+            border: 2px solid #615f5f;
+            padding: 20px 10px;
+        }
+
+        .sub-inrhead h5 {
+            color: #ef0b0b;
+            font-weight: 500;
+            font-size: 17px;
+        }
+
+        .left-subfrm input, .rght-subfrm input {
+            border: none;
+            padding: 5px 16px;
+            margin: 0px 5px;
+            background: #6079df;
+            color: #fff;
+            margin: 10px 0px;
+        }
+
+        input.green {
+            background: #0cc60c !important;
+        }
+
+        input.red {
+            background: #ef0808 !important;
+        }
+
+        .inner-form {
+            border-bottom: 2px solid #797777;
+            padding-bottom: 20px;
+        }
+
+        .disclmr {
+            margin: 10px 0px;
+            border-top: 2px solid #797777;
+            padding: 10px 0px;
+            border-bottom: 2px solid #797777;
+        }
+
+        .verify-box {
+            padding-top: 20px;
+        }
+
+        .two-servctxt span {
+            display: block;
+            margin: 5px 0px;
+            font-weight: 600;
+        }
+
+        span.upld-doc {
+            color: #0e12d1;
+            font-weight: 500;
+            font-size: 18px;
+        }
+
+        .disclmr h4 {
+            font-size: 16px;
+            color: red;
+        }
+
+        .contn-btn input {
+            border: none;
+            padding: 7px 35px;
+            background: #248a0c;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .documentImageContainer {
+            width: auto;
+            height: 150px;
+            border-radius: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        @@media only screen and (max-width:576px) {
+            .table {
+                font-size: 12px;
+            }
+        }
+
+        .imgside {
+            margin-left: 2rem;
+            margin-top: -2rem;
+            height: 70%;
+        }
+
+        .trstverifybox {
+            display: flex;
+            flex-direction: column;
+            place-content: center;
+            height: 100%;
+        }
+        .noc-welcome-layout-posi .sub-form {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body style="overflow: visible !important;">
+    <!-- leftbar-tab-menu -->
+    <div class="leftbar-tab-menu d-none">
+        <div class="main-icon-menu slimscroll-menu">
+            <a href="#" class="logo logo-metrica d-block text-center">
+                <span>
+                    <img src="~/images/NOCIMAGE.png" alt="logo-small" class="logo-sm">
+                </span>
+            </a>
+            <nav class="nav">
+
+            </nav><!--end nav-->
+        </div><!--end main-icon-menu-->
+    </div>
+    <!-- end leftbar-tab-menu-->
+    <!-- Top Bar Start -->
+    <div class="topbar">
+        <!-- Navbar -->
+        <nav class="navbar-custom" style="margin-left:0px;">
+            <ul class="list-unstyled topbar-nav float-right mb-0">
+
+                @*<Cart Code>*@
+                <li class="dropdown d-none">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false" id="linkCartIcon">
+                        <i class="mdi mdi-cart" style="font-size:25px"></i> <span class="CartItemCount" style="display:none" id="CartItemCount"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" style="min-width: 35rem !important;padding:5px">
+                        <div class="row col-12" id="divCartItems">
+                            <p>No Item Available</p>
+                        </div>
+                    </div>
+                </li>
+                @*<Notification Icon Code>*@
+                <li class="dropdown d-none">
+                    @{
+                        if (notificationNumber <= 0)
+                        {
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="mdi mdi-bell-ring" style="font-size:25px"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width: 35rem !important;padding:25px">
+                                <div class="row col-12" id="divnotificationMsg">
+                                    <p>No New Notification</p>
+                                </div>
+
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="mdi mdi-bell-ring" style="font-size:25px"></i> <span class="notificationNumber" id="notificationCount">@notificationNumber</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" style="min-width: 35rem !important;padding:15px">
+                                @foreach (var item in notificationData)
+                                {
+
+
+                                    <div class="row" id="divnotificationMsg" style="display: flex;place-content: center;justify-content: center;align-items: center;">
+                                        <span style="padding: 8px;color: black;font-size: 16px;border-radius: 50%;font-family: 'Poppins';font-weight: 600;">@i .</span>
+                                        <div class="col-lg-8">
+                                            @{
+                                                if (item.IsRead == 0)
+                                                {
+
+                                                    <p style="display: inline-block;width: 360px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;margin-top: 19px;font-weight:700">@item.Message</p>
+                                                }
+                                                else
+                                                {
+                                                    <p style="display: inline-block;width: 360px;white-space: nowrap;overflow: hidden !important;text-overflow: ellipsis;margin-top: 19px;">@item.Message</p>
+                                                }
+                                            }
+
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <button href="#" class="btn btn-outline-primary" style="font-size: 12px;" onclick="ReadNotification('@item.NotificationUserListID','MarkasRead')">Mark as Read</button>
+                                        </div>
+
+
+                                    </div>
+
+                                    i++;
+
+                                }
+                            </div>
+                        }
+                    }
+
+                </li>
+
+
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" style="display: flex; justify-content: center; align-items: center;" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+
+                        @{
+                            if (!string.IsNullOrEmpty(userdetails.profileImage))
+                            {
+                                <img src="@profileImage" alt="profile-user" class="rounded-circle" />
+                            }
+                            else
+                            {
+                                <div class="rounded-circle" id="divUsernamInitials"></div>
+                            }
+                        }<span class="ml-1 nav-user-name hidden-sm">
+                            @(userdetails != null && userdetails.Username!=""? userdetails.Username  : "Amelia") <i class="mdi mdi-chevron-down"></i>
+
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <!---  <a class="dropdown-item" href="@Url.Action("MyProfile","Home")"><i class="dripicons-user text-muted mr-2"></i> Profile</a>
+                        <a class="dropdown-item" href="@Url.Action("ProfileView","Home",new {Id= userdetails.PartyId,status=0})"><i class="fas fa-user-secret text-muted mr-2"></i> Profile View</a>
+
+                        <a class="dropdown-item" href="@Url.Action("Setting","Admin")"><i class="dripicons-gear text-muted mr-2"></i> Settings</a>
+                        <a class="dropdown-item" href="@Url.Action("Addpartner", "Role")"><i class="fas fa-user-plus text-muted mr-2"></i>Add Partner</a>
+                        <a class="dropdown-item" href=""><i class="dripicons-lock text-muted mr-2"></i>Legal and Policies</a>
+                        <a class="dropdown-item" href="#"><i class="fab fa-forumbee text-muted mr-2"></i>DashBoard</a>
+
+                        <a class="dropdown-item" href="@Url.Action("NotificationList", "Role")"><i class="mdi mdi-bell-ring text-muted mr-2"></i>Notification History</a>
+                        <div class="dropdown-divider"></div>---->
+                        <a class="dropdown-item" href="#" id="btnLogout" style="vertical-align:text-top;">
+                            <i class="dripicons-exit text-muted mr-2" style=""></i> Logout
+                        </a>
+                    </div>
+                </li>
+
+            </ul><!--end topbar-nav-->
+
+            <ul class="list-unstyled topbar-nav mb-0">
+                <li>
+                    <a href="#">
+                        <span class="responsive-logo">
+                            <img src="~/images/logo-dark.png" alt="logo-small" class="logo-sm align-self-center" style="width: 40px;height: 35px;">
+                        </span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- end navbar-->
+    </div>
+    <!-- Top Bar End -->
+
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab noc-welcome-layout" style="">
+            <!-- main container -->
+            <div class="container-fluid">
+                <div class="main-form noc-welcome-layout-posi">
+                    <!--<div class="container">
+        <div class="row" style="">
+            <div class="col-lg-12 col-md-12 col">
+                <div class="sub-form" style="background:#fff">
+
+                    <div class="card-body">
+                        <div class="row col-lg-12 p-0 m-0" id="btnCapitalAdd">
+                            <div class="welcm-txt">-->
+                    <!-- <h2>Welcome to NOC Rajasthan ,to proceed kindly Trust Detail<span class="red"></span></h2>
+     <p>You are successfully logged in to the system.</p>---->
+                    <!--<h2 style="font-size:20px;">Welcome to UNOC Rajasthan </h2>
+                </div>
+                <div class="form-group col-lg-12 trstverifybox ">
+                    <label for="example-text-input" class="mt-3 noc-form-label" style="margin-left:0px;">Trust Registration No.</label>
+                    <div class="mb-4">
+                        <input class="form-control noc-input-text" type="text" autocomplete="off" id="RegistationNo" name="RegistationNo" placeholder="Please Enter Your Registration No.">
+                    </div>
+                    <a id="" class="apply theme-button-mockup" onclick="Verify()" style="width:110px; margin:0 auto;">Verify</a>
+
+
+                </div>
+
+                <div class="form-group col-lg-6 d-none">
+                    <img src="~/images/flow-image.jpeg" class="imgside" />
+                </div>
+            </div>
+
+            </div>
+        </div>
+    <div class="card-body">
+            <div class="row w-100 float-left p-0 m-0" id="divtrustdetails" style="display:none">
+                <div class="noc-welcome-design">
+                    <div class="welcm-txt">-->
+                    <!-- <h2>Welcome to NOC Rajasthan ,to proceed kindly Trust Detail<span class="red"></span></h2>
+     <p>You are successfully logged in to the system.</p>---->
+                    <!--<h2 style="font-size:20px;">Welcome to UNOC Rajasthan </h2>
+                            </div>
+                            <table class="table table-bordered m-0" id="tblsummery" style="font-size: 14px;text-align: justify;font-family: sans-serif;">
+                                <tr><td colspan="4">Trust Details</td></tr>
+                                <tr>
+                                    <th>Registration number</th>
+                                    <td>
+                                        <input type="hidden" id="txtTrustReg" />
+                                        <span id="spnTrustReg"></span>
+                                    </td>
+                                    <th>Name</th>
+                                    <td><span id="spnName"></span></td>
+                                </tr>
+                                <tr><th>BRN</th><td><span id="spnBRN"></span></td><th>RegistrationDate</th><td><span id="spnDate"></span></td></tr>
+                                <tr><th>District</th><td><span id="spnDistrict"></span></td><th>Act</th><td><span id="spnAct"></span></td></tr>
+                                <tr><th>Type</th><td><span id="spnType"></span></td><th>Status</th><td><span id="spnStatus"></span></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="w-100 float-left" style="margin-top:20px">
+                        <div class="w-100 float-left text-right">
+                            <input class="theme-button-mockup" type="submit" value="Verify" id="continue" style="width: 110px; display: none; float: right; margin-bottom: 10px;" onclick="Countinue();">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>-->
+                    <div class="container">
+                        <div class="row" style="">
+                            <div class="col-lg-12 col-md-12 col">
+                                <div class="sub-form" style="background:#fff">
+                                    <div class="card-body">
+                                        <div class="row col-lg-12 p-0 m-0" id="btnstart">
+                                            <div class="d-flex align-items-center w-100 float-left">
+                                                <div class="position-relative" style="min-height: 500px; width: 50%; float: left; background-position: top center; background-repeat: no-repeat; background: url('https://new-img.patrika.com/upload/2022/02/11/shikshasankul.jpg'); background-size: cover;">
+
+                                                    <h1 class="d-none" style="color:#fff; position: absolute; text-align: center; top: 50%; left: 0; right: 0; transform: translateY(-50%);">Welcome to UNOC Rajasthan</h1>
+                                                </div>
+
+                                                <div style="width:50%;float:left;">
+                                                    <div class="">
+                                                        <div style="width:100px;height:100px; margin:0px auto;">
+                                                            <img src="~/images/NOCIMAGE.png" alt="logo-small" style="width:100%; height:100%; object-fit:cover;" class="logo-sm">
+                                                        </div>
+                                                        <h2 class="" style="text-align:center;font-size:20px;line-height:26px; font-weight:600;">Unified NOC Management System (UNMS)  ,Select Your legal entity</h2>
+                                                        <!---
+        <h2>Welcome to NOC Rajasthan ,to proceed kindly Select Type<span class="red"></span></h2>
+        <p>You are successfully logged in to the system.</p>-->
+
+                                                    </div>
+
+                                                    <div class="welcm-txt d-none">
+                                                        <h2>Unified NOC Management System (UNMS)  ,Select Your  entity<span class="red"></span></h2>
+                                                        @*<p>You are successfully logged in to the system.</p>*@
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12">
+                                                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px;margin-top:10px">Select entity<span style="color:red;">*</span></label>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6 form-group">
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="customRadio1" value="Society" name="TrustType" class="custom-control-input">
+                                                                    <label class="custom-control-label noc-form-label" for="customRadio1">Society</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 form-group">
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="customRadio2" value="Trust" name="TrustType" class="custom-control-input">
+                                                                    <label class="custom-control-label noc-form-label" for="customRadio2">Trust</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 form-group">
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="customRadio3" value="Company" name="TrustType" class="custom-control-input">
+                                                                    <label class="custom-control-label noc-form-label" for="customRadio3">Company</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 form-group">
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" id="customRadio4" value="Other" name="TrustType" class="custom-control-input">
+                                                                    <label class="custom-control-label noc-form-label" for="customRadio4">Other</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group col-lg-12 trstverifybox ">
+                                                        <a id="" class="apply theme-button-mockup" onclick="Next()" style="width:110px; margin:0 auto;">Next</a>
+
+                                                    </div>
+
+                                                    <div class="form-group col-lg-6 d-none">
+                                                        <img src="~/images/flow-image.jpeg" class="imgside" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col">
+                                <div class="sub-form" style="background:#fff">
+                                    <div class="card-body">
+                                        <div class="row col-lg-12 p-0 m-0" id="btnCapitalAdd" style="display:none">
+
+                                            <div class="d-flex align-items-center w-100 float-left">
+                                                <div class="position-relative" style="min-height: 500px; width: 50%; float: left; background-position: top center; background-repeat: no-repeat; background: url('https://new-img.patrika.com/upload/2022/02/11/shikshasankul.jpg'); background-size: cover;">
+
+                                                    <h1 class="d-none" style="color:#fff; position: absolute; text-align: center; top: 50%; left: 0; right: 0; transform: translateY(-50%);">Welcome to UNOC Rajasthan</h1>
+                                                </div>
+
+
+                                                <div class="w-50 float-left">
+                                                    <div class="">
+                                                        <div style="width:100px;height:100px; margin:0px auto;">
+                                                            <img src="~/images/NOCIMAGE.png" alt="logo-small" style="width:100%; height:100%; object-fit:cover;" class="logo-sm">
+                                                        </div>
+                                                        <h2 class="" style="text-align:center;font-size:20px;line-height:26px; font-weight:600;">Unified NOC Management System (UNMS)  ,Select Your legal entity</h2>
+                                                        <!---
+        <h2>Welcome to NOC Rajasthan ,to proceed kindly Select Type<span class="red"></span></h2>
+        <p>You are successfully logged in to the system.</p>-->
+
+                                                    </div>
+                                                    <div class="welcm-txt d-none">
+                                                        <h2>Unified NOC Management System (UNMS)  ,Select Your legal entity<span class="red"></span></h2>
+                                                        @*<p>You are successfully logged in to the system.</p>*@
+                                                    </div>
+                                                    <div class="form-group col-lg-12 trstverifybox ">
+                                                        <label for="example-text-input" class="mt-3" style="margin-left:0px; color:rgba(0,0,0,0.5)">Enter Your Society Registration Number.</label>
+                                                        <div class="mb-4">
+                                                            <input class="form-control noc-input-text" type="text" autocomplete="off" id="RegistationNo" name="RegistationNo" placeholder="Enter Your Society Registration Number">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-lg-7" style="margin: 0px auto 21px;">
+                                                        <a id="" class="apply theme-button-mockup" onclick="Verify()" style="width:110px; margin:0 auto;">Next</a>
+                                                        <a id="" class="apply theme-button-mockup" onclick="Back()" style="width: 110px; margin: 0 auto; background: #686767; color: #fff; border: 1px solid #686767 !important; ">Back</a>
+
+                                                    </div>
+
+                                                    <div class="form-group col-lg-6 d-none">
+                                                        <img src="~/images/flow-image.jpeg" class="imgside" />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row w-100 float-left p-0 m-0" id="divtrustdetails" style="display:none">
+                                    <div class="noc-welcome-design">
+                                        <div class="welcm-txt">
+                                            <h2>Legal Entity Details <span class="red"></span></h2>
+                                            @*<p>You are successfully logged in to the system.</p>*@
+                                        </div>
+                                        <table class="table table-bordered m-0" id="tblsummery" style="font-size: 14px;text-align: justify;font-family: sans-serif;">
+                                            <tr><td colspan="4"> Details</td></tr>
+                                            <tr>
+                                                <th>Registration number</th>
+                                                <td>
+                                                    <input type="hidden" id="txtTrustReg" />
+                                                    <span id="spnTrustReg"></span>
+                                                </td>
+                                                <th>Name</th>
+                                                <td><span id="spnName"></span></td>
+                                            </tr>
+                                            <tr><th>BRN</th><td><span id="spnBRN"></span></td><th>RegistrationDate</th><td><span id="spnDate"></span></td></tr>
+                                            <tr><th>District</th><td><span id="spnDistrict"></span></td><th>Act</th><td><span id="spnAct"></span></td></tr>
+                                            <tr><th>Type</th><td><span id="spnType"></span></td><th>Status</th><td><span id="spnStatus"></span></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="w-100 float-left" style="margin-top:20px">
+                                        <div class="w-100 float-left text-right">
+                                            <input class="theme-button-mockup" type="submit" value="Verify" id="continue" style="float:right;margin-bottom:10px" onclick="Countinue();">
+                                            <input class="theme-button-mockup" type="submit" value="Back" id="backverify" style="float: right; margin-bottom: 10px; margin-right:10px; background: #686767; color: #fff; border: 1px solid #686767 !important; " onclick="Back();">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                </div>
+            </div>
+
+
+            <div id="" class="confirmBox" style="display:none;">
+                <h4><i class="fa fa-question-circle"></i> Confirm</h4>
+                <div class="fullWidth">
+                    <p> Click OK to confirm or Cancel to exit</p>
+                    <div class="fullWidth flr">
+                        <input id="yesConfirm" class="btn comBtn" type="button" value="OK" />
+                        <input id="noConfirm" class="btn whiteBtn" type="button" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+            <div class="overlay"></div>
+            <!-- end container -->
+            <!-- right bar -->
+            @Html.Partial("_right-bar")
+            <!-- end right bar -->
+            <!--footer-->
+    <footer class="footer text-center" style="background:#fff; color:rgba(0,0,0,.3);padding:15px;">
+        <!--- &copy; 2022 - 2023 NOC <span class="text-muted d-none d-sm-inline-block float-right">Crafted with <i class="mdi mdi-heart text-danger"></i> by </span>--->
+        Copyright &copy; 2022 - 2023 UNOC. All rights reserved. <span class="text-muted d-none  float-right"> </span>
+    </footer>
+            <!--end footer-->
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="~/Content/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+    @*<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>*@
+
+    @Scripts.Render("~/bundles/scripts")
+
+    @*@RenderSection("scripts", false)*@
+    <!-- app.js -->
+    @Scripts.Render("~/Scripts/app.js")
+    <script type="text/javascript">
+        var globaUserProperties = new Object();
+
+        var base_url = window.location;
+        globaUserProperties.domain = base_url.origin// + "/" + window.location.pathname.split('/')[1];  // Stagging where we have domain in front of URL
+        window.history.forward();
+        function noBack() {
+            window.history.forward();
+        }
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+        function confirmLoader() {
+            $("#progressModel").modal('show');
+        };
+        function Next() {
+            var TrustType = $('input[name="TrustType"]:checked').val();
+
+            $.ajax({
+                type: "POST",
+                url: GetglobalDomain() + "/Dashboard/SetSession",
+                data: '{name: "' + TrustType + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                },
+                failure: function (response) {
+                    // alert(response.responseText);
+                },
+                error: function (response) {
+                    // alert(response.responseText);
+                }
+            });
+
+            if (TrustType == 'Society') {
+                $('#btnstart').hide();
+                $('#divtrustdetails').hide();
+                //$('#continue').css("display", "none");
+                $('#btnCapitalAdd').show();
+            }
+            else if (TrustType == 'Trust') {
+                var url = GetglobalDomain() + "/OtherTrust/TrustDetails"//
+                window.location.href = url;
+            }
+            else if (TrustType == 'Company') {
+                var url = GetglobalDomain() + "/OtherTrust/TrustDetails"//
+                window.location.href = url;
+            }
+            else if (TrustType == 'Other') {
+                var url = GetglobalDomain() + "/OtherTrust/TrustDetails"//
+                window.location.href = url;
+            }
+            //Swal.fire({
+            //    title: 'Do you want to continue?',
+            //    showDenyButton: true, showCancelButton: false,
+            //    confirmButtonText: 'Yes',
+            //    denyButtonText: 'No',
+            //}).then((result) => {
+            //    if (result.isConfirmed) {
+
+
+            //    } else if (result.isDenied) {
+            //        Swal.fire('Cancel', '', 'info')
+            //        $('#continue').css("display", "none");
+            //        $('#btnCapitalAdd').css("display", "block");
+            //    }
+            //});
+        }
+
+        function Verify() {
+            var RegistrationNo = $("#RegistationNo").val();
+            var modal1 = {
+                RegistrationNo: RegistrationNo,
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Dashboard/TrustVerification",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(modal1),
+                success: function (data) {
+                    if (data.Success) {
+                        /*Swal.fire(data.Message, '', 'success')*/
+
+                        if (data.res != null) {
+                            $('#spnTrustReg').html('');
+                            $('#spnName').html('');
+                            $('#spnBRN').html('');
+                            $('#spnDate').html('');
+                            $('#spnDistrict').html('');
+
+                            $('#spnAct').html('');
+                            $('#spnType').html('');
+                            $('#spnStatus').html('');
+
+                            $('#txtTrustReg').val(data.res.RegistrationNo);
+                            $('#spnTrustReg').html(data.res.RegistrationNo);
+                            $('#spnName').html(data.res.SocietyName);
+                            $('#spnBRN').html(data.res.BRN);
+                            $('#spnDate').html(data.res.RegistrationDate);
+                            $('#spnDistrict').html(data.res.District);
+
+                            $('#spnAct').html(data.res.Act);
+                            $('#spnType').html(data.res.Type);
+                            $('#spnStatus').html(data.res.Status);
+                            $('#divtrustdetails').show();
+                            //$('#continue').css("display", "block");
+                            $('#btnCapitalAdd').hide();
+                        }
+
+
+                    }
+                    else {
+                        Swal.fire(data.Message, '', 'info')
+                        //$('#continue').css("display", "none");
+                        //$('#btnCapitalAdd').css("display","block");
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                    //$('#continue').css("display", "none");
+                    //$('#btnCapitalAdd').css("display", "block");
+                }
+            });
+            //Swal.fire({
+            //    title: 'Do you want to verify Trust?',
+            //    showDenyButton: true, showCancelButton: false,
+            //    confirmButtonText: 'Yes',
+            //    denyButtonText: 'No',
+            //}).then((result) => {
+            //    if (result.isConfirmed) {
+
+
+            //    } else if (result.isDenied) {
+            //        Swal.fire('Cancel', '', 'info')
+            //        $('#continue').css("display", "none");
+            //        $('#btnCapitalAdd').css("display", "block");
+            //    }
+            //});
+        }
+        function Countinue() {
+            var urlS = GetglobalDomain()+"/Dashboard/DashboardUser"
+            window.location.href = urlS;  
+        }
+        function Back() {
+            var url = GetglobalDomain() + "/DashBoard/WelcomeNoc"//
+            window.location.href = url;
+
+        }
+    </script>
+    @if (TempData["StatusMsg"] != null)
+    {
+        if (TempData["Message"] != null)
+        {
+            var Msg = TempData["Message"];
+            var StatusMsg = TempData["StatusMsg"];
+            <script type="text/javascript">
+                $(document).ready(function () {
+                var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        onOpen: function (toast) {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                })
+                    Toast.fire({
+                        icon: '@StatusMsg.ToString()' ,
+                        title: '@Msg.ToString()'
+                    })
+                });
+            </script>
+        }
+    }
+
+
+    @if (TempData["SwalStatusMsg"] != null)
+    {
+        if (TempData["SwalMessage"] != null)
+        {
+            var SwalMsg = TempData["SwalMessage"];
+            var SwalStatusMsg = TempData["SwalStatusMsg"];
+            var SwalTitle = TempData["SwalTitleMsg"];
+            <script type="text/javascript">
+                $(document).ready(function () {
+
+                        Swal.fire(
+                            '@SwalTitle.ToString()',
+                            '@SwalMsg.ToString()',
+                            '@SwalStatusMsg.ToString()'
+                        )
+
+                });
+            </script>
+        }
+
+    }
+    <script src="~/Content/LoginSignUp/js/jquery.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+       if ('@userName' != "") {
+            $('#divUsernamInitials').html('');
+            $('#divUsernamInitials').html('@userName');
+        }
+        else {
+            var url = GetglobalDomain() + "/authentication/login-alt";
+            window.location.href = url;
+        }
+        var pathName = window.location.pathname.replace("/", '');
+
+        if (pathName == "DashboardReport") {
+
+             //setInterval(function () {
+
+            getnotification();
+
+            //}, 5000);
+        }
+
+
+
+    });
+    function getnotification() {
+
+
+        if ('@notificationData' != null) {
+
+            var data = JSON.parse('@Html.Raw(Json.Encode(notificationData))');
+            //console.log(data);
+
+            data.forEach(function (item) {
+
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3500,
+                    timerProgressBar: false,
+                    onOpen: function (toast) {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'success',
+                    html: `<div><p>${item.Message}</p></div>`
+                });
+            });
+        }
+    }
+    function ReadNotification(rowID,Type) {
+        var Model = {
+            RowID: parseInt(rowID),
+            Type: Type
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: globaUserProperties.domain + "/Role/ReadNotification",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    location.reload();
+                }
+            },
+            error: function (d) {
+                console.log(d);
+                //alert("404. Please wait until the File is Loaded.");
+            }
+        });
+    }
+    $('#btnLogout').on('click', function () {
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain()+"/Home/SignOut1",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: '',
+            success: function (data) {
+
+                var url = GetglobalDomain()+ "/authentication/login-alt";
+                window.location.href = url;
+
+            },
+            error: function (d) {
+                
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,573 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Required Documents";
+    Layout = null;
+    List<CustomMaster> CourseList = new List<CustomMaster>();
+    if (ViewBag.CourseList != null)
+    {
+        CourseList = (List<CustomMaster>)ViewBag.CourseList;
+    }
+}
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+
+<style>
+    .tblscroll {
+        width: 100%;
+        overflow-x: scroll;
+    }
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .custom-file-button input[type=file] {
+        margin-left: -2px !important;
+    }
+
+        .custom-file-button input[type=file]::-webkit-file-upload-button {
+            display: none;
+        }
+
+        .custom-file-button input[type=file]::file-selector-button {
+            display: none;
+        }
+
+    .custom-file-button:hover label {
+        background-color: #dde0e3;
+        cursor: pointer;
+    }
+</style>
+<div class="row d-none">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            @*<div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Attachments</li>
+                    </ol>
+                </div>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card card-secondary noc-layouts p-0 m-0 border-0">
+    <div class="card-header title-heading p-0 m-0">
+        <h4 class="title-heading">@ViewBag.Title</h4>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body row">
+        @using (Html.BeginForm("CollageAttachment", "Trustee", FormMethod.Post, new { id = "CollegeAttachemntform", enctype = "multipart/form-data" }))
+        {
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <lable class="noc-form-label"><strong>Course</strong></lable>
+                        <span style="color:red;">*</span>
+                        <select class="form-control noc-input-text" id="Course" name="iFk_CourseId" required>
+                            <option value="0">Select Course</option>
+                            @{
+                                foreach (var item in CourseList)
+                                {
+                                    <option value="@item.Id">@item.text</option>
+                                }
+                            }
+                        </select>
+                        <label for="error" class="col-sm-12" id="errorCourse" style="display:none;"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="">
+                    <h3 class="card-title" style="font-size:18px;">Financial Documents</h3>
+                </div>
+                <input type="hidden" name="iFk_TrstId" value="@ViewData["TrustId"]" />
+                <input type="hidden" name="iFk_ClgId" value="@ViewData["CollageId"]" />
+                <input type="hidden" name="iFk_CourseId" value="@ViewData["CourseId"]" />
+                <input type="hidden" name="iFk_DeptId" value="@ViewData["DeptId"]" />
+                <input type="hidden" name="clgStatus" value="@ViewData["clgStatus"]" />
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Upload Affidavit Of Non Deduction Of PF Account(Only pdf/image file.) (Min.Size 500KB) (Max.Size 2MB): *</label>
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="affidavit" name="affidavit" required>
+                                <label class="input-group-text" for="affidavit">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Salary payment through  bank</label>
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="SalaryPayment" name="SalaryPayment">
+                                <label class="input-group-text" for="SalaryPayment">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Upload Last 6 Month Bank Statement(Only pdf/image file.) (Min.Size 500KB) (Max.Size 2MB): *</label>
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="Bankstatement" name="Bankstatement">
+                                <label class="input-group-text" for="Bankstatement">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Annexure 16</label>
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="Annexure" name="Annexure">
+                                <label class="input-group-text" for="Annexure">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">ESI Document (Only pdf/image file.) (Min.Size 500KB) (Max.Size 2MB): *</label>
+                        <div>
+                            <div class="input-group custom-file-button">
+                                <input type="file" class="form-control" id="EsiDoc" name="EsiDoc">
+                                <label class="input-group-text" for="EsiDoc">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            if (ViewData["DeptId"].ToString() != "8")
+            {
+                <div class="col-12">
+                    <div class="">
+                        <h3 class="card-title" style="font-size:18px;">Company Documents</h3>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">DO you have Got/supreme Court/Gor/VCI/Concerned university guidline & direction</label>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio7" value="1" name="bIsCnnctUnvrctyDrctn" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio7">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio8" value="0" name="bIsCnnctUnvrctyDrctn" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio8">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="input-group custom-file-button" id="divbIsCnnctUnvrctyDrctn">
+                                        <input type="file" class="form-control" id="bIsCnnctUnvrctyDrctnfile" name="bIsCnnctUnvrctyDrctnfile">
+                                        <label class="input-group-text" for="bIsCnnctUnvrctyDrctnfile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">DO you have Time fram for establishment of livestock assistant traning school</label>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio9" value="1" name="bIsTimeFrm" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio9">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio10" value="0" name="bIsTimeFrm" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio10">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-7">
+                                    <div class="input-group custom-file-button" id="divbIsTimeFrm">
+                                        <input type="file" class="form-control" id="bIsTimeFrmfile" name="bIsTimeFrmfile">
+                                        <label class="input-group-text" for="bIsTimeFrmfile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">As you have Selection/Addmission criteria to be laid down by affiliated university</label>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-check-inline my-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio11" value="1" name="bIsLadDwn" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio11">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check-inline my-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio12" value="0" name="bIsLadDwn" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio12">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="input-group custom-file-button" id="divbIsLadDwn">
+                                        <input type="file" class="form-control" id="bIsLadDwnfile" name="bIsLadDwnfile">
+                                        <label class="input-group-text" for="bIsLadDwnfile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Have sufficient land for development and bank guarntee if yes enclose undertaking on a non-judicial stamp of rs 500 duty attested by the magistrate/public notary</label>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio13" value="1" name="bIsSffcentLand" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio13">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio14" value="0" name="bIsSffcentLand" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio14">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="input-group custom-file-button" id="divbIsSffcentLand">
+                                        <input type="file" class="form-control" id="bIsSffcentLandfile" name="bIsSffcentLandfile">
+                                        <label class="input-group-text" for="bIsSffcentLandfile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">To submit affidavit as per point no 4 of guidelines</label>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio15" value="1" name="bIsAffidvtAsprGuid" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio15">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio16" value="0" name="bIsAffidvtAsprGuid" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio16">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="input-group custom-file-button" id="divbIsAffidvtAsprGuid">
+                                        <input type="file" class="form-control" id="bIsAffidvtAsprGuidfile" name="bIsAffidvtAsprGuidfile">
+                                        <label class="input-group-text" for="bIsAffidvtAsprGuidfile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Other Documents to be added</label>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio17" value="1" name="bIsOtherDoc" class="custom-control-input" checked>
+                                            <label class="custom-control-label" for="customRadio17">Yes</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-check-inline my-1">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="customRadio18" value="0" name="bIsOtherDoc" class="custom-control-input">
+                                            <label class="custom-control-label" for="customRadio18">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="input-group custom-file-button" id="divbIsOtherDoc">
+                                        <input type="file" class="form-control" id="bIsOtherDocfile" name="bIsOtherDocfile">
+                                        <label class="input-group-text" for="bIsOtherDocfile">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+            <div class="col-12">
+                <div class="col-lg-12 text-right">
+                    <button class="theme-button-mockup" id="btnCapitalAdd" type="button" style="" onclick="return CheckValidation()"><i class="fas fa-save"></i> SAVE</button>
+                </div>
+            </div>
+            @Html.AntiForgeryToken()
+        }
+    </div>
+
+    <div class="row">
+        <div class="form-group col-lg-12 ">
+            <div class="title-heading p-0 rounded-0">
+                <h4 class="mt-0 title-heading rounded-0 float-left">Attachment Details</h4>
+            </div>
+            <div class="noc-layouts-tbl card-body" style="overflow-x:auto">
+                <table class="table table-striped table-bordered dt-responsive word-wrap" id="tblStaff">
+                    <thead style="">
+                        <tr>
+                            <th>SNo</th>
+                            <th>Course</th>
+                            <th>upload affidavit of non PF account</th>
+                            <th>Salary payment through by bank</th>
+                            <th>Upload last 6 month bank statements</th>
+                            <th>Annexure 16</th>
+                            <th>Esi Dudction</th>
+                            @if (ViewData["DeptId"].ToString() != "8")
+                            {
+                                <th style="word-wrap: break-word">DO you have Got/supreme Court/Gor/VCI/Concerned university guidline & direction</th>
+                                <th style="word-wrap: break-word">DO you have Time fram for establishment of livestock assistant traning school</th>
+                                <th style="word-wrap: break-word">As you have Selection/Addmission criteria to be laid down by affiliated university</th>
+                                <th style="text-align:center">Have sufficient land for development and bank guarntee if yes enclose undertaking on a non-judicial stamp of rs 500 duty attested by the magistrate/public notary</th>
+                                <th style="text-align:center">To submit affidavit as per point no 4 of guidelines</th>
+                                <th style="text-align:center">Other Documents to be added</th>
+                            }
+                            <th style="text-align:center">Action</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+</div>
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+}
+<script src="~/plugins/moment/moment.js"></script>
+<script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+<script src="~/plugins/select2/select2.min.js"></script>
+<script src="~/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<script src="~/plugins/timepicker/bootstrap-material-datetimepicker.js"></script>
+<script src="~/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+<script src="~/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+<script src="~/scripts/pages/jquery.forms-advanced.js"></script>
+<script src="~/plugins/dropify/js/dropify.min.js"></script>
+<script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var colgInfoData = [];
+    $(document).ready(function () {
+        var url = "Trustee/CollageAttachment";
+        GeneratePage(url);
+        function GeneratePage(url) {
+            $.ajax({
+                url: GetglobalDomain() + url,
+                type: 'GET',
+                dataType: "text",
+                success: function (response) {
+                    //$('#divFormContainer').html('');
+                    $('#divFormContainer1').removeAttr("style");
+                    $('#divFormContainer').html(response);
+                    $('#divLoader').css('display', 'none');
+                    return;
+                    /*  $("#AddSection").html(response);*/
+                }
+            });
+            return false;
+        }
+
+        $("input[name='bIsCnnctUnvrctyDrctn']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divbIsCnnctUnvrctyDrctn').show();
+            } else if ($(this).val() === '0') {
+                $('#divbIsCnnctUnvrctyDrctn').hide();
+                $('#bIsCnnctUnvrctyDrctn').val('');
+            }
+            // Do something interesting here
+        });
+
+        $("input[name='bIsTimeFrm']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divbIsTimeFrm').show();
+            } else if ($(this).val() === '0') {
+                $('#divbIsTimeFrm').hide();
+                $('#bIsTimeFrm').val('');
+            }
+            // Do something interesting here
+        });
+
+        $("input[name='bIsLadDwn']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divbIsLadDwn').show();
+            } else if ($(this).val() === '0') {
+                $('#divbIsLadDwn').hide();
+                $('#bIsLadDwn').val('');
+            }
+            // Do something interesting here
+        });
+
+        $("input[name='bIsSffcentLand']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divbIsSffcentLand').show();
+            } else if ($(this).val() === '0') {
+                $('#divbIsSffcentLand').hide();
+                $('#bIsSffcentLand').val('');
+            }
+            // Do something interesting here
+        });
+
+        $("input[name='bIsAffidvtAsprGuid']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divbIsAffidvtAsprGuid').show();
+            } else if ($(this).val() === '0') {
+                $('#divbIsAffidvtAsprGuid').hide();
+                $('#bIsAffidvtAsprGuid').val('');
+
+            }
+            // Do something interesting here
+        });
+
+        $("input[name='bIsOtherDoc']").change(function () {
+            //alert("in");
+            if ($(this).val() === '1') {
+                $('#divbIsOtherDoc').show();
+            } else if ($(this).val() === '0') {
+                $('#divbIsOtherDoc').hide();
+                $('#bIsOtherDoc').val('');
+
+            }
+            // Do something interesting here
+        });
+
+        GetcolgattachDetails();
+           function GetcolgattachDetails() {
+    var htmlString = "";
+               var array = @Html.Raw(Json.Encode(ViewBag.CollegeAttachmentList));
+               //if (array.length > 0) {
+               //    $("#btn_Proof").css({ "background": "rgb(13, 148, 13)", "color": "#fff" });
+               //}
+               //else {
+               //    $("#btn_Proof").css({ "background": "rgb(189, 0, 0)", "color": "#fff" });
+               //}
+    for(var i = 0; i < array.length; i++) {
+        colgInfoData.push(array[i]);
+        }
+
+               colgInfoData.forEach(function (item, index) {
+
+                   var affidavitfile = (item.affidavitfile == "") ? `NA` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.affidavitfile} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var SalaryPaymentfile = (item.SalaryPaymentfile == "") ? `NA` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.SalaryPaymentfile} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var Bankstatementfile = (item.Bankstatementfile == "") ? `NA` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.Bankstatementfile} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var Annexurefile = (item.Annexurefile == "") ? `NA` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.Annexurefile} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var EsiDocfile = (item.EsiDocfile == "") ? `NA` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.EsiDocfile} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+
+                   var bIsCnnctUnvrctyDrctfiles = (item.bIsCnnctUnvrctyDrctfiles == "") ? `` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.bIsCnnctUnvrctyDrctfiles} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var bIsCnnctUnvrctyDrctn = (item.bIsCnnctUnvrctyDrctn == "1") ? `Yes` : `No`;
+
+                   var bIsTimeFrm = (item.bIsTimeFrm == "1") ? `Yes` : `No`;
+                   var bIsTimeFrmfiles = (item.bIsTimeFrmfiles == "") ? `` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.bIsTimeFrmfiles} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+
+                   var bIsLadDwnfiles = (item.bIsLadDwnfiles == "") ? `` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.bIsLadDwnfiles} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var bIsLadDwn = (item.bIsLadDwn == "1") ? `Yes` : `No`;
+
+                   var bIsSffcentLandfiles = (item.bIsSffcentLandfiles == "") ? `` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.bIsSffcentLandfiles} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var bIsSffcentLand = (item.bIsSffcentLand == "1") ? `Yes` : `No`;
+
+                   var bIsAffidvtAsprGuidfiles = (item.bIsAffidvtAsprGuidfiles == "") ? `` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.bIsAffidvtAsprGuidfiles} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var bIsAffidvtAsprGuid = (item.bIsAffidvtAsprGuid == "1") ? `Yes` : `No`;
+
+                   var bIsOtherDocfiles = (item.bIsOtherDocfiles == "") ? `` : `<a href=${GetglobalDomain()}/Trustee/DownloadDocuments?id=${item.bIsOtherDocfiles} target ='_blank' alt = 'Red dot'><i class='fa fa-download'></i></a>`;
+                   var bIsOtherDoc = (item.bIsOtherDoc == "1") ? `Yes` : `No`;
+
+            //var landConvertedURL = (item.UploadConvertedDocument == null) ? `NA` : `<a href="${item.UploadConvertedDocument}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            //var landTitleURL = (item.UploadLandTitleDoc == null) ? `NA` : `<a href="${item.UploadLandTitleDoc}" download="${item.sKhasaraNo}_landTitle" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            //var landDocumentURL = (item.UploadLandDoc ==null) ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+
+                   if (@ViewData["DeptId"].ToString() != "8") {
+                       htmlString += `<tr><td>${index + 1}</td>
+<td>${item.Course}</td>
+<td style='text-align:center'>${affidavitfile}</td>
+<td style='text-align:center'>${SalaryPaymentfile}</td>
+<td style='text-align:center'>${Bankstatementfile}</td>
+<td style='text-align:center'>${Annexurefile}</td>
+<td style='text-align:center'>${EsiDocfile}</td>
+
+<td>${bIsCnnctUnvrctyDrctn}${bIsCnnctUnvrctyDrctfiles}</td>
+<td>${bIsTimeFrm}${bIsTimeFrmfiles}</td>
+<td>${bIsLadDwn}${bIsLadDwnfiles}</td>
+<td>${bIsSffcentLand}${bIsSffcentLandfiles}</td>
+<td>${bIsAffidvtAsprGuid}${bIsAffidvtAsprGuidfiles}</td>
+<td>${bIsOtherDoc}${bIsOtherDocfiles}</td>
+
+<td style='text-align:center'><a href='#' alt = 'Red dot' onclick="datadelete(${item.Id})"><i class='fas fa-trash' style='color:red'></i></a>
+</td>
+
+</tr>`
+                   }
+                   else {
+                       htmlString += `<tr><td>${index + 1}</td>
+<td>${item.Course}</td>
+<td style='text-align:center'>${affidavitfile}</td>
+<td style='text-align:center'>${SalaryPaymentfile}</td>
+<td style='text-align:center'>${Bankstatementfile}</td>
+<td style='text-align:center'>${Annexurefile}</td>
+<td style='text-align:center'>${EsiDocfile}</td>
+<td style='text-align:center'><a href='#' alt = 'Red dot' onclick="datadelete(${item.Id})"><i class='fas fa-trash' style='color:red'></i></a>
+</td>
+
+</tr>`
+                   }
+
+
+        });
+             $("#tblStaff tbody").html('');
+             $("#tblStaff tbody").html(htmlString);
+        }
+
+
+
+
+    });
+
+    function CheckValidation() {
+        //alert("in");
+        debugger;
+        var status = true;
+        var Course = $('#Course option:selected').val();
+        if (Course.length == 0) {
+            $('label[for="error"]').show();
+            errorCourse.textContent = "Please select Course";
+            /* errortxtName.style.color = "red";*/
+            $('#errorCourse').addClass('colordiv');
+            $('#Course').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#Course').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorCourse').html('');
+        }
+        console.log(status);
+
+        if (status) {
+            $('#CollegeAttachemntform').submit();
+        }
+        return status;
+    }
+</script>
+

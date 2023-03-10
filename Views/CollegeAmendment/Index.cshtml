@@ -1,0 +1,143 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<NewZapures_V2.Models.CollegeAmendmentList> CollegeAmendment = ViewBag.CollegeAmendmentList as List<NewZapures_V2.Models.CollegeAmendmentList>;
+}
+
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+
+    .labels:empty {
+        display: none;
+    }
+
+    .labels-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    labels {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+
+    .delete-row, h2 {
+        margin: 0px !important;
+    }
+</style>
+@section styles {
+    <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card noc-layouts mt-0">
+            <div class="card-header title-heading p-0">
+                <h4 class="m-0 title-heading float-left">College Amendment -(@SessionModel.TrustTypeName)</h4>
+            </div>
+
+            <div class="noc-layouts-tbl">
+                <div class="form-group">
+                    <table class="table table-borderless table-striped table-responsive-sm table-hover" id="tblIncome">
+                        <thead class="dark">
+                            <tr>
+                                <th>Sr</th>
+                                <th>NameOfClg</th>
+                                <th>Action</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (CollegeAmendment != null)
+                            {
+                                int i = 1;
+                                foreach (var item in CollegeAmendment)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+
+                                        @*<td>@item.iPk_ClgID</td>*@
+
+                                        <td>@item.NameOfClg</td>
+                                        <td class="d-flex" style="gap:2px;">
+                                            @*<a id="@item.iPk_ClgID" class="theme-edit-btn" title="Edit" onclick=""><i class="fas fa-edit"></i></a>*@
+                                            <i class="fas fa-edit">@Html.ActionLink("DetailList", "DetailList", new { id = @item.iPk_ClgID })</i>
+                                        </td>
+
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" style="text-align: center;">No Data Available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function EditCourse(iPk_AddCourseId) {
+        debugger
+        $("#Id").val(iPk_AddCourseId);
+        var Model = {
+            //type: itemType,
+            id: parseInt(iPk_AddCourseId),
+            //sub: SubjectName
+        }
+        var d = JSON.stringify(Model);
+        console.log(d);
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/CollegeAmendment/DetailList",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Model),
+            success: function (data) {
+
+                console.log('ajax');
+                console.log(data);
+                if (data.StatusCode == 1) {
+
+
+                }
+            },
+            error: function (d) {
+                console.log(d);
+                alert("404. Please wait until the File is Loaded.");
+
+            }
+        });
+    }
+</script>

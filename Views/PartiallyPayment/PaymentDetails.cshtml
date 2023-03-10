@@ -1,0 +1,417 @@
+﻿@using NewZapures_V2.Models
+@{
+
+    ViewBag.Title = "PaymentDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var tracklist = (List<ApplicationTrack>)ViewBag.Applicationtrack;
+    //var ApplicationNumber = ViewBag.applGUID;
+
+    List<NewZapures_V2.Models.ParticalPaymentBO> tracklist = ViewBag.paymentList as List<NewZapures_V2.Models.ParticalPaymentBO>;
+}
+@section styles{
+    <link href="~/Content/JitendraCSS/newCustom.css" rel="stylesheet" />
+    @*////<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+        <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">*@
+    <link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">*@
+    <link href="~/Content/JitendraCSS/jquery-confirm.min.css" rel="stylesheet" />
+    <link href="~/Content/JitendraCSS/bootstrap.min.css" rel="stylesheet" />
+
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />*@
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+}
+
+
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+
+    .labels:empty {
+        display: none;
+    }
+
+    .labels-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    labels {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+
+    .delete-row, h2 {
+        margin: 0px !important;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <div class="float-right d-none">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Collage Application List</li>
+                </ol>
+            </div>
+            <h4 class="page-title w-75">(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)-@ViewBag.Title</h4>
+            <div class="w-25 text-right">
+                <a href="~/Dashboard/DashboardUser" title="Back" value="Go back!" class="theme-button-mockup"><i class="fas fa-arrow-left"></i></a>
+
+                @*<a href="~/PartiallyPayment/PaymentDetails" title="Next" class="theme-button-mockup"><i class="fas fa-arrow-right"></i></a>*@
+            </div>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="noc-layouts mt-0">
+    <div class="title-heading">Partially Payment</div>
+    <div class="w-100 float-left card-body">
+        @*@using (Html.BeginForm("SaveDetails", "PartiallyPayment", FormMethod.Post, new { @id = "frmAddUpdate", enctype = "multipart/form-data" }))
+            {*@
+        <div class="row">
+            <div class="col-lg-4 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Challan No.<span style="color:red;">*</span></label>
+                <input class="form-control noc-input-text" type="text" autocomplete="off" id="txtChallanNo" name="ChanalNo" placeholder="Challan No.">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label " style="">Bank Name <span style="color:red;">*</span></label>
+                <input class="form-control alphaspace noc-input-text" type="text" autocomplete="off" id="txtBankName" name="BankName" placeholder="Bank Name">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label " style="">Application Fees <span style="color:red;">*</span></label>
+                <input class="form-control numberonly noc-input-text" type="text" autocomplete="off" id="txtApplicationFees" name="ApplicationFees" placeholder="Application Fees">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label " style="">Branch Name <span style="color:red;">*</span></label>
+                <input class="form-control alphaspace noc-input-text" type="text" autocomplete="off" id="txtBranchName" name="BranchName" placeholder="Branch Name">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Deposited On <span style="color:red;">*</span></label>
+                <input class="form-control noc-input-text" type="date" autocomplete="off" id="txtDepositeOn" name="DepositeOn" placeholder="Deposited On">
+            </div>
+            <div class="col-lg-4 col-md-6 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Document <span style="color:red;">*</span></label>
+                <div>
+                    <input type="file" class="form-control" id="txtPaymentDocument" name="PaymentDocument" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                    <input type="hidden" id="hdnConvertedDoc" />
+                    <input type="hidden" id="hdnConvertedDocExten" />
+                </div>
+            </div>
+            <div class="col-lg-12 form-group">
+                <label for="noc-text-input " class="noc-form-label" style="">Remark<span style="color:red;">*</span></label>
+                <textarea class="form-control noc-input-text" autocomplete="off" id="txtRemark" name="Remark" placeholder="Remark Here..." style="height:80px;resize:none;"></textarea>
+            </div>
+            <div class="col-lg-12 text-right">
+                <button type="submit" id="btnSave" class="theme-button-mockup">Submit</button>
+            </div>
+        </div>
+
+        <div class="noc-admin-menu">
+            <div class="noc-layouts-tbl mt-3" style="overflow-x:auto;">
+                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive word-wrap mt-3">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th hidden>ChanalNo</th>
+                            <th>BankName</th>
+                            <th>ApplicationFees</th>
+                            <th>BranchName</th>
+                            <th>DepositeOn</th>
+                            <th>Remark</th>
+                            <th>CreateDate</th>
+                            <th hidden>ApplicationID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (tracklist != null)
+                        {
+                            int i = 1;
+                            foreach (var item in tracklist)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td hidden>@item.iPk_PymtID</td>
+                                    <td>@item.ChanalNo</td>
+                                    <td>@item.BankName</td>
+                                    <td>@item.ApplicationFees</td>
+                                    <td>@item.BranchName</td>
+                                    <td>@item.DepositeOn</td>
+                                    <td>@item.Remark</td>
+                                    <td hidden>@item.sAppID</td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="" style="text-align: center;">No Data Available</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    @*<script src="~/plugins/dropify/js/dropify.min.js"></script>
+        <script src="~/scripts/pages/jquery.form-upload.init.js"></script>*@
+    <script src="~/Content/globalDomain.js"></script>
+
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+
+}
+<script type="text/javascript">
+    var imagebase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            var NameFile = $('#' + hdnExtnID).val(file.name);
+            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
+            console.log(imagebase64);
+            console.log(hdnId);
+            console.log("extension"+hdnExtnID);
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+    $(document).ready(function () {
+       // CheckValid();
+        @*var isuserExists = @TempData["isSaved"];
+        var message = @TempData["msg"];
+        alert()
+        if (isuserExists == 1 && message.length > 0) {
+        Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: message,
+        allowOutsideClick: false,
+        showCloseButton: true,
+        showConfirmButton: false,
+
+        });
+        }
+        if (isuserExists == 0 && message.length > 0) {
+        Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: message,
+        allowOutsideClick: false,
+        showCloseButton: true,
+        showConfirmButton: false,
+        });
+        }*@
+
+        $('.alphaspace').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+            else {
+
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+
+        });
+        $('.numberonly').keypress(function (e) {
+
+            var charCode = (e.which) ? e.which : event.keyCode
+
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+
+                return false;
+
+        });
+        function CheckValid() {
+        var status = true;
+        debugger;
+        console.log(status);
+
+        var ChallanNo = $('#txtChallanNo').val();
+        if (ChallanNo.length <= 0) {
+        $('#txtChallanNo').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtChallanNo').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var BankName = $('#txtBankName').val();
+        if (BankName.length <= 0) {
+        $('#txtBankName').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtBankName').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var ApplicationFees = $('#txtApplicationFees').val();
+        if (ApplicationFees.length <= 0) {
+        $('#txtApplicationFees').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtApplicationFees').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var BranchName = $('#txtBranchName').val();
+        if (BranchName.length <= 0) {
+        $('#txtBranchName').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtBranchName').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var DepositeOn = $('#txtDepositeOn').val();
+        if (DepositeOn.length <= 0) {
+        $('#txtDepositeOn').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtDepositeOn').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var PaymentDocument = $('#txtPaymentDocument').val();
+        if (PaymentDocument.length <= 0) {
+        $('#txtPaymentDocument').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtPaymentDocument').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+        var Remark = $('#txtRemark').val();
+        if (Remark.length <= 0) {
+        $('#txtRemark').removeClass('sucess-highlight').addClass('errr-highlight');
+        status = false;
+        //return status;
+        }
+        else {
+        $('#txtRemark').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        return status;
+        }
+
+        $("#btnSave").click(function () {
+            debugger;
+
+            var ChallanNo = $('#txtChallanNo').val();
+            var BankName = $('#txtBankName').val();
+            var ApplicationFees = $('#txtApplicationFees').val();
+            var BranchName = $('#txtBranchName').val();
+            var DepositeOn = $('#txtDepositeOn').val();
+            var PaymentDocument = $('#txtPaymentDocument').val();
+            var Remark = $('#txtRemark').val();
+
+
+            ////LandConverted
+                var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+                var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+                var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+               if (convertedDocContent != "") {
+                    convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+                }
+                else {
+                 convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+                }
+            // var convertedDocFullURL = $('#hdnConvertedDoc').val();
+
+
+            var model = {
+                ChanalNo: ChallanNo,
+                BankName: BankName,
+                ApplicationFees: ApplicationFees,
+                BranchName: BranchName,
+                DepositeOn: DepositeOn,
+                PaymentDocument: convertedDoc,
+                PaymentDocumentExtension: convertedDocExte,
+                PaymentDocumentContenttype: convertedDocContent,
+                Remark: Remark
+            }
+            console.log('model data is', model);
+            if (CheckValid()) {
+                $.ajax({
+                    type: "POST",
+                    url: GetglobalDomain() + "/PartiallyPayment/SaveDetails",
+                    data: model,
+                    success: function (result) {
+                        debugger;
+                        if (result.StatusCode == "1") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Data saved sussessfully!',
+                                allowOutsideClick: false,
+                                showCancelButton: false,
+                                showCloseButton: true,
+                                showConfirmButton: true,
+                            })
+                                //.then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                //if (result.isConfirmed) {
+                                //    var url = GetglobalDomain() + "/PartiallyPayment/PaymentDetails";
+                                //    window.location.href = url;
+                                //}
+                            //});
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Failed',
+                                'Data not Saved'
+                            )
+                        }
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000)
+                    }
+                });
+            }
+        });
+
+    });
+
+
+</script>

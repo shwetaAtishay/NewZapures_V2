@@ -1,0 +1,825 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Land Details";
+    Layout = null;//"~/Views/Shared/_Layout.cshtml";
+
+    //var university = ViewBag.universityCollection as List<Dropdown>;
+    //var courses = (List<CustomMaster>)ViewBag.CourseList;
+    //var landData = (List<LandInfoBO>)ViewBag.landDataList;
+    var ApplGuid = (string)ViewBag.draftApplication;
+    var buildingData = (List<BuildingDetails>)ViewBag.buildingData;
+    //var clgID = (int)ViewBag.collegeID;
+    //var SelectedLandArea = "0";
+    //if (landData.Count > 0)
+    //{
+
+    //    SelectedLandArea = landData[0].sLndArea;
+    //}
+
+}
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />*@
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+@*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">*@
+<!-- Font Awesome -->
+@*<link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">*@
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/plugins/fontawesome-free/css/all.min.css">*@
+<!-- Theme style -->
+@*<link rel="stylesheet" href="../../dist/css/adminlte.min.css">*@
+@*<link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">*@
+<style type="text/css">
+    .spanLabel {
+        color: red
+    }
+
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+    /*
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+    */
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+
+    .locationBTN {
+        color: white !important;
+        background: #ffbf68; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #b91d73, #ffbf68); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #b91d73, #ffbf68); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+</style>
+
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="title-heading">
+                <h4 class="mt-0 title-heading p-0 float-left">Building Documents</h4>
+            </div>
+            <div class="card-body">
+                @*<div class="mt-1" style="display: flex;align-items: end;place-content: center;background: #d0d0d0;padding: 7px;color: white;border-radius: 8px;">
+            <label class="col-md-12 control-label" style="font-weight: 600;font-size: 14px;">Building Documents</label>
+        </div>*@
+                <div class="row col-lg-12 mt-3">
+
+                    <div class="col-lg-4 form-group">
+                        <label for="example-text-input" class="noc-form-label"><strong>Building</strong></label> &nbsp;
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio7" value="owned" name="buldingType" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio7">Owned</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" value="rented" name="buldingType" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio8">Rented</label>
+                            </div>
+                        </div>
+                        <span class="spanLabel" id="spnBuildingType" style="display:none">Please Select Building Type</span>
+                    </div>
+
+                </div>
+                <div class="row mt-1">
+                    <div class="col-lg-12 form-group" id="divOwnedCase" style="display:none">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Order Number</strong></label> &nbsp;
+                                <div>
+                                    <input class="form-control noc-input-text col-sm-12" type="text" autocomplete="off" placeholder="Order No" id="txtOrdNo">
+                                </div>
+                                <span class="spanLabel" id="spnOrderNo" style="display:none">Please Enter Order Number</span>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Order Date</strong></label> &nbsp;
+                                <div>
+                                    <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtOrdDate">
+                                </div>
+                                <span class="spanLabel" id="spnOrderDate" style="display:none">Please Enter Order Date</span>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Certificate of Own Building in own land in same campus Order No. & Order Date : *</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12 form-control noc-input-upload" type="file" id="fluOwnedFile" onchange="return encodeImageFileAsURL(this,'hdnOwnedDoc','spnownedFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnOwnedDoc" />
+
+                                <span class="spanLabel" id="spnownedFile" style="display:none">Please Upload Owned Building Certificate</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-12 form-group" id="divRentedCase" style="display:none">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Agreement Expiry Date</strong></label> &nbsp;
+                                <div>
+                                    <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtAgrmentExprDate">
+                                </div>
+                                <span class="spanLabel" id="spnAgreementExpDate" style="display:none">Please Select Agreement Expiry Date</span>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Certificate of Land & Rented Building in same "Tehsil" Order No. & Order Date : *</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12 form-control noc-input-upload" type="file" id="fluAgrementFile" onchange="return encodeImageFileAsURL(this,'hdnRentedDoc','spnRentedAgreementFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnRentedDoc" />
+                                <span class="spanLabel" id="spnRentedAgreementFile" style="display:none">Please Upload Rent Agreement</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+                <div class="mt-1 title-heading rounded-0" style="">
+                    <div class="" style="">Current Year Building Safety</div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row col-lg-12 mt-3">
+                        <div class="col-lg-12 form-group">
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="mt-1">
+                                      <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #4f6ee4 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Fire NOC Validity</label>
+                                  </div>
+                                  <div class="row mt-2">
+
+                                      <div class="col-lg-8">
+                                          <div class="row">
+                                              <div class="col-lg-6">
+                                                  <label for="example-text-input" class="noc-form-label"><strong>From Date</strong></label> &nbsp;
+                                                  <div>
+                                                      <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order No" id="txtfireDtFrom">
+                                                  </div>
+                                                  <span class="spanLabel" id="spnfireFromDate" style="display:none">Please Select Fire NOC From Date</span>
+                                              </div>
+                                              <div class="col-lg-6">
+                                                  <label for="example-text-input" class="noc-form-label"><strong>To Date</strong></label> &nbsp;
+                                                  <div>
+                                                      <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtfireDtTo">
+                                                  </div>
+                                                  <span class="spanLabel" id="spnfireToDate" style="display:none">Please Select Fire NOC To Date</span>
+                                              </div>
+                                          </div>
+                                      </div>
+
+
+
+                                      <div class="col-lg-4">
+                                          <label for="example-text-input" class="noc-form-label"><strong>Upload Fire NOC Document</strong></label> &nbsp;
+                                          <div>
+                                              <input class="col-sm-12" type="file" id="fluFireNOCFile" onchange="return encodeImageFileAsURL(this,'hdnFireNOCDoc','spnfireNOCFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                          </div>
+                                          <input type="hidden" id="hdnFireNOCDoc" />
+                                          <span class="spanLabel" id="spnfireNOCFile" style="display:none">Please Upload Fire NOC File</span>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="col-lg-6">
+                                  <div class="mt-3">
+                                      <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #ffc500 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Current Year Building Safety Certificate Order No. & Order Date: *</label>
+                                  </div>
+
+                                  <div class="row mt-2">
+
+                                      <div class="col-lg-4">
+                                          <label for="example-text-input" class="noc-form-label"><strong>From Date</strong></label> &nbsp;
+                                          <div>
+                                              <input class="form-control col-sm-12" type="date" autocomplete="off" placeholder="Order No" id="txtpwdDtFrom">
+                                          </div>
+                                          <span class="spanLabel" id="spnPWDFromDate" style="display:none">Please Select PWD NOC From Date</span>
+                                      </div>
+
+                                      <div class="col-lg-4">
+                                          <label for="example-text-input" class="noc-form-label"><strong>To Date</strong></label> &nbsp;
+                                          <div>
+                                              <input class="form-control col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtpwdDtTo">
+                                          </div>
+                                          <span class="spanLabel" id="spnPWDToDate" style="display:none">Please Select PWD NOC To Date</span>
+                                      </div>
+
+                                      <div class="col-lg-4">
+                                          <label for="example-text-input" class="noc-form-label"><strong>Upload PWD NOC Document</strong></label> &nbsp;
+                                          <div>
+                                              <input class="col-sm-12" type="file" id="fluPWDNOCFile" onchange="return encodeImageFileAsURL(this,'hdnPWDNOCDoc','spnPWDNOCFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                          </div>
+                                          <input type="hidden" id="hdnPWDNOCDoc" />
+                                          <span class="spanLabel" id="spnPWDNOCFile" style="display:none">Please Upload PWD NOC File</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                            
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="mt-1 title-heading rounded-0">
+                    <div class="" style="">Building Photos</div>
+                </div>
+
+                <div class="row card-body">
+                    <div class="col-lg-12 form-group">
+
+                        <div class="row mt-2">
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Front View</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulFrontView" onchange="return encodeImageFileAsURL(this,'hdnBFrontDoc','spnBFrontFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnBFrontDoc" />
+                                <span class="spanLabel" id="spnBFrontFile" style="display:none">Please Upload Building Front Image</span>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Back View</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulBackView" onchange="return encodeImageFileAsURL(this,'hdnBBackDoc','spnBBackFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnBBackDoc" />
+                                <span class="spanLabel" id="spnBBackFile" style="display:none">Please Upload Building Back Image</span>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Left Side View</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulLeftView" onchange="return encodeImageFileAsURL(this,'hdnBLeftDoc','spnBLeftFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnBLeftDoc" />
+                                <span class="spanLabel" id="spnBLeftFile" style="display:none">Please Upload Building Left Image</span>
+                            </div>
+
+                        </div>
+                        <div class="row mt-4">
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Right Side View</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulRightView" onchange="return encodeImageFileAsURL(this,'hdnBRightDoc','spnBRightFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnBRightDoc" />
+                                <span class="spanLabel" id="spnBRightFile" style="display:none">Please Upload Building Right Image</span>
+
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="example-text-input" class="noc-form-label"><strong>Others</strong></label> &nbsp;
+                                <div>
+                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulOthersImg" onchange="return encodeImageFileAsURL(this,'hdnBothersDoc','')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnBothersDoc" />
+                            </div>
+
+                            <div class="col-lg-4" style="text-align: end;">
+                                <label for="example-text-input" class="noc-form-label"><strong>&nbsp;</strong></label>
+                                <button class="theme-edit-btn" type="button" id="btnSave" onclick="saveDetails();"><i class="fas fa-plus"></i> Add </button>
+                                <button class="theme-button-mockup" type="button" id="btnNext" style="margin-left:5px;"><i class="fa fa-save"></i> Save & Next </button>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="card-body">
+                    <div class=" noc-layouts-tbl mt-3" style="overflow-x:scroll">
+                        <table class="table table-borderless" style="width: max-content;">
+                            <thead style="background: #c7d9f0; ">
+                                <tr>
+                                    <td>#</td>
+                                    <td hidden>iPK_ID</td>
+                                    <td hidden>sAppGUID</td>
+                                    <td hidden>iFK_FinyrID</td>
+                                    <td hidden>iFK_TrstID</td>
+                                    <td hidden>iFK_ClgID</td>
+                                    <td hidden>iFK_DeptID</td>
+                                    <td>Building Type</td>
+                                    <td>Order No</td>
+                                    <td>Order Date</td>
+                                    <td>Owned Building Doc.</td>
+                                    <td>Rented Agreement Exp. Date</td>
+                                    <td>Agreement Doc</td>
+                                    <td>Fire NOC From</td>
+                                    <td>Fire NOC To</td>
+                                    <td>Fire NOC Doc</td>
+                                    <td>PWD NOC From</td>
+                                    <td>PWD NOC TO</td>
+                                    <td>PWD NOC Doc</td>
+                                    <td>Front Img</td>
+                                    <td>Back Img</td>
+                                    <td>Left Img</td>
+                                    <td>Right Img</td>
+                                    <td>BOther Img</td>
+                                    <td hidden>iStatus</td>
+                                    <td>Created On</td>
+                                    <td>Created By</td>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    if (buildingData != null)
+                                    {
+                                        var i = 1;
+                                        foreach (var item in buildingData)
+                                        {
+                                            <tr>
+                                                <td>@i</td>
+                                                <td hidden>@item.iPK_ID</td>
+                                                <td hidden>@item.sAppGUID</td>
+                                                <td hidden>@item.iFK_FinyrID</td>
+                                                <td hidden>@item.iFK_TrstID</td>
+                                                <td hidden>@item.iFK_ClgID</td>
+                                                <td hidden>@item.iFK_DeptID</td>
+                                                <td>@item.sBldgntyp</td>
+                                                <td>@item.sOrdNo</td>
+                                                <td>@item.dtOrd</td>
+                                                <td> <a href="@item.OwnedBldgnDoc" download="OwnedBuiding_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td>@item.dtAgrExp</td>
+                                                <td><a href="@item.AgrExpDoc" download="Rentagreement_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td>@item.dtFireFrom</td>
+                                                <td>@item.dtFireTo</td>
+                                                <td><a href="@item.FireNOCDoc" download="FireNOC_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td>@item.dtPWDFrom</td>
+                                                <td>@item.dtPWDTo</td>
+                                                <td><a href="@item.PWDNOCDoc" download="PWDNOCDoc_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td><a href="@item.BFrontImg" download="BFrontImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td><a href="@item.BBackImg" download="BBackImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a> </td>
+                                                <td><a href="@item.BLeftImg" download="BLeftImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a> </td>
+                                                <td><a href="@item.BRightImg" download="BRightImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td><a href="@item.BOtherImg" download="BOtherImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                                <td hidden>@item.iStatus</td>
+                                                <td>@item.dtCrtdOn</td>
+                                                <td>@item.dtCrtdBy</td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+               
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+@*<script src="~/Content/jquery/jquery.js"></script>*@
+<script src="~/Content/select2/js/select2.js"></script>
+@*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
+<script src="~/Content/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.singleSelect').select2();
+         if ('@buildingData.Count' > 0) {
+             $("#btn_Building").css({ "background": "rgb(13, 148, 13)", "color": "#fff" });
+          }
+          else {
+              debugger
+             $("#btn_Building").css({ "background": "rgb(189, 0, 0)", "color": "#fff" });
+          }
+
+        $("#btnNext").click(function () {
+
+            $('#btn_Staff').click();
+        });
+        $("#txtpwdDtFrom").change(function () {
+            var startdate = $(this).val();
+            $("#txtpwdDtTo").prop('disabled', false);
+            document.getElementById("txtpwdDtTo").min = startdate;
+        });
+
+        $("#txtfireDtFrom").change(function () {
+            var startdate = $(this).val();
+            $("#txtfireDtTo").prop('disabled', false);
+            document.getElementById("txtfireDtTo").min = startdate;
+        });
+
+        $('input[name="buldingType"]').change(function () {
+            var landAreaID = $(this).val();
+
+
+            if (landAreaID == "rented") {
+                $('#divRentedCase').css('display', 'block');
+                $('#divOwnedCase').css('display', 'none');
+                $('#customRadio7').removeAttr('checked');
+                $('#customRadio8').attr('checked', true);
+            }
+            if (landAreaID == "owned") {
+                $('#divRentedCase').css('display', 'none');
+                $('#divOwnedCase').css('display', 'block');
+
+                $('#customRadio8').removeAttr('checked');
+                $('#customRadio7').attr('checked', true);
+            }
+            $('#spnBuildingType').css('display', 'none');
+        })
+
+        $('#txtOrdNo').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnOrderNo').css('display', 'none');
+            }
+            else {
+                $('#spnOrderNo').css('display', 'block');
+            }
+        });
+
+        $('#txtOrdDate').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnOrderDate').css('display', 'none');
+            }
+            else {
+                $('#spnOrderDate').css('display', 'block');
+            }
+        });
+
+        $('#txtAgrmentExprDate').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnAgreementExpDate').css('display', 'none');
+            }
+            else {
+                $('#spnAgreementExpDate').css('display', 'block');
+            }
+        });
+
+
+        $('#txtpwdDtTo').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnPWDToDate').css('display', 'none');
+            }
+            else {
+                $('#spnPWDToDate').css('display', 'block');
+            }
+        });
+
+
+        $('#txtpwdDtFrom').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnPWDFromDate').css('display', 'none');
+            }
+            else {
+                $('#spnPWDFromDate').css('display', 'block');
+            }
+        });
+
+        $('#txtfireDtTo').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnfireToDate').css('display', 'none');
+            }
+            else {
+                $('#spnfireToDate').css('display', 'block');
+            }
+        });
+
+        $('#txtfireDtFrom').on('input', function () {
+            var id = $(this).val();
+
+            if (id.length > 0) {
+                $('#spnfireFromDate').css('display', 'none');
+            }
+            else {
+                $('#spnfireFromDate').css('display', 'block');
+            }
+        });
+
+    });
+
+    function saveDetails() {
+        if (CheckValidation()) {
+
+            var buidingType = $("input[name='buldingType']:checked").val();
+            var orderNumber = $('#txtOrdNo').val();
+            var orderDate = $('#txtOrdDate').val();
+            var ownedDoc = $('#hdnOwnedDoc').val();
+            var agreementExpiryDate = $('#txtAgrmentExprDate').val();
+            var rentedAgreementDoc = $('#hdnRentedDoc').val();
+            var fireNOCFromDate = $('#txtfireDtFrom').val();
+            var fireNOCToDate = $('#txtfireDtTo').val();
+            var fireNOCDoc = $('#hdnFireNOCDoc').val();
+            var pwdDtFrom = $('#txtpwdDtFrom').val();
+            var pwdDtTo = $('#txtpwdDtTo').val();
+            var pwdNOCDoc = $('#hdnPWDNOCDoc').val();
+
+            var bFrontDoc = $('#hdnBFrontDoc').val();
+            var bBackDoc = $('#hdnBBackDoc').val();
+            var bLeftDoc = $('#hdnBLeftDoc').val();
+            var bRightDoc = $('#hdnBRightDoc').val();
+            var botherDoc = $('#hdnBothersDoc').val();
+
+
+            var VertinaryModal = {
+                "sAppGUID": '@ApplGuid',
+                "sBldgntyp": buidingType,
+                "sOrdNo": orderNumber,
+                "dtOrd": orderDate,
+                "OwnedBldgnDoc": ownedDoc,
+                "dtAgrExp": agreementExpiryDate,
+                "AgrExpDoc": rentedAgreementDoc,
+                "dtFireFrom": fireNOCFromDate,
+                "dtFireTo": fireNOCToDate,
+                "FireNOCDoc": fireNOCDoc,
+                "dtPWDFrom": pwdDtFrom,
+                "dtPWDTo": pwdDtTo,
+                "PWDNOCDoc": pwdNOCDoc,
+                "BFrontImg": bFrontDoc,
+                "BBackImg": bBackDoc,
+                "BLeftImg": bLeftDoc,
+                "BRightImg": bRightDoc,
+                "BOtherImg": botherDoc
+            }
+
+            var d = JSON.stringify(VertinaryModal);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LandBuildingInfo/AddBuildingDetails",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(VertinaryModal),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 1) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: data.Message,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                    }
+                    setTimeout(function () {
+
+                    $('#btn_Staff').click();
+                    }, 1500);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+    }
+
+    function CheckValidation() {
+        var status = true;
+        var buidingType = $("input[name='buldingType']:checked").val();
+        var orderNumber = $('#txtOrdNo').val();
+        var orderDate = $('#txtOrdDate').val();
+        var ownedDoc = $('#hdnOwnedDoc').val();
+        var agreementExpiryDate = $('#txtAgrmentExprDate').val();
+        var rentedAgreementDoc = $('#hdnRentedDoc').val();
+        var fireNOCFromDate = $('#txtfireDtFrom').val();
+        var fireNOCToDate = $('#txtfireDtTo').val();
+        var fireNOCDoc = $('#hdnFireNOCDoc').val();
+        var pwdDtFrom = $('#txtpwdDtFrom').val();
+        var pwdDtTo = $('#txtpwdDtTo').val();
+        var pwdNOCDoc = $('#hdnPWDNOCDoc').val();
+
+        var bFrontDoc = $('#hdnBFrontDoc').val();
+        var bBackDoc = $('#hdnBBackDoc').val();
+        var bLeftDoc = $('#hdnBLeftDoc').val();
+        var bRightDoc = $('#hdnBRightDoc').val();
+        var pwdNOCDoc = $('#hdnPWDNOCDoc').val();
+
+
+        if (typeof (buidingType) == "undefined") {
+            $('#spnBuildingType').css('display', 'block');
+            status = false;
+        }
+        if (buidingType == 'owned') {
+            if (orderNumber.length <= 0) {
+                $('#spnOrderNo').css('display', 'block');
+                status = false;
+            }
+            if (orderDate.length <= 0) {
+                $('#spnOrderDate').css('display', 'block');
+                status = false;
+            }
+
+            if (ownedDoc.length <= 0) {
+                $('#spnownedFile').css('display', 'block');
+                status = false;
+            }
+        }
+        if (buidingType == 'rented') {
+            if (agreementExpiryDate.length <= 0) {
+                $('#spnAgreementExpDate').css('display', 'block');
+                status = false;
+            }
+            if (rentedAgreementDoc.length <= 0) {
+                $('#spnRentedAgreementFile').css('display', 'block');
+                status = false;
+            }
+        }
+
+        if (fireNOCFromDate.length <= 0) {
+            $('#spnfireFromDate').css('display', 'block');
+            status = false;
+        }
+
+        if (fireNOCToDate.length <= 0) {
+            $('#spnfireToDate').css('display', 'block');
+            status = false;
+        }
+
+        if (fireNOCDoc.length <= 0) {
+            $('#spnfireNOCFile').css('display', 'block');
+            status = false;
+        }
+
+        if (pwdDtFrom.length <= 0) {
+            $('#spnPWDFromDate').css('display', 'block');
+            status = false;
+        }
+
+        if (pwdDtTo.length <= 0) {
+            $('#spnPWDToDate').css('display', 'block');
+            status = false;
+        }
+
+        if (pwdNOCDoc.length <= 0) {
+            $('#spnPWDNOCFile').css('display', 'block');
+            status = false;
+        }
+
+        if (bFrontDoc.length <= 0) {
+            $('#spnBFrontFile').css('display', 'block');
+            status = false;
+        }
+        if (bBackDoc.length <= 0) {
+            $('#spnBBackFile').css('display', 'block');
+            status = false;
+        }
+
+        if (bLeftDoc.length <= 0) {
+            $('#spnBLeftFile').css('display', 'block');
+            status = false;
+        }
+        if (bRightDoc.length <= 0) {
+            $('#spnBRightFile').css('display', 'block');
+            status = false;
+        }
+
+        return status;
+    }
+
+    function encodeImageFileAsURL(element, hdnId, spnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        var filesize = element.files[0].size;
+        var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+        var i = 0; while (filesize > 900) { filesize /= 1024; i++; }
+        var exactSize = (Math.round(filesize * 100) / 100) + ' ' + fSExt[i];
+        console.log('FILE SIZE = ', exactSize);
+        //alert(exactSize);
+        /* console.log(file.name);*/
+
+
+        var sizeCheck = exactSize.split(' ')[0];
+        var sizeCheckExt = exactSize.split(' ')[1];
+
+        //console.log(sizeCheck);
+        //console.log(sizeCheckExt);
+
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            if (sizeCheck > 1 && sizeCheckExt == "MB") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'File size must be lesser then 1 MB...!',
+                    html: `<p>your selected file size : ${sizeCheck} ${sizeCheckExt}</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false
+                })
+            }
+            else {
+
+                $('#' + hdnId).val(imagebase64);
+
+                var dat = $('#' + hdnId).val();
+                if (spnID.length > 0) {
+
+                    if (dat.length > 0) {
+                        $('#' + spnID).css('display', 'none');
+                    }
+                    else {
+                        $('#' + spnID).css('display', 'block');
+                    }
+                }
+            }
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+
+</script>
+
+
+

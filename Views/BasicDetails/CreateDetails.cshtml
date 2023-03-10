@@ -1,0 +1,2546 @@
+﻿@using NewZapures_V2.Models
+@model BasicDetailsBO
+@{
+    ViewBag.Title = "Basic Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    //var university = ViewBag.universityCollection as List<Dropdown>;
+    var collegeType = ViewBag.collegeTypeList as List<Dropdown>;
+    var Division = ViewBag.Division as List<Dropdown>;
+    var DistrictList = ViewBag.DistrictList as List<Dropdown>;
+    //List<CustomMaster> TrustList = new List<CustomMaster>();
+    //if (ViewBag.TrustList != null)
+    //{
+    //    TrustList = (List<CustomMaster>)ViewBag.TrustList;
+    //}
+    BasicDetailsBO CollageDetails = ViewBag.CollageDetails as BasicDetailsBO;
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> conctactlist = ViewBag.conctactlist as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+    List<Dropdown> DegreeList = new List<Dropdown>();
+    if (ViewBag.Department != null)
+    {
+        DegreeList = (List<Dropdown>)ViewBag.Department;
+    }
+
+}
+<style>
+    .errr-highlight {
+        border: 1px solid #ec3352;
+    }
+
+    .sucess-highlight {
+        border: 1px solid #e8ebf3;
+    }
+
+    .labels:empty {
+        display: none;
+    }
+
+    .labels-danger {
+        color: #fff;
+        background-color: #d9534f;
+    }
+
+    labels {
+        display: inline;
+        padding: .2em .6em .3em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25em;
+    }
+
+    .delete-row, h2 {
+        margin: 0px !important;
+    }
+</style>
+@section styles {
+    <link rel="stylesheet" href="~/Content/DashboardCss/AdminLTE2/css/adminlte.min.css">
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
+}
+<style type="text/css">
+    .btnpink {
+        color: white !important;
+        background: #f953c6;
+        background: -webkit-linear-gradient(to left, #b91d73, #f953c6);
+        background: linear-gradient(to left, #b91d73, #f953c6);
+    }
+
+    table, th, td {
+        border: 1px solid #cdcdcd;
+    }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+    .delete-row, h2 {
+        margin: 20px;
+    }
+
+    /*.table tbody {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }
+        */
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    /*.table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    @*<li class="breadcrumb-item">Master</li>*@
+                    <li class="breadcrumb-item active">Basic Information</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title-(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+@if (@CollageDetails.Id > 0)
+{
+    <div class="card mt-0 noc-layouts">
+        <div class="card-header p-0">
+            <h4 class="mt-0 title-heading w-100 float-left">College Details </h4>
+        </div>
+        <div class="card-body row">
+
+            <div class="col-12">
+                <div class="row w-100">
+                    <input type="hidden" id="collageId" value="@CollageDetails.Id" />
+                    @*<div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Category<span style="color:red;">*</span></label>
+                            <div>
+                                <select class="form-control" name="CollageCategory" id="CollageCategory">
+                                    <option value="">Select College Category</option>
+                                    @if (CollageDetails.CollageCategory == "GeneralEducation")
+                                    {
+                                        <option value="GeneralEducation" selected>GeneralEducation</option>
+                                    }
+                                    else
+                                    {
+                                <option value="GeneralEducation">GeneralEducation</option>
+                                    }
+                                    @if (CollageDetails.CollageCategory == "LawEducation")
+                                    {
+                                        <option value="LawEducation" selected>LawEducation</option>
+                                    }
+                                    else
+                                    {
+                                <option value="LawEducation">LawEducation</option>
+                                    }
+                                </select>
+
+                            </div>
+
+                        </div>*@
+                    <div class="row w-100 float-left">
+                       <div class="col-lg-8">
+                           <div class="row">
+                               <div class="form-group col-lg-6">
+                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select College Type<span style="color:red;">*</span></label>
+                                   <div>
+                                       <select class="form-control" name="CollageType" id="CollageType">
+                                           <option value="">Select College Type</option>
+                                           @foreach (var item in collegeType)
+                                           {
+                                               if (CollageDetails.CollageType == item.Id)
+                                               {
+                                                   <option value="@item.Id" selected>@item.Text</option>
+                                               }
+                                               else
+                                               {
+                                                   <option value="@item.Id">@item.Text</option>
+                                               }
+                                           }
+                                       </select>
+                                   </div>
+                                   <div>
+                                       <label for="error" class="col-sm-12" id="errorCollageType" style="display:none;"></label>
+                                   </div>
+                               </div>
+
+                               <div class="form-group col-lg-6">
+                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
+                                   @if (CollageDetails.AISHECodeStatus == "1")
+                                   {
+                                       <div class="form-check-inline my-1">
+                                           <div class="custom-control custom-radio">
+                                               <input type="radio" id="customRadio17" value="1" name="AIESHCodeStatus" class="custom-control-input" checked>
+                                               <label class="custom-control-label" for="customRadio17">Yes</label>
+                                           </div>
+                                       </div>
+                                   }
+                                   else
+                                   {
+                                       <div class="form-check-inline my-1">
+                                           <div class="custom-control custom-radio">
+                                               <input type="radio" id="customRadio17" value="1" name="AIESHCodeStatus" class="custom-control-input">
+                                               <label class="custom-control-label" for="customRadio17">Yse</label>
+                                           </div>
+                                       </div>
+                                   }
+                                   @if (CollageDetails.AISHECodeStatus == "0")
+                                   {
+                                       <div class="form-check-inline my-1">
+                                           <div class="custom-control custom-radio">
+                                               <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input" checked>
+                                               <label class="custom-control-label" for="customRadio18">No</label>
+                                           </div>
+                                       </div>
+                                   }
+                                   else
+                                   {
+                                       <div class="form-check-inline my-1">
+                                           <div class="custom-control custom-radio">
+                                               <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input">
+                                               <label class="custom-control-label" for="customRadio18">No</label>
+                                           </div>
+                                       </div>
+                                   }
+                                   <div id="divAIESHCode">
+                                       <input class="form-control col-sm-12 alphanumeric" type="text" id="txtAIESHCode" name="AIESHCode" value="@CollageDetails.CollegeName" autocomplete="off">
+                                       <label for="error" class="col-sm-12" id="errorAIESHCode" style="display:none;"></label>
+                                   </div>
+                               </div>
+
+                               <input type="hidden" id="collageId" value="@CollageDetails.Id" />
+                               <div class="form-group col-lg-6">
+                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Level<span style="color:red;">*</span></label>
+                                   <div>
+                                       <select class="form-control" name="collegeLevel" id="collegeLevelId">
+                                           <option value="">Select College Level</option>
+                                           @if (CollageDetails.collegeLevel == "UG")
+                                           {
+                                               <option value="UG" selected>UG</option>
+                                           }
+                                           else
+                                           {
+                                               <option value="UG">UG</option>
+                                           }
+                                           @if (CollageDetails.collegeLevel == "PG")
+                                           {
+                                               <option value="PG" selected>PG</option>
+                                           }
+                                           else
+                                           {
+                                               <option value="PG">PG</option>
+                                           }
+                                           @if (CollageDetails.collegeLevel == "Diploma")
+                                           {
+                                               <option value="Diploma" selected>Diploma</option>
+                                           }
+                                           else
+                                           {
+                                               <option value="Diploma">Diploma</option>
+                                           }
+                                       </select>
+
+                                   </div>
+                               </div>
+                               <div class="form-group col-lg-6">
+                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Medium<span style="color:red;">*</span></label>
+                                   <div>
+                                       <select class="form-control" name="collegeMedium" id="collegeMediumId">
+                                           <option value="">Select College Medium</option>
+                                           @if (CollageDetails.collegeMedium == "Hindi")
+                                           {
+                                               <option value="Hindi" selected>Hindi</option>
+                                           }
+                                           else
+                                           {
+                                               <option value="Hindi">Hindi</option>
+                                           }
+                                           @if (CollageDetails.collegeMedium == "English")
+                                           {
+                                               <option value="English" selected>English</option>
+                                           }
+                                           else
+                                           {
+                                               <option value="English">English</option>
+                                           }
+
+                                           @if (CollageDetails.collegeMedium == "Both (Hindi & English)")
+                                           {
+                                               <option value="Both (Hindi & English)" selected>Both (Hindi & English)</option>
+                                           }
+                                           else
+                                           {
+                                               <option value="Both (Hindi & English)">Both (Hindi & English)</option>
+                                           }
+                                       </select>
+                                   </div>
+                               </div>
+
+                           </div>
+                       </div>
+                       <div class="col-lg-4">
+                           <div class="">
+                               <h4 class="mt-0 header-title">Collage Logo</h4>
+                               @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
+                               <input type="file" id="input-file-now" class="dropify" name="collageLogo" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                               <input type="hidden" id="hdnConvertedDoc" value="@CollageDetails.CollageLogoContenttype,@CollageDetails.CollageLogo" />
+                               <input type="hidden" id="hdnConvertedDocExten" value="@CollageDetails.CollageLogoContenttype" />
+                               @if (CollageDetails.CollageLogo != "")
+                               {
+                                   <img src="@CollageDetails.CollageLogoContenttype,@CollageDetails.CollageLogo" width="100px" height="100px" />
+                               }
+                           </div>
+                       </div>
+                    </div>
+                    
+                    
+                </div>
+                @*<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Choose College type<span style="color:red;">*</span></label>
+                            <div class="row form-group col-sm-12 mt-2" style="text-align:center">
+
+                                @{
+                                    int i = 1;
+                                    if (collegeType != null)
+                                    {
+                                        foreach (var item in collegeType)
+                                        {
+                                            if (CollageDetails.CollageType == item.Id)
+                                            {
+                                                <div class="form-group custom-control custom-radio col-sm-3">
+                                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary collagetype" type="radio" name="CollageType" id="rbtn_@item.Text" value="@item.Id" checked>
+                                                    <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group custom-control custom-radio col-sm-3">
+                                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary collagetype" type="radio" name="CollageType" id="rbtn_@item.Text" value="@item.Id">
+                                                    <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>*@
+            <div class="row">
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name In English<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 alphaspace" type="text" id="txtCollegeName" name="CollegeName" value="@CollageDetails.CollegeName" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="error" class="col-sm-12" id="errorCollegeName" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name In Hindi<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 alphaspace" type="text" id="txtCollegeNamehindi" name="CollegeNamehindi" value="@CollageDetails.CollageNamehindi" autocomplete="off">
+                    </div>
+                    <div>
+                        <label for="error" class="col-sm-12" id="errorCollegeNamehindi" style="display:none;"></label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Department<span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control noc-input-text" name="TagDegrees" id="txtTagDegree">
+                            <option value="">Select Department</option>
+                            @{
+                                if (DegreeList != null)
+                                {
+                                    foreach (var item in DegreeList)
+                                    {
+                                        if (CollageDetails.TagDegrees.ToString() == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">University<span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control" id="txtUniverSity" name="University">
+                            @*<option value="">--University --</option>
+                            @{
+                                if (university != null)
+                                {
+                                    foreach (var item in university)
+                                    {
+                                        if (CollageDetails.UniverSity.ToString() == item.Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            }*@
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12 numberonly" type="text" maxlength="10" id="txtMobileNumber" name="MobileNumber" value="@CollageDetails.MobileNumber" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email<span style="color:red;">*</span></label>
+                    <div>
+                        <input class="form-control col-sm-12" type="email" id="txtEmail" name="Email" autocomplete="off" value="@CollageDetails.Email">
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line1<span style="color:red;">*</span></label>
+                    <div>
+                        <input type="text" class="form-control alphanumeric" name="AddressLine1" id="txtAddressLine1" autocomplete="off" value="@CollageDetails.AddressLine1" />
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line2<span style="color:red;">*</span></label>
+                    <div>
+                        <input type="text" class="form-control alphanumeric" name="AddressLine2" id="txtAddressLine2" autocomplete="off" value="@CollageDetails.AddressLine2" />
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
+                    @if (CollageDetails.LocationType == "1")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio7" value="1" name="Type" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio7">Rural</label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio7" value="1" name="Type" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio7">Rural</label>
+                            </div>
+                        </div>
+                    }
+                    @if (CollageDetails.LocationType == "2")
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" value="2" name="Type" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio8">Urban</label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" value="2" name="Type" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio8">Urban</label>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Division<span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control noc-input-text singleselect" id="DivisionId" name="DivisionId">
+                            <option value="0">Select Division</option>
+                            @{
+                                if (Division != null)
+                                {
+                                    foreach (var item in Division)
+                                    {
+                                        if (CollageDetails.DivisionId.ToString() == item.Id)
+                                        {
+                                            <option value="@item.Id" selected> @item.Text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District<span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control singleselect" id="DistrictId" name="DistrictId">
+                            <option value="0">Select District</option>
+                            @{
+                                if (DistrictList != null)
+                                {
+                                    foreach (var item in DistrictList)
+                                    {
+                                        if (CollageDetails.DistrictId.ToString() == item.Id)
+                                        {
+                                            <option value="@item.Id" selected> @item.Text</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">SubDivision<span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control noc-input-text singleselect" id="SubDivisionId" name="SubDivisionId">
+                            <option value="0">Select SubDivision</option>
+                        </select>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8" id="divRural">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil<span style="color:red;">*</span></label>
+                            <div>
+                                <select class="form-control" id="TehsilId" name="TehsilId">
+                                    <option value="0">Select Tehsil</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Block<span style="color:red;">*</span></label>
+                            <div>
+                                <select class="form-control" id="BlockId" name="BlockId">
+                                    <option value="0">Select Block</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4" id="divparliament">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Parliament Area <span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control noc-input-text" id="Paliamentarea" name="Paliamentarea">
+                            <option value="0">Select Parliament Area </option>
+                        </select>
+                        <div>
+                            @*<label for="error" class="col-sm-12" id="errorTehsil" style="display:none;"></label>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Legislative Area<span style="color:red;">*</span></label>
+                    <div>
+                        <select class="form-control noc-input-text" id="LegislativeId" name="LegislativeId">
+                            <option value="0">Select Legislative  Area</option>
+                        </select>
+                        <div>
+                            @*<label for="error" class="col-sm-12" id="errorBlock" style="display:none;"></label>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8" id="divUrban" style="display:none">
+                    <div class="row">
+                        <div class="form-group col-lg-4">
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City<span style="color:red;">*</span></label>
+                            <div>
+                                <select class="form-control" id="CityId" name="CityId">
+                                    <option value="0">Select City</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-4">
+
+                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Ward No<span style="color:red;">*</span></label>
+                            <div>
+                                <input type="text" class="form-control" name="AddressLine2" id="WardNo" autocomplete="off" value="@CollageDetails.WardNo" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            </div>
+            <div class="col-3 text-center d-none align-items-center justify-content-center" style="align-items:flex-start !important">
+                <div class="">
+                    <h4 class="mt-0 header-title">Collage Logo</h4>
+                    @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
+                    <input type="file" id="input-file-now" class="dropify" name="collageLogo" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                    <input type="hidden" id="hdnConvertedDoc" value="@CollageDetails.CollageLogoContenttype,@CollageDetails.CollageLogo" />
+                    <input type="hidden" id="hdnConvertedDocExten" value="@CollageDetails.CollageLogoContenttype" />
+                    @if (CollageDetails.CollageLogo != "")
+                    {
+                        <img src="@CollageDetails.CollageLogoContenttype,@CollageDetails.CollageLogo" width="100px" height="100px" />
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="card-header title-heading rounded-0 p-0">
+            <h4 class="mt-0 title-heading rounded-0 float-left">Contact Details</h4>
+        </div>
+
+        <div class="noc-layouts-tbl">
+            <table class="table table-borderless table-responsive-md" id="contactsData">
+                <thead>
+                    <tr>
+                        <td>
+                            <input type="text" id="Name" name="Name" placeholder="ContactPerson" class="form-control alphaspace noc-input-text" maxlength="50">
+                            @*<label for="error" class="col-sm-12" id="errorContactPerson" style="display:none;"></label>*@
+                        </td>
+                        <td>
+                            <input type="text" id="Number" name="Number" placeholder="Number" minlength="10" maxlength="10" class="form-control noc-input-text numberonly">
+                            @*<label for="error" class="col-sm-12" id="errorContactNumber" style="display:none;"></label>*@
+                        </td>
+                        <td>
+                            <input type="text" id="EmailId" name="Email" placeholder="Email Address" class="form-control noc-input-text">
+                            @*<label for="error" class="col-sm-12" id="errorContactEmail" style="display:none;"></label>*@
+                        </td>
+                        <td><input type="button" class=" add-row theme-button-mockup" value="Add Row"></td>
+                    </tr>
+                    @*<tr><td colspan="4">@Html.ValidationMessage("CollageList", "", new { @class = "labels labels-danger", id = "lblcontactdeatils" })</td></tr>*@
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>ContactPerson</th>
+                        <th>Number</th>
+                        <th>Email Address</th>
+                        <th>Action</th>
+                    </tr>
+
+                </tbody>
+                <tfoot>
+                    @if (CollageDetails.ContactDetails != null)
+                    {
+                        if (CollageDetails.ContactDetails.Count > 0)
+                        {
+                            foreach (var item in CollageDetails.ContactDetails)
+                            {
+                                <tr>
+                                    <td>@item.Name</td>
+                                    <td>@item.Number</td>
+                                    <td>@item.Email</td>
+                                    @*<td><input class='delete-row theme-delete-btn' type='button' name='delete' value='Remove' /></td>*@
+                                <td><button class='delete-row theme-delete-btn' type='button' name='delete' value='Remove'><i class='fas fa-trash'></i></button></td>
+                                </tr>
+                            }
+
+                        }
+                    }
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="card-header title-heading rounded-0 p-0">
+            <h4 class="mt-0 title-heading rounded-0 float-left">Track Geo Location</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Latitude </label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text" name="Latitudedd" id="txtLatitude" autocomplete="off" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Longituted</label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text" name="Longitudedd" id="txtLongitude" autocomplete="off" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header title-heading rounded-0 p-0">
+            <h4 class="mt-0 title-heading rounded-0 float-left">Additional Contact</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Mobile Number</label>
+                        <div>
+                            <input type="text" class="form-control numberonly noc-input-text" maxlength="10" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" value="@CollageDetails.AddiMobileNumber" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">LandLine Number</label>
+                        <div>
+                            <input type="text" class="form-control numberonly noc-input-text" maxlength="10" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" value="@CollageDetails.LandlineNumber" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row w-100 m-0" style="margin-bottom:10px">
+            <div class="col-lg-12" style="text-align:right;padding-right:15px; margin:15px 0;">
+                @*<button type="submit" id="btnsubmitDetails" style="display:none"></button>*@
+                <button class="theme-button-mockup" type="button" id="btnUpdate">Save & Proceed To Add Course Details</button>
+                @*<a href="@Url.Action("CreateDetais", "AddCourse")" class="col-lg-3 btn btnpink" id="Reset">Proceed To Add Course Details</a>*@
+
+                @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
+
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="card noc-layouts mt-0">
+        <div class="card-header p-0">
+            <h4 class="m-0 title-heading float-left">College Details</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-12">
+                <div class="">
+                    @*<div class="form-group col-lg-6">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Category<span style="color:red;">*</span></label>
+                            <div>
+                                <select class="form-control noc-input-text" name="CollageCategory" id="CollageCategory">
+                                    <option value="">Select College Category</option>
+                                    <option value="GeneralEducation">General Education</option>
+                                    <option value="LawEducation">Law Education</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="error" class="col-sm-12" id="errorCollageCategory" style="display:none;"></label>
+                            </div>
+                        </div>*@
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Department<span style="color:red;">*</span></label>
+                                    <div>
+                                        <select class="form-control noc-input-text" name="TagDegrees" id="txtTagDegree">
+                                            <option value="">Select Department</option>
+                                            @{
+                                                foreach (var item in DegreeList.OrderBy(o=>o.Text).ToList())
+                                                {
+                                                    <option value="@item.Id">@item.Text</option>
+                                                }
+                                            }
+                                        </select>
+                                        <div>
+                                            <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Status<span style="color:red;">*</span></label>
+                                    <div>
+                                        <select class="form-control noc-input-text singleselect" id="txtCollegeTypeId" name="CollegeTypeId">
+                                            <option value="">College Status</option>
+                                            <option value="Existing">Existing</option>
+                                            <option value="New">New</option>
+                                        </select>
+                                        <div>
+                                            <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-lg-6">
+                                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select College Type<span style="color:red;">*</span></label>
+                                    <div>
+                                        <select class="form-control" name="CollageType" id="CollageType">
+                                            <option value="">Select College Type</option>
+                                            @foreach (var item in collegeType)
+                                            {
+                                                <option value="@item.Id">@item.Text</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="error" class="col-sm-12" id="errorCollageType" style="display:none;"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Level<span style="color:red;">*</span></label>
+                                    <div>
+                                        <select class="form-control noc-input-text" name="collegeLevel" id="collegeLevelId">
+                                            <option value="">Select College Level</option>
+                                            <option value="UG">UG</option>
+                                            <option value="PG">PG</option>
+                                            <option value="Diploma">Diploma</option>
+                                        </select>
+
+                                    </div>
+                                    <div>
+                                        <label for="error" class="col-sm-12" id="errorcollegeLevel" style="display:none;"></label>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <h4 class="mt-0 header-title">Collage Logo</h4>
+                                @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
+                                <input type="file" id="input-file-now" class="dropify" name="collageLogo" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
+                                <input type="hidden" id="hdnConvertedDoc" />
+                                <input type="hidden" id="hdnConvertedDocExten" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Name In English<span style="color:red;">*</span></label>
+                        <div>
+                            <input class="form-control noc-input-text col-sm-12 alphaspace" type="text" id="txtCollegeName" name="CollegeName" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorCollegeName" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Name In Hindi<span style="color:red;">*</span></label>
+                        <div>
+                            <input class="form-control noc-input-text col-sm-12 alphaspace" type="text" id="txtCollegeNamehindi" name="CollegeNamehindi" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorCollegeNamehindi" style="display:none;"></label>
+                        </div>
+                    </div>
+
+                    
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AIESH Code Status</label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio17" value="1" name="AIESHCodeStatus" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio17">Yes</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio18">No</label>
+                            </div>
+                        </div>
+
+                        <div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-4 form-group" id="divAIESHCode">
+                        <label for="example-text-input">&nbsp;</label>
+                        <input class="form-control col-sm-12 alphanumeric noc-input-text" type="text" id="txtAIESHCode" name="AIESHCode" autocomplete="off" placeholder="AIESH Code">
+                        <label for="error" class="col-sm-12" id="errorAIESHCode" style="display:none;"></label>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Medium<span style="color:red;">*</span></label>
+                        <div>
+                            <select class="form-control noc-input-text" name="collegeMedium" id="collegeMediumId">
+                                <option value="">Select College Medium</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="English">English</option>
+                                <option value="Both (Hindi & English)">Both (Hindi & English)</option>
+                            </select>
+
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorcollegeMedium" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">University<span style="color:red;">*</span></label>
+                        <div>
+                            <select class="form-control noc-input-text" id="txtUniverSity" name="University">
+                                <option value="">--University --</option>
+                                @*@{
+                                    if (university != null)
+                                    {
+                                        foreach (var item in university)
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }*@
+                            </select>
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorUniverSitye" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Mobile Number<span style="color:red;">*</span></label>
+                        <div>
+                            <input class="form-control noc-input-text col-sm-12 numberonly" type="text" maxlength="10" id="txtMobileNumber" name="MobileNumber" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorMobileNumber" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Email<span style="color:red;">*</span></label>
+                        <div>
+                            <input class="form-control noc-input-text col-sm-12" type="email" id="txtEmail" name="Email" autocomplete="off">
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Address Line1<span style="color:red;">*</span></label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text alphanumeric" name="AddressLine1" id="txtAddressLine1" autocomplete="off" />
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorAddressLine1" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Address Line2<span style="color:red;">*</span></label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text alphanumeric" name="AddressLine2" id="txtAddressLine2" autocomplete="off" />
+                        </div>
+                        <div>
+                            <label for="error" class="col-sm-12" id="errorAddressLine2" style="display:none;"></label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px"></label>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio7" value="1" name="Type" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="customRadio7">Rural</label>
+                            </div>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="customRadio8" value="2" name="Type" class="custom-control-input">
+                                <label class="custom-control-label" for="customRadio8">Urban</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Division<span style="color:red;">*</span></label>
+                        <div>
+                            <select class="form-control noc-input-text singleselect" id="DivisionId" name="DivisionId">
+                                <option value="0">Select Division</option>
+                                @{
+                                    if (Division != null)
+                                    {
+                                        foreach (var item in Division)
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <div>
+                                <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">District<span style="color:red;">*</span></label>
+                        <div>
+                            <select class="form-control noc-input-text singleselect" id="DistrictId" name="DistrictId">
+                                <option value="0">Select District</option>
+                                @{
+                                    if (DistrictList != null)
+                                    {
+                                        foreach (var item in DistrictList)
+                                        {
+                                            <option value="@item.Id">@item.Text</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            <div>
+                                <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">SubDivision<span style="color:red;">*</span></label>
+                        <div>
+                            <select class="form-control noc-input-text singleselect" id="SubDivisionId" name="SubDivisionId">
+                                <option value="0">Select SubDivision</option>
+                            </select>
+                            <div>
+                                <label for="error" class="col-sm-12" id="errorDistrict" style="display:none;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" id="divRural">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Tehsil<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control noc-input-text" id="TehsilId" name="TehsilId">
+                                        <option value="0">Select Tehsil</option>
+                                    </select>
+                                    <div>
+                                        <label for="error" class="col-sm-12" id="errorTehsil" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Block<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control noc-input-text" id="BlockId" name="BlockId">
+                                        <option value="0">Select Block</option>
+                                    </select>
+                                    <div>
+                                        <label for="error" class="col-sm-12" id="errorBlock" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8" id="divparliament">
+                        <div class="row">
+                            <div class="form-group col-lg-6">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Parliament Area<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control noc-input-text" id="Paliamentarea" name="Paliamentarea">
+                                        <option value="0">Select Parliament Area </option>
+                                    </select>
+                                    <div>
+                                        @*<label for="error" class="col-sm-12" id="errorTehsil" style="display:none;"></label>*@
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Legislative Area<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control noc-input-text" id="LegislativeId" name="LegislativeId">
+                                        <option value="0">Select Legislative  Area</option>
+                                    </select>
+                                    <div>
+                                        @*<label for="error" class="col-sm-12" id="errorBlock" style="display:none;"></label>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row" id="divUrban" style="display:none">
+                            <div class="form-group col-lg-6">
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">City<span style="color:red;">*</span></label>
+                                <div>
+                                    <select class="form-control noc-input-text" id="CityId" name="CityId">
+                                        <option value="0">Select City</option>
+                                    </select>
+                                    <div>
+                                        <label for="error" class="col-sm-12" id="errorCity" style="display:none;"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Ward No<span style="color:red;">*</span></label>
+                                <div>
+                                    <input type="text" class="form-control noc-input-text" name="AddressLine2" id="WardNo" autocomplete="off" />
+                                </div>
+                                <div>
+                                    <label for="error" class="col-sm-12" id="errorWard" style="display:none;"></label>
+                                </div>
+                                @*<label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Ward No</label>
+                    <div>
+                        <select class="form-control" id="WardNo" name="WardNo">
+                            <option></option>
+                        </select>
+                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+                </div>
+                @*<div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Choose College type<span style="color:red;">*</span></label>
+                            <div class=" row form-group col-sm-12 mt-2" style="text-align:center">
+
+                                @{
+                                    int i = 1;
+                                    if (collegeType != null)
+                                    {
+                                        foreach (var item in collegeType)
+                                        {
+                                            if (i == 1)
+                                            {
+                                                <div class="form-group custom-control custom-radio col-lg-3">
+                                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary collagetype" type="radio" name="CollageType" id="rbtn_@item.Text" value="@item.Id">
+                                                    <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group custom-control custom-radio col-lg-3">
+                                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary collagetype" type="radio" name="CollageType" id="rbtn_@item.Text" value="@item.Id">
+                                                    <label for="rbtn_@item.Text" class="custom-control-label" style="width: max-content;">@item.Text</label>
+                                                </div>
+                                            }
+                                            i = i + 1;
+                                        }
+                                    }
+                                }
+                            </div>
+                            CollageType
+                        </div>
+                    </div>*@
+                
+               
+                
+                
+                
+            </div>
+           
+
+        </div>
+        <div class="card-header p-0">
+            <h4 class="m-0 title-heading rounded-0 float-left">Contact Details</h4>
+        </div>
+
+        <div class="noc-layouts-tbl">
+            <table class="table table-borderless" id="contactsData">
+                <thead>
+                    <tr>
+                        <td>
+                            <input type="text" id="Name" name="Name" placeholder="ContactPerson" class="form-control noc-input-text alphaspace" maxlength="50">
+                            <label for="error" class="col-sm-12" id="errorContactPerson" style="display:none;"></label>
+                        </td>
+                        <td>
+                            <input type="text" id="Number" name="Number" placeholder="Number" minlength="10" maxlength="10" class="noc-input-text form-control numberonly">
+                            <label for="error" class="col-sm-12" id="errorContactNumber" style="display:none;"></label>
+                        </td>
+                        <td>
+                            <input type="text" id="EmailId" name="Email" placeholder="Email Address" class="noc-input-text form-control">
+                            <label for="error" class="col-sm-12" id="errorContactEmail" style="display:none;"></label>
+                        </td>
+                        <td><input type="button" class="theme-button-mockup add-row" value="+ Add"></td>
+                    </tr>
+                    <tr><td colspan="4">@Html.ValidationMessage("CollageList", "", new { @class = "labels labels-danger", id = "lblcontactdeatils" })</td></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>ContactPerson</th>
+                        <th>Number</th>
+                        <th>Email Address</th>
+                        <th>Action</th>
+                    </tr>
+
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            @*<button type="button" class="delete-row">Delete Row</button>*@
+            @*<div class="row text-center">
+                    <div class="form-group col-lg-12">
+                        <button class="btn btn-sm col-sm-4 locationBTN" id="btnSave" style="color: white !important; background: #f953c6; background: -webkit-linear-gradient(to left, #b91d73, #f953c6); background: linear-gradient(to left, #b91d73, #f953c6); width: 103px;"> Save</button>
+                    </div>
+                </div>*@
+        </div>
+
+
+        <div class="card-header p-0">
+            <h4 class="m-0 title-heading rounded-0 float-left">Track Geo Location</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Latitude </label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text" name="Latitudedd" id="txtLatitude" autocomplete="off" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Longituted</label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text" name="Longitudedd" id="txtLongitude" autocomplete="off" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-header p-0">
+            <h4 class="m-0 title-heading float-left">Additional Contact</h4>
+        </div>
+        <div class="card-body row">
+            <div class="col-8">
+                <div class="row">
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Mobile Number</label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text numberonly" maxlength="10" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">LandLine Number</label>
+                        <div>
+                            <input type="text" class="form-control noc-input-text numberonly" maxlength="10" name="LandlineNumber" id="txtLandlineNumber" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-bottom:10px">
+            <div class="col-lg-12" style="text-align:right">
+                @*<button type="submit" id="btnsubmitDetails" style="display:none"></button>*@
+                <button class="theme-button-mockup" type="button" id="btnSave">Save & Proceed To Add Course Details</button>
+                @*<a href="@Url.Action("CreateDetais", "AddCourse")" class="col-lg-3 btn btnpink" id="Reset">Proceed To Add Course Details</a>*@
+
+                @*<button class="btn col-sm-2 btnNext" id="btnSaveNext">Next <i class="fas fa-arrow-right"></i></button>*@
+
+            </div>
+        </div>
+    </div>
+}
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script type="text/javascript">
+    var imagebase64 = "";
+    function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
+        var elementID = element.id;
+        var file = element.files[0];
+        console.log(file.name);
+        //console.log(elementID);
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            imagebase64 = reader.result;
+            $('#' + hdnId).val(imagebase64);
+            $('#' + hdnExtnID).val(file.name);
+            //console.log(imagebase64)
+            //console.log(hdnId)
+        }
+        reader.readAsDataURL(file);
+        return imagebase64;
+    }
+
+    $("input[name='Type']").change(function () {
+        //alert("in");
+        if ($(this).val() === '1') {
+            $('#divRural').show();
+            $('#divUrban').hide();
+        } else if ($(this).val() === '2') {
+            $('#divRural').hide();
+            $('#divUrban').show();
+
+        }
+    // Do something interesting here
+    });
+
+    $("input[name='AIESHCodeStatus']").change(function () {
+        //alert("in");
+        if ($(this).val() === '1') {
+            $('#divAIESHCode').show();
+        } else if ($(this).val() === '0') {
+            $('#divAIESHCode').hide();
+        }
+        // Do something interesting here
+    });
+
+    $("#DivisionId").change(function () {
+        var DivisionId = $("#DivisionId option:selected").val();
+        //alert(Districtid);
+        if (DivisionId > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetDistrictList",
+                data: { DivisionId: DivisionId },
+                success: function (data) {
+
+                    console.log('data is', data);
+                    $("#DistrictId").html("<option value = \"0\">Select District</option>")
+                    $.each(data, function (index, value) {
+                        $("#DistrictId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+            //$.get(GetglobalDomain()+ "BasicDetails/GetTehsilList", { DistrictId: Districtid }, function (data) {
+            //    $("#Tehsil").html("<option value = \"\">Select Tehsil</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+    $("#DistrictId").change(function () {
+        var Districtid = $("#DistrictId option:selected").val();
+        //alert(Districtid);
+        if (Districtid > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetSUBDIVISIONList",
+                data: { DistrictId: Districtid },
+                success: function (data) {
+
+                    console.log('data is', data);
+                    $("#SubDivisionId").html("<option value = \"0\">Select SUBDIVISION</option>")
+                    $.each(data, function (index, value) {
+                        $("#SubDivisionId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+            //$.get(GetglobalDomain()+ "BasicDetails/GetTehsilList", { DistrictId: Districtid }, function (data) {
+            //    $("#Tehsil").html("<option value = \"\">Select Tehsil</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+    $("#DistrictId").change(function () {
+        var Districtid = $("#DistrictId option:selected").val();
+        //alert(Districtid);
+        if (Districtid > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetTehsilList",
+                data: { DistrictId: Districtid },
+                success: function (data) {
+                    console.log('data is', data);
+                          $("#TehsilId").html("<option value = \"0\">Select Tehsil</option>")
+                $.each(data, function (index, value) {
+                    $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                });
+                }
+            });
+            //$.get(GetglobalDomain()+ "BasicDetails/GetTehsilList", { DistrictId: Districtid }, function (data) {
+            //    $("#Tehsil").html("<option value = \"\">Select Tehsil</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+    $("#DistrictId").change(function () {
+        var id = $("#DistrictId option:selected").val();
+        if (id > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetCityList",
+                data: { Id: id },
+                success: function (data) {
+                    console.log('data is', data);
+                    $("#CityId").html("<option value = \"0\">Select City</option>")
+                    $.each(data, function (index, value) {
+                        $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+            //$.get(GetglobalDomain()+ "GeneralAssessment/GetCityList", { Id: id }, function (data) {
+            //    $("#CityId").html("<option value = \"\">Select City</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+    $("#DistrictId").change(function () {
+        var id = $("#DistrictId option:selected").val();
+        if (id > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetBlockList",
+                data: { Id: id },
+                success: function (data) {
+                    console.log('data is', data);
+                    $("#BlockId").html("<option value = \"0\">Select Block</option>")
+                    $.each(data, function (index, value) {
+                        $("#BlockId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+            //$.get(GetglobalDomain()+ "GeneralAssessment/GetCityList", { Id: id }, function (data) {
+            //    $("#CityId").html("<option value = \"\">Select City</option>")
+            //    $.each(data, function (index, value) {
+            //        $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+            //    });
+            //});
+        }
+    });
+
+    //Get Paliament Area
+    $("#DistrictId").change(function () {
+        debugger;
+        var Districtid = $("#DistrictId option:selected").val();
+        //alert(Districtid);
+        if (Districtid > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetPaliamentAreaList",
+                data: { DistrictId: Districtid },
+                success: function (data) {
+                    console.log('data is', data);
+                    $("#Paliamentarea").html("<option value = \"0\">Select Paliament Area</option>")
+                    $.each(data, function (index, value) {
+                        $("#Paliamentarea").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+
+        }
+    });
+    // Get Paliment Area
+
+    //Get Legislative Area
+    $("#DistrictId").change(function () {
+        debugger;
+        var Districtid = $("#DistrictId option:selected").val();
+        //alert(Districtid);
+        if (Districtid > 0) {
+            $.ajax({
+                type: "GET",
+                url: GetglobalDomain() + "/BasicDetails/GetLegislativeList",
+                data: { DistrictId: Districtid },
+                success: function (data) {
+                    console.log('data is', data);
+                    $("#LegislativeId").html("<option value = \"0\">Select Legislative  Area</option>")
+                    $.each(data, function (index, value) {
+                        $("#LegislativeId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                    });
+                }
+            });
+
+        }
+    });
+  // Get Legislative Area
+
+    $(document).ready(function () {
+        getLocation();
+        var isuserExists = '@TempData["isSaved"]'
+        var message = '@TempData["msg"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+
+        $("#ddlUniverSity").select2();
+
+        $('#txtMobileNumber').blur(function () {
+            if ($("#txtMobileNumber").val().length > 0) {
+                if ($("#txtMobileNumber").val().substr(0, 1) == 0 || $("#txtMobileNumber").val().length < 10) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+                    $("#txtMobileNumber").val('');
+                    // $('#txtUsername').val('');
+                }
+            }
+            if ($("#txtAddiMobileNumber").val().length > 0) {
+                if ($("#txtAddiMobileNumber").val().substr(0, 1) == 0 || $("#txtAddiMobileNumber").val().length < 10) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: '<div><h4><b>Mobile No</b> Length Must be <b>10 Digits</b> long and should start with 1 or greater</h4></div>',
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+                    $("#txtAddiMobileNumber").val('');
+                    // $('#txtUsername').val('');
+                }
+            }
+        })
+        if ('@CollageDetails.CollegeName' != null) {
+
+
+             var DivisionId = $("#DivisionId option:selected").val();
+            if (DivisionId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetDistrictList",
+                    data: { DivisionId: DivisionId },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#DistrictId").html("<option value = \"0\">Select District</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.DistrictId == value.Value)
+                            {
+
+                                $("#DistrictId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                $("#DistrictId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                            });
+                    }
+                });
+            }
+
+            //GetTehsilList
+            var Districtid = $("#DistrictId option:selected").val();
+            if (Districtid > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetTehsilList",
+                    data: { DistrictId: Districtid },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#TehsilId").html("<option value = \"0\">Select Tehsil</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.TehsilId == value.Value)
+                            {
+                                 $("#TehsilId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                 $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                            });
+                    }
+                });
+            }
+            //GetTehsilList
+
+            //Get city
+            var id = $("#DistrictId option:selected").val();
+            if (id > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetCityList",
+                    data: { Id: id },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#CityId").html("<option value = \"0\">Select City</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.CityId == value.Value)
+                            {
+                                $("#CityId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                $("#CityId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+
+                        });
+                    }
+                });
+            }
+            //Get City
+
+            //Get Block
+            var idss = $("#DistrictId option:selected").val();
+            if (idss > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetBlockList",
+                    data: { Id: idss },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#BlockId").html("<option value = \"0\">Select Block</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.BlockId == value.Value)
+                            {
+                                $("#BlockId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                $("#BlockId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                        });
+                    }
+                });
+            }
+            //Get Block
+            // Paliament Area Start
+            debugger
+            var Paliament = $("#DistrictId option:selected").val();
+            if (Paliament > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetPaliamentAreaList",
+                    data: { DistrictId: Paliament },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#Paliamentarea").html("<option value = \"0\">Select Paliament Area</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.Paliamentarea == value.Value)
+                            {
+                                $("#Paliamentarea").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                $("#Paliamentarea").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                        });
+                    }
+                });
+            }
+             // Paliament Area End
+
+            // Legislative Area Start
+
+            var Legislative = $("#DistrictId option:selected").val();
+            if (Legislative > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetLegislativeList",
+                    data: { DistrictId: Legislative },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#Paliamentarea").html("<option value = \"0\">Select Legislative  Area</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.LegislativeId == value.Value)
+                            {
+                                $("#LegislativeId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                $("#LegislativeId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                        });
+                    }
+                });
+            }
+
+              var Districtid = $("#DistrictId option:selected").val();
+            if (Districtid > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/BasicDetails/GetSUBDIVISIONList",
+                    data: { Districtid: Districtid },
+                    success: function (data) {
+                        console.log('data is', data);
+                        $("#SubDivisionId").html("<option value = \"0\">Select District</option>")
+                        $.each(data, function (index, value) {
+                            if (@CollageDetails.SubDivisionId == value.Value)
+                            {
+                                debugger
+                                $("#SubDivisionId").append("<option value = \"" + value.Value + "\" selected>" + value.Text + "</option>");
+                            }
+                            else {
+                                $("#SubDivisionId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                            }
+                            });
+                    }
+                });
+            }
+
+          // Legislative Area End
+            if ('@CollageDetails.LocationType' == '1') {
+                $('#divRural').show();
+                $('#divUrban').hide();
+            } else if ('@CollageDetails.LocationType' == '2') {
+                $('#divRural').hide();
+                $('#divUrban').show();
+
+            }
+
+            if ('@CollageDetails.AISHECodeStatus' == '1') {
+                $('#divAIESHCode').show();
+            } else if ('@CollageDetails.AISHECodeStatus' == '0') {
+                $('#divAIESHCode').hide();
+            }
+
+        }
+    });
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+         } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    function showPosition(position) {
+        //alert("Latitude: " + position.coords.latitude + "
+
+        var data = {
+            lat:position.coords.latitude,
+            long:position.coords.longitude
+        }
+
+        console.log(JSON.stringify(data));
+
+        $('#txtLatitude').val(data.lat);
+        $('#txtLongitude').val(data.long);
+
+        //$('#hdf_longitudeData').val(position.coords.longitude)
+        //$('#hdf_latitudeData').val(position.coords.latitude)
+        //console.log('from inner');
+        //console.log("lat : " + $('#hdf_longitudeData').val());
+        //console.log("long : " + $('#hdf_latitudeData').val());
+    }
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#txtTagDegree').change(function () {
+            var deptID = $(this).val();
+            if (deptID > 0) {
+                BindUniversities(deptID);
+            }
+        });
+
+
+
+        $('.alphaspace').keypress(function (e) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regex.test(str)) {
+
+                return true;
+            }
+            else {
+
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+
+        });
+
+        $('#Number').on("cut copy paste", function (e) {
+            e.preventDefault();
+        });
+        $('.alphanumeric').keypress(function (e) {
+            var regEx = /^[0-9a-zA-Z ]+$/;
+            var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+            if (regEx.test(str)) {
+
+                return true;
+            }
+            else {
+
+                e.preventDefault();
+                //alert('Please Enter Alphabate');
+                return false;
+            }
+
+        });
+        $('.numberonly').keypress(function (e) {
+
+            var charCode = (e.which) ? e.which : event.keyCode
+
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+
+                return false;
+
+        });
+        $(".add-row").click(function () {
+            debugger
+            var markup = "";
+            var name = $("#Name").val();
+            var number = $("#Number").val();
+            var len = number.length;
+            var email = $("#EmailId").val();
+            if (name != '' && number != '' && email != '') {
+                debugger
+                if (len >= 10) {
+                    $('#errorContactEmail').html('');
+                    $("#EmailId").css({ 'border': '' });
+                    $('#errorContactNumber').html('');
+                    $("#Number").css({ 'border': '' });
+                    $("#Number").removeClass("redborder");
+                    markup = "<tr><td>" + name + "</td><td>" + number + "</td><td>" + email + "</td><td><button class='delete-row theme-delete-btn' type='button' name='delete' value='Remove'><i class='fas fa-trash'></i></button></td></tr>";
+                    $("#contactsData tfoot").append(markup);
+                    $('#Name').val('');
+                    $('#Number').val('');
+                    $('#EmailId').val('');
+                }
+                else {
+                    $('label[for="error"]').show();
+                    errorContactNumber.textContent = "Please Enter Ten digit Contact Number"
+                    $("#errorContactNumber").addClass('colordiv');
+                    document.getElementById('Number').style.border = "1px solid red";
+                    //$('#Number').focus();
+                    //$('#Number').val('');
+                }
+
+
+            }
+            else {
+                if (!$('#Name').val()) {
+                    $('label[for="error"]').show();
+                    errorContactPerson.textContent = "Please Enter Contact Name"
+                    $("#Name").addClass('redborder');// css(".redborder");
+                    $("#errorContactPerson").addClass('colordiv');// css(".redborder");
+                    $('#Name').focus();
+                    $('#Name').val('');
+                }
+                else {
+                    $('#errorContactPerson').html('');
+                    $("#Name").removeClass("redborder");
+
+                }
+                if (!$('#Number').val()) {
+                    $('label[for="error"]').show();
+                    errorContactNumber.textContent = "Please Enter Contact Number"
+                    $("#Number").addClass('redborder');
+                    $("#errorContactNumber").addClass('colordiv');
+                    $('#PersonName').focus();
+                    $('#PersonName').val('');
+                }
+                else {
+                    $('#errorContactNumber').html('');
+                    $("#Number").removeClass("redborder");
+
+                }
+                if (!$('#EmailId').val()) {
+                    $('label[for="error"]').show();
+                    errorContactEmail.textContent = "Please Enter Email ID"
+                    $("#errorContactEmail").addClass('colordiv');
+                    document.getElementById('EmailId').style.border = "1px solid red";
+                    $('#EmailId').focus();
+                    $('#EmailId').val('');
+                }
+            }
+            //$("#Name").val('');
+            //$("#Number").val('');
+            //$("#EmailId").val('');
+            //$('#lblcontactdeatils').html("");
+        });
+        // Find and remove selected table rows
+        $("#contactsData").on("click", ".delete-row", function () {
+            $(this).closest("tr").html('');
+        });
+
+        function ValidateEmail() {
+            debugger;
+            var email = document.getElementById("txtEmail").value;
+            var lblError = document.getElementById("lblError");
+
+            var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+            debugger
+            if (!expr.test(email)) {
+                $('label[for="error"]').show();
+                //errorEmail.textContent = "Invalid email address.";
+                $('#errorEmail').addClass('colordiv');
+                errorEmail.innerHTML = "Invalid email address.";
+                status = false;
+
+            }
+            else {
+                $('#txtEmail').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorEmail').html('');
+            }
+        }
+
+        function CheckValid() {
+            var status = true;
+            debugger;
+            var AIESHStatus = $('input[name="AIESHCodeStatus"]:checked').val();
+            //alert(AIESHStatus);
+            if (AIESHStatus == 0) {
+                var AIESHCode = $('#txtAIESHCode').val();
+                $('#txtAIESHCode').val('');
+                $('#txtAIESHCode').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+            if (AIESHStatus == 1) {
+                var AIESHCode = $('#txtAIESHCode').val();
+                if (AIESHCode == 0) {
+                    $('label[for="error"]').show();
+                    errorAIESHCode.textContent = "Please Enter AIESH Code"
+                    $("#txtAIESHCode").addClass('redborder');
+                    $("#errorAIESHCode").addClass('colordiv');
+                    $('#txtAIESHCode').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                    //return status;
+                }
+                else {
+                    $('#errorAIESHCode').html('');
+                    $("#txtAIESHCode").removeClass("redborder");
+                    $('#txtAIESHCode').removeClass('errr-highlight').addClass('sucess-highlight');
+                }
+            }
+
+            //var collegeLevel = $('#CollageCategory option:selected').val();
+            //if (collegeLevel.length <= 0) {
+            //    $('#CollageCategory').removeClass('sucess-highlight').addClass('errr-highlight');
+            //    $('label[for="error"]').show();
+            //    errorCollageCategory.textContent = "Please Select Collage Category";
+            //    $('#errorCollageCategory').addClass('colordiv');
+            //    status = false;
+            //    //return status;
+            //}
+            //else {
+            //    $('#CollageCategory').removeClass('errr-highlight').addClass('sucess-highlight');
+            //    $('#errorCollageCategory').html('');
+            //}
+
+            var CollageType = $('#CollageType option:selected').val();
+            if (CollageType.length <= 0) {
+                $('#CollageType').removeClass('sucess-highlight').addClass('errr-highlight');
+                $('label[for="error"]').show();
+                errorCollageType.textContent = "Please Select Collage Type";
+                $('#errorCollageType').addClass('colordiv');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#CollageType').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorCollageType').html('');
+            }
+
+            var collegeLevel = $('#collegeLevelId option:selected').val();
+            if (collegeLevel.length <= 0) {
+                $('label[for="error"]').show();
+                errorcollegeLevel.textContent = "Please Select Collage Level";
+                $('#errorcollegeLevel').addClass('colordiv');
+                $('#collegeLevelId').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#collegeLevelId').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorcollegeLevel').html('');
+            }
+            console.log(status);
+
+            var collegeMedium = $('#collegeMediumId option:selected').val();
+            if (collegeMedium.length <= 0) {
+                $('label[for="error"]').show();
+                errorcollegeMedium.textContent = "Please Select College Medium";
+                $('#errorcollegeMedium').addClass('colordiv');
+                $('#collegeMediumId').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#collegeMediumId').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorcollegeMedium').html('');
+            }
+            var CollegeName = $('#txtCollegeName').val();
+            if (CollegeName.length <= 0) {
+                $('label[for="error"]').show();
+                errorCollegeName.textContent = "Please Enter College Name";
+                $('#errorCollegeName').addClass('colordiv');
+                $('#txtCollegeName').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#txtCollegeName').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorCollegeName').html('');
+            }
+            var CollegeNamehindi = $('#txtCollegeNamehindi').val();
+            if (CollegeNamehindi.length <= 0) {
+                $('label[for="error"]').show();
+                errorCollegeNamehindi.textContent = "Please Enter College Name in Hindi";
+                $('#errorCollegeNamehindi').addClass('colordiv');
+                $('#txtCollegeNamehindi').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#txtCollegeNamehindi').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorCollegeNamehindi').html('');
+            }
+            var UniverSity = $('#txtUniverSity').val();
+            if (UniverSity.length <= 0) {
+                $('label[for="error"]').show();
+                errorUniverSitye.textContent = "Please Select University Name";
+                $('#errorUniverSitye').addClass('colordiv');
+                $('#txtUniverSity').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#txtUniverSity').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorUniverSitye').html('');
+            }
+            var MobileNumber = $('#txtMobileNumber').val();
+            if (MobileNumber.length <= 0) {
+                $('label[for="error"]').show();
+                errorMobileNumber.textContent = "Please Enter Mobile No";
+                $('#errorMobileNumber').addClass('colordiv');
+                $('#txtMobileNumber').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#txtMobileNumber').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorMobileNumber').html('');
+            }
+            var Email = $('#txtEmail').val();
+            if (Email.length <= 0) {
+                errorEmail.textContent = "Please Enter Email Id";
+                $('#errorEmail').addClass('colordiv');
+                $('#txtEmail').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                ValidateEmail();
+                /* $('#txtEmail').removeClass('errr-highlight').addClass('sucess-highlight');*/
+            }
+            var AddressLine1 = $('#txtAddressLine1').val();
+            if (AddressLine1.length <= 0) {
+                errorAddressLine1.textContent = "Please Enter AddressLine1";
+                $('#errorAddressLine1').addClass('colordiv');
+                $('#txtAddressLine1').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#txtAddressLine1').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorAddressLine1').html('');
+            }
+            var AddressLine2 = $('#txtAddressLine2').val();
+            if (AddressLine2.length <= 0) {
+                errorAddressLine2.textContent = "Please Enter AddressLine2";
+                $('#errorAddressLine2').addClass('colordiv');
+                $('#txtAddressLine2').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#txtAddressLine2').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorAddressLine2').html('');
+            }
+            var DistrictId = $('#DistrictId option:selected').val();
+            //alert(DistrictId);
+            if (DistrictId == 0) {
+                errorDistrict.textContent = "Please Select District";
+                $('#errorDistrict').addClass('colordiv');
+                $('#DistrictId').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+                //return status;
+            }
+            else {
+                $('#DistrictId').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorDistrict').html('');
+            }
+
+
+
+            var contactsInfo = new Array();
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+            if (contactsInfo.length <= 0) {
+                $('#lblcontactdeatils').html("Add atlest one row in contact deatils");
+                status = false;
+                //alert("");
+            }
+            else {
+                $('#lblcontactdeatils').html("");
+            }
+            var Latitudedd = $('#txtLatitude').val();
+            var Longitudedd = $('#txtLongitude').val();
+            var AddiMobileNumber = $('#txtAddiMobileNumber').val();
+
+            var LandlineNumber = $('#txtLandlineNumber').val();
+
+            //var CollageType = $('input[name="CollageType"]:checked').val();
+            //if (CollageType != null) {
+            //    if (CollageType.length <= 0) {
+            //        $('input[name="CollageType"]').removeClass('sucess-highlight').addClass('errr-highlight');
+            //        status = false;
+            //        //return status;
+            //    }
+            //    else {
+            //        $('input[name="CollageType"]').removeClass('errr-highlight').addClass('sucess-highlight');
+            //    }
+            //}
+            //else {
+            //    $('input[name="CollageType"]').removeClass('sucess-highlight').addClass('errr-highlight');
+            //    status = false;
+            //}
+            var LocationType = $('input[name="Type"]:checked').val();
+            //alert(LocationType);
+            if (LocationType.length > 0) {
+                if (LocationType == 2) {
+                    var WardNo = $('#WardNo').val();
+                    if (WardNo.length <= 0) {
+                        $('#WardNo').removeClass('sucess-highlight').addClass('errr-highlight');
+                        $('label[for="error"]').show();
+                        errorWard.textContent = "Please Enter Ward No";
+                        $('#errorWard').addClass('colordiv');
+                        status = false;
+                        //return status;
+                    }
+                    else {
+                        $('#WardNo').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errorWard').html('');
+                    }
+
+                    var CityId = $('#CityId').val();
+                    if (CityId == 0) {
+                        $('label[for="error"]').show();
+                        errorCity.textContent = "Please Select City";
+                        $('#errorCity').addClass('colordiv');
+                        $('#CityId').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                        //return status;
+                    }
+                    else {
+                        $('#CityId').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errorCity').html('');
+                    }
+                }
+
+                if (LocationType == 1) {
+                    var TehsilId = $('#TehsilId').val();
+                    if (TehsilId == 0) {
+                        $('label[for="error"]').show();
+                        errorTehsil.textContent = "Please Select Tehsil";
+                        $('#errorTehsil').addClass('colordiv');
+                        $('#TehsilId').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                        //return status;
+                    }
+                    else {
+                        $('#TehsilId').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errorTehsil').html('');
+                    }
+                    var BlockId = $('#BlockId').val();
+                    if (BlockId == 0) {
+                        $('label[for="error"]').show();
+                        errorBlock.textContent = "Please Select Block";
+                        $('#errorBlock').addClass('colordiv');
+                        $('#BlockId').removeClass('sucess-highlight').addClass('errr-highlight');
+                        status = false;
+                        //return status;
+                    }
+                    else {
+                        $('#BlockId').removeClass('errr-highlight').addClass('sucess-highlight');
+                        $('#errorBlock').html('');
+                    }
+                }
+
+            }
+            else {
+                $('input[name="Type"]').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+            //LandConverted
+            //var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+            //var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+            //var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+            //var convertedDocFullURL = $('#hdnConvertedDoc').val();
+
+            return status;
+        }
+        $("#btnSave").click(function () {
+            debugger;
+            var contactsInfo = new Array();
+            //Loop through the Table rows and build a JSON array.
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+            var collegeLevel = $('#collegeLevelId').val();
+            var collegeMedium = $('#collegeMediumId option:selected').val();
+            var CollegeName = $('#txtCollegeName').val();
+            var CollageNamehindi = $('#txtCollegeNamehindi').val();
+            var UniverSity = $('#txtUniverSity').val();
+            var MobileNumber = $('#txtMobileNumber').val();
+            var Email = $('#txtEmail').val();
+            var AddressLine1 = $('#txtAddressLine1').val();
+            var AddressLine2 = $('#txtAddressLine2').val();
+            var DistrictId = $('#DistrictId').val();
+            var TehsilId = $('#TehsilId').val();
+            var BlockId = $('#BlockId').val();
+            var CityId = $('#CityId').val();
+            var WardNo = $('#WardNo').val();
+            var Latitudedd = $('#txtLatitude').val();
+            var Longitudedd = $('#txtLongitude').val();
+            var AddiMobileNumber = $('#txtAddiMobileNumber').val();
+            var LandlineNumber = $('#txtLandlineNumber').val();
+            var CollageType = $('#CollageType option:selected').val();
+            //var CollageType = $('input[name="CollageType"]:checked').val();
+            var LocationType = $('input[name="Type"]:checked').val();
+            //LandConverted
+            var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+            var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+            var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+            if (convertedDocContent != "") {
+                convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0].split(':')[1].split(';')[0];
+            }
+            else {
+                convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+            }
+            var convertedDocFullURL = $('#hdnConvertedDoc').val();
+
+            //var CollageCategory = $('#CollageCategory').val();
+            var AIESHCodeStatus = $('input[name="AIESHCodeStatus"]:checked').val();
+            var AIESHCode = $("#txtAIESHCode").val();
+            var PaliamentAreaName = $("#Paliamentarea").val();
+            var LegislativeAreaName = $("#LegislativeId").val();
+            var DivisionnameId = $("#DivisionId").val();
+            var SubDivisionname = $("#SubDivisionId").val();
+            var CollegeTypeId = $('#txtCollegeTypeId option:selected').val();
+            var TagDegree = $('#txtTagDegree option:selected').val();
+            var model = {
+                LocationType: LocationType,
+                CollageType: CollageType,
+                collegeLevel: collegeLevel,
+                collegeMedium: collegeMedium,
+                CollegeName: CollegeName,
+                UniverSity: UniverSity,
+                MobileNumber: MobileNumber,
+                Email: Email,
+                AddressLine1: AddressLine1,
+                AddressLine2: AddressLine2,
+                DistrictId: DistrictId,
+                TehsilId: TehsilId,
+                BlockId: BlockId,
+                CityId: CityId,
+                WardNo: WardNo,
+                Latitudedd: Latitudedd,
+                Longitudedd: Longitudedd,
+                AddiMobileNumber: AddiMobileNumber,
+                LandlineNumber: LandlineNumber,
+                ContactDetails: contactsInfo,
+
+                CollageLogo: convertedDoc,
+                CollageLogoExtension: convertedDocExte,
+                CollageLogoContentType: convertedDocContent,
+                //CollageCategory: CollageCategory,
+                AISHECodeStatus: AIESHCodeStatus,
+                AIESHCode: AIESHCode,
+                PaliamentAreaName: PaliamentAreaName,
+                LegislativeAreaName: LegislativeAreaName,
+                CollageNamehindi: CollageNamehindi,
+                DivisionId: DivisionnameId,
+                SubDivisionId: SubDivisionname,
+                CollegeTypeId: CollegeTypeId,
+                TagDegrees: TagDegree
+                //lndConvertURL: (convertedDocFullURL.length <= 0) ? "#" : convertedDocFullURL,
+            }
+            console.log('model data is', model);
+            if (CheckValid()) {
+                $.ajax({
+                    type: "POST",
+                    url: GetglobalDomain() + "/BasicDetails/ContactSaveDetails",
+                    data: model,
+                    success: function (result) {
+                        if (result.StatusCode == '1') {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Data saved sussessfully!',
+                                allowOutsideClick: false,
+                                showCancelButton: false,
+                                showCloseButton: true,
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    var url = GetglobalDomain() + "/AddCourse/CreateDetails";
+                                    window.location.href = url;
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Failed',
+                                'Data not Saved'
+                            )
+                        }
+                    }
+                });
+            }
+        });
+
+        $("#btnUpdate").click(function () {
+            debugger;
+            var contactsInfo = new Array();
+            //Loop through the Table rows and build a JSON array.
+            $("#contactsData tfoot tr").each(function () {
+                var row = $(this);
+                var contactInfo = {};
+                contactInfo.name = row.find("td").eq(0).html();
+                contactInfo.number = row.find("td").eq(1).html();
+                contactInfo.email = row.find("td").eq(2).html();
+                contactsInfo.push(contactInfo);
+            });
+            console.log(contactsInfo);
+            var collageid = $('#collageId').val();
+            var collegeLevel = $('#collegeLevelId').val();
+            var collegeMedium = $('#collegeMediumId option:selected').val();
+            var CollegeName = $('#txtCollegeName').val();
+            var CollageNamehindi = $('#txtCollegeNamehindi').val();
+            var UniverSity = $('#txtUniverSity').val();
+            var MobileNumber = $('#txtMobileNumber').val();
+            var Email = $('#txtEmail').val();
+            var AddressLine1 = $('#txtAddressLine1').val();
+            var AddressLine2 = $('#txtAddressLine2').val();
+            var DistrictId = $('#DistrictId').val();
+            var TehsilId = $('#TehsilId').val();
+            var BlockId = $('#BlockId').val();
+            var CityId = $('#CityId').val();
+            var WardNo = $('#WardNo').val();
+            var Latitudedd = $('#txtLatitude').val();
+            var Longitudedd = $('#txtLongitude').val();
+            var AddiMobileNumber = $('#txtAddiMobileNumber').val();
+            var LandlineNumber = $('#txtLandlineNumber').val();
+            //var CollageType = $('input[name="CollageType"]:checked').val();
+            var CollageType = $('CollageType option:selected').val();
+            var LocationType = $('input[name="Type"]:checked').val();
+            //LandConverted
+            var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
+            var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
+            var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
+            var convertedDocFullURL = $('#hdnConvertedDoc').val();
+            //var CollageCategory = $('#CollageCategory').val();
+            var AIESHCodeStatus = $('input[name="AIESHCodeStatus"]:checked').val();
+            var AIESHCode = $("#txtAIESHCode").val();
+            var PaliamentAreaName = $("#Paliamentarea").val();
+            var LegislativeAreaName = $("#LegislativeId").val();
+            var DivisionnameId = $("#DivisionId").val();
+            var SubDivisionname = $("#SubDivisionId").val();
+            var CollegeTypeId = $('#txtCollegeTypeId option:selected').val();
+            var TagDegree = $('#txtTagDegree option:selected').val();
+            var model = {
+                Id: collageid,
+                LocationType: LocationType,
+                CollageType: CollageType,
+                collegeLevel: collegeLevel,
+                collegeMedium: collegeMedium,
+                CollegeName: CollegeName,
+                UniverSity: UniverSity,
+                MobileNumber: MobileNumber,
+                Email: Email,
+                AddressLine1: AddressLine1,
+                AddressLine2: AddressLine2,
+                DistrictId: DistrictId,
+                TehsilId: TehsilId,
+                BlockId: BlockId,
+                CityId: CityId,
+                WardNo: WardNo,
+                Latitudedd: Latitudedd,
+                Longitudedd: Longitudedd,
+                AddiMobileNumber: AddiMobileNumber,
+                LandlineNumber: LandlineNumber,
+                ContactDetails: contactsInfo,
+
+                CollageLogo: convertedDoc,
+                CollageLogoExtension: convertedDocExte,
+                CollageLogoContentType: convertedDocContent,
+                //CollageCategory: CollageCategory,
+                AISHECodeStatus: AIESHCodeStatus,
+                AIESHCode: AIESHCode,
+                PaliamentAreaName: PaliamentAreaName,
+                LegislativeAreaName: LegislativeAreaName,
+                CollageNamehindi: CollageNamehindi,
+                DivisionId: DivisionnameId,
+                SubDivisionId: SubDivisionname,
+                CollegeTypeId: CollegeTypeId,
+                TagDegrees: TagDegree
+                //lndConvertURL: (convertedDocFullURL.length <= 0) ? "#" : convertedDocFullURL,
+            }
+            console.log('model data is', model);
+            if (CheckValid()) {
+                $.ajax({
+                    type: "POST",
+                    url: GetglobalDomain() + "/BasicDetails/ContactSaveDetails",
+                    data: model,
+                    success: function (result) {
+                        if (result.StatusCode == '1') {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Data updated sussessfully!',
+                                allowOutsideClick: false,
+                                showCancelButton: false,
+                                showCloseButton: true,
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                /* Read more about isConfirmed, isDenied below */
+                                if (result.isConfirmed) {
+                                    var url = GetglobalDomain() + "/AddCourse/CreateDetails";
+                                    window.location.href = url;
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire(
+                                'error',
+                                'Failed',
+                                'Data not Saved'
+                            )
+                        }
+                    }
+                });
+            }
+        });
+
+
+        function BindUniversities(DeptID) {
+            var applicationModal = {
+                "deptID": parseInt(DeptID)
+            }
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/BasicDetails/GetUniversityForDept",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(applicationModal),
+                success: function (data) {
+                    //console.log(data);
+                    var htmlString = `<option value="">--University --</option>`;
+                    var mainData = data.Data;
+                    console.log(mainData);
+
+                    if (mainData.length > 0) {
+                        mainData.forEach(function (item) {
+                            htmlString += `<option value=${item.Id}>${item.Text}</option>`;
+                        })
+                    }
+
+                    $('#txtUniverSity').html('');
+                    $('#txtUniverSity').html(htmlString);
+
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+
+        }
+
+
+    });
+</script>
+

@@ -1,0 +1,688 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "College Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var collegeList = (List<Dropdown>)ViewBag.clgList;
+    //collegeList = collegeList.OrderBy(o => o.Text).ToList();
+
+    var collegeID = 0;
+    var appliType = "";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+
+
+<style type="text/css">
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+
+    /*.table thead {
+        background-color: #646d91 !important;
+    }
+
+        .table thead > tr > th {
+            color: white
+        }
+        */
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <div class="float-right d-none">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Draft Application</li>
+                </ol>
+            </div>
+            <h4 class="page-title w-75">(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)-@ViewBag.Title</h4>
+            <div class="w-25 text-right">
+                <a href="~/Dashboard/DashboardUser" title="Back" value="Go back!" class="theme-button-mockup"><i class="fas fa-arrow-left"></i></a>
+
+                <a href="~/Trustee/Index" title="Next" class="theme-button-mockup"><i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="card noc-layouts mt-0">
+    <div class="card-header title-heading p-0">
+        <h4 class="m-0 title-heading float-left">Application List</h4>
+
+    </div>
+    <div class="card-body p-0 noc-layouts-tbl">
+        <input type="hidden" id="hdnClgID_Name" />
+        <div class="row col-lg-12" style="place-content: end;gap: 15px;padding: 10px 0px;font-size: 15px;font-weight: 600;">
+            <span style="color: #007bff;"><i class="fas fa-file-edit"></i> Fill New Application</span>
+            <span style="color: #f96363;border-left: 1px solid red;padding: 0px 10px;"> <i class="fas fa-file-invoice"></i> College Amendment</span>
+            @*<span style="color: #316407;"><i class="far fa-file-alt"></i> OLD NOC Details</span>*@
+        </div>
+
+        <div class="form-group " style="overflow-x:auto">
+            <table class="table table-borderless table-striped table-hover">
+                <thead class="dark">
+                    <tr>
+                        <th>#</th>
+                        <th>College</th>
+                        <th>Subject And Course Got TNOC</th>
+                        <th>Subject And Course Got PNOC</th>
+                       
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (collegeList != null && collegeList.Count > 0)
+                        {
+                            var i = 1;
+                            foreach (var item in collegeList)
+                            {
+                                if (item.TNOCStatus == "Active")
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@item.Text</td>
+                                        <td>
+                                            @item.CourseName :- <br />
+                                            @item.subjectName   @*item.TNOCStatus *@
+                                        </td>
+                                        <td> @item.PNOCStatus</td>
+
+                                        <td class="text-center">
+                                            <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text','@item.Id');"><i class="fas fa-file-edit"></i></button>
+                                            <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
+                                            @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
+
+
+                                            @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
+                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td>@item.Text</td>
+                                        <td>
+                                            @item.TNOCStatus
+                                        </td>
+                                        <td>  @item.CourseName :-<br/> @item.subjectName</td>
+
+                                        <td class="text-center">
+                                            <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text','@item.Id');"><i class="fas fa-file-edit"></i></button>
+                                            <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
+                                            @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
+
+
+                                            @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
+                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+
+
+
+                            }
+                        }
+
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center">No Data Available</td>
+                            </tr>
+                        }
+                    }
+
+
+                    @*<tr>
+            <th>1</th>
+            <th>19.12.2022</th>
+            <th>Trust 1</th>
+            <th>College 1</th>
+            <th>Department 1</th>
+            <th>Course 1</th>
+            <th>In-process</th>
+            <th><a href="@Url.Action("EditApplication","Trustee")"><i class="fas fa-pencil"></i></a></th>
+        </tr>*@
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg" id="openModal" style="display:none">Terms and Condition</a>
+
+    <div class="modal fade bd-example-modal-lg" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="appSummaryTitle">Select Appropriate Combination to Proceed</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 20px !important;">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h4 id="h2CollegeName" style="text-decoration: underline;"></h4>
+                        </div>
+
+                        <div class="col-lg-12 mt-3">
+                            <div class="form-group custom-control custom-radio col-sm-3">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="ApplicationType" id="rbtn_New" value="new">
+                                <label for="rbtn_New" class="custom-control-label" style="width: max-content;">I' am applying first time for NOC for my College</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group custom-control custom-radio col-sm-3">
+                                <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="ApplicationType" id="rbtn_Existing" value="existing">
+                                <label for="rbtn_Existing" class="custom-control-label" style="width: max-content;">Already Existing college and applied NOC many time</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" id="divModal">
+                    <button class="theme-discard-btn" id="btnProceedForNext" data-toggle="modal" data-target="#newCollegeModal">Proceed</button>
+                    <a class="theme-discard-btn" id="btnProceedToNewEdit" style="display:none">Proceed To Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*  <a href="#" id="openModal" style="display:none">Terms and Condition</a>*@
+
+    <div class="modal fade bd-example-modal-lg" id="newCollegeModal" tabindex="-1" role="dialog" aria-labelledby="existingModal" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="existingModalTitle">Data Not Found</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 20px !important;">
+                    <div class="row col-lg-12 text-center">
+                        <h4 id="spnModalClgname" style="text-decoration: underline;width: 100%;"></h4>
+                        <hr />
+                        <p style="width: 100%;color: red;display: flex;place-content: center;" id="pCourseNotAvailable"></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer" id="divModal">
+                    <a class="theme-discard-btn" id="btnProceedToNext" style="display:flex">Proceed For Entries</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-xl" id="existingModal" tabindex="-1" role="dialog" aria-labelledby="existingModal" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="existingModalTitle">Select Details</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="padding: 20px !important;">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h4 id="spnExModalClgname" style="text-decoration: underline;"></h4>
+                        </div>
+
+                        <div class="col-lg-6 mt-3">
+                            <label for="noc-text-input " class="noc-form-label" style="">Select Course</label>
+                            <select class="singleSelect form-control" id="ddlCourseList" multiple>
+                                <option>Select Course</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-6 mt-3">
+                            <label for="noc-text-input " class="noc-form-label" style="">Select Subject</label>
+                            <select class="singleSelect form-control" id="ddlSubjectList" multiple>
+                                <option>Select Subject</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" id="divModal">
+                    <a class="theme-discard-btn btnProceedtoEdit">Proceed For Entries</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section scripts {
+    <script src="~/plugins/dropify/js/dropify.min.js"></script>
+    <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script>
+
+    var MAppDetails = [];
+    $(document).ready(function () {
+
+        $('#ddlCourseList').select2();
+        $("input[name='ApplicationType']").change(function () {
+
+            var deptID = $("input[name='ApplicationType']:checked").val();
+            var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+            if (deptID == 'existing') {
+
+                GetCourseForCollege(collegeID,deptID);
+
+                $('#ddlSubjectList').select2({
+                    placeholder: "Select Subject"
+                });
+                $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#existingModal');
+
+
+                $('#btnProceedToNewEdit').css('display', 'none');
+                $('#btnProceedForNext').css('display', 'block');
+            }
+            else {
+
+                GetCourseForCollege(collegeID, deptID);
+
+                $('#btnProceedForNext').removeAttr('data-toggle').removeAttr('data-target');
+
+                $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#newCollegeModal');
+            }
+
+        });
+
+        $('#ddlCourseList').change(function () {
+            var deptID = $(this).val();
+            GetSubjectForCourse(deptID.toString());
+        });
+
+
+        $('.btnProceedtoEdit').click(function () {
+
+            var applicationType = $("input[name='ApplicationType']:checked").val();
+            var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+            var collegeName = $('#hdnClgID_Name').val().split(',')[1];
+
+            var cors = $('#ddlCourseList').val();
+            var corsname = $('#ddlCourseList option:selected').text();
+            var corsnameList = $('#ddlCourseList').select2("data");
+
+            var subjIDList = $('#ddlSubjectList').val();
+            var subjnameList = $('#ddlSubjectList').select2("data");
+
+            var subList = '';
+            var corsList = '';
+            var isAllCourseCovered = true;
+            // for selected subject name To be comma saperated
+            for (var i = 0; i <= subjnameList.length - 1; i++) {
+
+                var ids = subjIDList[i];
+                var textes = subjnameList[i].text;
+
+                MAppDetails.push({
+                    CollegeID: collegeID,
+                    college: collegeName,
+                    appType: applicationType,
+                    CourseID: ids.split('-')[0],
+                    SubjectID: ids.split('-')[1],
+                    Course: textes.split(': ')[0].trim(),
+                    Subject: textes.split(': ')[1].trim(),
+
+                })
+            }
+
+            corsnameList.forEach(function (item) {
+                //console.log('Corse Loop', item.id);
+                MAppDetails.forEach(function (item1) {
+
+                    /*console.log('Mapp Loop', item1.CourseID);*/
+                    if (item1.CourseID != item.id) {
+                        isAllCourseCovered = false;
+                    }
+                    else {
+                        isAllCourseCovered = true;
+                    }
+                })
+            })
+
+            var d = JSON.stringify(MAppDetails)
+            if (isAllCourseCovered) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/Trustee/SaveDeptMst",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: d,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.StatusCode == 1) {
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: `Success`,
+                                html: `<p>${data.msg}</p>`,
+                                allowOutsideClick: false,
+                                showCloseButton: true,
+                                showConfirmButton: false,
+                            });
+                        }
+
+                        setTimeout(function () {
+
+                            location.href = '@Url.Action("DraftApplication", "Trustee")';
+                        }, 1000)
+                    },
+                    error: function (d) {
+                        //alert(d);
+                    }
+                });
+            }
+            else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: `error`,
+                    html: `<p>"Dear applicant you have not selected subject against all the course you marked in course selection. Kindly add the subject or remove the course for which subjects are not marked"</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+            }
+        });
+
+
+
+        $('#btnProceedToNewEdit').click(function () {
+
+            var applicationType = $("input[name='ApplicationType']:checked").val();
+            var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+            var collegeName = $('#hdnClgID_Name').val().split(',')[1];
+
+            var Data = {
+                clgID: collegeID,
+                clgName: collegeName,
+                appType: applicationType,
+            }
+
+            var d = JSON.stringify(Data)
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Trustee/SaveDeptMstNewCollege",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: d,
+                success: function (data) {
+                    console.log(data);
+                    if (data.StatusCode == 1) {
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: `Success`,
+                            html: `<p>${data.msg}</p>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                    }
+
+                    setTimeout(function () {
+
+                    location.href = '@Url.Action("DraftApplication", "Trustee")';
+                    }, 1000)
+                },
+                error: function (d) {
+                    //alert(d);
+                }
+            });
+
+        });
+
+    });
+
+    function openModal(collgeName, collegeID) {
+
+        var collegeIdName = `${collegeID},${collgeName}`;
+
+        $('#h2CollegeName').html('');
+        $('#h2CollegeName').html('College : ' + collgeName);
+
+        $('#spnModalClgname').html('');
+        $('#spnModalClgname').html('College : ' + collgeName);
+
+        $('#spnExModalClgname').html('');
+        $('#spnExModalClgname').html('College : ' + collgeName);
+
+
+        $('#hdnClgID_Name').val('')
+        $('#hdnClgID_Name').val(collegeIdName);
+
+
+        //console.log($('#hdnClgID_Name').val());
+
+        $('#openModal').click();
+        return false;
+    }
+
+    function GetCourseForCollege(collegeID,applicationType) {
+        var htmlString = `<option value="0">Select Course</option>`;
+        var Data = {
+            collegeID: collegeID,
+            type:"GetCourseForCollege"
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetCourseForCollege",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                console.log(mainData.length);
+                if (applicationType == "existing") {
+                    if (mainData != null && mainData.length > 0) {
+                        mainData.forEach(function (item) {
+                            htmlString += `<option value="${item.Id}">${item.Text}</option>`;
+                        })
+                    }
+                    $('#ddlCourseList').html('');
+                    $('#ddlCourseList').html(htmlString);
+                    $('#ddlCourseList').select2();
+                }
+
+                if (applicationType == "new" && mainData.length > 0) {
+                    console.log('all Ok');
+
+                    $('#btnProceedToNewEdit').css('display', 'block');
+                    $('#btnProceedForNext').css('display', 'none');
+                }
+                else if (applicationType == "new" && mainData.length <= 0) {
+                    $('#pCourseNotAvailable').css('display', 'flex');
+                    $('#pCourseNotAvailable').html('');
+                    $('#pCourseNotAvailable').html(`There are no mapping for the course to this college kindly add the course to the same from &nbsp;&nbsp; <a class='link' href="@Url.Action("CreateDetails","AddCourse")"> Add Course</a>`);
+                    $('#btnProceedToNext').css('display','none');
+                    $('#btnProceedForNext').click();
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    function GetSubjectForCourse(CourseID) {
+        var htmlString = '';
+        var ClgId = $('#hdnClgID_Name').val().split(',')[0];
+        var Data = {
+            CourseID: CourseID,
+            type: "GetSubjectForCourse",
+            CollegeId: ClgId
+
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetSubjectForCourse",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                //console.log(mainData);
+                if (mainData != null && mainData.length > 0) {
+                    mainData.forEach(function (item) {
+                        htmlString += `<option value="${item.Id}">${item.Text}</option>`;
+                    })
+                }
+                $('#ddlSubjectList').html('');
+                $('#ddlSubjectList').html(htmlString);
+                $('#ddlSubjectList').select2({
+                    placeholder: "Select Subject"
+                });
+
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+
+    }
+
+    //function Verify(applGUID, applNumber) {
+    //    Swal.fire({
+    //        icon: 'warning',
+    //        title: 'Are You Sure?',
+    //        html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
+    //        showDenyButton: true,
+    //        showCancelButton: false,
+    //        denyButtonText: 'No',
+    //        confirmButtonText: 'Yes, I am',
+    //    }).then((result) => {
+    //        if (result.isConfirmed) {
+    //            CancelApplication(applGUID);
+    //        } else if (result.isDenied) {
+
+    //        }
+    //    });
+    //}
+
+    //function CancelApplication(ApplGUID) {
+    //    var Data = {
+    //        applGUID: ApplGUID
+    //    }
+    //    var d = JSON.stringify(Data)
+
+    //    $.ajax({
+    //        headers: {
+    //            'Accept': 'application/json',
+    //            'Content-Type': 'application/json'
+    //        },
+    //        url: GetglobalDomain() + "/Trustee/CancelDraftApplication",
+    //        dataType: 'json',
+    //        type: 'Post',
+    //        cache: false,
+    //        data: JSON.stringify(Data),
+    //        success: function (data) {
+    //            console.log(data.Type);
+    //            console.log(data);
+    //            if (data.StatusCode == 1) {
+
+    //                Swal.fire({
+    //                    position: 'center',
+    //                    icon: 'success',
+    //                    title: `Success`,
+    //                    html: `<p>${data.msg}</p>`,
+    //                    allowOutsideClick: false,
+    //                    showCloseButton: true,
+    //                    showConfirmButton: false,
+    //                });
+    //            }
+    //        },
+    //        error: function (d) {
+    //            //alert(d);
+    //        }
+    //    });
+    //}
+
+</script>

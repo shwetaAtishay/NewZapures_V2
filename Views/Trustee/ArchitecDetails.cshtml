@@ -1,0 +1,635 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Room Details";
+    var sguid = ViewBag.AppGuid;
+    List<CourserBind> lstcourse = new List<CourserBind>();
+    if (ViewBag.lstcourse != null)
+    {
+        lstcourse = (List<CourserBind>)ViewBag.lstcourse;
+    }
+    Layout = null;
+}
+
+@section styles {
+
+    <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+}
+
+<style type="text/css">
+    /* input[type=file]::file-selector-button {
+        background-color: aqua;
+        border: 1px solid;
+        border-radius: 4px;
+    }
+
+        input[type=file]::file-selector-button:hover {
+            background-color: burlywood;
+            border: 1px solid;
+            border-radius: 4px;
+        }*/
+
+    input:focus {
+        border: 1px solid red !important;
+        background-color: antiquewhite !important;
+    }
+
+    .Deleteclass {
+        cursor: pointer;
+    }
+
+    .dropify-wrapper {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        height: 138px;
+        padding: 5px 10px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #777;
+        background-color: #FFF;
+        background-image: none;
+        text-align: center;
+        border: 2px solid #E5E5E5;
+        -webkit-transition: border-color .15s linear;
+        transition: border-color .15s linear;
+    }
+    /*
+    .table thead {
+        background-color: #646d91 !important;
+    }
+
+    .table th {
+        color: #ffffff !important;
+    }*/
+
+    .fsc {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to left, #2a0845, #6441A5);
+        background: linear-gradient(to left, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsc h4 {
+            color: white !important;
+        }
+
+    .fsi {
+        background: #6441A5;
+        background: -webkit-linear-gradient(to right, #2a0845, #6441A5);
+        background: linear-gradient(to right, #506ee4, #5b3a96);
+        border-radius: 12px;
+    }
+
+        .fsi h4 {
+            color: white !important;
+        }
+
+    .fop {
+        background: #B993D6; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #8CA6DB, #B993D6); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #8CA6DB, #B993D6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        border-radius: 12px;
+    }
+
+        .fop h4 {
+            color: white !important;
+        }
+</style>
+<div class="row d-none">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            @*<div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Collage Facility</li>
+                    </ol>
+                </div>*@
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+<div class="card noc-layouts m-0">
+    <div class="card-header title-heading p-0">
+        <h4 class="m-0 title-heading float-left">@ViewBag.Title</h4>
+        @*<div class="form-group" style="text-align:right">
+                <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+            </div>*@
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class=" is-empty row">
+                        <div class="col-lg-3 form-group">
+
+                            <select class="singleselect" id="CourseId" name="CourseId" required>
+                                <option value="" data-Roomlength="0" data-Roomwidth="0" data-RoomCapacity="0">Select Course</option>
+                                @{
+                                    foreach (var item in lstcourse)
+                                    {
+                                        <option value="@item.Id" data-RoomNo="@item.RoomNo" data-RoomNorequired="@item.RoomNorequired" data-Roomlength="@item.Roomlength" data-Roomwidth="@item.Roomwidth" data-RoomCapacity="@item.RoomCapacity">@item.text</option>
+                                    }
+
+
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-2 form-group">
+
+                            <input name="sWidth" id="Width" type="number" value="" min="0" class="form-control noc-input-text" placeholder="Enter Width" required>
+                            <span id="width_error"></span>
+                        </div>
+                        <div class="col-lg-2 form-group">
+
+                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter length" class="form-control noc-input-text" required>
+                            <span id="length_error"></span>
+                        </div>
+                        <div class="col-lg-2">
+
+                            <input type="number" class="form-control noc-input-text" name="dtQty" min="0" placeholder="Enter Qty" value="" id="Qty" required />
+                            <span id="Qty_error"></span>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
+                                @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
+                                <input type="file" id="file" name="files" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control noc-input-upload filestyle" />
+
+                                <input type="hidden" id="filedata" style="border: 0px solid #e8ebf3 ;" name="filedata" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                <input type="hidden" id="sProfileExtension" value="">
+                            </div>
+                        </div>
+                        <div class="pull-right col-lg-12 text-right" style="">
+
+                            <button class="theme-discard-btn" id="reset"><i class="fas fa-sync-alt"></i> Reset</button>
+                            <button class="theme-button-mockup" id="save"><i class="fas fa-save"></i> Save </button>
+                        </div>
+                    </div>
+                    <div class="loader-div">
+                        <img class="loader-img" src="~/images/Stopwatch.gif" style="height: 120px;width: auto;" />
+                    </div>
+                    <div class="row noc-layouts-tbl p-0 m-0">
+                        <div class="form-group col-lg-12">
+                            <table class="table table-borderless table-striped table-responsive-sm table-hover" id="tblFacility">
+                                <thead class="dark">
+                                    <tr>
+                                        <th>#No</th>
+                                        <th>Course</th>
+                                        <th>Width</th>
+                                        <th>length</th>
+                                        <th>Qty</th>
+                                        @*<th>Active</th>*@
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="pull-right" style="text-align: end;">
+                        <button class="theme-button-mockup" id="Final"><i class="fas fa-save"></i> Save & Next </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/Content/jquery/jquery.js"></script>
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<script type="text/javascript">
+    var conditionloop = [];
+
+    $("#CourseId option").each(function (index, value) {
+        if (index > 0) {
+            conditionloop.push({
+                id: $(this).val(),
+                Text:$(this).text(),
+                RoomNo: $(this).attr("data-RoomNo"),
+                Roomlength: $(this).attr("data-Roomlength"),
+                Roomwidth: $(this).attr("data-Roomwidth"),
+                RoomCapacity: $(this).attr("data-RoomCapacity")
+            });
+        }
+
+    });
+    console.log(conditionloop);
+    var array = [];
+    $(".singleselect").select2();
+    function Reset() {
+        $("#Width").val('');
+        $("#length").val('');
+        $("#Qty").val('');
+        $("#filedata").val('');
+        $("#file").val('');
+        $("#sProfileExtension").val('');
+        $("#CourseId").val('').trigger('change');
+
+        @* FillCourse('@sguid');*@
+    }
+    function e1() {
+        var u = '', i = 0;
+        while (i++ < 36) {
+            var c = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'[i - 1], r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            u += (c == '-' || c == '4') ? c : v.toString(16)
+        }
+        return u;
+    }
+    $("#CourseId").change(function () {
+        debugger;
+        $("#width_error").text('');
+        $("#length_error").text('');
+        $("#Qty_error").text('');
+        let dataval = $(this).val();
+        let Roomlength = $(this).find(':selected').attr("data-Roomlength");
+        let Roomwidth = $(this).find(':selected').attr("data-Roomwidth");
+        let RoomCapacity = $(this).find(':selected').attr("data-RoomCapacity");
+        if (dataval != "") {
+            $("#Width").attr({
+                "min": Roomwidth
+            });
+            $("#length").attr({
+                "min": Roomlength
+            });
+            $("#Qty").attr({
+                "max": RoomCapacity
+            });
+            $("#width_error").text(`Please Enter Width More than or Equal than ${Roomwidth}'`).css('color', '');
+            $("#length_error").text(`Please Enter length More than or Equal than ${Roomlength}`).css('color', '');
+            $("#Qty_error").text(`Please Enter Capacity less than or Equal than ${RoomCapacity}`).css('color', '');
+        }
+        else {
+            $("#Width").attr({
+                "min": 0
+            });
+            $("#length").attr({
+                "min": 0
+            });
+            $("#Qty").attr({
+                "max": 0
+            });
+        }
+/*        Reset();*/
+    });
+
+    $("#save").click(() => {
+        debugger;
+        $(".loader-div").css('display', 'block');
+        var tabletr = '';
+        var course = $("#CourseId").val();
+        var coursetext = $("#CourseId option:selected").text();;
+        let Roomlength = $("#CourseId").find(':selected').attr("data-Roomlength");
+        let Roomwidth = $("#CourseId").find(':selected').attr("data-Roomwidth");
+        let RoomCapacity = $("#CourseId").find(':selected').attr("data-RoomCapacity");
+        let filedata= $("#filedata").val();
+        let sProfileExtension= $("#sProfileExtension").val();
+        var Width = $("#Width").val();
+        var length =$("#length").val();
+        var Qty = $("#Qty").val();
+        if (Width == "") {
+            var widtherror = `Please Enter Width More than or Equal to ${Roomwidth}`;
+            $("#width_error").text(widtherror).css('color', 'red');
+            $("#Width").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
+        if (length == "") {
+            var lenerror = `Please Enter Length More than or Equal to ${Roomlength}`;
+            $("#length_error").text(lenerror).css('color', 'red');
+            $("#length").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
+        if (Qty == "") {
+            var qtyerror = `Please Enter Studend  less than or Equal to ${RoomCapacity}`;
+            $("#Qty_error").text(qtyerror).css('color', 'red');
+            $("#Qty").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
+        if (parseInt(Roomwidth) > parseInt(Width)) {
+            var widtherror = `Please Enter Width More than or Equal to ${Roomwidth}`;
+            $("#width_error").text(widtherror).css('color', 'red');
+            $("#Width").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
+        if (parseInt(Roomlength) > parseInt(length)) {
+            var lenerror = `Please Enter Length More than or Equal to ${Roomlength}`;
+            $("#length_error").text(lenerror).css('color', 'red');
+            $("#length").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
+
+        if (parseInt(RoomCapacity) < parseInt(Qty)) {
+            var qtyerror = `Please Enter Studend  less than or Equal to ${RoomCapacity}`;
+            $("#Qty_error").text(qtyerror).css('color', 'red');
+            $("#Qty").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
+        var Guid = e1();
+        array.push({
+            Guid:'@sguid',
+            courseId: course,
+            coursetext: coursetext,
+            Width: Width,
+            length: length,
+            Qty: Qty,
+            sGuidid: Guid,
+            iStts: 0,
+            filedata: filedata,
+            sProfileExtension: sProfileExtension,
+            Type:1
+        });
+        var countitem = array.length;
+        let rowno=0
+        for (var item = 0; item <= countitem - 1; item++) {
+
+            //var iFK_FrmID = array[item].iFK_FrmID;
+            //$("#ddlNOCDetails #Form-" + iFK_FrmID).addClass('hidden');
+            var Ids = array[item].sGuidid;
+
+            var coursetext = array[item].coursetext;
+            var Width = array[item].Width;
+            var length = array[item].length;
+            var Qty = array[item].Qty;
+            var stts = array[item].iStts;
+            if (stts != 2) {
+                rowno++;
+                tabletr += `<tr Id="tr-${Ids}"><td>${rowno}</td><td> <img src="${array[item].filedata}" alt="profile-user" class="rounded-circle" width="50" height="50" /> ${coursetext}</td><td>${Width}</td><td>${length}</td><td>${Qty}</td>
+<td> <a  class="Deleteclass" onclick="ArchiDeleteDataCheck('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+</tr>`;
+            }
+
+        }
+
+        $("#tbody").html(tabletr);
+        $(".loader-div").css('display', 'none');
+        console.log(array);
+        Reset();
+    });
+
+
+    function encodeImageFileAsURL(element) {
+
+        var imagebase64 = "";
+        var file = element.files[0];
+        var name = file.name;
+        var extension = "";
+        if (name != null) {
+            var data = name.split('.');
+            var len = data.length;
+            extension = data[len - 1];
+
+        }
+        //var ID = element.id.split('_');
+        //var elementID = ID[1];
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            console.log('RESULT', reader.result)
+            imagebase64 = reader.result;
+            console.log('converted');
+            console.log(imagebase64)
+            $("#filedata").val(imagebase64);
+            $("#sProfileExtension").val(extension);
+        }
+
+        reader.readAsDataURL(file);
+        return
+    }
+    @*function FillCourse(ApplicationId) {
+
+        var NOCReq = {
+            "AppGuid": ApplicationId,
+        }
+
+        var d = JSON.stringify(NOCReq);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/BindCourse",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(NOCReq),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+                var NOCData = data.Data;
+                var countitem = array.length;
+                var NocSelectData = `<option value=-1>Select Course</option>`;
+                if (NOCData.length > 0) {
+
+                    if (countitem == 0) {
+                        NocSelectData += '<option value=0>Collage Level</option>';
+                        NOCData.forEach(function (item) {
+                            NocSelectData += `<option value=${item.Id}>${item.Text}</option>`;
+                        })
+                    }
+                    else {
+                        NOCData.forEach(function (item) {
+
+                            var checkval = -1 ;
+                            for (var item1 = 0; item1 <= countitem - 1; item1++) {
+                                debugger;
+                                var courseid = array[item1].course;
+                                if (courseid == 0) {
+                                    checkval = -2
+                                    break;
+                                }
+                                if (item.Id == courseid) {
+                                    checkval = 0;
+                                }
+                            }
+                            if (checkval == -1) {
+                                NocSelectData += `<option value=${item.Id}>${item.text}</option>`;
+                            }
+
+                        })
+                    }
+                }
+                $('#CourseId').html('');
+                $('#CourseId').html(NocSelectData);
+
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+    FillCourse('@sguid');*@
+    FillTable('@sguid')
+
+    $("#reset").click(function () {
+        Reset();
+    });
+    $("#Final").click(function () {
+        debugger;
+
+        var countarr = array.length;
+        if (countarr == 0) {
+            alert("please Insert some information,Information is Empty;")
+            return false;
+        }
+        var countitem2 = array.length;
+        var loop2 = conditionloop.length;
+        for (var i = 0; i < loop2; i++) {
+            var roomcount = conditionloop[i].RoomNo;
+            var entercount = 0;
+            var courseid = conditionloop[i].id;
+            var coursename = conditionloop[i].Text;
+            for (var j = 0; j < countitem2; j++) {
+                if (courseid == array[j].courseId && array[j].iStts!=2) {
+                    entercount++;
+                }
+            }
+            if (roomcount - entercount > 0) {
+                alert(`Please Enter ${roomcount} Class Room of ${coursename} but You Enter Only ${entercount}`);
+                return false;
+            }
+        }
+
+        var Params = JSON.stringify({
+            datalist: array
+        });
+        $(".loader-div").css('display', 'block');
+        $.ajax({
+            url: GetglobalDomain() + "/Trustee/InsertArchitechDetaile",
+            type: 'POST',
+            dataType: "json",
+            data: Params,
+            contentType: "application/json",
+            enctype: 'multipart/form-data',
+            success: function (response) {
+                if (response.isvalid == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Record Save Successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                    $('#btn_Other').click();
+                    $(".loader-div").css('display', 'none');
+
+                }
+
+            }
+
+
+        });
+    });
+    function FillTable(ApplicationId) {
+
+        var NOCReq = {
+            "AppGuid": ApplicationId,
+            "Type":1
+        }
+
+        var d = JSON.stringify(NOCReq);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/BindTable",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(NOCReq),
+            success: function (data) {
+               
+                if (data.isvalid == 1) {
+                    var tabletr1 = '';
+                    var ArchData = data.Data;
+                    if (ArchData.length > 0) {
+                        $("#btn_Building_Details").css({ "background": "rgb(13, 148, 13)", "color": "#fff" });
+                    }
+                    else {
+                        $("#btn_Building_Details").css({ "background": "rgb(189, 0, 0)", "color": "#fff" });
+                    }
+                    var i=0
+                    ArchData.forEach(function (item) {
+                         array.push(item);
+                        tabletr1 += `<tr Id="tr-${item.sGuidid}"><td>${i + 1}</td><td> <img src="${item.filedata}" alt="profile-user" class="rounded-circle" width="50" height="50" /> ${item.coursetext}</td><td>${item.Width}</td><td>${item.length}</td><td>${item.Qty}</td>
+<td> <a  class="Deleteclass theme-delete-btn" onclick="ArchiDeleteDataCheck('${item.sGuidid}')"  title="Delete"><i class="fas fa-trash-alt"></i></a></td>
+</tr>`;
+                        i++;
+                    });
+                    $("#tbody").html(tabletr1);
+                    console.clear();
+                    console.table(array);
+                }
+
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+    function ArchiDeleteDataCheck(insertid) {
+        debugger;
+        var tabletr1 = '';
+        var countitem = array.length;
+        for (var item = 0; item <= countitem - 1; item++) {
+            var obj = array[item];
+            console.log(obj);
+            var Ids = array[item].sGuidid;
+            var stts = array[item].iStts;
+            if (Ids == insertid) {
+                if (stts == 0) {
+                    array.splice(item, 1);
+                }
+                else {
+                    $('#tr-' + Ids).remove();
+                    array[item].iStts = 2;
+                }
+                break;
+
+            }
+        }
+        var countitem2 = array.length;
+        let rowno=0
+        for (var item = 0; item <= countitem2 - 1; item++) {
+
+            //var iFK_FrmID = array[item].iFK_FrmID;
+            //$("#ddlNOCDetails #Form-" + iFK_FrmID).addClass('hidden');
+            var Ids = array[item].sGuidid;
+
+            var coursetext = array[item].coursetext;
+            var Width = array[item].Width;
+            var length = array[item].length;
+            var Qty = array[item].Qty;
+            var imgfile = array[item].filedata;
+            var iSttsdata = array[item].iStts;
+            if (iSttsdata != 2) {
+                rowno++;
+                tabletr1 += `<tr Id="tr-${Ids}"><td>${rowno++}</td><td><img src="${imgfile}" alt="profile-user" class="rounded-circle" width="50" height="50" />${coursetext}</td><td>${Width}</td><td>${length}</td><td>${Qty}</td>
+<td> <a  class="Deleteclass" onclick="ArchiDeleteDataCheck('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+</tr>`;
+            }
+
+        }
+        $("#tbody").html(tabletr1);
+        Reset();
+    }
+</script>

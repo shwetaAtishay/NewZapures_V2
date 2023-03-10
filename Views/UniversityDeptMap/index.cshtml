@@ -1,0 +1,283 @@
+﻿@using NewZapures_V2.Models
+@{
+    ViewBag.Title = "Universities Department Mapping";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Dept = ViewBag.Dept as List<Dropdown>;
+    var Universities = ViewBag.Universities as List<Dropdown>;
+    var AllData = ViewBag.AllData as List<UniversitiesDeptMap>;
+
+
+}
+@section styles{  @*@Styles.Render("~/bundles/datatable");*@
+<link href="~/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+}
+@section Scripts {
+    @*@Scripts.Render("~/bundles/datatablejs")*@
+    <script src="~/plugins/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+    @*<script src="~/plugins/datatables/pdfmake.min.js" type="text/javascript"></script>*@
+    <script src="~/plugins/datatables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.html5.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.print.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/buttons.colVis.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/dataTables.responsive.min.js" type="text/javascript"></script>
+    <script src="~/plugins/datatables/responsive.bootstrap4.min.js" type="text/javascript"></script>
+    <script src="~/scripts/pages/jquery.datatable.init.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    <script src="~/Content/globalDomain.js"></script>
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<!DOCTYPE html>
+
+
+<style>
+    .sticky {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="page-title-box">
+                <div class="float-right">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">UniversitiesDeptMapping</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">@ViewBag.Title</h4>
+            </div><!--end page-title-box-->
+        </div><!--end col-->
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group col-lg-12">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select University</label>
+
+                                <select id="ddlUniversity">
+                                    <option value="0" role=separator>Select University</option>
+                                    @{
+                                        if (Universities != null)
+                                        {
+                                            foreach (var item in Universities)
+                                            {
+                                                <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
+
+
+
+                                            }
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group col-lg-12">
+                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select Department</label>
+
+                                <select id="ddlDept">
+                                    <option value="0" role=separator>Select Department</option>
+                                    @{
+                                        if (Dept != null)
+                                        {
+                                            foreach (var item in Dept)
+                                            {
+                                                <option value=@item.Id data-image="~/images/404.png">@item.Text</option>
+
+
+
+                                            }
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-lg-3">
+                            <div>&nbsp;</div>
+                            <input type="button" class="btn btn-primary" id="btnSaveData" onclick="SaveData();" value="Add" title="Add" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+
+            <table id="datatable-buttons" class="table table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead class="sticky">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">University</th>
+                        <th scope="col">Department</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+
+                        if (AllData != null)
+                        {
+                            if (AllData.Count <= 0)
+                            {
+                                <tr>
+                                    <td colspan="6" rowspan="1" style="text-align:center">No Data Available</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                var i = 1;
+                                foreach (var item in AllData)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td scope="col">@item.UniversitiesName</td>
+                                        <td scope="col">@item.DeptName</td>
+
+
+                                    </tr>
+                                    i++;
+                                }
+
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#ddlDept").select2();
+            $("#ddlUniversity").select2();
+           
+        });
+        function SaveData() {
+            var Dept = $('#ddlDept').val();
+            var University = $('#ddlUniversity').val();
+           
+
+            var isSaved = true;
+            var Data = {
+                Dept: 0,
+                University: 0
+                
+
+            }
+
+            if (Dept == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select Department...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+            else if (University == 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Please Select University...!',
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                });
+                isSaved = false;
+            }
+             
+            else {
+                Data.Dept = parseInt(Dept);
+                Data.University = parseInt(University);
+                
+            }
+
+             
+            var d = JSON.stringify(Data)
+            if (isSaved) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/UniversityDeptMap/SaveData",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(Data),
+                    success: function (data) {
+                        console.log(data.Type);
+                        console.log(data);
+                        var type = data.Type;
+                        if (data.StatusCode === 1 && data.Message == " Already Exists") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: type + data.Message + '...!',
+                                allowOutsideClick: false,
+                                showCloseButton: true
+                            });
+                        }
+                        if (data.StatusCode === 1 && data.Message == " Inserted Successfully") {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: type + data.Message + '...!',
+                                allowOutsideClick: false,
+                                showCloseButton: true
+                            });
+                        }
+
+                        setTimeout(function () {
+                            var url = GetglobalDomain() + "/UniversityDeptMap/Index";
+                            window.location.href = url;
+                        }, 700)
+
+
+                    },
+                    error: function (d) {
+                        //alert(d);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

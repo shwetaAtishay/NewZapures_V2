@@ -1,0 +1,48 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>NOC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/images/NOCIMAGE.png">
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
+    @*<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.min.css" rel="stylesheet" type="text/css">*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/loader.css" rel="stylesheet" />
+    @RenderSection("styles", false)
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab" style="width: calc(100% - 0px) !important;">
+            <!-- main container -->
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Content/select2/js/select2.js"></script>
+    <script src="~/Content/sweetalert2.all.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+    @*<script src="~/Content/LoginSignUp/js/owl.carousel.min.js"></script>*@
+
+    @Scripts.Render("~/bundles/scripts")
+
+    @RenderSection("scripts", false)
+    <!-- app.js -->
+    @Scripts.Render("~/Scripts/app.js")
+</body>
+</html>
