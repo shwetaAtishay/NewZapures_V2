@@ -182,10 +182,10 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <lable class="noc-form-label">Role</lable>
+                                        <lable class="noc-form-label">Designation</lable>
                                         <span style="color:red;">*</span>
                                         <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
-                                            <option value="0">Select Role</option>
+                                            <option value="0">Select Designation</option>
                                             @{
                                                 foreach (var item in RoleType)
                                                 {
@@ -202,7 +202,7 @@
                                         <span style="color:red;">*</span>
                                         <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
                                             <option value="0">Select Occupation</option>
-                                            
+
                                         </select>
                                         <label for="error" class="col-sm-12" id="errorRole" style="display:none;"></label>
                                     </div>
@@ -273,6 +273,28 @@
                                 <div class="col-lg-4">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Signature Pic(upload Max Size 50KB)</lable>
+                                        <span style="color:red;">*</span>
+                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
+                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
+                                        <span id="aadhaarfile"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Education Proof(upload Max Size 50KB)</lable>
+                                        <span style="color:red;">*</span>
+                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
+                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
+                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
+                                        <span id="aadhaarfile"></span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <lable class="noc-form-label">Consent Letter(upload Max Size 50KB)</lable>
                                         <span style="color:red;">*</span>
                                         <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
                                         <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
