@@ -1274,24 +1274,48 @@ namespace NewZapures_V2.Controllers
                 throw ex;
             }
         }
-        public ActionResult AddSystemUser()
+        public ActionResult AddSystemUser(string userID = "")
         {
-            var userdetailsSession = (UserModelSession)Session["UserDetails"];
-            var Token = Session["Token"];
-            if (userdetailsSession != null)
+            if (userID != "")
             {
-                ViewBag.userType = userdetailsSession.Type;
-                var departmentList = GetDepartmentList();
-                var districtList = ZapurseCommonlist.GetDistrict();
-                ViewBag.document = departmentList;
-                ViewBag.districts = districtList;
-
-
-                return View();
+                var userdetailsSession = (UserModelSession)Session["UserDetails"];
+                var Token = Session["Token"];
+                if (userdetailsSession != null)
+                {
+                    ViewBag.userType = userdetailsSession.Type;
+                    var departmentList = GetDepartmentList();
+                    var districtList = ZapurseCommonlist.GetDistrict();
+                    //var SSOtoEdit = ZapurseCommonlist.GetSSODataToEdit("SSODetailsToEdit", userID);
+                    ViewBag.document = departmentList;
+                    ViewBag.districts = districtList;
+                    ViewBag.userID = userID;
+                    //ViewBag.SSOtoEdit = SSOtoEdit;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("SignOut", "Home");
+                }
             }
             else
             {
-                return RedirectToAction("SignOut", "Home");
+
+                var userdetailsSession = (UserModelSession)Session["UserDetails"];
+                var Token = Session["Token"];
+                if (userdetailsSession != null)
+                {
+                    ViewBag.userType = userdetailsSession.Type;
+                    var departmentList = GetDepartmentList();
+                    var districtList = ZapurseCommonlist.GetDistrict();
+                    ViewBag.document = departmentList;
+                    ViewBag.districts = districtList;
+                    ViewBag.userID = userID;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("SignOut", "Home");
+                }
             }
         }
 
