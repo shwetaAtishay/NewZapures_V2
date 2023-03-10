@@ -252,8 +252,8 @@ else if (userID == "")
         $("#txtFullName").on('blur',function () {
             var ssoID = $(this).val();
             if (ssoID.length > 0) {
-
-            GetSSODetails(ssoID);
+                CheckSSOUser(ssoID);
+            //GetSSODetails(ssoID);
             }
         });
 
@@ -721,6 +721,48 @@ else if (userID == "")
             });
         }
     }
+
+    function CheckSSOUser(ssoUser) {
+        var validationRequestModel = {
+            "sso": ssoUser,
+        }
+
+            var d = JSON.stringify(validationRequestModel);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/LoginSignup/CheckSSo",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(validationRequestModel),
+                success: function (data) {
+                    console.log('ajax');
+                    console.log(data);
+
+                    if (data.StatusCode == 0 && data.Message == "SSO Already Exists") {
+                        var d = `"${ssoUser}" is Already Exists`;
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: d,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+
+                        });
+                        $("#txtFullName").val('');
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+        }
+    
 
     function revealPassword(sender, itemId) {
 

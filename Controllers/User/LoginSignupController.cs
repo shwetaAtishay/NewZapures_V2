@@ -29,7 +29,7 @@ namespace NewZapures_V2.Controllers
             ViewBag.userTypesList = userTypes;
 
             var content = ViewContent();
-            if (content.Count!= null)
+            if (content.Count != null)
             {
                 ViewBag.TandC = content[0];
                 ViewBag.TandCId = content[0].Id;
@@ -490,7 +490,7 @@ namespace NewZapures_V2.Controllers
             }
             return serviceDetails;
         }
-        
+
         public List<Services> GetServices()
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetServices");
@@ -803,6 +803,29 @@ namespace NewZapures_V2.Controllers
                     JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };
             }
+        }
+
+        public JsonResult CheckSSo(string sso)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/CheckSSO?sso=" + sso);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+            }
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Failure = false, Message = objResponse.Message},
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
     }
