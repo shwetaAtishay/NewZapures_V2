@@ -18,14 +18,18 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
-                <div class="float-right">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">NOC</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
-                        <li class="breadcrumb-item active">Registered Users</li>
-                    </ol>
+                @*<div class="float-right">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">NOC</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">User</a></li>
+                            <li class="breadcrumb-item active">Registered Users</li>
+                        </ol>
+                    </div>*@
+                <div style="display: flex;place-content: space-between;align-items: center;">
+                    <h4 class="page-title">SSO Users</h4>
+
+                    <a href="@Url.Action("AddSystemuser","Role")" class="btn btn-primary"><i class="fa fa-plus"></i> Add New SSO</a>
                 </div>
-                <h4 class="page-title">Registered Users</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>
@@ -49,8 +53,9 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Mobile Number</th>
                                 <th scope="col">Email Address</th>
-                                <th scope="col">District</th>
-                                <th scope="col">Tehsil</th>
+                                <th scope="col">Role</th>
+                                <th scope="col" hidden>District</th>
+                                <th scope="col" hidden>Tehsil</th>
                                 <th scope="col" hidden>Payment Status</th>
                                 <th scope="col" hidden>Service List</th>
                                 <th scope="col" hidden>Hardware List</th>
@@ -69,27 +74,31 @@
                                     <td hidden>@item.RegistrationNo</td>
                                     <td hidden>@item.PartyId</td>
                                     <td hidden>@item.userName</td>
-                                    <td>NA</td>
+                                    <td>@item.FirstName</td>
                                     <td>@item.FirstName</td>
                                     <td>@item.MobileNumber</td>
                                     <td>@item.EmailId</td>
-                                    <td>NA</td>
-                                    <td>NA</td>
+                                    <td>@item.Role</td>
+                                    <td hidden>NA</td>
+                                    <td hidden>NA</td>
                                     <td hidden>@item.PaymentStatus</td>
                                     <td hidden>@item.ServiceList</td>
                                     <td hidden>@item.HardwareList</td>
-                                    <td style="text-align:center">
+                                    <td class="row" style="place-content: center;gap: 10px;align-items: center;">
+                                        <span onclick="OpenEditModal('@item.PartyId','@item.FirstName','@item.iRoleId')"><i class="fa fa-pen"></i></span>                                    
+    @*<span><a href="@Url.Action("AddSystemuser","Role",new { userID=item.PartyId})"> <i class="fa fa-pen"></i></a></span>*@
                                         <span class="custom-control custom-switch switch-success">
                                             <input type="checkbox" class="custom-control-input" id=@checkboxId @(item.IsActive == 1 ? "checked" : "") onchange="GetData(this, '@item.PartyId','@item.EmailId','@item.userName')"><label class="custom-control-label" for=@checkboxId></label>
                                         </span>
                                     </td>
-                              
+
                                     @*<td></td>*@
                                 </tr>
                             }
                         </tbody>
                     </table>
 
+                    <button class="next_button color-pay" style="display:none" id="btnEdit" data-toggle="modal" data-target="#mEdit"></button>
                     <button class="next_button color-pay" style="display:none" id="remarks" data-toggle="modal" data-target="#exampleModal"></button>
                     <button class="next_button color-pay" style="display:none" id="IsAEPSremarks" data-toggle="modal" data-target="#IsAEPSModal"></button>
                     <button class="next_button color-pay" style="display:none" id="AEPSOnBoardActive" data-toggle="modal" data-target="#AEPSOnBoardModal"></button>
@@ -97,6 +106,35 @@
             </div>
         </div> <!-- end col -->
     </div> <!-- end row -->
+
+    <div class="modal fade" id="mEdit" tabindex="-1" role="dialog" aria-labelledby="mEdit" aria-hidden="true" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Details</h5>
+                    <button type="button" class="close" id="modalClose" onclick="location.reload();" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-text" style="text-align: center;font-size: 20px;">
+                        <label for="example-text-input" class="noc-form-label">SSO ID : </label><span id="spnSSOID"></span>
+                        
+                    </div>
+                    
+                    <div class="input-text">
+                        <label for="example-text-input" class="noc-form-label">Select Role</label>
+                        <select id="RoleId" class="form-control noc-input-text" name="RoleId">
+                        </select>
+                    </div>
+                    <div class="buttons button_space mt-3">
+                        <button type="button" id="saveRemarks" class="btn btn-gradient-primary waves-effect waves-light" onclick="UpdateRole()">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" style="display:none;">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -113,7 +151,7 @@
                         <select class="form-control singleselect mb-4" id="ddlBasicReason">
                             <option value="0" role=separator>Select Any Reason</option>
                             <option value="NW">Not In Working</option>
-                            <option value="NDU">Document Not Uploded</option>
+                            <option value="NDU">Change In Role</option>
                             <option value="PNWR">Portal Not Working At That Region</option>
                         </select>
 
@@ -274,7 +312,7 @@
 
 
     function GetData(sender, item, emailId, username) {
-        $('#loadingDiv').css('display', 'flex');
+        //$('#loadingDiv').css('display', 'flex');
         if ($(sender).is(':checked')) {
             console.log('checked');
             status = 1;
@@ -287,34 +325,36 @@
         }
         else {
             console.log('unchecked');
-            $('#remarks').click();
+            //$('#remarks').click();
             status = 0;
             partyId = item;
             email = emailId;
             user = username;
             console.log(partyId)
+            updateUser(status, partyId, email, user);
         }
+
         //console.log(sender);
         //alert(item);
     };
 
     function UpdateDetails() {
-        var d = $('#txtremarks').val();
+        //var d = $('#txtremarks').val();
 
-        if (d.length <= 0) {
+        //if (d.length <= 0) {
 
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: 'Please Select Any Reason',
-                allowOutsideClick: false,
-                showCloseButton: true,
-            })
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: 'Please Select Any Reason',
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //    })
 
-        }
-        else {
-            updateUser(status, partyId, email, user);
-        }
+        //}
+        //else {
+        updateUser(status, partyId, email, user);
+        //}
     }
 
     function updateUser(status, partyId, email, username) {
@@ -332,6 +372,56 @@
                 'Content-Type': 'application/json'
             },
             url: GetglobalDomain() + "/UserDetails/UpdateUser",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(UpdateUserDetailsModel),
+            success: function (data) {
+                console.log('ajax');
+                console.log(data);
+
+                if (data.StatusCode == 1) {
+                    //var dic = '<div><h4>' + data.Data.Message + '</h4></div>';
+                    //sweetAlert(dic, 'center', 'warning', 0);
+                    $('#modalClose').click();
+
+                    location.reload();
+                    //var url = globaUserProperties.domain + "/UserDetails/Index";//globaUserProperties.domain +
+
+                    //window.location.href = url;
+
+                };
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+
+    function OpenEditModal(partyID, SSoName, roleID) {
+        partyId = partyID;
+        $('#spnSSOID').html('');
+        $('#spnSSOID').html(SSoName);
+
+        BindRole(roleID);
+
+        $('#btnEdit').click();
+    };
+
+    function UpdateRole() {
+        var role = $('#RoleId option:selected').val();
+        var UpdateUserDetailsModel = {
+            colName: "Role",
+            PartyId: partyId,
+            colValue: role,
+        }
+        console.log(JSON.stringify(UpdateUserDetailsModel));
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/UserDetails/UpdateRole",
             dataType: 'json',
             type: 'Post',
             cache: false,
@@ -459,7 +549,7 @@
             success: function (data) {
                 console.log('ajax');
                 console.log(data);
-                
+
                 if (data.ResponseCode == "1") {
                     //var dic = '<div><h4>' + data.Data.Message + '</h4></div>';
                     //sweetAlert(dic, 'center', 'warning', 0);
@@ -577,6 +667,46 @@
             allowOutsideClick: false,
             showCloseButton: true,
         });
+    }
+
+    function BindRole(roleID) {
+
+        var strHTML = "";
+
+
+        var Params = JSON.stringify(
+            {
+                Type: "Role"
+            });
+        $.ajax({
+            url: GetglobalDomain() + "/Role/FillDepartmentandGroupMaster",
+            type: 'POST',
+            dataType: "json",
+            contentType: "application/json",
+            data: Params,
+            success: function (response) {
+
+                for (var i = 0; i < response.Data.length; i++) {
+                    if (roleID == response.Data[i].Id) {
+                        strHTML += "<option value='" + response.Data[i].Id + "' Selected>" + response.Data[i].Text + "</option>"
+                    }
+                    else {
+                        strHTML += "<option value='" + response.Data[i].Id + "'>" + response.Data[i].Text + "</option>"
+                    }
+                }
+                //$("#RoleId").select2("destroy");
+                $("#RoleId").html(strHTML);
+                $("#RoleId").select2();
+                //$("#RoleId").select2("destroy");
+                //$("#RoleId").html('Select Role');
+                //$("#RoleId").select2();
+
+
+            }
+        });
+
+
+
     }
 </script>
 

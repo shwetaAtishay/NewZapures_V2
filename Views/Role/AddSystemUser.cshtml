@@ -1,12 +1,16 @@
 ﻿@using NewZapures_V2.Models
 @{
-    ViewBag.Title = "Add System User";
+    ViewBag.Title = "Add SSO";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var loggedInUserType = (string)ViewBag.userType;
+    var userID = (string)ViewBag.userID;
 
     var dept = (List<Dropdown>)ViewBag.document;
     var districtList = (List<Dropdown>)ViewBag.districts;
+    //var SSOtoEdit = (List<PartyMaster>)ViewBag.SSOtoEdit;
+
+    //var disIds = SSOtoEdit[0].DistrictId.Trim();
 }
 <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
 <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
@@ -30,26 +34,30 @@
         background: gray !important;
     }
 </style>
-@if (loggedInUserType == "4")
-{
-    <div style="display: grid;color:red;place-content: center;height: 100vh;font-size: 35px;">You dont have enough permission to view this page please contact to admin</div>
-}
-else
-{
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="page-title-box">
-                <div class="float-right">
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            @*<div class="float-right">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">NOC</li>
                         <li class="breadcrumb-item active">@ViewBag.Title</li>
                     </ol>
-                </div>
+                </div>*@
+            <div style="display: flex;place-content: space-between;align-items: center;">
                 <h4 class="page-title">@ViewBag.Title</h4>
-            </div><!--end page-title-box-->
-        </div><!--end col-->
-    </div>
 
+                <a href="@Url.Action("Index","UserDetails")" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back To List</a>
+            </div>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+
+@if (loggedInUserType == "4")
+{
+    <div style="display: grid;color:red;place-content: center;height: 100vh;font-size: 35px;">You dont have enough permission to view this page please contact to admin</div>
+}
+else if (userID == "")
+{
     <div class="row">
         <div class="col-12">
             <div class="card noc-layouts mt-0">
@@ -185,6 +193,7 @@ else
     </div>
 }
 
+
 <script src="~/Content/jquery/jquery.js"></script>
 <script src="~/Content/select2/js/select2.js"></script>
 <script src="~/Content/globalDomain.js"></script>
@@ -196,6 +205,16 @@ else
         $("#RoleId").select2();
         $("#ddldistrict").select2();
         $("#ddltehsil").select2();
+
+        @*if ('@userID'!= "") {
+            //alert('ds');
+
+            BindTehsil('@disIds');
+            GetSSODetails('@SSOtoEdit[0].Name');
+
+        }*@
+
+
         BindRole();
 
         $('input[type=radio]').click(function () {
@@ -836,7 +855,10 @@ ${maindata.FirstName}
                 }
             },
             error: function (d) {
-                alert(d);
+                //alert(d);
+                htmlString = "<tr><td colspan='4' class='text-center'>No Data Available</td></tr>"
+                $("#tblssoDetails tbody").html('');
+                $("#tblssoDetails tbody").html(htmlString);
             }
         });
 
