@@ -471,7 +471,7 @@
                     <div class="modal-body">
                         <div class="user-front-modal">
                             <h4>Please Enter the OTP to Verify your Account</h4>
-                            <h6 id="OtpText"></h6>
+                            <div class="my-3"><b id="OtpText"></b></div>
                             <div class="user-front-input form-group">
                                 <input type="text" class="form-control noc-input-text" autocomplete="off" placeholder="Please enter valid OTP" id="OTP" maxlength="4" required />
                                 <label for="error" class="col-sm-12" id="errorotp" style="display:none;"></label>
@@ -519,6 +519,9 @@
                 $("#NewUser").show();
                 $("#exisuser").hide();
             });
+            $("#RegistationNo").change(function () {
+                Verify();
+            });
         });
 
     </script>
@@ -562,8 +565,13 @@
                             /*Swal.fire(data.Message, '', 'success')*/
 
                             $('#exampleModalCenter').modal('show');
-                            $('#OtpText').html(data.Message);
-
+                            var total = data.Message;
+                            var arr = total.split('to');
+                            let intLetters = arr[1].replace(/[^0-9]/g, '');
+                            var threedigits = intLetters.substr(0, 3);
+                            let enddigits = intLetters.slice(-3)
+                            var newString = threedigits + "****" + enddigits
+                            $('#OtpText').html(arr[0] + newString);
                         }
                         else {
                             $('#exampleModalCenter').modal('show');
@@ -713,6 +721,8 @@
                     }
                     else {
                         Swal.fire(data.Message, '', 'info')
+                        $('#RegistationNo').focus();
+                        $('#RegistationNo').val('');
                         //$('#continue').css("display", "none");
                         //$('#btnCapitalAdd').css("display","block");
                     }

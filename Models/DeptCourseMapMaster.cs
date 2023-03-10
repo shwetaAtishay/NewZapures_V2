@@ -12,6 +12,7 @@ namespace NewZapures_V2.Models
         public int courseId { get; set; }
         public int SubjectID { get; set; }
         public int ClassID { get; set; }
+        public string DegreeName { get; set; }
     }
     public class DeptCourseMapTableData
     {
@@ -21,5 +22,6 @@ namespace NewZapures_V2.Models
         public string Department { get; set; }
         public string Course { get; set; }
         public string Subject { get; set; }
+        public string Degree { get; set; }
     }
 }

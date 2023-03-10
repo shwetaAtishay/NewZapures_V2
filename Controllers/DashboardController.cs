@@ -357,7 +357,7 @@ namespace Metrica.Controllers
 
         public List<AllReportBO> StatusCountDashboard()
         {
-            string iFKTst_ID = SessionModel.TrustRegNo;
+            string iFKTst_ID = SessionModel.TrustId;
 
             List<AllReportBO> objUsermaster = new List<AllReportBO>();
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Reports/AllReport?iFKTst_ID=" + iFKTst_ID);
