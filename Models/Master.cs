@@ -78,12 +78,13 @@ namespace NewZapures_V2.Models
                 switch (iMode)
                 {
                     case 1:
-                        return "Temporary";
+                        return "TNOC";
                     case 2:
-                        return "Permanent";
+                        return "PNOC";
                     case 3:
                         return "Both";
-
+                    case 4:
+                        return "Extension TNOC";
                     default:
                         return "";
                 }
@@ -196,12 +197,13 @@ namespace NewZapures_V2.Models
                 switch (iMode)
                 {
                     case 1:
-                        return "Temporary";
+                        return "TNOC";
                     case 2:
-                        return "Permanent";
+                        return "PNOC";
                     case 3:
                         return "Both";
-
+                    case 4:
+                        return "Extension TNOC";
                     default:
                         return "";
                 }
