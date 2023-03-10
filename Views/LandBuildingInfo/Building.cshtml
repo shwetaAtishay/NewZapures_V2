@@ -111,8 +111,8 @@
             </div>
             <div class="card-body">
                 @*<div class="mt-1" style="display: flex;align-items: end;place-content: center;background: #d0d0d0;padding: 7px;color: white;border-radius: 8px;">
-            <label class="col-md-12 control-label" style="font-weight: 600;font-size: 14px;">Building Documents</label>
-        </div>*@
+                        <label class="col-md-12 control-label" style="font-weight: 600;font-size: 14px;">Building Documents</label>
+                    </div>*@
                 <div class="row col-lg-12 mt-3">
 
                     <div class="col-lg-4 form-group">
@@ -136,6 +136,10 @@
                 <div class="row mt-1">
                     <div class="col-lg-12 form-group" id="divOwnedCase" style="display:none">
                         <div class="row">
+
+                            <div class="col-lg-12 mb-3">
+                                <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #ffc500 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Certificate of Own Building in own land in same campus Order No. & Order Date : *</label>
+                            </div>
                             <div class="col-lg-4">
                                 <label for="example-text-input" class="noc-form-label"><strong>Order Number</strong></label> &nbsp;
                                 <div>
@@ -153,9 +157,9 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Certificate of Own Building in own land in same campus Order No. & Order Date : *</strong></label> &nbsp;
+                                <label for="example-text-input" class="noc-form-label"><strong>Certificate of Owned Building</strong></label>
                                 <div>
-                                    <input class="col-sm-12 form-control noc-input-upload" type="file" id="fluOwnedFile" onchange="return encodeImageFileAsURL(this,'hdnOwnedDoc','spnownedFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                    <input class="col-sm-12" type="file" id="fluOwnedFile" onchange="return encodeImageFileAsURL(this,'hdnOwnedDoc','spnownedFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
                                 </div>
                                 <input type="hidden" id="hdnOwnedDoc" />
 
@@ -167,22 +171,41 @@
 
                     <div class="col-lg-12 form-group" id="divRentedCase" style="display:none">
                         <div class="row">
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Agreement Expiry Date</strong></label> &nbsp;
+                            <div class="col-lg-12 mb-3">
+                                <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #ffc500 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Certificate of Land & Rented Building in same "Tehsil" Order No. & Order Date : *</label>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="example-text-input" class="noc-form-label"><strong>Order Number</strong></label> &nbsp;
+                                <div>
+                                    <input class="form-control noc-input-text col-sm-12" type="text" autocomplete="off" placeholder="Order No" id="txtRentedOrdNo">
+                                </div>
+                                <span class="spanLabel" id="spnRentedOrderNo" style="display:none">Please Enter Order Number</span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="example-text-input" class="noc-form-label"><strong>Order Date</strong></label> &nbsp;
                                 <div>
                                     <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtAgrmentExprDate">
                                 </div>
-                                <span class="spanLabel" id="spnAgreementExpDate" style="display:none">Please Select Agreement Expiry Date</span>
+                                <span class="spanLabel" id="spnAgreementExpDate" style="display:none">Please Enter Order Date</span>
                             </div>
 
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Certificate of Land & Rented Building in same "Tehsil" Order No. & Order Date : *</strong></label> &nbsp;
+                            <div class="col-lg-3">
+                                <label for="example-text-input" class="noc-form-label"><strong>Upload Certificate</strong></label>
                                 <div>
-                                    <input class="col-sm-12 form-control noc-input-upload" type="file" id="fluAgrementFile" onchange="return encodeImageFileAsURL(this,'hdnRentedDoc','spnRentedAgreementFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                    <input class="col-sm-12" type="file" id="fluRentCertificateFile" onchange="return encodeImageFileAsURL(this,'hdnRentedCertificate','spnRentedCertificateFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                </div>
+                                <input type="hidden" id="hdnRentedCertificate" />
+                                <span class="spanLabel" id="spnRentedCertificateFile" style="display:none">Please Upload Rent Certificate</span>
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="example-text-input" class="noc-form-label"><strong>Upload the Registered Rent Agreement/Lease Deed</strong></label>
+                                <div>
+                                    <input class="col-sm-12" type="file" id="fluAgrementFile" onchange="return encodeImageFileAsURL(this,'hdnRentedDoc','spnRentedAgreementFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
                                 </div>
                                 <input type="hidden" id="hdnRentedDoc" />
                                 <span class="spanLabel" id="spnRentedAgreementFile" style="display:none">Please Upload Rent Agreement</span>
                             </div>
+
                         </div>
 
 
@@ -192,248 +215,262 @@
 
             </div>
 
-                <div class="mt-1 title-heading rounded-0" style="">
-                    <div class="" style="">Current Year Building Safety</div>
-                </div>
+            <div class="mt-1 title-heading rounded-0" style="">
+                <div class="" style="">Current Year Building Safety</div>
+            </div>
 
-                <div class="card-body">
-                    <div class="row col-lg-12 mt-3">
-                        <div class="col-lg-12 form-group">
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="mt-1">
-                                      <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #4f6ee4 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Fire NOC Validity</label>
-                                  </div>
-                                  <div class="row mt-2">
-
-                                      <div class="col-lg-8">
-                                          <div class="row">
-                                              <div class="col-lg-6">
-                                                  <label for="example-text-input" class="noc-form-label"><strong>From Date</strong></label> &nbsp;
-                                                  <div>
-                                                      <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order No" id="txtfireDtFrom">
-                                                  </div>
-                                                  <span class="spanLabel" id="spnfireFromDate" style="display:none">Please Select Fire NOC From Date</span>
-                                              </div>
-                                              <div class="col-lg-6">
-                                                  <label for="example-text-input" class="noc-form-label"><strong>To Date</strong></label> &nbsp;
-                                                  <div>
-                                                      <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtfireDtTo">
-                                                  </div>
-                                                  <span class="spanLabel" id="spnfireToDate" style="display:none">Please Select Fire NOC To Date</span>
-                                              </div>
-                                          </div>
-                                      </div>
-
-
-
-                                      <div class="col-lg-4">
-                                          <label for="example-text-input" class="noc-form-label"><strong>Upload Fire NOC Document</strong></label> &nbsp;
-                                          <div>
-                                              <input class="col-sm-12" type="file" id="fluFireNOCFile" onchange="return encodeImageFileAsURL(this,'hdnFireNOCDoc','spnfireNOCFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
-                                          </div>
-                                          <input type="hidden" id="hdnFireNOCDoc" />
-                                          <span class="spanLabel" id="spnfireNOCFile" style="display:none">Please Upload Fire NOC File</span>
-                                      </div>
-                                  </div>
-                              </div>
-
-                              <div class="col-lg-6">
-                                  <div class="mt-3">
-                                      <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #ffc500 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Current Year Building Safety Certificate Order No. & Order Date: *</label>
-                                  </div>
-
-                                  <div class="row mt-2">
-
-                                      <div class="col-lg-4">
-                                          <label for="example-text-input" class="noc-form-label"><strong>From Date</strong></label> &nbsp;
-                                          <div>
-                                              <input class="form-control col-sm-12" type="date" autocomplete="off" placeholder="Order No" id="txtpwdDtFrom">
-                                          </div>
-                                          <span class="spanLabel" id="spnPWDFromDate" style="display:none">Please Select PWD NOC From Date</span>
-                                      </div>
-
-                                      <div class="col-lg-4">
-                                          <label for="example-text-input" class="noc-form-label"><strong>To Date</strong></label> &nbsp;
-                                          <div>
-                                              <input class="form-control col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtpwdDtTo">
-                                          </div>
-                                          <span class="spanLabel" id="spnPWDToDate" style="display:none">Please Select PWD NOC To Date</span>
-                                      </div>
-
-                                      <div class="col-lg-4">
-                                          <label for="example-text-input" class="noc-form-label"><strong>Upload PWD NOC Document</strong></label> &nbsp;
-                                          <div>
-                                              <input class="col-sm-12" type="file" id="fluPWDNOCFile" onchange="return encodeImageFileAsURL(this,'hdnPWDNOCDoc','spnPWDNOCFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
-                                          </div>
-                                          <input type="hidden" id="hdnPWDNOCDoc" />
-                                          <span class="spanLabel" id="spnPWDNOCFile" style="display:none">Please Upload PWD NOC File</span>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-
-                            
-
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="mt-1 title-heading rounded-0">
-                    <div class="" style="">Building Photos</div>
-                </div>
-
-                <div class="row card-body">
+            <div class="card-body">
+                <div class="row col-lg-12 mt-3">
                     <div class="col-lg-12 form-group">
-
-                        <div class="row mt-2">
-
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Front View</strong></label> &nbsp;
-                                <div>
-                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulFrontView" onchange="return encodeImageFileAsURL(this,'hdnBFrontDoc','spnBFrontFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mt-1">
+                                    <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #4f6ee4 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Fire NOC Validity</label>
                                 </div>
-                                <input type="hidden" id="hdnBFrontDoc" />
-                                <span class="spanLabel" id="spnBFrontFile" style="display:none">Please Upload Building Front Image</span>
+                                <div class="row mt-2">
+
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <label for="example-text-input" class="noc-form-label"><strong>From Date</strong></label> &nbsp;
+                                                <div>
+                                                    <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order No" id="txtfireDtFrom">
+                                                </div>
+                                                <span class="spanLabel" id="spnfireFromDate" style="display:none">Please Select Fire NOC From Date</span>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label for="example-text-input" class="noc-form-label"><strong>To Date</strong></label> &nbsp;
+                                                <div>
+                                                    <input class="form-control noc-input-text col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtfireDtTo">
+                                                </div>
+                                                <span class="spanLabel" id="spnfireToDate" style="display:none">Please Select Fire NOC To Date</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-lg-4">
+                                        <label for="example-text-input" class="noc-form-label"><strong>Upload Fire NOC Document</strong></label> &nbsp;
+                                        <div>
+                                            <input class="col-sm-12" type="file" id="fluFireNOCFile" onchange="return encodeImageFileAsURL(this,'hdnFireNOCDoc','spnfireNOCFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                        </div>
+                                        <input type="hidden" id="hdnFireNOCDoc" />
+                                        <span class="spanLabel" id="spnfireNOCFile" style="display:none">Please Upload Fire NOC File</span>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Back View</strong></label> &nbsp;
-                                <div>
-                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulBackView" onchange="return encodeImageFileAsURL(this,'hdnBBackDoc','spnBBackFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                            <div class="col-lg-6">
+                                <div class="mt-3">
+                                    <label class="control-label" style="font-weight: 600;font-size: 14px;border-bottom: solid #ffc500 2.5px;letter-spacing: 2px;border-bottom-right-radius: 6px;">Current Year Building Safety Certificate Order No. & Order Date: *</label>
                                 </div>
-                                <input type="hidden" id="hdnBBackDoc" />
-                                <span class="spanLabel" id="spnBBackFile" style="display:none">Please Upload Building Back Image</span>
-                            </div>
 
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Left Side View</strong></label> &nbsp;
-                                <div>
-                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulLeftView" onchange="return encodeImageFileAsURL(this,'hdnBLeftDoc','spnBLeftFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                <div class="row mt-2">
+
+                                    <div class="col-lg-3">
+                                        <label for="example-text-input" class="noc-form-label"><strong>Order No</strong></label> &nbsp;
+                                        <div>
+                                            <input class="form-control col-sm-12" type="text" autocomplete="off" placeholder="Order No" id="txtpwdorderNo">
+                                        </div>
+                                        <span class="spanLabel" id="spnPWDOrderNo" style="display:none">Please Select PWD Order No</span>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="example-text-input" class="noc-form-label"><strong>Order Date</strong></label> &nbsp;
+                                        <div>
+                                            <input class="form-control col-sm-12" type="date" autocomplete="off" placeholder="Order Date" id="txtpwdDtFrom">
+                                        </div>
+                                        <span class="spanLabel" id="spnPWDFromDate" style="display:none">Please Select PWD NOC Order Date</span>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="example-text-input" class="noc-form-label"><strong>Expiring On</strong></label> &nbsp;
+                                        <div>
+                                            <input class="form-control col-sm-12" type="date" autocomplete="off" placeholder="Expiring On" id="txtpwdDtTo">
+                                        </div>
+                                        <span class="spanLabel" id="spnPWDToDate" style="display:none">Please Select PWD NOC Expiring On</span>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <label for="example-text-input" class="noc-form-label"><strong>Upload PWD NOC Document</strong></label> &nbsp;
+                                        <div>
+                                            <input class="col-sm-12" type="file" id="fluPWDNOCFile" onchange="return encodeImageFileAsURL(this,'hdnPWDNOCDoc','spnPWDNOCFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                                        </div>
+                                        <input type="hidden" id="hdnPWDNOCDoc" />
+                                        <span class="spanLabel" id="spnPWDNOCFile" style="display:none">Please Upload PWD NOC File</span>
+                                    </div>
                                 </div>
-                                <input type="hidden" id="hdnBLeftDoc" />
-                                <span class="spanLabel" id="spnBLeftFile" style="display:none">Please Upload Building Left Image</span>
                             </div>
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-1 title-heading rounded-0">
+                <div class="" style="">Building Photos</div>
+            </div>
+
+            <div class="row card-body">
+                <div class="col-lg-12 form-group">
+
+                    <div class="row mt-2">
+
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label"><strong>Front View</strong></label> &nbsp;
+                            <div>
+                                <input class="col-sm-12" type="file" autocomplete="off" id="fulFrontView" onchange="return encodeImageFileAsURL(this,'hdnBFrontDoc','spnBFrontFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                            </div>
+                            <input type="hidden" id="hdnBFrontDoc" />
+                            <span class="spanLabel" id="spnBFrontFile" style="display:none">Please Upload Building Front Image</span>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label"><strong>Back View</strong></label> &nbsp;
+                            <div>
+                                <input class="col-sm-12" type="file" autocomplete="off" id="fulBackView" onchange="return encodeImageFileAsURL(this,'hdnBBackDoc','spnBBackFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                            </div>
+                            <input type="hidden" id="hdnBBackDoc" />
+                            <span class="spanLabel" id="spnBBackFile" style="display:none">Please Upload Building Back Image</span>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label"><strong>Left Side View</strong></label> &nbsp;
+                            <div>
+                                <input class="col-sm-12" type="file" autocomplete="off" id="fulLeftView" onchange="return encodeImageFileAsURL(this,'hdnBLeftDoc','spnBLeftFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                            </div>
+                            <input type="hidden" id="hdnBLeftDoc" />
+                            <span class="spanLabel" id="spnBLeftFile" style="display:none">Please Upload Building Left Image</span>
+                        </div>
+
+                    </div>
+                    <div class="row mt-4">
+
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label"><strong>Right Side View</strong></label> &nbsp;
+                            <div>
+                                <input class="col-sm-12" type="file" autocomplete="off" id="fulRightView" onchange="return encodeImageFileAsURL(this,'hdnBRightDoc','spnBRightFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
+                            </div>
+                            <input type="hidden" id="hdnBRightDoc" />
+                            <span class="spanLabel" id="spnBRightFile" style="display:none">Please Upload Building Right Image</span>
 
                         </div>
-                        <div class="row mt-4">
 
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Right Side View</strong></label> &nbsp;
-                                <div>
-                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulRightView" onchange="return encodeImageFileAsURL(this,'hdnBRightDoc','spnBRightFile')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
-                                </div>
-                                <input type="hidden" id="hdnBRightDoc" />
-                                <span class="spanLabel" id="spnBRightFile" style="display:none">Please Upload Building Right Image</span>
-
+                        <div class="col-lg-4">
+                            <label for="example-text-input" class="noc-form-label"><strong>Others</strong></label> &nbsp;
+                            <div>
+                                <input class="col-sm-12" type="file" autocomplete="off" id="fulOthersImg" onchange="return encodeImageFileAsURL(this,'hdnBothersDoc','')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
                             </div>
+                            <input type="hidden" id="hdnBothersDoc" />
+                        </div>
 
-                            <div class="col-lg-4">
-                                <label for="example-text-input" class="noc-form-label"><strong>Others</strong></label> &nbsp;
-                                <div>
-                                    <input class="col-sm-12" type="file" autocomplete="off" id="fulOthersImg" onchange="return encodeImageFileAsURL(this,'hdnBothersDoc','')" accept=".png,.jpg,.jpeg,.gif,.pdf" />
-                                </div>
-                                <input type="hidden" id="hdnBothersDoc" />
-                            </div>
-
-                            <div class="col-lg-4" style="text-align: end;">
-                                <label for="example-text-input" class="noc-form-label"><strong>&nbsp;</strong></label>
-                                <button class="theme-edit-btn" type="button" id="btnSave" onclick="saveDetails();"><i class="fas fa-plus"></i> Add </button>
-                                <button class="theme-button-mockup" type="button" id="btnNext" style="margin-left:5px;"><i class="fa fa-save"></i> Save & Next </button>
-
-                            </div>
-
+                        <div class="col-lg-4" style="text-align: end;">
+                            <label for="example-text-input" class="noc-form-label"><strong>&nbsp;</strong></label>
+                            <button class="theme-edit-btn" type="button" id="btnSave" onclick="saveDetails();"><i class="fas fa-plus"></i> Add </button>
+                            <button class="theme-button-mockup" type="button" id="btnNext" style="margin-left:5px;"><i class="fa fa-save"></i> Save & Next </button>
 
                         </div>
 
 
                     </div>
 
+
                 </div>
 
+            </div>
 
 
-                <div class="card-body">
-                    <div class=" noc-layouts-tbl mt-3" style="overflow-x:scroll">
-                        <table class="table table-borderless" style="width: max-content;">
-                            <thead style="background: #c7d9f0; ">
-                                <tr>
-                                    <td>#</td>
-                                    <td hidden>iPK_ID</td>
-                                    <td hidden>sAppGUID</td>
-                                    <td hidden>iFK_FinyrID</td>
-                                    <td hidden>iFK_TrstID</td>
-                                    <td hidden>iFK_ClgID</td>
-                                    <td hidden>iFK_DeptID</td>
-                                    <td>Building Type</td>
-                                    <td>Order No</td>
-                                    <td>Order Date</td>
-                                    <td>Owned Building Doc.</td>
-                                    <td>Rented Agreement Exp. Date</td>
-                                    <td>Agreement Doc</td>
-                                    <td>Fire NOC From</td>
-                                    <td>Fire NOC To</td>
-                                    <td>Fire NOC Doc</td>
-                                    <td>PWD NOC From</td>
-                                    <td>PWD NOC TO</td>
-                                    <td>PWD NOC Doc</td>
-                                    <td>Front Img</td>
-                                    <td>Back Img</td>
-                                    <td>Left Img</td>
-                                    <td>Right Img</td>
-                                    <td>BOther Img</td>
-                                    <td hidden>iStatus</td>
-                                    <td>Created On</td>
-                                    <td>Created By</td>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    if (buildingData != null)
+            <div class="card-body">
+                <div class=" noc-layouts-tbl mt-3" style="overflow-x:scroll">
+                    <table class="table table-borderless" style="width: max-content;">
+                        <thead style="background: #c7d9f0; ">
+                            <tr>
+                                <td>#</td>
+                                <td hidden>iPK_ID</td>
+                                <td hidden>sAppGUID</td>
+                                <td hidden>iFK_FinyrID</td>
+                                <td hidden>iFK_TrstID</td>
+                                <td hidden>iFK_ClgID</td>
+                                <td hidden>iFK_DeptID</td>
+                                <td>Building Type</td>
+                                <td>Order No</td>
+                                <td>Order Date</td>
+                                <td>Owned Building Doc.</td>
+                                <td>Rented Order No</td>
+                                <td>Rented Agreement Exp. Date</td>
+                                <td>Rented Certificate</td>
+                                <td>Agreement Doc</td>
+                                <td>Fire NOC From</td>
+                                <td>Fire NOC To</td>
+                                <td>Fire NOC Doc</td>
+                                <td>PWD NOC Order No</td>
+                                <td>PWD NOC Order Date</td>
+                                <td>PWD NOC Expiring on</td>
+                                <td>PWD NOC Doc</td>
+                                <td>Front Img</td>
+                                <td>Back Img</td>
+                                <td>Left Img</td>
+                                <td>Right Img</td>
+                                <td>Other Img</td>
+                                <td hidden>iStatus</td>
+                                <td hidden>Created On</td>
+                                <td hidden>Created By</td>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (buildingData != null)
+                                {
+                                    var i = 1;
+                                    foreach (var item in buildingData)
                                     {
-                                        var i = 1;
-                                        foreach (var item in buildingData)
-                                        {
-                                            <tr>
-                                                <td>@i</td>
-                                                <td hidden>@item.iPK_ID</td>
-                                                <td hidden>@item.sAppGUID</td>
-                                                <td hidden>@item.iFK_FinyrID</td>
-                                                <td hidden>@item.iFK_TrstID</td>
-                                                <td hidden>@item.iFK_ClgID</td>
-                                                <td hidden>@item.iFK_DeptID</td>
-                                                <td>@item.sBldgntyp</td>
-                                                <td>@item.sOrdNo</td>
-                                                <td>@item.dtOrd</td>
-                                                <td> <a href="@item.OwnedBldgnDoc" download="OwnedBuiding_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td>@item.dtAgrExp</td>
-                                                <td><a href="@item.AgrExpDoc" download="Rentagreement_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td>@item.dtFireFrom</td>
-                                                <td>@item.dtFireTo</td>
-                                                <td><a href="@item.FireNOCDoc" download="FireNOC_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td>@item.dtPWDFrom</td>
-                                                <td>@item.dtPWDTo</td>
-                                                <td><a href="@item.PWDNOCDoc" download="PWDNOCDoc_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td><a href="@item.BFrontImg" download="BFrontImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td><a href="@item.BBackImg" download="BBackImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a> </td>
-                                                <td><a href="@item.BLeftImg" download="BLeftImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a> </td>
-                                                <td><a href="@item.BRightImg" download="BRightImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td><a href="@item.BOtherImg" download="BOtherImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
-                                                <td hidden>@item.iStatus</td>
-                                                <td>@item.dtCrtdOn</td>
-                                                <td>@item.dtCrtdBy</td>
-                                            </tr>
-                                            i++;
-                                        }
+                                        <tr>
+                                            <td>@i</td>
+                                            <td hidden>@item.iPK_ID</td>
+                                            <td hidden>@item.sAppGUID</td>
+                                            <td hidden>@item.iFK_FinyrID</td>
+                                            <td hidden>@item.iFK_TrstID</td>
+                                            <td hidden>@item.iFK_ClgID</td>
+                                            <td hidden>@item.iFK_DeptID</td>
+                                            <td>@item.sBldgntyp</td>
+                                            <td>@item.sOrdNo</td>
+                                            <td>@item.dtOrd</td>
+                                            <td> <a href="@item.OwnedBldgnDoc" download="OwnedBuiding_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td>@item.rentedOrderNo</td>
+                                            <td>@item.dtAgrExp</td>
+                                            <td><a href="@item.AgrExpDoc" download="Rentagreement_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td><a href="@item.rentedCertificateDoc" download="RentCertificate_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td>@item.dtFireFrom</td>
+                                            <td>@item.dtFireTo</td>
+                                            <td><a href="@item.FireNOCDoc" download="FireNOC_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td>@item.sPWDOrderNo</td>
+                                            <td>@item.dtPWDFrom</td>
+                                            <td>@item.dtPWDTo</td>
+                                            <td><a href="@item.PWDNOCDoc" download="PWDNOCDoc_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td><a href="@item.BFrontImg" download="BFrontImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td><a href="@item.BBackImg" download="BBackImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a> </td>
+                                            <td><a href="@item.BLeftImg" download="BLeftImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a> </td>
+                                            <td><a href="@item.BRightImg" download="BRightImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td><a href="@item.BOtherImg" download="BOtherImg_@i" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td>
+                                            <td hidden>@item.iStatus</td>
+                                            <td hidden>@item.dtCrtdOn</td>
+                                            <td hidden>@item.dtCrtdBy</td>
+                                        </tr>
+                                        i++;
                                     }
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-               
+            </div>
+
         </div>
     </div>
 
@@ -585,10 +622,13 @@
             var orderDate = $('#txtOrdDate').val();
             var ownedDoc = $('#hdnOwnedDoc').val();
             var agreementExpiryDate = $('#txtAgrmentExprDate').val();
+            var rentedorderNo = $('#txtRentedOrdNo').val();
             var rentedAgreementDoc = $('#hdnRentedDoc').val();
+            var rentedCertificateDoc = $('#hdnRentedCertificate').val();
             var fireNOCFromDate = $('#txtfireDtFrom').val();
             var fireNOCToDate = $('#txtfireDtTo').val();
             var fireNOCDoc = $('#hdnFireNOCDoc').val();
+            var pwdOrderNo = $('#txtpwdorderNo').val();
             var pwdDtFrom = $('#txtpwdDtFrom').val();
             var pwdDtTo = $('#txtpwdDtTo').val();
             var pwdNOCDoc = $('#hdnPWDNOCDoc').val();
@@ -599,18 +639,20 @@
             var bRightDoc = $('#hdnBRightDoc').val();
             var botherDoc = $('#hdnBothersDoc').val();
 
-
             var VertinaryModal = {
                 "sAppGUID": '@ApplGuid',
                 "sBldgntyp": buidingType,
                 "sOrdNo": orderNumber,
                 "dtOrd": orderDate,
                 "OwnedBldgnDoc": ownedDoc,
+                "rentedOrderNo": rentedorderNo,
                 "dtAgrExp": agreementExpiryDate,
                 "AgrExpDoc": rentedAgreementDoc,
+                "rentedCertificateDoc": rentedCertificateDoc,
                 "dtFireFrom": fireNOCFromDate,
                 "dtFireTo": fireNOCToDate,
                 "FireNOCDoc": fireNOCDoc,
+                "sPWDOrderNo": pwdOrderNo,
                 "dtPWDFrom": pwdDtFrom,
                 "dtPWDTo": pwdDtTo,
                 "PWDNOCDoc": pwdNOCDoc,
@@ -618,7 +660,7 @@
                 "BBackImg": bBackDoc,
                 "BLeftImg": bLeftDoc,
                 "BRightImg": bRightDoc,
-                "BOtherImg": botherDoc
+                "BOtherImg": botherDoc,
             }
 
             var d = JSON.stringify(VertinaryModal);
@@ -666,12 +708,15 @@
         var orderNumber = $('#txtOrdNo').val();
         var orderDate = $('#txtOrdDate').val();
         var ownedDoc = $('#hdnOwnedDoc').val();
-        var agreementExpiryDate = $('#txtAgrmentExprDate').val();
+        var rentedOrderDate = $('#txtAgrmentExprDate').val();
+        var rentedorderNo = $('#txtRentedOrdNo').val();
         var rentedAgreementDoc = $('#hdnRentedDoc').val();
+        var rentedCertificateDoc = $('#hdnRentedCertificate').val();
         var fireNOCFromDate = $('#txtfireDtFrom').val();
         var fireNOCToDate = $('#txtfireDtTo').val();
         var fireNOCDoc = $('#hdnFireNOCDoc').val();
-        var pwdDtFrom = $('#txtpwdDtFrom').val();
+        var pwdOrderNo = $('#txtpwdorderNo').val();
+        var pwdorderDate = $('#txtpwdDtFrom').val();
         var pwdDtTo = $('#txtpwdDtTo').val();
         var pwdNOCDoc = $('#hdnPWDNOCDoc').val();
 
@@ -702,12 +747,22 @@
             }
         }
         if (buidingType == 'rented') {
-            if (agreementExpiryDate.length <= 0) {
+            if (rentedorderNo.length <= 0) {
+                $('#spnRentedOrderNo').css('display', 'block');
+                status = false;
+            }
+
+            if (rentedOrderDate.length <= 0) {
                 $('#spnAgreementExpDate').css('display', 'block');
                 status = false;
             }
             if (rentedAgreementDoc.length <= 0) {
                 $('#spnRentedAgreementFile').css('display', 'block');
+                status = false;
+            }
+
+            if (rentedCertificateDoc.length <= 0) {
+                $('#spnRentedCertificateFile').css('display', 'block');
                 status = false;
             }
         }
@@ -727,7 +782,12 @@
             status = false;
         }
 
-        if (pwdDtFrom.length <= 0) {
+        if (pwdOrderNo.length <= 0) {
+            $('#spnPWDOrderNo').css('display', 'block');
+            status = false;
+        }
+
+        if (pwdorderDate.length <= 0) {
             $('#spnPWDFromDate').css('display', 'block');
             status = false;
         }
@@ -746,19 +806,19 @@
             $('#spnBFrontFile').css('display', 'block');
             status = false;
         }
-        if (bBackDoc.length <= 0) {
-            $('#spnBBackFile').css('display', 'block');
-            status = false;
-        }
+        //if (bBackDoc.length <= 0) {
+        //    $('#spnBBackFile').css('display', 'block');
+        //    status = false;
+        //}
 
-        if (bLeftDoc.length <= 0) {
-            $('#spnBLeftFile').css('display', 'block');
-            status = false;
-        }
-        if (bRightDoc.length <= 0) {
-            $('#spnBRightFile').css('display', 'block');
-            status = false;
-        }
+        //if (bLeftDoc.length <= 0) {
+        //    $('#spnBLeftFile').css('display', 'block');
+        //    status = false;
+        //}
+        //if (bRightDoc.length <= 0) {
+        //    $('#spnBRightFile').css('display', 'block');
+        //    status = false;
+        //}
 
         return status;
     }

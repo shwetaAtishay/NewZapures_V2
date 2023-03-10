@@ -38,11 +38,11 @@
         <div class="row col-lg-12">
             <span class="spanLabel">
                 Disclaimer -
-                <br/><span> 1. Submit your application with appropriate option like- new course, new subject, tnoc, pnoc.</span>
-                <br/><span> 2. Once the application is submitted you have to print challen or download. </span>
-                <br/><span> 3. Once you did the payment you need to upload proof of payment (receipt) from applied noc, <a href="@Url.Action("DeptMasterApplicationList","Trustee")" style="color: blue;"> Upload Reciept</a></span>
-                <br/><span> 4. Note: here only those subjects or courses will be visible for which draft is complete. </span>
-                <br/><span> 5. If NOC is for name change, location change, merger, coed to girl please fill details in <a href="@Url.Action("DeptMasterApplicationList","Trustee")" style="color: blue;"> College Amendment</a> </span>
+                <br /><span> 1. Submit your application with appropriate option like- new course, new subject, tnoc, pnoc.</span>
+                <br /><span> 2. Once the application is submitted you have to print challen or download. </span>
+                <br /><span> 3. Once you did the payment you need to upload proof of payment (receipt) from applied noc, <a href="@Url.Action("DeptMasterApplicationList","Trustee")" style="color: blue;"> Upload Reciept</a></span>
+                <br /><span> 4. Note: here only those subjects or courses will be visible for which draft is complete. </span>
+                <br /><span> 5. If NOC is for name change, location change, merger, coed to girl please fill details in <a href="@Url.Action("Index","CollegeAmendment")" style="color: blue;"> College Amendment</a> </span>
             </span>
 
         </div>
@@ -716,7 +716,7 @@
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Submit</button>
     <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;margin-right:5px">Clear Selection</button>
     <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: #dc331c;border: 1px solid #dc331c !important;float: right;">Back To Draft</a>
-<hr/>
+    <hr />
 </div>
 
 <div class="card noc-layouts mt-0" id="divPrint" style="display:none">
