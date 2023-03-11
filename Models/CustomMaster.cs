@@ -9,6 +9,7 @@ namespace NewZapures_V2.Models
     {
         public int? Id { get; set; }
         public string text { get; set; }
+        public string Name { get; set; }
     }
     public class ListCustom : ResponseData
     {
