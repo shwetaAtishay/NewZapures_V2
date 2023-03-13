@@ -27,11 +27,13 @@ namespace NewZapures_V2.Controllers
                 var ddlClass = GetCourses(50);
                 var AllData = GetDeptMappingData();
                 var ddlSubject = GetSubjects();
+                var ddldegree = GetDegree();
                 ViewBag.Dept = ddlDept;
                 ViewBag.Course = ddlCourse;
                 ViewBag.AllData = AllData;
                 ViewBag.Subject = ddlSubject;
                 ViewBag.Class = ddlClass;
+                ViewBag.Degree = ddldegree;
             }
 
             return View();
@@ -150,6 +152,29 @@ namespace NewZapures_V2.Controllers
                 if (objResponse.Data != null)
                 {
                     data = JsonConvert.DeserializeObject<List<DeptCourseMapTableData>>(objResponse.Data.ToString());
+                }
+            }
+            return data;
+        }
+
+        public List<Dropdown> GetDegree()
+        {
+
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetDegree");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> data = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    data = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
                 }
             }
             return data;

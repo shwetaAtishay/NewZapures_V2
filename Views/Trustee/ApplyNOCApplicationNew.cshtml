@@ -37,9 +37,12 @@
     <div class="card-body">
         <div class="row col-lg-12">
             <span class="spanLabel">
-                Disclaimer -<br />
-                <span> 1. Dear applicant here only those subjects and courses will be visible for which you have successfully submitted the incomplete information, If your course or subject is not then you need to submit complete details of it from ( <a style="color: #000fe5;" href="@Url.Action("CollegeDetails","Trustee")"> Complete Your Information</a> )</span>
-                <br /><span> 2. if you want noc for change name, merge , women to co-edu, ....  You need to send amendment request from <a style="color: #000fe5;" href="@Url.Action("Index","CollegeAmendment")"> College Ammendment</a> </span>
+                Disclaimer -
+                <br /><span> 1. Submit your application with appropriate option like- new course, new subject, tnoc, pnoc.</span>
+                <br /><span> 2. Once the application is submitted you have to print challen or download. </span>
+                <br /><span> 3. Once you did the payment you need to upload proof of payment (receipt) from applied noc, <a href="@Url.Action("DeptMasterApplicationList","Trustee")" style="color: blue;"> Upload Reciept</a></span>
+                <br /><span> 4. Note: here only those subjects or courses will be visible for which draft is complete. </span>
+                <br /><span> 5. If NOC is for name change, location change, merger, coed to girl please fill details in <a href="@Url.Action("Index","CollegeAmendment")" style="color: blue;"> College Amendment</a> </span>
             </span>
 
         </div>
@@ -51,7 +54,7 @@
             <table class="table table-borderless table-striped" style="width:50%!important">
                 <tr><th style="font-weight:700">Applicable Courses : </th><td><span id="spnapplicableCourse"></span></td></tr>
                 <tr><th style="font-weight:700">Applicable Subject : </th><td><span id="spnapplicableSubject"></span></td></tr>
-                <tr><th style="font-weight:700">Ammendment :</th><td><span id="spnapplicableCollegeAmendment"></span><span id="spnapplicableCollegeAmendmentID" style="display:none"></span></td></tr>
+                <tr><th style="font-weight:700">Amendment :</th><td><span id="spnapplicableCollegeAmendment"></span><span id="spnapplicableCollegeAmendmentID" style="display:none"></span></td></tr>
                 <tr><th style="font-weight:700">TNOC Extention/PNOC Details :</th><td><span id="spnTNOCPNOCCourse"></span><span class="mt-1" id="spnTNOCPNOCSubject"></span></td></tr>
             </table>
 
@@ -709,10 +712,15 @@
 </div>
 
 <div class="w-100 float-left mt-3 text-right">
-    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">PreView</button>
+    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">Preview</button>
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Submit</button>
-    <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;">Reset</button>
-    <a href="@Url.Action("DeptMasterApplicationList","Trustee")" type="button" class="theme-discard-btn" style="background: gray;border: 1px solid gray !important;float: right;">Back To List</a>
+    <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;margin-right:5px">Clear Selection</button>
+    <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: #dc331c;border: 1px solid #dc331c !important;float: right;">Back To Draft</a>
+
+    <button onclick="redirecturl()" class="theme-discard-btn" style="background: #2cad24; border: 1px solid #2cad24 !important; float: right; ">Edit selection</button>
+
+
+    <hr />
 </div>
 
 <div class="card noc-layouts mt-0" id="divPrint" style="display:none">
@@ -2115,7 +2123,7 @@
 
     }
 
-    function GetExistingNOCForCollege(collegeID,selectionType) {
+      function GetExistingNOCForCollege(collegeID,selectionType) {
         var htmlString = ``;
         var Data = {
             collegeID: collegeID,
@@ -2137,14 +2145,7 @@
                 console.log(mainData);
                 if (mainData != null && mainData.length > 0) {
                     mainData.forEach(function (item, index) {
-                        htmlString += `<tr><td>${index + 1}</td><td>${item.PKID}</td><td>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td><input type="checkbox" name="" id="checkNOCData_${item.PKID}" onChange="CreateNOCData(this,'${selectionType}','${item.PKID}','${item.courseID}','${item.iFk_SbjID}')" /></td></tr>`;
-                    })
-                }
-
-                var htmlStringTNOC = '';
-                if (mainData != null && mainData.length > 0) {
-                    mainData.forEach(function (item, index) {
-                        htmlStringTNOC += `<tr><td>${index + 1}</td><td>${item.PKID}</td><td>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td></tr>`;
+                        htmlString += `<tr><td>${index + 1}</td><td hidden>${item.PKID}</td><td hidden>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td><input type="checkbox" name="" id="checkNOCData_${item.iFk_SbjID}_${selectionType}" onChange="CreateNOCData(this,'${selectionType}','${item.PKID}','${item.courseID}','${item.iFk_SbjID}')" /></td></tr>`;
                     })
                 }
 
@@ -2153,31 +2154,25 @@
                     $('#tblTNOCList tbody').html('');
                     $('#tblTNOCList tbody').html(htmlString);
 
-                    $('#tblTNOCListNew tbody').html('');
-                    $('#tblTNOCListNew tbody').html(htmlStringTNOC);
-
-                    if (mainData.length <= 0) {
+                    @*if (mainData.length <= 0) {
                         $('#divTNOCUnAvailable').html('');
                         $('#divTNOCUnAvailable').html('We not found any latest details application against this course and subject for TNOC Extention. Kindly Fill New Application to apply for noc Click here <a href="@Url.Action("Collegedetails","Trustee")" style="color:blue"><i class="fas fa-file-edit"></i> Fill New Application </a> and choose full details option and complete the application.');
                     }
                     else {
                         $('#divTNOCUnAvailable').html('');
-                    }
+                    }*@
                 }
                 if (selectionType == 'PNOC') {
                     $('#tblPNOCList tbody').html('');
                     $('#tblPNOCList tbody').html(htmlString);
 
-                    $('#tblPNOCListNew tbody').html('');
-                    $('#tblPNOCListNew tbody').html(htmlStringTNOC);
-
-                    if (mainData.length <= 0) {
+                    @*if (mainData.length <= 0) {
                         $('#divPNOCUnAvailable').html('');
                         $('#divPNOCUnAvailable').html('We not found any latest details application against this course and subject for Permanent NOC. Kindly Fill New Application to apply for noc Click here <a href="@Url.Action("Collegedetails","Trustee")" style="color:blue"><i class="fas fa-file-edit"></i> Fill New Application </a> and choose full details option and complete the application.');
                     }
                     else {
                         $('#divPNOCUnAvailable').html('');
-                    }
+                    }*@
                 }
 
             },
@@ -2196,10 +2191,15 @@
 
             var TNOCCost = $('#spnTNOCFee').text().split(' ')[1];
 
-            if ($('#' + chkItem.id).is(':checked'))
+            if ($('#' + chkItem.id).is(':checked')) {
+                $(`#checkNOCData_${subjID}_PNOC`).prop('checked', false);
+                $(`#checkNOCData_${subjID}_PNOC`).prop('disabled', true);
                 $('#' + chkItem.id).attr('checked', true);
-            else
-                $('#' + chkItem.id).removeAttr('checked');
+            }
+            else {
+                $('#' + chkItem.id).prop('checked', false);
+                $(`#checkNOCData_${subjID}_PNOC`).prop('disabled', false);
+            }
 
 
 
@@ -2248,10 +2248,15 @@
                 PNOCPKIDs += ipkID
             }
 
-            if ($('#' + chkItem.id).is(':checked'))
+            if ($('#' + chkItem.id).is(':checked')) {
                 $('#' + chkItem.id).attr('checked', true);
-            else
-                $('#' + chkItem.id).removeAttr('checked');
+                $(`#checkNOCData_${subjID}_TNOC`).prop('checked', false);
+                $(`#checkNOCData_${subjID}_TNOC`).prop('disabled', true);
+            }
+            else {
+                $('#' + chkItem.id).prop('checked', false);
+                $(`#checkNOCData_${subjID}_TNOC`).prop('disabled', false);
+            }
 
             $('#tblPNOCList > tbody  > tr ').each(function () {
 
@@ -3888,6 +3893,33 @@
                 console.log('Printing done', arguments);
             })
         });
+    }
+
+    function redirecturl() {
+        debugger
+        var url = "Trustee/ApplyNOCApplicationNew";
+        GeneratePage(url);
+        function GeneratePage(url) {
+
+            debugger
+            $("#divMain").show();
+            $("#tblLandInfo tbody").hide();
+            $("#tblStaffInfo tbody").hide();
+            $("#tblAcadmicInfo tbody").hide();
+            $("#tblSubjectInfo tbody").hide();
+            $("#tblProof tbody").hide();
+            $("#tblCollageFacility tbody").hide();
+            //$("#tblCollageFeeInfo tbody").html(Data.ColgFeehtml);
+
+            $("#tblArch tbody").hide();
+            $("#tblOtherInformation tbody").hide();
+
+            $("#dtnSubmit").hide();
+            $("#divPrint").hide();
+            $("#btnPreview").show();
+
+            return true;
+        }
     }
 
  //   function encodeImageFileAsURL(element, hdnId, hdnExtnID) {

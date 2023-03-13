@@ -1242,7 +1242,7 @@ namespace NewZapures_V2.Controllers
                     if (objResponse.Message.Contains("Details Already Exists..!"))
                     {
                         TempData["IsUserDetailsExists"] = 1;
-                        TempData["msg"] = "User Details Already Exists, Details Not Saved...";
+                        TempData["msg"] = "SSO Already Exists, Not Saved...";
                         return RedirectToAction("AddPartner", "Role");
                     }
                     else

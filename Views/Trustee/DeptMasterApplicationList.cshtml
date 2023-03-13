@@ -354,6 +354,7 @@
 
     function UploadReciept() {
         var paidAMT = $('#txtAmt').val();
+        var dueAMT = $('#hdnDueAMT').val();
         var imagelength = ($('#hdnConvertedDoc').val() === undefined || $('#hdnConvertedDoc') === null) ? "" : $('#hdnConvertedDoc').val();
         if (paidAMT.length <= 0) {
             Swal.fire({
@@ -367,9 +368,9 @@
             });
             $('#txtAmt').focus();
         }
+        
         else if (imagelength.length > 0) {
             var applGUID = $('#hdnGUID').val();
-            var dueAMT = $('#hdnDueAMT').val();
 
             var fullBase64DataIMG = $('#hdnConvertedDoc').val();
 
@@ -381,6 +382,19 @@
             }
             var d = JSON.stringify(Data)
             //console.log(d);
+
+            if (paidAMT > dueAMT) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: `Error`,
+                    html: `<p>Amount Should Not Be Greater Then Due Amount: <b>${dueAMT}</b></p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+            }
+            else {
             $.ajax({
                 headers: {
                     'Accept': 'application/json',
@@ -416,6 +430,7 @@
                     //alert(d);
                 }
             });
+            }
         }
         else {
             Swal.fire({
