@@ -32,6 +32,34 @@ namespace NewZapures_V2.Controllers
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
 
+            List<CustomMaster> Occupation = new List<CustomMaster>();
+            Occupation = Common.GetCustomMastersList(49);
+            ViewBag.Occupation = Occupation;
+
+            
+
+            #region List Collage Apply List
+            var clients = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/CollageListApply?TrustId=" + SessionModel.TrustId);
+            var requests = new RestRequest(Method.GET);
+            requests.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            requests.AddParameter("application/json", "", ParameterType.RequestBody);
+            IRestResponse response = clients.Execute(requests);
+            List<TrusteeBO.CollageList> result = new List<CollageList>();
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                List<TrusteeBO.CollageList> _result = _JsonSerializer.Deserialize<List<TrusteeBO.CollageList>>(response.Content);
+                if (_result != null)
+                {
+                    ViewBag.collegelist = _result;
+                    //return RedirectToAction("Index");
+                }
+
+            }
+            #endregion
+
+
             #region List Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList?TrustId=" + SessionModel.TrustId.ToString());
             var request = new RestRequest(Method.GET);
@@ -39,10 +67,10 @@ namespace NewZapures_V2.Controllers
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
             request.AddParameter("application/json", "", ParameterType.RequestBody);
             _JsonSerializer.MaxJsonLength = Int32.MaxValue; // Whatever max lengt
-            IRestResponse response = client.Execute(request);
-            if (response.StatusCode.ToString() == "OK")
+            IRestResponse responses = client.Execute(request);
+            if (responses.StatusCode.ToString() == "OK")
             {
-                List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(response.Content);
+                List<TrusteeBO.Trustee> _result = _JsonSerializer.Deserialize<List<TrusteeBO.Trustee>>(responses.Content);
                 if (_result != null)
                 {
                     ViewBag.TrusteeList = _result;
@@ -54,7 +82,8 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(TrusteeBO.Trustee obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase Authfile)
+        public ActionResult Index(TrusteeBO.Trustee obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase Authfile, 
+            HttpPostedFileBase Educationfile,HttpPostedFileBase Letterfile,HttpPostedFileBase signaturefile)
         {
             obj.TrustInfoId = SessionModel.TrustId;
             byte[] Documentbyte;
@@ -140,6 +169,70 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+
+            #region Eductionfile
+            if (Educationfile != null)
+            {
+                extension = Path.GetExtension(Educationfile.FileName);
+                ContentType = Educationfile.ContentType;
+                using (Stream inputStream = Educationfile.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    obj.Educationfile = Convert.ToBase64String(Documentbyte);
+                    obj.EducationfileExtension = extension;
+                    obj.EducationfileContentType = ContentType;
+                }
+            }
+            #endregion
+            
+            #region Laterfile
+            if (Letterfile != null)
+            {
+                extension = Path.GetExtension(Letterfile.FileName);
+                ContentType = Letterfile.ContentType;
+                using (Stream inputStream = Letterfile.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    obj.Letterfile = Convert.ToBase64String(Documentbyte);
+                    obj.LetterfileExtension = extension;
+                    obj.LetterfileContentType = ContentType;
+                }
+            }
+            #endregion
+
+            #region Signaturefile
+            if (signaturefile != null)
+            {
+                extension = Path.GetExtension(signaturefile.FileName);
+                ContentType = signaturefile.ContentType;
+                using (Stream inputStream = signaturefile.InputStream)
+                {
+                    MemoryStream memoryStream = inputStream as MemoryStream;
+                    if (memoryStream == null)
+                    {
+                        memoryStream = new MemoryStream();
+                        inputStream.CopyTo(memoryStream);
+                    }
+                    Documentbyte = memoryStream.ToArray();
+                    obj.signaturefile = Convert.ToBase64String(Documentbyte);
+                    obj.signaturefileExtension = extension;
+                    obj.signaturefileContentType = ContentType;
+                }
+            }
+            #endregion
+
             #region Add Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddTrustee");
             var request = new RestRequest(Method.POST);
@@ -167,6 +260,7 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
+
             #region List Trustee
             client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList?TrustId=" + obj.TrustInfoId);
             request = new RestRequest(Method.GET);
@@ -808,6 +902,9 @@ namespace NewZapures_V2.Controllers
             List<CustomMaster> RoleType = new List<CustomMaster>();
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
+
+           
+
             List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();   
             #region List Trustee
             client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList");
@@ -2300,5 +2397,6 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
+        
     }
 }
