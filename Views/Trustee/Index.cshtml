@@ -52,6 +52,7 @@
     }*@
 </style>
 @section styles {
+
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
     <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
     <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
@@ -135,10 +136,10 @@
         <div class="page-title-box d-flex align-items-center justify-content-between">
             <div class="float-right d-none">
                 @*<ol class="breadcrumb">
-                <li class="breadcrumb-item">NOC</li>
-                <li class="breadcrumb-item">Master</li>
-                <li class="breadcrumb-item active">Trustee</li>
-            </ol>*@
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Trustee</li>
+                    </ol>*@
             </div>
             <h4 class="page-title w-75">(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)-@ViewBag.Title</h4>
             <div class="w-25 text-right">
@@ -155,6 +156,7 @@
         <h4 class="mt-0 title-heading float-left">@ViewBag.Title </h4>
     </div>
     <div id="">
+       
         @using (Html.BeginForm("Index", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data", novalidate = "novalidate" }))
         {
             <div id="validation-summary" class="alert-danger"></div>
@@ -374,7 +376,7 @@
                     @* new field *@
 
 
-                   
+
 
                 </div>
 
@@ -428,6 +430,23 @@
                             int i = 1;
                             foreach (var item in trusteelist)
                             {
+                                if (item.RoleId == "President")
+                                {
+                                    <div class="test">
+                                        <input type="hidden" value="@item.RoleId" id="Presidentvalue" />
+                                    </div>
+
+
+
+                                }
+                                if (item.RoleId == "Secretary")
+                                {
+                                    <div class="test">
+                                        <input type="hidden" value="@item.RoleId" id="Secretaryvalue" />
+                                    </div>
+
+                                }
+
                                 <tr>
                                     <td>@i</td>
                                     <td>
@@ -501,7 +520,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                    </table>
             </div>
         </div>
     </div>
@@ -511,14 +530,18 @@
     <div class="row">
         <div class="w-100 float-left" style="margin-top:20px">
             <div class="w-100 float-left text-right mb-4">
-                <a href="@Url.Action("CreateDetails", "BasicDetails")" class="theme-button-mockup" style="" id="Reset">Proceed To Add College Details</a>
+                <a href="#" class="theme-button-mockup" style="" id="Reset" onclick="Reset();">Proceed To Add College Details</a>
+                @Html.Hidden("RedirectTo", Url.Action("CreateDetails", "BasicDetails"));
             </div>
         </div>
     </div>
 }
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 @section scripts {
+    @*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
     <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -550,7 +573,30 @@
     });
     debugger
     var isAlreadyPrimary = 0;
-    
+     var isuserExists = '@TempData["isSavedexists"]'
+        var message = '@TempData["Messageexists"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+
     $(document).ready(function () {
         $('#txtname').keypress(function (e) { $('#txtname').removeClass('errr-highlight').addClass('sucess-highlight'); });
         $('.alphaspace').keypress(function (e) {
@@ -592,11 +638,11 @@
             }
 
         });
-        debugger
+
         $("#Education").hide();
         $("#Letter").hide();
         $("#txtOccupation").change(function () {
-            debugger
+
             var Occupation = $("#txtOccupation option:selected").text();
             if (Occupation == "Educationist") {
                 $("#Education").show();
@@ -607,8 +653,11 @@
                 $("#Letter").hide();
 
             }
-            
+
         });
+
+
+
 
     });
     //$('#txtaadharno').keyup(function () {
@@ -673,13 +722,38 @@
         }
     });
 
+    function Reset() {
+      
+        debugger
+        
+        var President = $("#Presidentvalue").val();  
+        var Secretary = $("#Secretaryvalue").val();
+          
+            if (President == "President" && Secretary == "Secretary") {
+                var url = $("#RedirectTo").val();
+                location.href = url;
+
+            }
+            else
+            {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: "Please Add Role President and Secretary",
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+            }
+    }
     function ValidateEmail() {
-        debugger;
+
         var email = document.getElementById("txtemail").value;
         var lblError = document.getElementById("lblError");
 
         var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        debugger
+
         if (!expr.test(email)) {
             $('label[for="error"]').show();
             //errorEmail.textContent = "Invalid email address.";
@@ -696,7 +770,7 @@
 
     function CheckValidation() {
         //alert("in");
-        debugger
+
         var status = true;
         var Name = $('#txtname').val();
         var profile = $('#profilefile').val();
@@ -734,7 +808,7 @@
             $('#txtCollege').removeClass('errr-highlight').addClass('sucess-highlight');
             $('#errorCollege').html('');
         }
-        
+
         if (role == 0) {
             $('label[for="error"]').show();
             errorRole.textContent = "Please Select Designation";
@@ -873,7 +947,7 @@
             $('#errorEducationfile').html('');
             $('#fileEducation').removeClass('errr-highlight').addClass('sucess-highlight');
         }
-       
+
         if ($('#signaturefile').val() == '') {
             errorSignaturefile.textContent = "Please attched Signature Pic";
             $('#errorSignaturefile').addClass('colordiv');
@@ -884,7 +958,7 @@
             $('#errorSignaturefile').html('');
             $('#signaturefile').removeClass('errr-highlight').addClass('sucess-highlight');
         }
-       
+
         //alert($('#filepan').val());
         if ($('#filepan').val() == '') {
             errorPanCardfile.textContent = "Please attched Pan Card file";
@@ -912,7 +986,7 @@
                 $('#errorPanCardfileSize').html('');
             }
         }
-        debugger
+
         if ($('#txtemail').val().length <= 0) {
             errorEmail.textContent = "Please Enter Email Id";
             $('#errorEmail').addClass('colordiv');
