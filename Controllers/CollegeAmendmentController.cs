@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.Services.Description;
 using static NewZapures_V2.Models.Common;
 
 namespace NewZapures_V2.Controllers
@@ -184,7 +185,7 @@ namespace NewZapures_V2.Controllers
                     var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                     return new JsonResult
                     {
-                        Data = new { StatusCode = objResponse.statusCode, Failure = true },
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true, Message = objResponse.Message },
                         ContentEncoding = System.Text.Encoding.UTF8,
                         JsonRequestBehavior = JsonRequestBehavior.AllowGet
                     };
@@ -228,7 +229,7 @@ namespace NewZapures_V2.Controllers
 
                     return new JsonResult
                     {
-                        Data = new { StatusCode = objResponse.statusCode, Failure = true },
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true, Message = objResponse.Message },
                         ContentEncoding = System.Text.Encoding.UTF8,
                         JsonRequestBehavior = JsonRequestBehavior.AllowGet
                     };
@@ -273,7 +274,7 @@ namespace NewZapures_V2.Controllers
 
                     return new JsonResult
                     {
-                        Data = new { StatusCode = objResponse.statusCode, Failure = true },
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true, Message = objResponse.Message },
                         ContentEncoding = System.Text.Encoding.UTF8,
                         JsonRequestBehavior = JsonRequestBehavior.AllowGet
                     };
@@ -318,7 +319,7 @@ namespace NewZapures_V2.Controllers
 
                     return new JsonResult
                     {
-                        Data = new { StatusCode = objResponse.statusCode, Failure = true },
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true, Message = objResponse.Message },
                         ContentEncoding = System.Text.Encoding.UTF8,
                         JsonRequestBehavior = JsonRequestBehavior.AllowGet
                     };
@@ -348,7 +349,7 @@ namespace NewZapures_V2.Controllers
             try
             {
                 var userdetailsSession = (UserModelSession)Session["UserDetails"];
-                //party.ParentId = userdetailsSession.PartyId;
+                //trg.PartyId = userdetailsSession.PartyId;
                 trg.trusID = SessionModel.TrustId;
                 var json = JsonConvert.SerializeObject(trg);
                 var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "CollegeAmendmentDetails/MergerDocDetails");
@@ -363,7 +364,7 @@ namespace NewZapures_V2.Controllers
                     var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                     return new JsonResult
                     {
-                        Data = new { StatusCode = objResponse.statusCode, Failure = true },
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true, Message = objResponse.Message },
                         ContentEncoding = System.Text.Encoding.UTF8,
                         JsonRequestBehavior = JsonRequestBehavior.AllowGet
                     };
@@ -782,6 +783,55 @@ namespace NewZapures_V2.Controllers
 
         }
         #endregion
+
+        #region update Merger Document
+        [HttpPost]
+        public JsonResult UpdateMergerDetails(AmendmentBO trg)
+        {
+            try
+            {
+                var userdetailsSession = (UserModelSession)Session["UserDetails"];
+                //party.ParentId = userdetailsSession.PartyId;
+                var json = JsonConvert.SerializeObject(trg);
+                var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "CollegeAmendmentDetails/UpdateDocDetailMerger");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("cache-control", "no-cache");
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("Accept", "application/json");
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                    return new JsonResult
+                    {
+                        Data = new { StatusCode = objResponse.statusCode, Failure = true, Message = objResponse.Message },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+                else
+                {
+                    return new JsonResult
+                    {
+                        Data = new { StatusCode = objResponse.statusCode, Failure = false },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+        #endregion
+
 
     }
 }
