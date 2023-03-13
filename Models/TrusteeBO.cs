@@ -68,19 +68,19 @@ namespace NewZapures_V2.Models
             public string Id { get; set; }
             public string TrustInfoId { get; set; }
             public string trustName { get; set; }
-            public string Name { get; set; }
+            public string Name { get; set; }          
             public string RoleId { get; set; }
             public string Mobile { get; set; }
             public string Email { get; set; }
             public string AadhaarNo { get; set; }
             public string PanNo { get; set; }
             public string Aadhaar { get; set; }
-            public string Pan { get; set; }
-            public string ProfileImg { get; set; }
             public string AadhaarExtension { get; set; }
             public string AadhaarContentType { get; set; }
+            public string Pan { get; set; }
             public string PanExtension { get; set; }
             public string PanContentType { get; set; }
+            public string ProfileImg { get; set; }
             public string ProfileExtension { get; set; }
             public string ProfileContentType { get; set; }
             public byte[] DocumentByte { get; set; }
@@ -90,6 +90,24 @@ namespace NewZapures_V2.Models
             public string Authorized { get; set; }
             public string AuthorizedExtension { get; set; }
             public string AuthorizedContentType { get; set; }
+
+            //Add new Param11 march
+            public string OccupationId { get; set; }
+            public string GenderId { get; set; }
+            public string FatherName { get; set; }           
+            public string CollageId { get; set; }
+            public string Educationfile { get; set; }
+            public string EducationfileExtension { get; set; }
+            public string EducationfileContentType { get; set; }   
+            
+            public string Letterfile { get; set; }
+            public string LetterfileExtension { get; set; }
+            public string LetterfileContentType { get; set; } 
+            
+            public string signaturefile { get; set; }
+            public string signaturefileExtension { get; set; }
+            public string signaturefileContentType { get; set; }
+
         }
         public class DraftApplication
         {

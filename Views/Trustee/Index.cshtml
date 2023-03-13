@@ -8,11 +8,18 @@
     //{
     //    TrustList = (List<CustomMaster>)ViewBag.TrustList;
     //}
+    List<NewZapures_V2.Models.TrusteeBO.CollageList> collagelist = ViewBag.collegelist as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
     List<CustomMaster> RoleType = new List<CustomMaster>();
     if (ViewBag.RoleType != null)
     {
         RoleType = (List<CustomMaster>)ViewBag.RoleType;
     }
+    List<CustomMaster> Occupation = new List<CustomMaster>();
+    if (ViewBag.Occupation != null)
+    {
+        Occupation = (List<CustomMaster>)ViewBag.Occupation;
+    }
+
 }
 
 <style>
@@ -45,6 +52,7 @@
     }*@
 </style>
 @section styles {
+
     <link href="~/plugins/dropify/css/dropify.min.css" rel="stylesheet">
     <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
     <link href="~/Content/ValditionsCss/valditionsCommon.css" rel="stylesheet" />
@@ -128,10 +136,10 @@
         <div class="page-title-box d-flex align-items-center justify-content-between">
             <div class="float-right d-none">
                 @*<ol class="breadcrumb">
-                <li class="breadcrumb-item">NOC</li>
-                <li class="breadcrumb-item">Master</li>
-                <li class="breadcrumb-item active">Trustee</li>
-            </ol>*@
+                        <li class="breadcrumb-item">NOC</li>
+                        <li class="breadcrumb-item">Master</li>
+                        <li class="breadcrumb-item active">Trustee</li>
+                    </ol>*@
             </div>
             <h4 class="page-title w-75">(@SessionModel.TrustName)- (@SessionModel.TrustTypeName)-@ViewBag.Title</h4>
             <div class="w-25 text-right">
@@ -148,30 +156,39 @@
         <h4 class="mt-0 title-heading float-left">@ViewBag.Title </h4>
     </div>
     <div id="">
+       
         @using (Html.BeginForm("Index", "Trustee", FormMethod.Post, new { id = "Trusteeform", enctype = "multipart/form-data", novalidate = "novalidate" }))
         {
             <div id="validation-summary" class="alert-danger"></div>
             <div class="card-body row">
                 <div class="col-12">
                     <div class="row">
-                        <div class="col-lg-1 trustee-file-height form-group">
-                            <div class="">
-                                <h4 class="mt-0 header-title noc-form-label">Profile Photo</h4>
-                                <input type="file" id="input-file-now" class="dropify" name="profilefile" />
-                            </div>
-                        </div>
                         <div class="col-lg-4 trustee-file-height form-group">
                             <div class="">
-                                <h4 class="mt-0 header-title noc-form-label">College</h4>
-                                <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
-                                    <option value="0">Select College</option>
-                                   
-                                </select>
+                                <h4 class="mt-0 header-title noc-form-label">Profile Photo</h4>
+                                <input type="file" class="dropify" id="profilefile" name="profilefile" />
                             </div>
                         </div>
-                        <div class="col-lg-9">
+                        <div class="col-lg-8">
                             <div class="row">
-                                <div class="col-lg-2">
+                                <div class="col-lg-6 trustee-file-height form-group">
+                                    <div class="">
+                                        <h4 class="mt-0 header-title noc-form-label">College</h4>
+                                        <select class="form-control noc-input-text" id="txtCollege" name="CollageId" required>
+                                            <option value="0">Select College</option>
+                                            @if (collagelist != null)
+                                            {
+                                                foreach (var item in collagelist)
+                                                {
+                                                    <option value="@item.CollageId">@item.CollageName</option>
+                                                }
+                                            }
+
+                                        </select>
+                                        <label for="error" class="col-sm-12" id="errorCollege" style="display:none;"></label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Name of Person</lable>
                                         <span style="color:red;">*</span>
@@ -180,7 +197,7 @@
                                         @Html.ValidationMessage("Name", "", new { @class = "label label-danger", id = "lblName" })
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Designation</lable>
                                         <span style="color:red;">*</span>
@@ -196,121 +213,125 @@
                                         <label for="error" class="col-sm-12" id="errorRole" style="display:none;"></label>
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         <lable class="noc-form-label">Occupation</lable>
                                         <span style="color:red;">*</span>
-                                        <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
+                                        <select class="form-control noc-input-text" id="txtOccupation" name="OccupationId" required>
                                             <option value="0">Select Occupation</option>
+                                            @{
+                                                foreach (var item in Occupation)
+                                                {
+                                                    <option value="@item.Id">@item.text</option>
+                                                }
+                                            }
 
                                         </select>
-                                        <label for="error" class="col-sm-12" id="errorRole" style="display:none;"></label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Mobile No</lable>
-                                        <span style="color:red;">*</span>
-                                        <input class="form-control col-sm-12 numberonly noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtmobile" name="Mobile" maxlength="10">
-                                        <label for="error" class="col-sm-12" id="errorMobile" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorMobileten" style="display:none;"></label>
-                                        @*@Html.ValidationMessage("Mobile", "", new { @class = "label label-danger" })*@
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Email</lable>
-                                        <span style="color:red;">*</span>
-                                        <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtemail" name="Email">
-                                        <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
-                                        @Html.ValidationMessage("Email", "", new { @class = "label label-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-2">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Gender</lable>
-                                        <span style="color:red;">*</span>
-                                        <select class="form-control noc-input-text" id="txtrole" name="RoleId" required>
-                                            <option value="0">Select Gender</option>
-
-                                        </select>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Father Name</lable>
-                                        <span style="color:red;">*</span>
-                                        <input class="form-control noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtaadharno" name="AadhaarNo" maxlength="12">
-                                        <label for="error" class="col-sm-12" id="errorAadhaar" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorAadhaarvalid" style="display:none;"></label>
-                                        @Html.ValidationMessage("AadhaarNo", "", new { @class = "label label-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Aadhaar No</lable>
-                                        <span style="color:red;">*</span>
-                                        <input class="form-control noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtaadharno" name="AadhaarNo" maxlength="12">
-                                        <label for="error" class="col-sm-12" id="errorAadhaar" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorAadhaarvalid" style="display:none;"></label>
-                                        @Html.ValidationMessage("AadhaarNo", "", new { @class = "label label-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Aadhaar Card(upload Max Size 50KB)</lable>
-                                        <span style="color:red;">*</span>
-                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
-                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
-                                        <span id="aadhaarfile"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Signature Pic(upload Max Size 50KB)</lable>
-                                        <span style="color:red;">*</span>
-                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
-                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
-                                        <span id="aadhaarfile"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Education Proof(upload Max Size 50KB)</lable>
-                                        <span style="color:red;">*</span>
-                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
-                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
-                                        <span id="aadhaarfile"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <lable class="noc-form-label">Consent Letter(upload Max Size 50KB)</lable>
-                                        <span style="color:red;">*</span>
-                                        <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
-                                        <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
-                                        @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
-                                        <span id="aadhaarfile"></span>
+                                        <label for="error" class="col-sm-12" id="errorOccupation" style="display:none;"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    @* new field *@
 
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Mobile No</lable>
+                                <span style="color:red;">*</span>
+                                <input class="form-control col-sm-12 numberonly noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtmobile" name="Mobile" maxlength="10">
+                                <label for="error" class="col-sm-12" id="errorMobile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorMobileten" style="display:none;"></label>
+                                @*@Html.ValidationMessage("Mobile", "", new { @class = "label label-danger" })*@
+                            </div>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Email</lable>
+                                <span style="color:red;">*</span>
+                                <input class="form-control col-sm-12 noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtemail" name="Email">
+                                <label for="error" class="col-sm-12" id="errorEmail" style="display:none;"></label>
+                                @Html.ValidationMessage("Email", "", new { @class = "label label-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Gender</lable>
+                                <span style="color:red;">*</span>
+                                <select class="form-control noc-input-text" id="txtGender" name="GenderId" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+
+                                </select>
+                                <label for="error" class="col-sm-12" id="errorGender" style="display:none;"></label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Father Name</lable>
+                                <span style="color:red;">*</span>
+                                <input class="form-control noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtFather" name="FatherName" maxlength="12">
+                                <label for="error" class="col-sm-12" id="errorFather" style="display:none;"></label>
+
+                                @Html.ValidationMessage("FatherName", "", new { @class = "label label-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Aadhaar No</lable>
+                                <span style="color:red;">*</span>
+                                <input class="form-control noc-input-text cutcopypaste" type="text" autocomplete="off" id="txtaadharno" name="AadhaarNo" maxlength="12">
+                                <label for="error" class="col-sm-12" id="errorAadhaar" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorAadhaarvalid" style="display:none;"></label>
+                                @Html.ValidationMessage("AadhaarNo", "", new { @class = "label label-danger" })
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Aadhaar Card(upload Max Size 50KB)</lable>
+                                <span style="color:red;">*</span>
+                                <input type="file" id="fileaadhaar" name="aadhaarfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                <label for="error" class="col-sm-12" id="errorAadhaarfile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorAadhaarfileSize" style="display:none;"></label>
+                                @Html.ValidationMessage("aadhaarfile", "", new { @class = "label label-danger" })
+                                <span id="aadhaarfile"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Signature Pic(upload Max Size 50KB)</lable>
+                                <span style="color:red;">*</span>
+                                <input type="file" id="signaturefile" name="signaturefile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                <label for="error" class="col-sm-12" id="errorSignaturefile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorSignaturefilesize" style="display:none;"></label>
+                                @Html.ValidationMessage("signaturefile", "", new { @class = "label label-danger" })
+                                <span id="signaturefile"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" id="Education">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Education Proof(upload Max Size 50KB)</lable>
+                                <span style="color:red;">*</span>
+                                <input type="file" id="fileEducation" name="Educationfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                <label for="error" class="col-sm-12" id="errorEducationfile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorEducationfileSize" style="display:none;"></label>
+                                @Html.ValidationMessage("educationfile", "", new { @class = "label label-danger" })
+                                <span id="educationfile"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" id="Letter">
+                            <div class="form-group">
+                                <lable class="noc-form-label">Consent Letter(upload Max Size 50KB)</lable>
+                                <span style="color:red;">*</span>
+                                <input type="file" id="fileLetter" name="Letterfile" data-input="true" accept=".jpg,.jpeg,.png" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                <label for="error" class="col-sm-12" id="errorLetterfile" style="display:none;"></label>
+                                <label for="error" class="col-sm-12" id="errorLetterfileSize" style="display:none;"></label>
+                                @Html.ValidationMessage("letterfile", "", new { @class = "label label-danger" })
+                                <span id="letterfile"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <lable class="noc-form-label">Pan No</lable>
                                 <span style="color:red;">*</span>
@@ -318,7 +339,7 @@
                                 <label for="error" class="col-sm-12" id="errorPanNo" style="display:none;"></label>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <lable class="noc-form-label">Pan Card (upload Max Size 50KB)</lable>
                                 <span style="color:red;">*</span>
@@ -328,7 +349,7 @@
                                 <label for="error" class="col-sm-12" id="errorPanCardfileSize" style="display:none;"></label>
                             </div>
                         </div>
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-4">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="chkIsPrime" data-parsley-multiple="groups" data-parsley-mincheck="2">
                                 <input type="hidden" id="hdnchkIsPrime" name="isPrimary">
@@ -336,7 +357,7 @@
 
                             </div>
                         </div>
-                        <div class="form-group col-lg-3" id="filediv">
+                        <div class="form-group col-lg-4" id="filediv">
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="chkIsAuthorized" data-parsley-multiple="groups" data-parsley-mincheck="2">
                                 <input type="hidden" id="hdnchkIsAuthorized" name="isAuthorize">
@@ -351,11 +372,11 @@
                                 <label for="error" class="col-sm-12" id="errorIsAuthfileSize" style="display:none;"></label>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-
-                        </div>
-
                     </div>
+                    @* new field *@
+
+
+
 
                 </div>
 
@@ -383,8 +404,12 @@
                             <th>Profile</th>
                             @*<th>Trust Name</th>*@
                             <th>Name</th>
+                            <th>Father Name</th>
+                            <th>College</th>
                             <th>Role</th>
+                            <th>Occupation</th>
                             <th>Mobile No</th>
+                            <th>Gender</th>
                             <th>Email</th>
                             <th>AadhaarNo</th>
                             <th>PanNo</th>
@@ -393,6 +418,9 @@
                             <th style="text-align:center">Aadhaar</th>
                             <th style="text-align:center">Pan</th>
                             <th style="text-align:center">Authorized Doc</th>
+                            <th style="text-align:center">Signature</th>
+                            <th style="text-align:center">Education Proof</th>
+                            <th style="text-align:center">Consent Letter</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -402,6 +430,23 @@
                             int i = 1;
                             foreach (var item in trusteelist)
                             {
+                                if (item.RoleId == "President")
+                                {
+                                    <div class="test">
+                                        <input type="hidden" value="@item.RoleId" id="Presidentvalue" />
+                                    </div>
+
+
+
+                                }
+                                if (item.RoleId == "Secretary")
+                                {
+                                    <div class="test">
+                                        <input type="hidden" value="@item.RoleId" id="Secretaryvalue" />
+                                    </div>
+
+                                }
+
                                 <tr>
                                     <td>@i</td>
                                     <td>
@@ -412,8 +457,12 @@
                                     </td>
                                     @*<td>@item.trustName</td>*@
                                     <td>@item.Name</td>
+                                    <td>@item.FatherName</td>
+                                    <td>@item.CollageId</td>
                                     <td>@item.RoleId</td>
+                                    <td>@item.OccupationId</td>
                                     <td>@item.Mobile</td>
+                                    <td>@item.GenderId</td>
                                     <td>@item.Email</td>
                                     <td>@item.AadhaarNo</td>
                                     <td>@item.PanNo</td>
@@ -437,6 +486,24 @@
                                             <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Authorized })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
                                         }
                                     </td>
+                                    <td style="text-align:center">
+                                        @if (item.signaturefile != "")
+                                        {
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.signaturefile })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                        }
+                                    </td>
+                                    <td style="text-align:center">
+                                        @if (item.Educationfile != "")
+                                        {
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Educationfile })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                        }
+                                    </td>
+                                    <td style="text-align:center">
+                                        @if (item.Letterfile != "")
+                                        {
+                                            <a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Letterfile })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                        }
+                                    </td>
                                     <td>
                                         <a id="" class="Deleteclass theme-delete-btn" name="2" data-id="@item.Id" href="@Url.Action("DeleteTrustMemeber", "Trustee", new { Id = item.Id })" title="Delete"><i class="fas fa-times font-16"></i></a>
                                     </td>
@@ -453,7 +520,7 @@
                             </tr>
                         }
                     </tbody>
-                </table>
+                    </table>
             </div>
         </div>
     </div>
@@ -463,14 +530,18 @@
     <div class="row">
         <div class="w-100 float-left" style="margin-top:20px">
             <div class="w-100 float-left text-right mb-4">
-                <a href="@Url.Action("CreateDetails", "BasicDetails")" class="theme-button-mockup" style="" id="Reset">Proceed To Add College Details</a>
+                <a href="#" class="theme-button-mockup" style="" id="Reset" onclick="Reset();">Proceed To Add College Details</a>
+                @Html.Hidden("RedirectTo", Url.Action("CreateDetails", "BasicDetails"));
             </div>
         </div>
     </div>
 }
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
 @section scripts {
+    @*<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>*@
+
     <script src="~/plugins/dropify/js/dropify.min.js"></script>
     <script src="~/scripts/pages/jquery.form-upload.init.js"></script>
     <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
@@ -500,7 +571,32 @@
     $('.cutcopypaste').on("cut copy paste", function (e) {
         e.preventDefault();
     });
+    debugger
     var isAlreadyPrimary = 0;
+     var isuserExists = '@TempData["isSavedexists"]'
+        var message = '@TempData["Messageexists"]'
+        if (isuserExists == 1 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+        }
+        if (isuserExists == 0 && message.length> 0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+        }
+
     $(document).ready(function () {
         $('#txtname').keypress(function (e) { $('#txtname').removeClass('errr-highlight').addClass('sucess-highlight'); });
         $('.alphaspace').keypress(function (e) {
@@ -542,6 +638,25 @@
             }
 
         });
+
+        $("#Education").hide();
+        $("#Letter").hide();
+        $("#txtOccupation").change(function () {
+
+            var Occupation = $("#txtOccupation option:selected").text();
+            if (Occupation == "Educationist") {
+                $("#Education").show();
+                $("#Letter").show();
+            }
+            else {
+                $("#Education").hide();
+                $("#Letter").hide();
+
+            }
+
+        });
+
+
 
 
     });
@@ -607,13 +722,38 @@
         }
     });
 
+    function Reset() {
+      
+        debugger
+        
+        var President = $("#Presidentvalue").val();  
+        var Secretary = $("#Secretaryvalue").val();
+          
+            if (President == "President" && Secretary == "Secretary") {
+                var url = $("#RedirectTo").val();
+                location.href = url;
+
+            }
+            else
+            {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: "Please Add Role President and Secretary",
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+
+                });
+            }
+    }
     function ValidateEmail() {
-        debugger;
+
         var email = document.getElementById("txtemail").value;
         var lblError = document.getElementById("lblError");
 
         var expr = /^([\w-\.]+)@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        debugger
+
         if (!expr.test(email)) {
             $('label[for="error"]').show();
             //errorEmail.textContent = "Invalid email address.";
@@ -630,13 +770,20 @@
 
     function CheckValidation() {
         //alert("in");
+
         var status = true;
         var Name = $('#txtname').val();
+        var profile = $('#profilefile').val();
+        var CollegeId = $('#txtCollege option:selected').val();
         var role = $('#txtrole option:selected').val();
+        var OccupationId = $('#txtOccupation option:selected').val();
+        var GenderId = $('#txtGender option:selected').text();
         var mobile = $('#txtmobile').val();
+        var FatherName = $('#txtFather').val();
         var aadharno = $('#txtaadharno').val();
         var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
         var Email = $('#txtEmail').val();
+
         if (Name.length <= 0) {
             $('label[for="error"]').show();
             errortxtName.textContent = "Please Enter Name";
@@ -649,9 +796,22 @@
             $('#txtname').removeClass('errr-highlight').addClass('sucess-highlight');
             $('#errortxtName').html('');
         }
+        if (CollegeId  == 0) {
+            $('label[for="error"]').show();
+            errorCollege.textContent = "Please Select College Name";
+            /* errortxtName.style.color = "red";*/
+            $('#errorCollege').addClass('colordiv');
+            $('#txtCollege').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtCollege').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorCollege').html('');
+        }
+
         if (role == 0) {
             $('label[for="error"]').show();
-            errorRole.textContent = "Please Select Role";
+            errorRole.textContent = "Please Select Designation";
             $('#errorRole').addClass('colordiv');
             $('#txtrole').removeClass('sucess-highlight').addClass('errr-highlight');
             status = false;
@@ -659,6 +819,17 @@
         else {
             $('#txtrole').removeClass('errr-highlight').addClass('sucess-highlight');
             $('#errorRole').html('');
+        }
+        if (OccupationId == 0) {
+            $('label[for="error"]').show();
+            errorOccupation.textContent = "Please Select Occupation";
+            $('#errorOccupation').addClass('colordiv');
+            $('#txtOccupation').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtOccupation').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorOccupation').html('');
         }
         if (mobile.length <= 0) {
             $('label[for="error"]').show();
@@ -746,6 +917,47 @@
                 $('#errorAadhaarfileSize').html('');
             }
         }
+        if (OccupationId == '11578') {
+            if ($('#fileEducation').val() == '') {
+                errorEducationfile.textContent = "Please attched Education Proof";
+                $('#errorEducationfile').addClass('colordiv');
+                $('#fileEducation').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#errorEducationfile').html('');
+                $('#fileEducation').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+            if ($('#fileLetter').val() == '') {
+                errorLetterfile.textContent = "Please attched Consent Letter";
+                $('#errorLetterfile').addClass('colordiv');
+                $('#fileLetter').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#errorLetterfile').html('');
+                $('#fileLetter').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+        }
+        else
+        {
+            status = true;
+             $('#errorLetterfile').html('');
+            $('#fileLetter').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorEducationfile').html('');
+            $('#fileEducation').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
+
+        if ($('#signaturefile').val() == '') {
+            errorSignaturefile.textContent = "Please attched Signature Pic";
+            $('#errorSignaturefile').addClass('colordiv');
+            $('#signaturefile').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#errorSignaturefile').html('');
+            $('#signaturefile').removeClass('errr-highlight').addClass('sucess-highlight');
+        }
 
         //alert($('#filepan').val());
         if ($('#filepan').val() == '') {
@@ -785,6 +997,31 @@
             ValidateEmail();
             // $('#txtemail').removeClass('errr-highlight').addClass('sucess-highlight');
         }
+        if (GenderId == "Select Gender" || GenderId == undefined) {
+            $('label[for="error"]').show();
+            errorGender.textContent = "Please Select Gender";
+            $('#errorGender').addClass('colordiv');
+            $('#txtGender').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtGender').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorGender').html('');
+        }
+
+        if (FatherName.length <= 0) {
+            $('label[for="error"]').show();
+            errorFather.textContent = "Please Enter Father Name";
+            /* errortxtName.style.color = "red";*/
+            $('#errorFather').addClass('colordiv');
+            $('#txtFather').removeClass('sucess-highlight').addClass('errr-highlight');
+            status = false;
+        }
+        else {
+            $('#txtFather').removeClass('errr-highlight').addClass('sucess-highlight');
+            $('#errorFather').html('');
+        }
+
         var IsAuth = $("#chkIsAuthorized").is(':checked');
         //alert(status);
         if (IsAuth) {
