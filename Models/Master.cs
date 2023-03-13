@@ -72,8 +72,8 @@ namespace NewZapures_V2.Models
         public string NocDepartmenttype { get; set; }
         public string DepartName { get; set; }
         public int? NocSpecialId { get; set; }
-        public string iFk_NocSpecialId { get; set; }  
-        public int? iSpecialStatus { get; set; }    
+        public string iFk_NocSpecialId { get; set; }
+        public int? iSpecialStatus { get; set; }
         public string specialtype
         {
             get
@@ -82,7 +82,7 @@ namespace NewZapures_V2.Models
                 {
                     case 1:
                         return "Special";
-                   
+
                     default:
                         return "";
                 }
@@ -273,6 +273,7 @@ namespace NewZapures_V2.Models
     {
         public string DepartmentName { get; set; }
         public string ApplicationType { get; set; }
+        public string Casetext { get; set; }
     }
 
     public class FeeTRN : FeeMstField
@@ -285,6 +286,8 @@ namespace NewZapures_V2.Models
         public decimal dCharges { get; set; }
         public string sGuidid { get; set; }
         public string FormName { get; set; }
+        public int CaseId { get; set; }
+        public string type { get; set; }
     }
     public class FeeMst : FeeMstField
     {

@@ -224,24 +224,24 @@
                                 <div>
                                     <select class="singleselect noc-input-text" id="ddlNOCDetails">
                                         @*@{
-                    <option value=0>Select Form Name</option>
+                                            <option value=0>Select Form Name</option>
 
-                    foreach (var item in FormName)
-                    { var item2 = 0;
-                        foreach(var inneritem in FeeTrns)
-                        {
-                            if (inneritem.iFK_FrmID == Convert.ToInt32(item.Id))
-                            {
-                                item2 = 1;
-                            }
+                                            foreach (var item in FormName)
+                                            { var item2 = 0;
+                                                foreach(var inneritem in FeeTrns)
+                                                {
+                                                    if (inneritem.iFK_FrmID == Convert.ToInt32(item.Id))
+                                                    {
+                                                        item2 = 1;
+                                                    }
 
-                        }
-                        if (item2 == 0)
-                        {
-                        <option value=@item.Id>@item.Text</option>
-                            }
-                        }
-                    }*@
+                                                }
+                                                if (item2 == 0)
+                                                {
+                                                <option value=@item.Id>@item.Text</option>
+                                                    }
+                                                }
+                                            }*@
                                     </select>
                                 </div>
                             </div>
@@ -250,59 +250,85 @@
                                 <div>
                                     <select class="singleselect noc-input-text" id="ddlNOCCases"></select>
                                 </div>
-                                </div>
-                                <div class="form-group col-lg-3">
-                                    <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Charges</label>
-                                    <div>
-                                        <input type="text" class="form-control noc-input-text" name="Charges" id="Charges" value="" required />
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-lg-6">
-                                    <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">&nbsp;</label>
-                                    <div>
-                                        <button class="theme-button-mockup btnPrev" id="btnAdd"><i class="fas fa-plus"></i> ADD</button>
-                                    </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Charges</label>
+                                <div>
+                                    <input type="text" class="form-control noc-input-text" name="Charges" id="Charges" value="" required />
                                 </div>
                             </div>
-                            <div class="noc-layouts-tbl" style="overflow-x:auto">
-
-                                <table class="table table-borderless table-striped table-hover">
-                                    <thead class="">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Department</th>
-                                            <th>Application Type</th>
-                                            <th>NOC Form Name</th>
-                                            <th>Charges</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tbody">
-                                        @{
-                                            var i = 1;
-                                            foreach (var item in FeeTrns)
-                                            {
-                                                <tr Id="tr-@item.sGuidid">
-                                                    <td data-id="@item.sGuidid">@i</td>
-                                                    <td>@item.DepartmentName</td>
-                                                    <td>@item.ApplicationType</td>
-                                                    <td data-id="@item.iFK_FrmID">@item.FormName</td>
-                                                    <td>@item.dCharges</td>
-                                                    <td> <a class="Deleteclass" onclick="DeleteData('@item.sGuidid')" title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
-                                                </tr>
-                                                i++;
-                                            }
-                                        }
-
-
-
-
-
-                                    </tbody>
-                                </table>
+                            <div class="form-group col-lg-6 row" style="
+    padding-left: 34px;
+">
+                                <div class="radio col-lg-4">
+                                    <input type="radio" name="iType" id="radio_1" value="UG">
+                                    <label for="radio_1" style="font-weight: bold; width: auto;" class="noc-general-form noc-form-label">
+                                        UG
+                                    </label>
+                                </div>
+                                <div class="radio col-lg-4">
+                                    <input type="radio" name="iType" id="radio_2" value="PG">
+                                    <label for="radio_2" style="font-weight: bold; width: auto;" class="noc-general-form noc-form-label">
+                                        PG
+                                    </label>
+                                </div>
+                                <div class="radio col-lg-4">
+                                    <input type="radio" name="iType" id="radio_3" value="Both">
+                                    <label for="radio_3" style="font-weight: bold; width: auto;" class="noc-general-form noc-form-label">
+                                        Both
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                @*<label for="example-text-input" class="noc-form-label" style="margin-left:-10px">&nbsp;</label>
+                                    <div>*@
+                                <button class="theme-button-mockup btnPrev" id="btnAdd"><i class="fas fa-plus"></i> ADD</button>
+                                @*</div>*@
                             </div>
                         </div>
+                        <div class="noc-layouts-tbl" style="overflow-x:auto">
+
+                            <table class="table table-borderless table-striped table-hover">
+                                <thead class="">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Department</th>
+                                        <th>Application Type</th>
+                                        <th>NOC Form Name</th>
+                                        <th>Cases</th>
+                                        <th>Type</th>
+                                        <th>Charges</th>
+
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    @{
+                                        var i = 1;
+                                        foreach (var item in FeeTrns)
+                                        {
+                                            <tr Id="tr-@item.sGuidid">
+                                                <td data-id="@item.sGuidid">@i</td>
+                                                <td>@item.DepartmentName</td>
+                                                <td>@item.ApplicationType</td>
+                                                <td data-id="@item.iFK_FrmID">@item.FormName</td>
+                                                <td data-id="@item.CaseId">@item.Casetext</td>
+                                                <td>@item.type</td>
+                                                <td>@item.dCharges</td>
+                                                <td> <a class="Deleteclass" onclick="DeleteData('@item.sGuidid')" title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="row text-right card-body pt-0 pb-0">
                     <div class="form-group col-lg-12">
@@ -345,8 +371,8 @@
         var d = JSON.stringify(NOCReq);
 
 
-        var lenth = formarr.length;
-        formarr.splice(0, lenth);
+        //var lenth = formarr.length;
+        //formarr.splice(0, lenth);
 
 
         console.log(d);
@@ -399,8 +425,11 @@
         var val1 = $(t.rows[index].cells[3]).data('id');
         var val1text = $(t.rows[index].cells[3]).text();
         console.log(val1);
-        var val2 = $(t.rows[index].cells[4]).text();
+        var val2 = $(t.rows[index].cells[6]).text();
         var Guid = $(t.rows[index].cells[0]).data('id');
+        var CaseId = $(t.rows[index].cells[4]).data('id');
+        var Caetext = $(t.rows[index].cells[4]).text();
+        var type = $(t.rows[index].cells[5]).text();
         console.log(val2);
         datalist.push({
             iFk_DeptID: deptid,
@@ -409,11 +438,16 @@
             sFrmName: val1text,
             dCharges: val2,
             sGuidid: Guid,
-            iFK_FeeMstID: 0
+            iFK_FeeMstID: 0,
+            CaseId: CaseId,
+            Casetext: Caetext,
+            type: type
         });
        /* bindFormlist();*/
     });
- /*   console.log(datalist);*/
+    console.clear();
+    console.log("sffdsh");
+    console.log(datalist);
 
     $(document).ready(function () {
 
@@ -484,7 +518,7 @@
     });
 
     $('#btnAdd').click(function () {
-
+        debugger;
         var deptid = $("#ddldept").val();
         var depttext = $("#ddldept option:selected").text();
         var ddlNOCid = $("#ddlNOC").val();
@@ -493,8 +527,9 @@
         var FormId = $("#ddlNOCDetails").val();
         var Formtext = $("#ddlNOCDetails option:selected").text();
         var CaseId = $("#ddlNOCCases").val();
-        var Caetext = $("#ddlNOCCases option:selected").text();
+        var Caetext = $("#ddlNOCCases option:selected").text() != "Select Cases" ? $("#ddlNOCCases option:selected").text():"N/A";
         var Charges = $("#Charges").val();
+        var type = $('input[name="iType"]:checked').val();
         datalist.push({
             iFk_DeptID: deptid,
             iFK_AppTypID: ddlNOCid,
@@ -504,20 +539,24 @@
             sGuidid: Guid,
             iFK_FeeMstID: 0,
             CaseId: CaseId,
-            Caetext: Caetext
+            Casetext: Caetext,
+            type: type
         });
         var tabletr = ``;
         var countitem = datalist.length;
         for (var item = 0; item <= countitem - 1; item++) {
 
             var iFK_FrmID = datalist[item].iFK_FrmID;
-            $("#ddlNOCDetails #Form-" + iFK_FrmID).addClass('hidden');
+          /*  $("#ddlNOCDetails #Form-" + iFK_FrmID).addClass('hidden');*/
             var Ids = datalist[item].sGuidid;
             var sFrmName1 = datalist[item].sFrmName;
             var dCharges1 = datalist[item].dCharges;
-            tabletr = `<tr Id="tr-${Ids}"><td>${item+1}</td><td>${depttext}</td><td>${ddlNOCtext}</td><td>${sFrmName1}</td><td>${dCharges1}</td>
-
-<td> <a  class="Deleteclass" onclick="DeleteData('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+            var dCaetext = datalist[item].Casetext;
+            var dCaetype = datalist[item].type;
+            tabletr = `<tr Id="tr-${Ids}"><td>${item+1}</td><td>${depttext}</td><td>${ddlNOCtext}</td><td>${sFrmName1}</td>
+<td>${dCaetext}</td><td>${dCaetype}</td><td>${dCharges1}</td>
+<td>
+<a  class="Deleteclass" onclick="DeleteData('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
 </tr>`;
 
         }
@@ -526,8 +565,8 @@
         $("#ddlNOCDetails").val('0');
         $('#ddlNOCDetails').trigger('change');
         $("#Charges").val('');
-        $('#ddlNOCCases').html('');
-    
+
+
         bindFormlist();
     });
     $("#btnFinalSave").one('click', () => {
@@ -868,10 +907,10 @@
             var Idss = formarr[i].Id;
             var datt = formarr[i].Text;
 
-            var match = datalist.filter(x => x.iFK_FrmID === Idss);
-            if (match.length == 0) {
+            //var match = datalist.filter(x => x.iFK_FrmID === Idss);
+            //if (match.length == 0) {
                 NocSelectData1 += `<option id="Form-${formarr[i].Id}" value=${formarr[i].Id}>${formarr[i].Text} (${formarr[i].ID1})</option>`;
-            }
+           /* }*/
         }
         $('#ddlNOCDetails').html('');
         $('#ddlNOCDetails').html(NocSelectData1);
@@ -879,6 +918,10 @@
     }
     function getNoCCase(NOCDeptId) {
         debugger;
+        if (parseInt(NOCDeptId) == 0) {
+            $('#ddlNOCCases').html('<option value=0>Select Cases</option>');
+            return false;
+        }
         var departid = $('#ddldept').val();
         var applictionid = $('#ddlNOC').val();
         var NOCReq = {
@@ -890,8 +933,6 @@
         var d = JSON.stringify(NOCReq);
 
 
-        var lenth = formarr.length;
-        formarr.splice(0, lenth);
 
 
         console.log(d);
@@ -913,7 +954,7 @@
                 if (NOCData.length > 0) {
 
                     NOCData.forEach(function (item) {
-                       
+
                         NocSelectData += `<option id="case-${item.Id}" value=${item.Id}>${item.Text}</option>`;
                     })
                 }
