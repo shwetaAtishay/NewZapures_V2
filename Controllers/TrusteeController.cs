@@ -246,9 +246,19 @@ namespace NewZapures_V2.Controllers
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
-                    TempData["SwalStatusMsg"] = "success";
-                    TempData["SwalMessage"] = "Data saved sussessfully!";
-                    TempData["SwalTitleMsg"] = "Success...!";
+                    if(objResponseData.Messsage == "Alreday exists iIsPrimary")
+                    {
+                        TempData["isSavedexists"] = 1;
+                        TempData["Messageexists"] = "Alreday exists iIsPrimary!";
+                        
+                    }
+                    else
+                    {
+                        TempData["SwalStatusMsg"] = "success";
+                        TempData["SwalMessage"] = "Data saved sussessfully!";
+                        TempData["SwalTitleMsg"] = "Success...!";
+                    }
+                    
                     //return RedirectToAction("Index");
                 }
                 else
