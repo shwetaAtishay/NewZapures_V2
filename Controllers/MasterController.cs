@@ -30,8 +30,11 @@ namespace NewZapures_V2.Controllers
             ViewBag.NocdeptName = NocdeptName;
             List<Dropdown> Nocdepttype = new List<Dropdown>();
             Nocdepttype = GetNOCDepartmentsName(2);
+            List<Dropdown> SpecialCourse = new List<Dropdown>();
+            SpecialCourse = GetNOCDepartmentsName(5);
             ViewBag.Nocdepttype = Nocdepttype;
             ViewBag.Department = departmentList;
+            ViewBag.SpecialCourse = SpecialCourse;
             List<NOCDEPMAP> lstMap = new List<NOCDEPMAP>();
             lstMap = GetNOCDepartMaplst(0);
             return View(lstMap);
@@ -1245,10 +1248,10 @@ namespace NewZapures_V2.Controllers
             ViewBag.Id = Id;
             return View(obj);
         }
-        public JsonResult BindApplication(int Deptid, int ApplicationId = 0)
+        public JsonResult BindApplication(int Deptid, int ApplicationId = 0,int NOCDeptId=0)
         {
             List<Dropdown> departments = new List<Dropdown>();
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetApplicationData?Deptid=" + Deptid + "&ApplicationId=" + ApplicationId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetApplicationData?Deptid=" + Deptid + "&ApplicationId=" + ApplicationId + "&NOCDeptId="+ NOCDeptId);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
