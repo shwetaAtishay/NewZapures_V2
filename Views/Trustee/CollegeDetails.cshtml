@@ -323,6 +323,8 @@
 <script>
 
     var MAppDetails = [];
+    var isAllowed = 0;
+    var newSubjects = "";
     $(document).ready(function () {
 
         $('#ddlCourseList').select2();
@@ -376,6 +378,10 @@
             var subList = '';
             var corsList = '';
             var isAllCourseCovered = true;
+
+            var courseIDList = "";
+            var subjectIDList = "";
+
             // for selected subject name To be comma saperated
             for (var i = 0; i <= subjnameList.length - 1; i++) {
 
@@ -396,7 +402,25 @@
 
             corsnameList.forEach(function (item) {
                 //console.log('Corse Loop', item.id);
+                courseIDList = "";
+                subjectIDList = "";
                 MAppDetails.forEach(function (item1) {
+                    if (courseIDList.length > 0) {
+                        if (!courseIDList.includes(item1.CourseID))
+                            courseIDList += ',' + item1.CourseID;
+                    }
+                    else {
+                        courseIDList = item1.CourseID;
+                    }
+
+                    if (subjectIDList.length > 0) {
+
+                        if (!subjectIDList.includes(item1.SubjectID))
+                            subjectIDList += ',' + item1.SubjectID;
+                    }
+                    else {
+                        subjectIDList = item1.SubjectID;
+                    }
 
                     /*console.log('Mapp Loop', item1.CourseID);*/
                     if (item1.CourseID != item.id) {
@@ -407,54 +431,71 @@
                     }
                 })
             })
+            CheckDraftValidationForEntry(collegeID, courseIDList, subjectIDList);
 
-            var d = JSON.stringify(MAppDetails)
-            if (isAllCourseCovered) {
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    url: GetglobalDomain() + "/Trustee/SaveDeptMst",
-                    dataType: 'json',
-                    type: 'Post',
-                    cache: false,
-                    data: d,
-                    success: function (data) {
-                        console.log(data);
-                        if (data.StatusCode == 1) {
+            if (localStorage.getItem("AllowToAdd") == 1) {
+                var d = JSON.stringify(MAppDetails)
+                if (isAllCourseCovered) {
+                     $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        url: GetglobalDomain() + "/Trustee/SaveDeptMst",
+                        dataType: 'json',
+                        type: 'Post',
+                        cache: false,
+                        data: d,
+                        success: function (data) {
+                            //console.log(data);
+                            if (data.StatusCode == 1) {
 
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: `Success`,
-                                html: `<p>${data.msg}</p>`,
-                                allowOutsideClick: false,
-                                showCloseButton: true,
-                                showConfirmButton: false,
-                            });
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: `Success`,
+                                    html: `<p>${data.msg}</p>`,
+                                    allowOutsideClick: false,
+                                    showCloseButton: true,
+                                    showConfirmButton: false,
+                                });
+                            }
+
+                            setTimeout(function () {
+
+                                location.href = '@Url.Action("DraftApplication", "Trustee")';
+                            }, 1000)
+                        },
+                        error: function (d) {
+                            //alert(d);
                         }
-
-                        setTimeout(function () {
-
-                            location.href = '@Url.Action("DraftApplication", "Trustee")';
-                        }, 1000)
-                    },
-                    error: function (d) {
-                        //alert(d);
-                    }
-                });
+                    });
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `error`,
+                        html: `<p>"Dear applicant you have not selected subject against all the course you marked in course selection. Kindly add the subject or remove the course for which subjects are not marked"</p>`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
             }
             else {
+                var s = localStorage.getItem("NewSubjects");
+                //alert(s);
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
                     title: `error`,
-                    html: `<p>"Dear applicant you have not selected subject against all the course you marked in course selection. Kindly add the subject or remove the course for which subjects are not marked"</p>`,
+                    html: `<div><p>Dear Applicant, Draft application already exist for this Courses and Subjects. You can proceed in same application, or first cancel existing draft and try again.</p><br/><p>We found <b>: ${s}</b> is your new selection. Or else create new Application for this subject</p></div>`,
                     allowOutsideClick: false,
                     showCloseButton: true,
                     showConfirmButton: false,
                 });
+
             }
         });
 
@@ -688,5 +729,41 @@
     //        }
     //    });
     //}
+
+    function CheckDraftValidationForEntry(clgID,Courses,Subjects) {
+        var Data = {
+            clgID: parseInt(clgID),
+            Courses: Courses,
+            Subjects: Subjects
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/CheckDraftValidationForEntry",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data.Type);
+                console.log(data);
+                //if (data.StatusCode == 1) {
+
+                //}
+                localStorage.removeItem("AllowToAdd");
+                localStorage.removeItem("NewSubjects");
+
+                localStorage.setItem("AllowToAdd", data.StatusCode);
+                localStorage.setItem("NewSubjects", data.Subject);
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+    }
 
 </script>

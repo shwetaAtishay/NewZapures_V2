@@ -4326,6 +4326,7 @@
     <Content Include="Views\CollegeAmendment\ViewDetail.cshtml" />
     <Content Include="Views\Admin\OldNOC1.cshtml" />
     <Content Include="Views\Master\FeeMstIndex.cshtml" />
+    <Content Include="Views\Trustee\ApplyNOCApplicationNew1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
