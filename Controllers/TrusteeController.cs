@@ -481,6 +481,12 @@ namespace NewZapures_V2.Controllers
             ViewBag.departments = departmentList;
             return View();
         }
+        public ActionResult ApplyNOCApplicationNew1()
+        {
+            var departmentList = ZapurseCommonlist.GetDepartmentlist();
+            ViewBag.departments = departmentList;
+            return View();
+        }
         public ActionResult ApplyNOCApplication()
         {
             var departmentList = ZapurseCommonlist.GetDepartmentlist();
@@ -2300,5 +2306,34 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
+
+
+        public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string subjects)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/CheckDraftValidationForEntry?clgID="+ clgID + "&courses=" + courses+ "&subjects="+ subjects);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+           
+            if (response.StatusCode.ToString() == "OK")
+            {
+                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                
+            }
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Course = objResponse.Message, Subject= objResponse.ResponseCode },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+
     }
 }
