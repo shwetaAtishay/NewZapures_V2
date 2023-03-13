@@ -71,6 +71,23 @@ namespace NewZapures_V2.Models
         public string NocDepartmentName { get; set; }
         public string NocDepartmenttype { get; set; }
         public string DepartName { get; set; }
+        public int? NocSpecialId { get; set; }
+        public string iFk_NocSpecialId { get; set; }  
+        public int? iSpecialStatus { get; set; }    
+        public string specialtype
+        {
+            get
+            {
+                switch (iSpecialStatus)
+                {
+                    case 1:
+                        return "Special";
+                   
+                    default:
+                        return "";
+                }
+            }
+        }
         public string Type
         {
             get
