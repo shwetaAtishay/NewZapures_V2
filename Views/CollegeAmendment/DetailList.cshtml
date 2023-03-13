@@ -863,11 +863,15 @@
 {
     foreach (var clgitem in CollageDetails)
     {
+
+
+
+
         <br />
         <div class="noc-layouts">
             <div class="title-heading mb-3 d-flex align-items-center justify-content-between">
                 <span>Choose College Amendment</span>
-                @*<a href="@Url.Action("ViewDetail", "CollegeAmendment")" class="buttons-right theme-button-mockup" title="View Details File">Back To List</a>*@
+                <a href="@Url.Action("ViewDetail", "CollegeAmendment")" class="buttons-right theme-button-mockup" title="View Details File">Back To List</a>
             </div>
 
 
@@ -901,7 +905,7 @@
             <div class="noc-layouts">
                 <div style="display:none" id="women">
                     <div class="title-heading d-flex align-items-center justify-content-between">
-                        <h4 class="p-0 title-heading m-0 ">Change in Women to Co-Education</h4>
+                        <h4 class="p-0 title-heading m-0 ">@type</h4>
                     </div>
                     <div class="card-body w-100 float-left">
                         <div class="row">
@@ -929,7 +933,7 @@
                     </div>
                 </div>
                 <div class="noc-layouts-tbl" id="womenTable" style="display:none">
-                    <h4 class="p-0 title-heading m-0 ">Change in Women to Co-Education</h4>
+                    <h4 class="p-0 title-heading m-0 ">@type</h4>
                     <div class="form-group">
                         <table class="table table-striped table-bordered dt-responsive word-wrap" id="tbleEdu">
                             <thead>
@@ -1284,7 +1288,7 @@
                                     <th>S.No</th>
                                     <th hidden>stypeId</th>
                                     <th>NameOfClg</th>
-                                    @*<th>Document</th>*@
+                                    <th>Document</th>
                                     <th hidden>CollegeId</th>
                                     <th>DocFile</th>
                                     <th>Action</th>
@@ -1300,7 +1304,7 @@
                                             <td>@i</td>
                                             <td hidden>@item.stypeId</td>
                                             <td>@item.sNameOfClg</td>
-                                            @*<td>@item.ImageTypeName</td>*@
+                                            <td>@item.ImageTypeName</td>
                                             <td hidden>@item.iCollegeId</td>
                                             <td>
                                                 @if (item.docFile != null)
@@ -1453,39 +1457,115 @@
                 <div class="noc-layouts-tbl" id="mergerDetails" style="display:none">
                     <h4 class="p-0 title-heading m-0 ">Merger Details- Applicant College Information</h4>
                     <div class="form-group">
-                        <table class="table table-striped table-bordered dt-responsive word-wrap">
+                        <table class="table table-responsive table-striped table-bordered dt-responsive word-wrap">
                             <thead>
                                 <tr>
                                     <th>S.No</th>
-                                    <th hidden>stypeId</th>
+                                    @*<th hidden>stypeId</th>*@
                                     <th>NameOfClg</th>
-                                    <th hidden>CollegeId</th>
-                                    <th>DocFile</th>
+                                    @*<th hidden>CollegeId</th>*@
+                                    <th style="text-align:center">Proposal of Society for merger</th>
+                                    <th style="text-align:center">All NOCs issued in single pdf file</th>
+                                    <th style="text-align:center">Latest University Affiliation of college</th>
+                                    <th style="text-align:center">NOC of the affiliating university for merger</th>
+                                    <th style="text-align:center">Affidavit of Consent of 100% Parents</th>
+                                    <th style="text-align:center">All NOCs issued in single pdf file</th>
+                                    <th style="text-align:center">Latest University Affilliation of college</th>
+                                    <th style="text-align:center">NOC of the affiliating university for merger</th>
+                                    <th style="text-align:center">Affidavit of consent of 100% Parents</th>
+                                    <th style="text-align:center">Land title Certificate</th>
+                                    <th style="text-align:center">Blue print of building</th>
+                                    <th style="text-align:center">Staff information (Teaching and non-teaching)</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (MergerClg != null)
+                                @if (MergerClg.Count() > 0)
                                 {
                                     int i = 1;
                                     foreach (var item in MergerClg)
                                     {
                                         <tr id="tr_@item.iPk_ClgAmdId">
                                             <td>@i</td>
-                                            <td hidden>@item.stypeId</td>
+                                            @*<td hidden>@item.stypeId</td>*@
                                             <td>@item.sNameOfClg</td>
-                                            <td hidden>@item.iCollegeId</td>
-                                            <td>
-                                                @if (item.docFile != null)
+                                            @*<td hidden>@item.iCollegeId</td>*@
+                                            @*<td >@item.sName</td>*@
+                                            <td style="text-align:center">
+                                                @if (item.SocietyMergertype != "")
                                                 {
-                                                    <div>
-                                                        <img src="data:@item.DocumentContent;base64,@item.docFile" alt="profile-user" class="rounded-circle" width="50" height="50" />
-                                                        <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.iPk_AplcnAttch })" title="Document File" target="_blank" alt="Red dot" class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
-                                                    </div>
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.SocietyMergertype })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
                                                 }
                                             </td>
                                             <td style="text-align:center">
-                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteDocumentDetails(@item.iPk_ClgAmdId,@item.iPk_AplcnAttch,'CollegeMerger');"><i class="far fa-trash-alt"></i></a>
+                                                @if (item.NOCsissuedtype != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.NOCsissuedtype })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.LstUnivsityAffiliationColtype != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.LstUnivsityAffiliationColtype })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.AAAffidavitconsenttype != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.AAAffidavitconsenttype })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.PAffidavitParentstype != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.PAffidavitParentstype })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.AllNOCsIssuedtype != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.AllNOCsIssuedtype })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.UniversityAffilliationType != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.UniversityAffilliationType })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.NOCAffiliattingTyp != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.NOCAffiliattingTyp })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.AffidavitConsentParentsTyp != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.AffidavitConsentParentsTyp })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.LandCertificateTyp != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.LandCertificateTyp })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.BluePrintBuildingTyp != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.BluePrintBuildingTyp })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+                                            <td style="text-align:center">
+                                                @if (item.StaffInformationTyp != "")
+                                                {
+                                                    <a href="@Url.Action("DownloadMergerDetails", "CollegeAmendment", new { id = item.StaffInformationTyp })" target="_blank" alt="Red dot" class="noc-upload-btn"><i class="fa fa-download"></i></a>
+                                                }
+                                            </td>
+
+                                            <td style="text-align:center">
+                                                <a id="@item.iPk_ClgAmdId" class="theme-delete-btn" title="Delete" onclick="DeleteMergerDcumentDetails(@item.iPk_ClgAmdId,'CollegeMerger');"><i class="far fa-trash-alt"></i></a>
                                             </td>
                                         </tr>
                                         i++;
@@ -1502,8 +1582,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     }
 }
@@ -1518,7 +1596,6 @@
 <!--Trigger-->
 <script type="text/javascript">
     $(document).ready(function () {
-
         debugger;
         $('#womenTable').show();
         $('#nameOfCollege').show();
@@ -1609,28 +1686,31 @@
                 });
             }
         }
+
+
+        $("#DistrictId").change(function () {
+            //debugger
+            var Districtid = $("#DistrictId option:selected").val();
+            //alert(Districtid);
+            if (Districtid > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: GetglobalDomain() + "/CollegeAmendment/GetTehsilList",
+                    data: { DistrictId: Districtid },
+                    success: function (data) {
+                        // console.log('data is', data);
+                        $("#TehsilId").html("<option value = \"0\">Select Tehsil</option>")
+                        $.each(data, function (index, value) {
+                            $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
+                        });
+                    }
+                });
+
+            }
+        });
     });
 
-    $("#DistrictId").change(function () {
-        //debugger
-        var Districtid = $("#DistrictId option:selected").val();
-        //alert(Districtid);
-        if (Districtid > 0) {
-            $.ajax({
-                type: "GET",
-                url: GetglobalDomain() + "/CollegeAmendment/GetTehsilList",
-                data: { DistrictId: Districtid },
-                success: function (data) {
-                   // console.log('data is', data);
-                    $("#TehsilId").html("<option value = \"0\">Select Tehsil</option>")
-                    $.each(data, function (index, value) {
-                        $("#TehsilId").append("<option value = \"" + value.Value + "\">" + value.Text + "</option>");
-                    });
-                }
-            });
 
-        }
-    });
 </script>
 <!----General Girls Start -->
 <script type="text/javascript">
@@ -1727,12 +1807,13 @@
                 type: "POST",
                 url: GetglobalDomain() + "/CollegeAmendment/SaveDetails",
                 data: model,
-                success: function (result) {
-                    if (result.StatusCode == "1") {
+                success: function (data) {
+                    if (data.StatusCode == "1") {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Data saved sussessfully!',
+                            //title: 'Data saved sussessfully!',
+                            title: data.Message,
                             allowOutsideClick: false,
                             showCancelButton: false,
                             showCloseButton: true,
@@ -1765,7 +1846,6 @@
 <script type="text/javascript">
     //College Place Name
     var imagebase64 = "";
-
     function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
         var elementID = element.id;
         var file = element.files[0];
@@ -1777,7 +1857,6 @@
             $('#' + hdnId).val(imagebase64);
             var NameFile = $('#' + hdnExtnID).val(file.name);
             $('#' + hdnExtnID).val(file.name);
-
         }
         reader.readAsDataURL(file);
         return imagebase64;
@@ -1820,7 +1899,7 @@
         debugger;
         var Englishname = $('#txtEnglishname').val();
         var HindiName = $('#txtHindiName').val();
-        var CollegeAttch = $('#txtCollegeAttch').val();
+        // var CollegeAttch = $('#txtCollegeAttch').val();
         var convertedDoc = $('#hdnConvertedDoc').val().split(',')[1];
         var convertedDocExte = $('#hdnConvertedDocExten').val().split('.')[1];
         var convertedDocContent = $('#hdnConvertedDoc').val().split(',')[0];
@@ -1846,18 +1925,20 @@
                 type: "POST",
                 url: GetglobalDomain() + "/CollegeAmendment/NameCollege",
                 data: model,
-                success: function (result) {
+                success: function (data) {
                     debugger;
-                    if (result.StatusCode == "1") {
+                    if (data.StatusCode == "1") {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Data saved sussessfully!',
+                            //title: 'Data saved sussessfully!',
+                            title: data.Message,
                             allowOutsideClick: false,
                             showCancelButton: false,
                             showCloseButton: true,
                             showConfirmButton: true,
                         })
+                        debugger
                         document.getElementById("txtEnglishname").value = "";
                         document.getElementById("txtHindiName").value = "";
                         document.getElementById("txtCollegeAttch").value = "";
@@ -1919,6 +2000,7 @@
     }
 
     function CheckValidPlace() {
+        debugger
         var status = true;
         var DistrictId = $('#DistrictId').val();
         if (DistrictId.length <= 0) {
@@ -2031,17 +2113,19 @@
                 type: "POST",
                 url: GetglobalDomain() + "/CollegeAmendment/MergerDetailsPlace",
                 data: model,
-                success: function (result) {
-                    //debugger;
-                    if (result.StatusCode == "1") {
+                success: function (data) {
+                    debugger;
+                    if (data.StatusCode == "1") {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Data saved sussessfully!',
+                            title: data.Message,
+                            //title: 'Data saved sussessfully!',
                             allowOutsideClick: false,
                             showCancelButton: false,
                             showCloseButton: true,
-                            showConfirmButton: true,
+                            showConfirmButton: false,
+                            timer: 3000
                         })
                         document.getElementById("DistrictId").value = "";
                         document.getElementById("TehsilId").value = "";
@@ -2084,10 +2168,7 @@
             imagebase64 = reader.result;
             $('#' + hdnId).val(imagebase64);
             var NameFile = $('#' + hdnExtnID).val(file.name);
-            $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
-            //console.log(imagebase64);
-            // console.log(hdnId);
-            // console.log("extension" + hdnExtnID);
+            $('#' + hdnExtnID).val(file.name);
         }
         reader.readAsDataURL(file);
         return imagebase64;
@@ -2095,7 +2176,7 @@
     function encodeImageFileAsURLMang(element, hdnId, hdnExtnID) {
         var elementID = element.id;
         var file = element.files[0];
-        console.log(file.name);
+        // console.log(file.name);
         //console.log(elementID);
         var reader = new FileReader();
         reader.onloadend = function () {
@@ -2103,9 +2184,9 @@
             $('#' + hdnId).val(imageMngbase64);
             var NameFile = $('#' + hdnExtnID).val(file.name);
             $('#' + hdnExtnID).val(file.name); //.replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '-');
-            console.log(imageMngbase64);
-            console.log(hdnId);
-            console.log("extension" + hdnExtnID);
+            //console.log(imageMngbase64);
+            //console.log(hdnId);
+            //console.log("extension" + hdnExtnID);
         }
         reader.readAsDataURL(file);
         return imageMngbase64;
@@ -2190,21 +2271,24 @@
                 type: "POST",
                 url: GetglobalDomain() + "/CollegeAmendment/Managment",
                 data: model,
-                success: function (result) {
+                success: function (data) {
                     //debugger;
-                    if (result.StatusCode == "1") {
+                    if (data.StatusCode == "1") {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Data saved sussessfully!',
+                            //title: 'Data saved sussessfully!',
+                            title: data.Message,
                             allowOutsideClick: false,
                             showCancelButton: false,
                             showCloseButton: true,
                             showConfirmButton: true,
+                            timer: 3000
                         })
                         document.getElementById("txtNewSosityName").value = "";
                         document.getElementById("txtResolutionMagtCommitte").value = "";
                         document.getElementById("txtChangeManagement").value = "";
+                        location.reload(true);
                         $('#CollegeManagement').hide();  //form
                         $('#clgManagement').show(); //div
                     }
@@ -2239,7 +2323,7 @@
     function encodeImageFileAsURLSocityMerger(element, hdnId, hdnExtnID) {
         var elementID = element.id;
         var file = element.files[0];
-        console.log(file.name);
+        //console.log(file.name);
         //console.log(elementID);
         var reader = new FileReader();
         reader.onloadend = function () {
@@ -2326,7 +2410,7 @@
         reader.readAsDataURL(file);
         return imageAffiltParentsbase64;
     }
-    function encodeImageFileAsURLALLNOC(element, hdnId, hdnExtnID) {
+    function encodeImageFileAsURLAllNoc(element, hdnId, hdnExtnID) {
         var elementID = element.id;
         var file = element.files[0];
         //console.log(file.name);
@@ -2452,6 +2536,7 @@
         reader.readAsDataURL(file);
         return imageStaffCertificatebase64;
     }
+
     function CheckValidMerger() {
         var status = true;
         debugger;
@@ -2758,23 +2843,26 @@
             StaffInformationContent: hdnStaffInformationDocContent,
             iCollegeId: id
         }
-
+        // console.log(JSON.stringify(model));
         if (CheckValidMerger()) {
             $.ajax({
                 type: "POST",
-                url: GetglobalDomain()+"/CollegeAmendment/MergerDetails",
+                url: GetglobalDomain() + "/CollegeAmendment/MergerDetails",
                 data: model,
-                success: function (result) {
+                success: function (data) {
                     debugger;
-                    if (result.StatusCode == "1") {
+                    // console.log(data)
+                    if (data.StatusCode == "1") {
                         Swal.fire({
                             position: 'center',
                             icon: 'success',
-                            title: 'Data saved sussessfully!',
+                            title: data.Message,
+                            //title: 'Data saved sussessfully!',
                             allowOutsideClick: false,
                             showCancelButton: false,
                             showCloseButton: true,
                             showConfirmButton: true,
+                            timer: 3000,
                         })
                         document.getElementById("txtProposalSocietyformerger").value = "";
                         document.getElementById("txtNOCsissued").value = "";
@@ -2835,10 +2923,8 @@
                     type: 'Post',
                     cache: false,
                     data: JSON.stringify(Model),
-                    success: function (data) {
-
-                        if (data.StatusCode == 1) {
-
+                    success: function (result) {
+                        if (result.StatusCode == 1) {
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
@@ -2848,7 +2934,6 @@
                             })
                             location.reload(true);
                             //$(window).load(function () {
-
                             //if (deleteType == 'CollegeEdu') {
                             //    $('#womenTable').load('#womenTable')
                             //}
@@ -2856,15 +2941,82 @@
                             //    $('#nameOfCollege').load('#nameOfCollege')
                             //}
                             //if (deleteType == 'CollegePlace') {
-
                             //    $('#PlaceChange').load('#PlaceChange')
                             //}
                             //if (deleteType == 'CollegeManagement') {
-
                             //    $('#clgManagement').load('#clgManagement')
                             //}
                             //if (deleteType == 'CollegeMerger') {
+                            //    $('#mergerDetails').load('#mergerDetails')
+                            //}
+                            //});
 
+
+                        }
+                    },
+                    error: function (d) {
+                        console.log(d);
+                        alert("404. Please wait until the File is Loaded.");
+
+                    }
+                });
+            }
+
+        });
+    }
+
+    function DeleteMergerDcumentDetails(iPk_ClgAmdId, Deletetype) {
+        debugger
+        var deleteType = Deletetype;
+        console.log("delete Type==", deleteType);
+        var Model = {
+            //type: itemType,
+            CollegeId: parseInt(iPk_ClgAmdId),
+            //iCollegeId: parseInt(iPk_AplcnAttch)
+        }
+        var d = JSON.stringify(Model);
+        console.log(d);
+        Swal.fire({
+            title: 'Are You Delete Confirmation ?',
+            showDenyButton: true, showCancelButton: false,
+            confirmButtonText: 'Yes',
+            denyButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    url: GetglobalDomain() + "/CollegeAmendment/UpdateMergerDetails",
+                    dataType: 'json',
+                    type: 'Post',
+                    cache: false,
+                    data: JSON.stringify(Model),
+                    success: function (result) {
+                        if (result.StatusCode == 1) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Delete Successfully',
+                                showConfirmButton: false,
+                                timer: 2000
+                            })
+                            location.reload(true);
+                            //$(window).load(function () {
+                            //if (deleteType == 'CollegeEdu') {
+                            //    $('#womenTable').load('#womenTable')
+                            //}
+                            //if (deleteType == 'CollegeName') {
+                            //    $('#nameOfCollege').load('#nameOfCollege')
+                            //}
+                            //if (deleteType == 'CollegePlace') {
+                            //    $('#PlaceChange').load('#PlaceChange')
+                            //}
+                            //if (deleteType == 'CollegeManagement') {
+                            //    $('#clgManagement').load('#clgManagement')
+                            //}
+                            //if (deleteType == 'CollegeMerger') {
                             //    $('#mergerDetails').load('#mergerDetails')
                             //}
                             //});
