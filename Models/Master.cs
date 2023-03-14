@@ -233,7 +233,11 @@ namespace NewZapures_V2.Models
     public class EventMstSave
     {
         public string sNewGuid { get; set; }
-        public int Id { get; set; }
+        public int iFk_DeptId { get; set; }
+        public int iFk_NOCDeptId { get; set; }
+        public int iMode { get; set; }
+        public int iFk_NOCTyp { get; set; }
+
         public string dtFormdate { get; set; }
         public string dtTodate { get; set; }
     }
