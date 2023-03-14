@@ -62,7 +62,7 @@
                                 @*<a href="@Url.Action("DepartmentMapping", "Master", new { Id = item.iPk_DeptMapId })" class="btn btn-success btn-xs padding5" title="Update">
                         <i class="fa fa-edit"></i>
                     </a>*@
-                                <a href="#" class="btn btn-success btn-sm  " title="Add" data-text="add" data-iFk_DeptId="@item.iFk_DeptId" data-iFk_NOCDeptId="@item.iFk_NOCDeptId" data-iMode="@item.iMode"	 id="add_@item.NewGuid" onclick="SaveFunction(@item.iFk_DeptId,@item.iFk_NOCDeptId,@item.iMode,@item.iFk_NOCTyp, '@item.NewGuid')" style="display: none; width: fit-content">
+                                <a href="#" class="btn btn-success btn-sm  " title="Add" data-text="add" data-iFk_DeptId="@item.iFk_DeptId" data-iFk_NOCDeptId="@item.iFk_NOCDeptId" data-iMode="@item.iMode"	 id="add_@item.NewGuid" onclick="SaveFunction(@item.iFk_DeptId,@item.iFk_NOCDeptId,0,@item.iFk_NOCTyp, '@item.NewGuid')" style="display: none; width: fit-content">
                                     <i class="fa fa-save"></i>
                                 </a>
                                 <a href="#" class="btn btn-success btn-sm padding6 updatepadding" title="Update" data-text="update" data-mstid="@item.iPk_DeptMapId" data-id="@item.NewGuid" id="update_@item.NewGuid" style="display: block; width: fit-content;margin-right:10px">
