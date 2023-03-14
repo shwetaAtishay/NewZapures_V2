@@ -306,7 +306,8 @@
 
                 </div>
                 <div class="modal-footer" id="divModal">
-                    <a class="theme-discard-btn btnProceedtoEdit">Proceed For Entries</a>
+                    <a class="theme-discard-btn" id="btnCheckDraftEntry" onclick="CheckDraftValidationForEntry()">Proceed For Entries</a>
+                    <a class="theme-discard-btn" id="btnProceedtoEdit" style="display:none">Proceed For Entries</a>
                 </div>
             </div>
         </div>
@@ -362,7 +363,7 @@
         });
 
 
-        $('.btnProceedtoEdit').click(function () {
+        $('#btnProceedtoEdit').click(function () {
 
             var applicationType = $("input[name='ApplicationType']:checked").val();
             var collegeID = $('#hdnClgID_Name').val().split(',')[0];
@@ -405,23 +406,6 @@
                 courseIDList = "";
                 subjectIDList = "";
                 MAppDetails.forEach(function (item1) {
-                    if (courseIDList.length > 0) {
-                        if (!courseIDList.includes(item1.CourseID))
-                            courseIDList += ',' + item1.CourseID;
-                    }
-                    else {
-                        courseIDList = item1.CourseID;
-                    }
-
-                    if (subjectIDList.length > 0) {
-
-                        if (!subjectIDList.includes(item1.SubjectID))
-                            subjectIDList += ',' + item1.SubjectID;
-                    }
-                    else {
-                        subjectIDList = item1.SubjectID;
-                    }
-
                     /*console.log('Mapp Loop', item1.CourseID);*/
                     if (item1.CourseID != item.id) {
                         isAllCourseCovered = false;
@@ -431,9 +415,8 @@
                     }
                 })
             })
-            CheckDraftValidationForEntry(collegeID, courseIDList, subjectIDList);
 
-            if (localStorage.getItem("AllowToAdd") == 1) {
+
                 var d = JSON.stringify(MAppDetails)
                 if (isAllCourseCovered) {
                      $.ajax({
@@ -482,21 +465,6 @@
                         showConfirmButton: false,
                     });
                 }
-            }
-            else {
-                var s = localStorage.getItem("NewSubjects");
-                //alert(s);
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: `error`,
-                    html: `<div><p>Dear Applicant, Draft application already exist for this Courses and Subjects. You can proceed in same application, or first cancel existing draft and try again.</p><br/><p>We found <b>: ${s}</b> is your new selection. Or else create new Application for this subject</p></div>`,
-                    allowOutsideClick: false,
-                    showCloseButton: true,
-                    showConfirmButton: false,
-                });
-
-            }
         });
 
 
@@ -730,11 +698,68 @@
     //    });
     //}
 
-    function CheckDraftValidationForEntry(clgID,Courses,Subjects) {
+    function CheckDraftValidationForEntry() {
+
+        var applicationType = $("input[name='ApplicationType']:checked").val();
+        var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+        var collegeName = $('#hdnClgID_Name').val().split(',')[1];
+
+        var cors = $('#ddlCourseList').val();
+        var corsname = $('#ddlCourseList option:selected').text();
+        var corsnameList = $('#ddlCourseList').select2("data");
+
+        var subjIDList = $('#ddlSubjectList').val();
+        var subjnameList = $('#ddlSubjectList').select2("data");
+
+        var subList = '';
+        var corsList = '';
+        var isAllCourseCovered = true;
+
+        var courseIDList = "";
+        var subjectIDList = "";
+
+        // for selected subject name To be comma saperated
+        for (var i = 0; i <= subjnameList.length - 1; i++) {
+
+            var ids = subjIDList[i];
+            var textes = subjnameList[i].text;
+
+            MAppDetails.push({
+                CollegeID: collegeID,
+                college: collegeName,
+                appType: applicationType,
+                CourseID: ids.split('-')[0],
+                SubjectID: ids.split('-')[1],
+                Course: textes.split(': ')[0].trim(),
+                Subject: textes.split(': ')[1].trim(),
+
+            })
+        }
+
+        MAppDetails.forEach(function (item) {
+
+        if (courseIDList.length > 0) {
+            if (!courseIDList.includes(item.CourseID))
+                courseIDList += ',' + item.CourseID;
+        }
+        else {
+            courseIDList = item.CourseID;
+        }
+
+        if (subjectIDList.length > 0) {
+
+            if (!subjectIDList.includes(item.SubjectID))
+                subjectIDList += ',' + item.SubjectID;
+        }
+        else {
+            subjectIDList = item.SubjectID;
+        }
+        })
+
         var Data = {
-            clgID: parseInt(clgID),
-            Courses: Courses,
-            Subjects: Subjects
+            clgID: parseInt(collegeID),
+            Courses: courseIDList,
+            Subjects: subjectIDList
         }
         var d = JSON.stringify(Data)
 
@@ -749,16 +774,28 @@
             cache: false,
             data: JSON.stringify(Data),
             success: function (data) {
-                console.log(data.Type);
                 console.log(data);
-                //if (data.StatusCode == 1) {
+                var isAllowed = data.StatusCode;
+                var newSubject = data.Subject;
+                if (isAllowed == 1) {
+                    $('#btnProceedtoEdit').click();
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `error`,
+                        html: `<div><p>Dear Applicant, Draft application already exist for this Courses and Subjects. You can proceed in same application, or first cancel existing draft and try again.</p><br/><p>We found <b>: ${newSubject}</b> is your new selection. Or else create new Application for this subject</p></div>`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+                //localStorage.removeItem("AllowToAdd");
+                //localStorage.removeItem("NewSubjects");
 
-                //}
-                localStorage.removeItem("AllowToAdd");
-                localStorage.removeItem("NewSubjects");
-
-                localStorage.setItem("AllowToAdd", data.StatusCode);
-                localStorage.setItem("NewSubjects", data.Subject);
+                //localStorage.setItem("AllowToAdd", data.StatusCode);
+                //localStorage.setItem("NewSubjects", data.Subject);
             },
             error: function (d) {
                 //alert(d);

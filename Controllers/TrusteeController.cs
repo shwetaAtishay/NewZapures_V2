@@ -2441,6 +2441,32 @@ namespace NewZapures_V2.Controllers
             };
         }
 
+        #region Apply NOC New Page Conditions
+        public JsonResult ApplyNOC_CollegeListForDepartment(string departID)
+        {
+            var trusID = "599";//SessionModel.TrustId;
+            var clgList = ZapurseCommonlist.GetClgListForDepartment(departID, "ApplyNOC_CollegeForDepartment", trusID); // gets only those colleges whose entry is there in MST_APLN table
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult ApplyNOC_NOCCategory(string departID)
+        {
+            var clgList = ZapurseCommonlist.ApplyNOC_NOCCategory(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "NOC Category List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
 
+
+
+
+        #endregion
     }
 }
