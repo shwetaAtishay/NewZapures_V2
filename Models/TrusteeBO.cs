@@ -154,6 +154,8 @@ namespace NewZapures_V2.Models
             public string departmentName { get; set; }
             public string SubjectName { get; set; }
             public string applicationstatus { get; set; }
+            public string CoursesCollection { get; set; }
+            public string SubjectsCollection { get; set; }
             public int iSts { get; set; }
             
         }
