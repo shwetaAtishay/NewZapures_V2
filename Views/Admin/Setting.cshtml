@@ -3,10 +3,10 @@
 @model List<Partial.setting>
 @{
     ViewBag.Title = "Setting Master";
-    List<Partial.CustomEnum> customEnumslist = new List<Partial.CustomEnum>();
+    List<CustomEnum> customEnumslist = new List<CustomEnum>();
     if (ViewBag.CustomEnumlist != null)
     {
-        customEnumslist = (List<Partial.CustomEnum>)ViewBag.CustomEnumlist;
+        customEnumslist = (List<CustomEnum>)ViewBag.CustomEnumlist;
     }
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -76,6 +76,10 @@
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
+    .card-header
+    {
+        background-color:unset !important;
+    }
 </style>
 <div class="row">
     <div class="col-sm-12">
@@ -109,7 +113,7 @@
                         <div class="card cardHeight">
                             <div class="sticky">
                                 <div style="display: inline-flex;place-content: space-between;width: 100%;background: #f1f5fa;">
-                                    <h6 class="card-header "> @item.Name</h6>
+                                    <h6 style="margin-top: 10px;margin-left: 10px;font-weight: bold;"> @item.Name</h6>
                                     <button id="lnk_@item.Name" class="btn btn-primary btn-sm nomargin Addclass col-lg-1 btnAdd" data-id="@item.Name" data-linkid="@item.Id"><i class="fas fa-plus" style="font-size: 20px;"></i></button>
                                 </div>
                             </div>
