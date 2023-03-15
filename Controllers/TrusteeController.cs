@@ -246,9 +246,19 @@ namespace NewZapures_V2.Controllers
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
-                    TempData["SwalStatusMsg"] = "success";
-                    TempData["SwalMessage"] = "Data saved sussessfully!";
-                    TempData["SwalTitleMsg"] = "Success...!";
+                    if(objResponseData.Messsage == "Alreday exists iIsPrimary")
+                    {
+                        TempData["isSavedexists"] = 1;
+                        TempData["Messageexists"] = "Alreday exists iIsPrimary!";
+                        
+                    }
+                    else
+                    {
+                        TempData["SwalStatusMsg"] = "success";
+                        TempData["SwalMessage"] = "Data saved sussessfully!";
+                        TempData["SwalTitleMsg"] = "Success...!";
+                    }
+                    
                     //return RedirectToAction("Index");
                 }
                 else
@@ -570,6 +580,12 @@ namespace NewZapures_V2.Controllers
             return View();
         }
         public ActionResult ApplyNOCApplicationNew()
+        {
+            var departmentList = ZapurseCommonlist.GetDepartmentlist();
+            ViewBag.departments = departmentList;
+            return View();
+        }
+        public ActionResult ApplyNOCApplicationNew1()
         {
             var departmentList = ZapurseCommonlist.GetDepartmentlist();
             ViewBag.departments = departmentList;
@@ -2397,6 +2413,60 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
-        
+
+
+        public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string subjects)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/CheckDraftValidationForEntry?clgID="+ clgID + "&courses=" + courses+ "&subjects="+ subjects);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+           
+            if (response.StatusCode.ToString() == "OK")
+            {
+                 objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                
+            }
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Course = objResponse.Message, Subject= objResponse.ResponseCode },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        #region Apply NOC New Page Conditions
+        public JsonResult ApplyNOC_CollegeListForDepartment(string departID)
+        {
+            var trusID = "599";//SessionModel.TrustId;
+            var clgList = ZapurseCommonlist.GetClgListForDepartment(departID, "ApplyNOC_CollegeForDepartment", trusID); // gets only those colleges whose entry is there in MST_APLN table
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult ApplyNOC_NOCCategory(string departID)
+        {
+            var clgList = ZapurseCommonlist.ApplyNOC_NOCCategory(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "NOC Category List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+
+
+
+        #endregion
     }
 }
