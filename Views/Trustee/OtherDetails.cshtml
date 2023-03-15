@@ -98,6 +98,9 @@
         .fop h4 {
             color: white !important;
         }
+        .hidden{
+            display:none;
+        }
 </style>
 <div class="row d-none">
     <div class="col-sm-12">
@@ -130,7 +133,7 @@
                         <div class="col-sm-3 form-group">
 
                             <select class="singleselect form-control noc-input-text" id="CourseId" name="CourseId" required>
-                                <option value="" data-Roomlength="0" data-Roomwidth="0" data-RoomCapacity="0">Select Other</option>
+                                <option value="" data-Roomlength="0" data-Roomwidth="0" data-RoomNo="0">Select Other</option>
                                 @{
                                     foreach (var item in lstother)
                                     {
@@ -141,21 +144,21 @@
                                 }
                             </select>
                         </div>
-                        <div class="col-lg-2 form-group">
+                        <div class="col-lg-2 form-group" id="widthdiv">
 
-                            <input name="sWidth" id="Width" type="number" value="" min="0" class="form-control noc-input-text" placeholder="Enter Width" required>
+                            <input name="sWidth" id="Width" type="number" value="" min="0" class="form-control noc-input-text" placeholder="Enter Width" >
                             <span id="width_error"></span>
                         </div>
-                        <div class="col-lg-2 form-group">
+                        <div class="col-lg-2 form-group" id="lengthdiv">
 
-                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter length" class="form-control noc-input-text" required>
+                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter length" class="form-control noc-input-text" >
                             <span id="length_error"></span>
                         </div>
-                        @*<div class="col-sm-2">
+                        <div class="col-sm-2 hidden" id="otherdiv">
 
-                                <input type="number" class="form-control" name="dtQty" min="0" placeholder="Enter Qty" value="" id="Qty" required />
+                                <input type="number" class="form-control" name="dtQty" min="0" placeholder="Enter Qty" value="" id="Qty"/>
                                 <span id="Qty_error"></span>
-                            </div>*@
+                            </div>
                         <div class="col-lg-3 form-group">
                             <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
                                 @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
@@ -184,7 +187,7 @@
                                         <th>Width</th>
                                         <th>length</th>
 
-                                        @*<th>Active</th>*@
+                                        <th>Qty</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -248,12 +251,37 @@
     }
     $("#CourseId").change(function () {
         debugger;
+        var RoomNo = $(this).find(':selected').attr('data-RoomNo');
+        $("#otherdiv").addClass('hidden');
+        $("#widthdiv").removeClass('hidden');
+        $("#lengthdiv").removeClass('hidden');
+        $("#Qty").attr('required', false)
+
+        $("#Qty").attr({
+            "min": 0
+        });
+        $("#Qty_error").text('');
+        $("#Width").attr('required', false)
+        $("#length").attr('required', false)
         $("#width_error").text('');
         $("#length_error").text('');
      /*   $("#Qty_error").text('');*/
         let dataval = $(this).val();
         let Roomlength = $(this).find(':selected').attr("data-Roomlength");
         let Roomwidth = $(this).find(':selected').attr("data-Roomwidth");
+        if (RoomNo >= 1 && Roomlength <= 0 && Roomwidth <= 0) {
+            $("#Qty").attr('required', true);
+            $("#widthdiv").addClass('hidden');
+            $("#lengthdiv").addClass('hidden');
+            $("#otherdiv").removeClass('hidden');
+            $("#Qty").attr({
+                "min": RoomNo
+            });
+            var RoomNotext = $(this).find(':selected').text();
+            $("#Qty").attr("placeholder",'Enter '+RoomNotext);
+            $("#Qty_error").text(`Please Enter ${RoomNotext} More than or Equal than ${RoomNo}`).css('color', '');
+        }
+
     /*    let RoomCapacity = $(this).find(':selected').attr("data-RoomCapacity");*/
         if (dataval != "") {
             $("#Width").attr({
@@ -318,33 +346,34 @@
         var coursetext = $("#CourseId option:selected").text();;
         let Roomlength = $("#CourseId").find(':selected').attr("data-Roomlength");
         let Roomwidth = $("#CourseId").find(':selected').attr("data-Roomwidth");
-       /* let RoomCapacity = $("#CourseId").find(':selected').attr("data-RoomCapacity");*/
+        let RoomCapacity = $("#CourseId").find(':selected').attr("data-RoomNo");
         let filedata= $("#filedata").val();
         let sProfileExtension= $("#sProfileExtension").val();
         var Width = $("#Width").val();
         var length = $("#length").val();
-     /*   var Qty = $("#Qty").val();*/
-        if (Roomwidth > Width) {
+        var Qty = $("#Qty").val();
+        if (parseInt(Roomwidth) > parseInt(Width)) {
             var widtherror = `Please Enter Width More than or Equal to ${Roomwidth}`;
             $("#width_error").text(widtherror).css('color', 'red');
             $("#Width").focus();
             $(".loader-div").css('display', 'none');
             return false;
         }
-        if (Roomlength > length) {
+        if (parseInt(Roomlength) > parseInt(length)) {
             var lenerror = `Please Enter Length More than or Equal to ${Roomlength}`;
             $("#length_error").text(lenerror).css('color', 'red');
             $("#length").focus();
             $(".loader-div").css('display', 'none');
             return false;
         }
-        //if (RoomCapacity < Qty) {
-        //    var qtyerror = `Please Enter Studend  less than or Equal to ${RoomCapacity}`;
-        //    $("#Qty_error").text(qtyerror).css('color', 'red');
-        //    $("#Qty").focus();
-        //    $(".loader-div").css('display', 'none');
-        //    return false;
-        //}
+        if (parseInt(RoomCapacity) > parseInt(Qty)) {
+            //var placeholder = $("#Qty").placeholder();
+            //var qtyerror = `Please Enter ${placeholder} less than or Equal to ${RoomCapacity}`;
+            $("#Qty_error").css('color', 'red');
+            $("#Qty").focus();
+            $(".loader-div").css('display', 'none');
+            return false;
+        }
         var Guid = e1();
         array.push({
             Guid:'@sguid',
@@ -352,7 +381,7 @@
             coursetext: coursetext,
             Width: Width,
             length: length,
-            Qty: 0,
+            Qty: parseInt(Qty),
             sGuidid: Guid,
             iStts: 0,
             filedata: filedata,
@@ -370,17 +399,17 @@
             var coursetext = array[item].coursetext;
             var Width = array[item].Width;
             var length = array[item].length;
-            /*var Qty = array[item].Qty;*/
+            var Qty = array[item].Qty;
             var stts = array[item].iStts;
             if (stts != 2) {
               if (array[item].filedata.length > 0) {
                     rowno++;
-                    tabletr += `<tr Id="tr-${Ids}"><td>${item + 1}</td><td> <img src="${array[item].filedata}" alt="profile-user" class="rounded-circle" width="50" height="50" /> ${coursetext}</td><td>${Width}</td><td>${length}</td>
+                  tabletr += `<tr Id="tr-${Ids}"><td>${item + 1}</td><td> <img src="${array[item].filedata}" alt="profile-user" class="rounded-circle" width="50" height="50" /> ${coursetext}</td><td>${Width}</td><td>${length}</td><td>${Qty}</td>
                     <td> <a  class="Deleteclass" onclick="DeleteDataCheck('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td></tr>`;
                 }
                 else {
                     rowno++;
-                    tabletr += `<tr Id="tr-${Ids}"><td>${item + 1}</td><td>${coursetext}</td><td>${Width}</td><td>${length}</td>
+                  tabletr += `<tr Id="tr-${Ids}"><td>${item + 1}</td><td>${coursetext}</td><td>${Width}</td><td>${length}</td><td>${Qty}</td>
                     <td> <a  class="Deleteclass" onclick="DeleteDataCheck('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td></tr>`;
                 }
             }
@@ -414,10 +443,14 @@
                     entercount++;
                 }
             }
-            if (roomcount - entercount > 0) {
-                alert(`Please Enter ${roomcount} Class Room of ${coursename} but You Enter Only ${entercount}`);
+            if (entercount == 0) {
+                alert(`Please Enter ${coursename}`);
                 return false;
             }
+            //if (roomcount - entercount > 0) {
+            //    alert(`Please Enter ${roomcount} Class Room of ${coursename} but You Enter Only ${entercount}`);
+            //    return false;
+            //}
         }
 
         var Params = JSON.stringify({
@@ -484,13 +517,13 @@
                     ArchData.forEach(function (item) {
                         array.push(item);
                         if (item.filedata.length > 0) {
-                            tabletr1 += `<tr Id="tr-${item.sGuidid}"><td>${i + 1}</td><td> <img src="${item.filedata}" alt="profile-user" class="rounded-circle" width="50" height="50" /> ${item.coursetext}</td><td>${item.Width}</td><td>${item.length}</td>
+                            tabletr1 += `<tr Id="tr-${item.sGuidid}"><td>${i + 1}</td><td> <img src="${item.filedata}" alt="profile-user" class="rounded-circle" width="50" height="50" /> ${item.coursetext}</td><td>${item.Width}</td><td>${item.length}</td><td>${item.Qty}</td>
 <td> <a  class="Deleteclass" onclick="DeleteDataCheck('${item.sGuidid}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
 </tr>`;
                             i++;
                         }
                         else {
-                            tabletr1 += `<tr Id="tr-${item.sGuidid}"><td>${i + 1}</td><td>${item.coursetext}</td><td>${item.Width}</td><td>${item.length}</td>
+                            tabletr1 += `<tr Id="tr-${item.sGuidid}"><td>${i + 1}</td><td>${item.coursetext}</td><td>${item.Width}</td><td>${item.length}</td><td>${item.Qty}</td>
 <td> <a  class="Deleteclass" onclick="DeleteDataCheck('${item.sGuidid}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
 </tr>`;
                             i++;
@@ -539,12 +572,12 @@
             var coursetext = array[item].coursetext;
             var Width = array[item].Width;
             var length = array[item].length;
-
+            var Qty = array[item].Qty;
             var imgfile = array[item].filedata;
             var iSttsdata = array[item].iStts;
             if (iSttsdata != 2) {
                 rowno++;
-                tabletr1 += `<tr Id="tr-${Ids}"><td>${item + 1}</td><td><img src="${imgfile}" alt="profile-user" class="rounded-circle" width="50" height="50" />${coursetext}</td><td>${Width}</td><td>${length}</td>
+                tabletr1 += `<tr Id="tr-${Ids}"><td>${item + 1}</td><td><img src="${imgfile}" alt="profile-user" class="rounded-circle" width="50" height="50" />${coursetext}</td><td>${Width}</td><td>${length}</td><td>${Qty}</td>
 <td> <a  class="Deleteclass" onclick="DeleteDataCheck('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
 </tr>`;
             }
