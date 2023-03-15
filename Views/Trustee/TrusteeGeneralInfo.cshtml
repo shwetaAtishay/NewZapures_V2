@@ -175,7 +175,7 @@
                         <td>
                             <span id="spnTrustReg">@TrustDetails.Name</span>
                         </td>
-                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Trust Type</th>
+                        <th style="background: #dee2e6; border: 1px solid #c9cbcd">Entity Type</th>
                         <td><span id="spnName">@TrustDetails.TrustType</span></td>
 
                     </tr>
@@ -205,7 +205,7 @@
 
                 <div class="form-group col-lg-4 col-md-6" id="filediv" style="margin-top: 26px;">
                     <div class="col-10">
-                        <label for="file2" class="noc-form-label">Trustee Member Proof (Upload Max size 1MB)</label>
+                        <label for="file2" class="noc-form-label">(@SessionModel.TrustTypeName) Registration Document(Upload Max size 1MB)</label>
                         <span style="color:red;">*</span>
                         <div>
                             <input type="file" id="TMProfffile" class="form-control" name="TMProfffile" accept=".pdf" onchange="return encodeImageFileAsURL(this,'hdnTMProfffileDoc','hdnTMProfffileDocExten')" />
@@ -226,7 +226,7 @@
 
                 <div class="form-group col-lg-4 col-md-6" id="filediv" style="margin-top: 26px;">
                     <div class="col-10">
-                        <label for="file2" class="noc-form-label">Trust Logo(Upload Max size 50KB)</label>
+                        <label for="file2" class="noc-form-label">(@SessionModel.TrustTypeName) Logo(Upload Max size 50KB)</label>
                         <span style="color:red;">*</span>
                         <div>
                             <input type="file" id="trustfileDoc" class="form-control" name="trustfileDoc" accept=".png,.jpg,.jpeg" onchange="return encodeImageFileAsURL(this,'hdntrustfileDoc','hdntrustfileDocExten')" />
@@ -756,7 +756,7 @@
                 }
                 if (!$('#PersonName').val()) {
                     $('label[for="error"]').show();
-                    PersonNameContact.textContent = "Please Enter PersonName"
+                    PersonNameContact.textContent = "Please Enter Person Name"
                     $("#PersonName").addClass('redborder');
                     $("#PersonNameContact").addClass('colordiv');
                     $('#PersonName').focus();
