@@ -838,7 +838,9 @@
 
     let DeleteData = (id) => {
 
-        datalist.pop(x => x.sGuidid === id);
+        /* datalist.pop(x => x.sGuidid === id);*/
+        datalist.splice(datalist.findIndex(a => a.sGuidid === id), 1)
+        console.log(datalist)
         $("#tr-" + id).remove();
         console.clear();
       /*  console.log(datalist);*/
