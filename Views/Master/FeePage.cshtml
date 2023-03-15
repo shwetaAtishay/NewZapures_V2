@@ -110,7 +110,7 @@
 
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Start Date 1</label>
-                        <input type="date" class="form-control noc-input-text dtInsertStrDt" name="dtStartdate1" id="dtStartdate_1" data-id="1" value="@(Model!=null && Model.dtStartdate1!=null?Model.dtStartdate1:"")" required />
+                        <input type="date" class="form-control noc-input-text dtInsertStrDt" name="dtStartdate1" id="dtStartdate_1" data-id="1" value="@(Model!=null && Model.dtStartdate1!=null?Model.dtStartdate1:DateTime.UtcNow.ToString())" required />
                     </div>
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">End Date 1</label>
@@ -151,28 +151,28 @@
                     <div class="form-group col-lg-3" id="divcoEdu">
                         <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left: -10px">For Co-Education</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dCoEdu.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtCoEDUFee">
+                            <input class="form-control noc-input-text" type="text"  value="@(Model.iPK_ID!=null?Model.dCoEdu.ToString():"0")" onkeypress="return isNumberKey(this, event);" autocomplete="off" id="txtCoEDUFee">
                         </div>
                     </div>
 
                     <div class="form-group col-lg-3" id="divgirls">
                         <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left: -10px">For Girls</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dGirls.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtgirlsFee">
+                            <input class="form-control noc-input-text" type="text" value="@(Model.iPK_ID!=null?Model.dGirls.ToString():"0")" onkeypress="return isNumberKey(this, event);"  autocomplete="off" id="txtgirlsFee">
                         </div>
                     </div>
 
                     <div class="form-group col-lg-3" id="divcutoff">
                         <label for="example-text-input" class="noc-form-label" style="margin-left: -10px">For Co-ed College in Backward/Reserved Area</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dCoEdu_BR.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dCoEdu_BR">
+                            <input class="form-control noc-input-text" type="text" onkeypress="return isNumberKey(this, event);" value="@(Model.iPK_ID!=null?Model.dCoEdu_BR.ToString():"0")" autocomplete="off" id="dCoEdu_BR">
                         </div>
                     </div>
 
                     <div class="form-group col-lg-3" id="divcutoff">
                         <label for="example-text-input" class="noc-form-label" style="margin-left: -10px">For Girls College in Backward/Reserved Area</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dGirls_BR.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dGirls_BR">
+                            <input class="form-control noc-input-text" type="text" onkeypress="return isNumberKey(this, event);"  value="@(Model.iPK_ID!=null?Model.dGirls_BR.ToString():"0")" autocomplete="off" id="dGirls_BR">
                         </div>
                     </div>
 
@@ -187,28 +187,28 @@
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">For UG (Course Wise)</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dUGFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dUGFee">
+                            <input class="form-control noc-input-text" type="text" value="@(Model.iPK_ID!=null?Model.dUGFee.ToString():"0")" onkeypress="return isNumberKey(this, event);" autocomplete="off" id="dUGFee">
                         </div>
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">For PG (Per Subject Wise)</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dPGFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dPGFee">
+                            <input class="form-control noc-input-text" type="text" value="@(Model.iPK_ID!=null?Model.dPGFee.ToString():"0")" onkeypress="return isNumberKey(this, event);" autocomplete="off" id="dPGFee">
                         </div>
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Late Fee</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dLateFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtLateFee">
+                            <input class="form-control noc-input-text" type="text" value="@(Model.iPK_ID!=null?Model.dLateFee.ToString():"0")" onkeypress="return isNumberKey(this, event);" autocomplete="off" id="txtLateFee">
                         </div>
                     </div>
 
                     <div class="form-group col-lg-3">
                         <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Additional Late Fee</label>
                         <div>
-                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dAddiLateFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtAddiLateFee">
+                            <input class="form-control noc-input-text" type="text" value="@(Model.iPK_ID!=null?Model.dAddiLateFee.ToString():"0")" onkeypress="return isNumberKey(this, event);" autocomplete="off" id="txtAddiLateFee">
                         </div>
                     </div>
                 </div>
@@ -360,6 +360,22 @@
     }
 
     var DataForm = [];
+    function isNumberKey(txt, evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode == 46) {
+            //Check if the text already contains the . character
+            if (txt.value.indexOf('.') === -1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (charCode > 31 &&
+                (charCode < 48 || charCode > 57))
+                return false;
+        }
+        return true;
+    }
     function getNoCTypeDetails(nocTypeID) {
         debugger;
         var departid = $('#ddldept').val();
