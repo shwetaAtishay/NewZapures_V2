@@ -2445,7 +2445,7 @@ namespace NewZapures_V2.Controllers
         #region Apply NOC New Page Conditions
         public JsonResult ApplyNOC_CollegeListForDepartment(string departID)
         {
-            var trusID = "599";//SessionModel.TrustId;
+            var trusID = SessionModel.TrustId;
             var clgList = ZapurseCommonlist.GetClgListForDepartment(departID, "ApplyNOC_CollegeForDepartment", trusID); // gets only those colleges whose entry is there in MST_APLN table
             return new JsonResult
             {
