@@ -196,7 +196,7 @@
                         <lable class="noc-form-label"><strong>Select Facilities</strong></lable>
                         <span style="color:red;">*</span>
                         <select class="form-control noc-input-text" id="Facilites" name="Facilites" required>
-                            <option value="0">Select Facilites</option>
+                            <option value="0">Select Facilities</option>
                             @{
                                 foreach (var item in Facilites)
                                 {
@@ -212,7 +212,7 @@
                 <div class="col-lg-4 form-group">
                     <label for="noc-text-input " class="noc-form-label" style="">Choose File<span style="color:red;">*</span></label>
                     <div>
-                        <input type="file" class="form-control noc-input-upload" id="txtAffidavitconsent" name="Affidavitconsent" onchange="return encodeImageFileAsURL(this,'PlaceDoc','PlaceDocExten')" />
+                        <input type="file" class="form-control noc-input-upload" id="txtAffidavitconsent" name="Affidavitconsent" onchange="return encodeImageFileAsURL(this,'PlaceDoc','PlaceDocExten')" accept=".png,.jpg,.jpeg,.gif"/>
                         <input type="hidden" id="PlaceDoc" />
                         <input type="hidden" id="PlaceDocExten" />
                     </div>
@@ -234,10 +234,10 @@
                             <table class="table table-borderless table-striped table-responsive-lg table-hover" id="tblIncome">
                                 <thead class="dark">
                                     <tr>
-                                        <th>Sr</th>
+                                        <th>SNo</th>
 
                                         <th>Course</th>
-                                        <th>Facility</th>
+                                        <th>Facilities</th>
                                         <th>File Document</th>
                                         <th>Action</th>
                                     </tr>

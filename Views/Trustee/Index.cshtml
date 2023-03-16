@@ -1,4 +1,4 @@
-﻿@using NewZapures_V2.Models
+@using NewZapures_V2.Models
 @{
     ViewBag.Title = "Management Committee";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,6 +9,7 @@
     //    TrustList = (List<CustomMaster>)ViewBag.TrustList;
     //}
     List<NewZapures_V2.Models.TrusteeBO.CollageList> collagelist = ViewBag.collegelist as List<NewZapures_V2.Models.TrusteeBO.CollageList>;
+   
     List<CustomMaster> RoleType = new List<CustomMaster>();
     if (ViewBag.RoleType != null)
     {
@@ -168,19 +169,23 @@
                                 <h4 class="mt-0 header-title noc-form-label">Profile Photo</h4>
                                 <input type="file" class="dropify" id="profilefile" name="profilefile" />
                             </div>
+                            <label for="error" class="col-sm-12" id="errorprofile" style="display:none;"></label>
                         </div>
                         <div class="col-lg-8">
                             <div class="row">
                                 <div class="col-lg-6 trustee-file-height form-group">
                                     <div class="">
                                         <h4 class="mt-0 header-title noc-form-label">College</h4>
-                                        <select class="form-control noc-input-text" id="txtCollege" name="CollageId" required>
+                                        <select class="form-control noc-input-text" id="txtCollege" name="CollageId"  required>
                                             <option value="0">Select College</option>
                                             @if (collagelist != null)
                                             {
                                                 foreach (var item in collagelist)
                                                 {
                                                     <option value="@item.CollageId">@item.CollageName</option>
+                                                    
+                                                        @*<input type="hidden" value="@item.CollageId" id="Collage" />*@
+                                                   
                                                 }
                                             }
 
@@ -430,21 +435,23 @@
                             int i = 1;
                             foreach (var item in trusteelist)
                             {
+                                <div class="test">
+                                    <input type="hidden" value=@(string.Join(",", item.CollageId)) id="Pres" />
+                                    
+                                </div>
+                               
+
                                 if (item.RoleId == "President")
                                 {
                                     <div class="test">
                                         <input type="hidden" value="@item.RoleId" id="Presidentvalue" />
                                     </div>
-
-
-
                                 }
                                 if (item.RoleId == "Secretary")
                                 {
                                     <div class="test">
                                         <input type="hidden" value="@item.RoleId" id="Secretaryvalue" />
                                     </div>
-
                                 }
 
                                 <tr>
@@ -458,7 +465,7 @@
                                     @*<td>@item.trustName</td>*@
                                     <td>@item.Name</td>
                                     <td>@item.FatherName</td>
-                                    <td>@item.CollageId</td>
+                                    <td>@item.CollageName</td>
                                     <td>@item.RoleId</td>
                                     <td>@item.OccupationId</td>
                                     <td>@item.Mobile</td>
@@ -571,8 +578,8 @@
     $('.cutcopypaste').on("cut copy paste", function (e) {
         e.preventDefault();
     });
-    debugger
-    var isAlreadyPrimary = 0;
+    
+    
      var isuserExists = '@TempData["isSavedexists"]'
         var message = '@TempData["Messageexists"]'
         if (isuserExists == 1 && message.length> 0) {
@@ -598,6 +605,7 @@
         }
 
     $(document).ready(function () {
+        var isAlreadyPrimary = 0;
         $('#txtname').keypress(function (e) { $('#txtname').removeClass('errr-highlight').addClass('sucess-highlight'); });
         $('.alphaspace').keypress(function (e) {
             var regex = new RegExp("^[a-zA-Z ]+$");
@@ -656,20 +664,60 @@
 
         });
 
+        $("#txtrole").change(function () {
+            debugger
+            var Designation = $("#txtrole option:selected").text();
+            if (Designation == "President") {
+                var file = $('#profilefile').val();
+                if (file.length <= 0) {
+                    $('label[for="error"]').show();
+                    errorprofile.textContent = "Please Attch File";
+                    /* errortxtName.style.color = "red";*/
+                    $('#errorprofile').addClass('colordiv');
+                    $('#profilefile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#profilefile').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#errorprofile').html('');
+                }
+            }
+            else if (Designation == "Secretary") {
+                var file = $('#profilefile').val();
+                if (file.length <= 0) {
+                    $('label[for="error"]').show();
+                    errorprofile.textContent = "Please Attch File";
+                    /* errortxtName.style.color = "red";*/
+                    $('#errorprofile').addClass('colordiv');
+                    $('#profilefile').removeClass('sucess-highlight').addClass('errr-highlight');
+                    status = false;
+                }
+                else {
+                    $('#profilefile').removeClass('errr-highlight').addClass('sucess-highlight');
+                    $('#errorprofile').html('');
+                }
+
+            }
+            else {
+                $('#profilefile').removeClass('errr-highlight').addClass('sucess-highlight');
+                $('#errorprofile').html('');
+            }
+
+        });
+
+        
+
 
 
 
     });
-    //$('#txtaadharno').keyup(function () {
-    //    var value = $(this).val();
-    //    value = value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-");
-    //    $(this).val(value);
-    //});
-
     $('#chkIsPrime').click(function () {
         var status = $("#chkIsPrime").is(':checked');
+        debugger
+       
         if (status) {
             $('#hdnchkIsPrime').val(1);
+            Verify();
 
         } else {
             $('#hdnchkIsPrime').val(0);
@@ -722,30 +770,119 @@
         }
     });
 
-    function Reset() {
-      
+    function Verify() {
+       
         debugger
+        var IsPrime = $("#hdnchkIsPrime").val();
+        var CollId = $("#txtCollege option:selected").val();
+        var modal = {
+            CollegeId: CollId,
+            IsPrime: IsPrime
+
+        }
+       
+            $.ajax({
+                type: "Get",
+                url: GetglobalDomain() + "/Trustee/chkIsPrime",
+                data: modal,
+                success: function (data) {
+                    debugger
+                    if (data.Success) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: data.Message,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+
+                        });
+
+
+                    }
+                    else {
+                        debugger
+                        Swal.fire(data.Message, '', 'info')
+                        $("#chkIsPrime").prop("checked", false);
+                        $('#hdnchkIsPrime').val(0);
+
+                    }
+                },
+                error: function (d) {
+                    console.log(d);
+                    //$('#continue').css("display", "none");
+                    //$('#btnCapitalAdd').css("display", "block");
+                }
+            });
+       
+       
+    }
+
+
+    function womencount(College) {
+
+        debugger
+        var clgId = College
+        var modal = {
+            CollegeId: clgId
+        }
+        $.ajax({
+            type: "Get",
+            url: GetglobalDomain() + "/Trustee/womencount",
+            data: modal,
+            success: function (data) {
+                if (data.Success) {
+
+                    debugger
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: data.Message,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+
+                    });
+
+                    var President = $("#Presidentvalue").val();
+                    var Secretary = $("#Secretaryvalue").val();
+
+
+                    if (President == "President" && Secretary == "Secretary") {
+                        var url = $("#RedirectTo").val();
+                        location.href = url;
+
+                    }
+                    else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'warning',
+                            title: "Please Add Role President and Secretary",
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+
+                        });
+                    }
+
+                }
+                else {
+                    debugger
+
+                    Swal.fire(data.Message, '', 'info')
+
+                }
+            }
+        });
+    }
+
+    function Reset() {
+
+
+        var CollegeId = $("#Pres").val();
+        womencount(CollegeId)
         
-        var President = $("#Presidentvalue").val();  
-        var Secretary = $("#Secretaryvalue").val();
-          
-            if (President == "President" && Secretary == "Secretary") {
-                var url = $("#RedirectTo").val();
-                location.href = url;
-
-            }
-            else
-            {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'warning',
-                    title: "Please Add Role President and Secretary",
-                    allowOutsideClick: false,
-                    showCloseButton: true,
-                    showConfirmButton: false,
-
-                });
-            }
     }
     function ValidateEmail() {
 
@@ -783,6 +920,7 @@
         var aadharno = $('#txtaadharno').val();
         var regex = /([A-Z]){5}([0-9]){4}([A-Z]){1}$/;
         var Email = $('#txtEmail').val();
+       
 
         if (Name.length <= 0) {
             $('label[for="error"]').show();

@@ -229,6 +229,7 @@
     <Compile Include="Models\SlotDropdownBO.cs" />
     <Compile Include="Models\SlotMaster.cs" />
     <Compile Include="Models\StaffBO.cs" />
+    <Compile Include="Models\TNOC_PNOC.cs" />
     <Compile Include="Models\TrackingData.cs" />
     <Compile Include="Models\TrustAPIBO.cs" />
     <Compile Include="Models\SupportTicket.cs" />
@@ -4314,7 +4315,7 @@
     <Content Include="Views\CollegeAmendment\Index.cshtml" />
     <Content Include="Views\Admin\OldNOC.cshtml" />
     <Content Include="Views\Admin\OldNOCIndex.cshtml" />
-    <Content Include="Views\Trustee\ApplyNOCApplicationNew.cshtml" />
+    <Content Include="Views\Trustee\ApplyNOCApplicationNew1.cshtml" />
     <Content Include="Views\Trustee\OtherDetailsShow.cshtml" />
     <Content Include="Views\Trustee\CollegeDetails.cshtml" />
     <Content Include="Views\Trustee\EditDetails.cshtml" />
@@ -4326,7 +4327,7 @@
     <Content Include="Views\CollegeAmendment\ViewDetail.cshtml" />
     <Content Include="Views\Admin\OldNOC1.cshtml" />
     <Content Include="Views\Master\FeeMstIndex.cshtml" />
-    <Content Include="Views\Trustee\ApplyNOCApplicationNew1.cshtml" />
+    <Content Include="Views\Trustee\ApplyNOCApplicationNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

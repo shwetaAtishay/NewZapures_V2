@@ -151,12 +151,12 @@
                         </div>
                         <div class="col-lg-2 form-group">
 
-                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter length" class="form-control noc-input-text" required>
+                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter Length" class="form-control noc-input-text" required>
                             <span id="length_error"></span>
                         </div>
                         <div class="col-lg-2">
 
-                            <input type="number" class="form-control noc-input-text" name="dtQty" min="0" placeholder="Enter Qty" value="" id="Qty" required />
+                            <input type="number" class="form-control noc-input-text" name="dtQty" min="0" placeholder="Enter Student Capacity" value="" id="Qty" required />
                             <span id="Qty_error"></span>
                         </div>
                         <div class="col-sm-3">
@@ -185,8 +185,8 @@
                                         <th>#No</th>
                                         <th>Course</th>
                                         <th>Width</th>
-                                        <th>length</th>
-                                        <th>Qty</th>
+                                        <th>Length</th>
+                                        <th>Student Capacity</th>
                                         @*<th>Active</th>*@
                                         <th>Action</th>
                                     </tr>
@@ -304,7 +304,7 @@
             });
             $("#width_error").text(`Please Enter Width More than or Equal than ${Roomwidth}'`).css('color', '');
             $("#length_error").text(`Please Enter length More than or Equal than ${Roomlength}`).css('color', '');
-            $("#Qty_error").text(`Please Enter Capacity less than or Equal than ${RoomCapacity}`).css('color', '');
+            $("#Qty_error").text(`Please Enter Student Capacity less than or Equal than ${RoomCapacity}`).css('color', '');
         }
         else {
             $("#Width").attr({
