@@ -392,18 +392,21 @@ namespace NewZapures_V2.Models
         {
             public int TypeId { get; set; }
             public int courseID { get; set; }
+            public string CourseType { get; set; }
             public string subjectIdList { get; set; }
         }
         public class SubjectDataForNOC
         {
             public int TypeId { get; set; }
             public int courseID { get; set; }
+            public string CourseType { get; set; }
             public string subjectIdList { get; set; }
         }
         public class TNOCDataForNOC
         {
             public int typeID { get; set; }
             public string pkId { get; set; }
+            public string CourseType { get; set; }
             public int courseID { get; set; }
             public int subID { get; set; }
         }
@@ -411,6 +414,7 @@ namespace NewZapures_V2.Models
         {
             public int typeID { get; set; }
             public string pkId { get; set; }
+            public string CourseType { get; set; }
             public int courseID { get; set; }
             public int subID { get; set; }
         }

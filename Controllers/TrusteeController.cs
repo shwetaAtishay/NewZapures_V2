@@ -89,7 +89,7 @@ namespace NewZapures_V2.Controllers
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
-            if(obj.isPrimary == null)
+            if (obj.isPrimary == null)
             {
                 obj.isPrimary = "0";
             }
@@ -2363,9 +2363,10 @@ namespace NewZapures_V2.Controllers
             IRestResponse response = client.Execute(request);
             List<paymentHistory> trusteeList = new List<paymentHistory>();
             var daa = "";
+            ResponseData objResponse = new ResponseData();
             if (response.StatusCode.ToString() == "OK")
             {
-                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
                 if (objResponse.Data != null)
                 {
                     daa = JsonConvert.SerializeObject(objResponse.Data);
@@ -2418,13 +2419,13 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
-        
-        
-       public JsonResult womencount(string CollegeId)
+
+
+        public JsonResult womencount(string CollegeId)
         {
             var trustId = SessionModel.TrustId;
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/WomenCount?CollegeId=" + CollegeId + "&TrustId=" + trustId);
-            
+
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -2432,15 +2433,15 @@ namespace NewZapures_V2.Controllers
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Accept", "application/json");
             IRestResponse response = client.Execute(request);
-            
+
             var daa = "";
             if (response.StatusCode.ToString() == "OK")
             {
                 var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                if (objResponse.FemaleCount <=30 )
+                if (objResponse.FemaleCount <= 30)
                 {
-                    
-                    
+
+
                     return new JsonResult
                     {
                         Data = new { Success = false, Message = "Member list must have atleast 30% of Woman", },
@@ -2468,7 +2469,7 @@ namespace NewZapures_V2.Controllers
 
         }
 
-public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string subjects)
+        public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string subjects)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/CheckDraftValidationForEntry?clgID=" + clgID + "&courses=" + courses + "&subjects=" + subjects);
             var request = new RestRequest(Method.POST);
@@ -2494,7 +2495,7 @@ public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string
             };
         }
 
-      public JsonResult chkIsPrime(string CollegeId, string IsPrime)
+        public JsonResult chkIsPrime(string CollegeId, string IsPrime)
         {
             var trustId = SessionModel.TrustId;
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/chkIsPrime?trustId=" + trustId + "&CollegeId=" + CollegeId + "&IsPrime=" + IsPrime);
@@ -2572,7 +2573,7 @@ public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        
+
         public JsonResult ApplyNOC_TNOCExtentionData(string collegeID)
         {
             var clgList = ZapurseCommonlist.ApplyNOC_TNOCExtentionData(collegeID, "ApplyNOC_TNOCExtention");
@@ -2583,7 +2584,7 @@ public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        
+
         public JsonResult ApplyNOC_PNOC(string collegeID)
         {
             var clgList = ZapurseCommonlist.ApplyNOC_PNOC(collegeID, "ApplyNOC_PNOC");
