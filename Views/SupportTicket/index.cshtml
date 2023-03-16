@@ -137,7 +137,7 @@
                     </div>*@
 
             <div class="col-lg-4 form-group">
-                <label for="example-text-input" class="noc-form-label" style=""><strong>Subject</strong></label>
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Subject</strong><span style="color:red;">*</span></label>
                 <input type="text" class="form-control noc-input-text cutcopypaste" id="Subject" autocomplete="off" />
                 <span id="spnkhasra" class="spanLabel" style="display:none">Please Enter Subject</span>
                 <div>
@@ -157,7 +157,7 @@
             </div>
                
             <div class="col-lg-4 form-group">
-                <label for="example-text-input" class="noc-form-label" style=""><strong>Email</strong></label>
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Email</strong><span style="color:red;">*</span></label>
                 <input type="email" class="form-control noc-input-text cutcopypaste" id="txtEmail" autocomplete="off" />
                 <span id="" class="spanLabel" style="display:none">Please Enter Email Address</span>
                 <div>
@@ -166,7 +166,7 @@
             </div>
                
             <div class="col-lg-4 form-group">
-                <label for="example-text-input" class="noc-form-label" style=""><strong>Mobile No.</strong></label>
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Mobile No.</strong><span style="color:red;">*</span></label>
 
                 <input class="form-control noc-input-text numberonly cutcopypaste" type="text" maxlength="10" id="txtMobileNumber" name="MobileNumber" value="" autocomplete="off">
                 <span id="" class="spanLabel" style="display:none">Please Enter Mobile Number</span>
@@ -177,7 +177,7 @@
 
                 
             <div class="col-lg-12 form-group">
-                <label for="example-text-input" class="noc-form-label" style=""><strong>Message</strong></label>
+                <label for="example-text-input" class="noc-form-label" style=""><strong>Message</strong><span style="color:red;">*</span></label>
                 <textarea class="form-control noc-input-text cutcopypaste" id="message" placeholder="Please Enter Message" style="resize:none; height:80px;"></textarea>
 
                 @*<input type="text" class="form-control noc-input-text" id="Subject" autocomplete="off" />
@@ -338,7 +338,7 @@
         if (TicketsType == "Nature Of Tickets" || TicketsType == undefined) {
            
             $('label[for="error"]').show();
-            errorTickets.textContent = "Please Select Tickets Issue"
+            errorTickets.textContent = "Please Select Nature Of Ticket"
             errorTickets.style.color = "red"
             Tickets.style.border = "1px solid red"
             $('#Tickets').focus();
@@ -354,7 +354,7 @@
         if (!$('#Subject').val()) {
 
             $('label[for="error"]').show();
-            errorSubject.textContent = "Please Enter Subject Issue"
+            errorSubject.textContent = "Please Enter Subject"
             errorSubject.style.color = "red"
             Subject.style.border = "1px solid red"
             $('#Subject').focus();
@@ -370,7 +370,7 @@
         if (!$('#txtAffidavitconsent').val()) {
 
             $('label[for="error"]').show();
-            errorFile.textContent = "Please Select Chose File"
+            errorFile.textContent = "Please Upload File"
             errorFile.style.color = "red"
             txtAffidavitconsent.style.border = "1px solid red"
             $('#txtAffidavitconsent').focus();
