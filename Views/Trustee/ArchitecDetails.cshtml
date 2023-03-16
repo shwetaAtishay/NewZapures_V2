@@ -7,6 +7,7 @@
     {
         lstcourse = (List<CourserBind>)ViewBag.lstcourse;
     }
+    var colId = ViewBag.ClgId;
     Layout = null;
 }
 
@@ -117,10 +118,10 @@
 
 <div class="card noc-layouts m-0">
     <div class="card-header title-heading p-0">
-        <h4 class="m-0 title-heading float-left">@ViewBag.Title</h4>
+        <h4 class="m-0 title-heading col-sm-12 float-left">@ViewBag.Title  <a id="info" title="Show Old Information" style="float:right;cursor:pointer;" onclick="OpenModel();"> Show Data</a></h4>
         @*<div class="form-group" style="text-align:right">
-                <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
-            </div>*@
+            <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
+        </div>*@
     </div>
     <div class="row">
         <div class="col-12">
@@ -200,6 +201,40 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Old information of Rooms Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row noc-layouts-tbl p-0 m-0">
+                    <div class="form-group col-lg-12" style="overflow-x:auto;">
+                        <table class="table table-borderless table-striped table-hover" id="tblFacility">
+                            <thead class="dark">
+                                <tr>
+                                    <th>#No</th>
+                                    <th>Name</th>
+                                    <th>Vlaue</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="oldtbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="savechanges">Save changes</button>*@
             </div>
         </div>
     </div>
@@ -412,6 +447,48 @@
         reader.readAsDataURL(file);
         return
     }
+     function OpenModel() {
+
+        var VertinaryModal = {
+            clgID: parseInt('@colId'),
+            "type": "Rooms"
+
+        }
+
+        var d = JSON.stringify(VertinaryModal);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetOldData",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                debugger;
+                var trolddata = '';
+                var i = 1;
+                console.log(data);
+
+                var mainData = data.Data;
+
+                mainData.forEach(function (item) {
+                    trolddata += `<tr><td>${i}</td><td>${item.Id}</td><td>${item.Text}</td>`
+                    i++;
+                })
+                $("#oldtbody").html(trolddata);
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+        $('#exampleModal').modal('show');
+
+    }
     @*function FillCourse(ApplicationId) {
 
         var NOCReq = {
@@ -557,7 +634,7 @@
             cache: false,
             data: JSON.stringify(NOCReq),
             success: function (data) {
-               
+
                 if (data.isvalid == 1) {
                     var tabletr1 = '';
                     var ArchData = data.Data;

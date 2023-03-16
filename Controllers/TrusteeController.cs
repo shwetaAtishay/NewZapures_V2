@@ -1563,9 +1563,10 @@ namespace NewZapures_V2.Controllers
             ViewBag.draftApplication = draftApplications;
             return View();
         }
-        public ActionResult ArchitecDetails1(string AppGuid)
+        public ActionResult ArchitecDetails1(string AppGuid, int clgId)
         {
             ViewBag.AppGuid = AppGuid;
+            ViewBag.ClgId = clgId;
             return View();
         }
         //public JsonResult BindCourse(string AppGuid, int CourseId = 0)
@@ -1991,20 +1992,22 @@ namespace NewZapures_V2.Controllers
         }
 
 
-        public ActionResult ArchitecDetails(string AppGuid)
+        public ActionResult ArchitecDetails(string AppGuid, int clgId)
         {
             List<CourserBind> lstcourse = new List<CourserBind>();
             lstcourse = UpdateCoursebind(AppGuid);
             ViewBag.lstcourse = lstcourse;
             ViewBag.AppGuid = AppGuid;
+            ViewBag.ClgId = clgId;
             return View();
         }
-        public ActionResult OtherDetails(string AppGuid)
+        public ActionResult OtherDetails(string AppGuid,int clgId)
         {
             List<CourserBind> lstother = new List<CourserBind>();
             lstother = Updateotherbind(AppGuid);
             ViewBag.lstother = lstother;
             ViewBag.AppGuid = AppGuid;
+            ViewBag.ClgId = clgId;
             return View();
         }
         public List<CourserBind> UpdateCoursebind(string AppGuid, int CourseId = 0)
@@ -2468,5 +2471,16 @@ namespace NewZapures_V2.Controllers
 
 
         #endregion
+
+        public JsonResult GetOldData(int clgID,string type)
+        {   
+            var nocList = ZapurseCommonlist.GetOldData(clgID, type);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "Courses List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
     }
 }

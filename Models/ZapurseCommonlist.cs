@@ -2193,5 +2193,27 @@ namespace NewZapures_V2.Models
             return trusteeList;
         }
         #endregion
+
+        public static List<Dropdown> GetOldData(int clgID, string type )
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Masters/GetOldData?clgID=" + clgID + "&type=" + type);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            List<Dropdown> trusteeList = new List<Dropdown>();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    trusteeList = JsonConvert.DeserializeObject<List<Dropdown>>(objResponse.Data.ToString());
+                }
+            }
+            return trusteeList;
+        }
     }
 }
