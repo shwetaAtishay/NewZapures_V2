@@ -89,6 +89,10 @@ namespace NewZapures_V2.Controllers
             byte[] Documentbyte;
             string extension = string.Empty;
             string ContentType = string.Empty;
+            if(obj.isPrimary == null)
+            {
+                obj.isPrimary = "0";
+            }
             #region Aadhaar
             if (aadhaarfile != null)
             {
@@ -2364,7 +2368,7 @@ namespace NewZapures_V2.Controllers
          
             return new JsonResult
             {
-                Data = new { StatusCode = 1, Data = daa, Failure = false, Message = "Payment History" },
+                Data = new { StatusCode = 1, Data = daa, Failure = false, Message = objResponse.Message },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
@@ -2407,6 +2411,101 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
-        
+
+        public JsonResult womencount(string CollegeId)
+        {
+            var trustId = SessionModel.TrustId;
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/WomenCount?CollegeId=" + CollegeId + "&TrustId=" + trustId);
+            
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            
+            var daa = "";
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.FemaleCount <=30 )
+                {
+                    
+                    
+                    return new JsonResult
+                    {
+                        Data = new { Success = false, Message = "Member list must have atleast 30% of Woman", },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+                else
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Success = true, Message = "Record Saved Successfully" },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Success = false, Message = "Error" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+
+        }
+
+        public JsonResult chkIsPrime(string CollegeId, string IsPrime)
+        {
+            var trustId = SessionModel.TrustId;
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/chkIsPrime?trustId=" + trustId + "&CollegeId=" + CollegeId + "&IsPrime=" + IsPrime);
+
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+
+            var daa = "";
+            if (response.StatusCode.ToString() == "OK")
+            {
+                var objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Message == "Alreday exists iIsPrimary")
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Success = false, Message = "Alreday exists iIsPrimary", },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+
+                }
+                else
+                {
+                    return new JsonResult
+                    {
+                        Data = new { Success = true, Message = "Not Record Pls Insert Record" },
+                        ContentEncoding = System.Text.Encoding.UTF8,
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+            }
+            return new JsonResult
+            {
+                Data = new { Success = false, Message = "Error" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+
+        }
+
+
     }
 }

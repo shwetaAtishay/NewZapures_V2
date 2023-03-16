@@ -51,6 +51,7 @@ namespace NewZapures_V2.Models
         public string JWT { get; set; }
         public string imagename { get; set; }
         public string RegistrationId { get; set; }
+        public decimal FemaleCount { get; set; }
     }
     public class AddPurchase
     {

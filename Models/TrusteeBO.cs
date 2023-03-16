@@ -96,6 +96,7 @@ namespace NewZapures_V2.Models
             public string GenderId { get; set; }
             public string FatherName { get; set; }           
             public string CollageId { get; set; }
+            public string CollageName { get; set; }
             public string Educationfile { get; set; }
             public string EducationfileExtension { get; set; }
             public string EducationfileContentType { get; set; }   

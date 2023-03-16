@@ -76,6 +76,20 @@ namespace NewZapures_V2.Models
         public string UploadConvertedDocumentExtensionAffidavit { get; set; }
         public string UploadConvertedDocumentContentAffidavit { get; set; }
 
+       // Fully Order Doc
+        public string UploadorderDoc { get; set; }
+        public string UploadorderDocExtension { get; set; }
+        public string UploadOrderDocContentt { get; set; }
+
+        // Not Converted Affidavi tNot
+        public string UploadAffidavitNotDoc { get; set; }
+        public string UploadAffidavitNotExtension { get; set; }
+        public string UploadAffidavitNotContentt { get; set; }
+
+        public string dtAffidavitDate { get; set; }
+        public string dtNOTAffidavitDate { get; set; }
+
+
     }
 
     public class BuildingDetails
