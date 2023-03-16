@@ -7,6 +7,7 @@
     {
         lstother = (List<CourserBind>)ViewBag.lstother;
     }
+    var colId = ViewBag.ClgId;
     Layout = null;
 }
 
@@ -117,90 +118,125 @@
     </div><!--end col-->
 </div>
 <div class="card noc-layouts m-0">
-    <div class="card-header title-heading p-0">
-        <h4 class="m-0 title-heading float-left">@ViewBag.Title</h4>
-        @*<div class="form-group" style="text-align:right">
+    <div class="card-header title-heading p-0 row">
+        <h4 class="m-0 title-heading col-sm-12 float-left">@ViewBag.Title  <a id="info"  title="Show Old Information"  style="float:right;cursor:pointer;" onclick="OpenModel();"> Show Data</a></h4>
+      
+            @*<div class="form-group" style="text-align:right">
                 <a href="@Url.Action("EditApplication","Trustee",new {Guid=SessionModel.ApplicantGuid })" style="font-size: 15px ; color: white;  font-family: 'Ubuntu', sans-serif;" class="btn btn-gradient-successnav-link btn btn-success">Back</a>
             </div>*@
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
 
-                <div class="card-body">
+                    <div class="card-body">
 
-                    <div class=" is-empty row">
-                        <div class="col-sm-3 form-group">
+                        <div class=" is-empty row">
+                            <div class="col-sm-3 form-group">
 
-                            <select class="singleselect form-control noc-input-text" id="CourseId" name="CourseId" required>
-                                <option value="" data-Roomlength="0" data-Roomwidth="0" data-RoomNo="0">Select Other</option>
-                                @{
-                                    foreach (var item in lstother)
-                                    {
-                                        <option value="@item.Id" data-RoomNo="@item.RoomNo" data-Roomlength="@item.Roomlength" data-Roomwidth="@item.Roomwidth">@item.text</option>
+                                <select class="singleselect form-control noc-input-text" id="CourseId" name="CourseId" required>
+                                    <option value="" data-Roomlength="0" data-Roomwidth="0" data-RoomNo="0">Select Other</option>
+                                    @{
+                                        foreach (var item in lstother)
+                                        {
+                                            <option value="@item.Id" data-RoomNo="@item.RoomNo" data-Roomlength="@item.Roomlength" data-Roomwidth="@item.Roomwidth">@item.text</option>
+                                        }
+
+
                                     }
+                                </select>
+                            </div>
+                            <div class="col-lg-2 form-group" id="widthdiv">
 
+                                <input name="sWidth" id="Width" type="number" value="" min="0" class="form-control noc-input-text" placeholder="Enter Width">
+                                <span id="width_error"></span>
+                            </div>
+                            <div class="col-lg-2 form-group" id="lengthdiv">
 
-                                }
-                            </select>
-                        </div>
-                        <div class="col-lg-2 form-group" id="widthdiv">
+                                <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter length" class="form-control noc-input-text">
+                                <span id="length_error"></span>
+                            </div>
+                            <div class="col-sm-2 hidden" id="otherdiv">
 
-                            <input name="sWidth" id="Width" type="number" value="" min="0" class="form-control noc-input-text" placeholder="Enter Width" >
-                            <span id="width_error"></span>
-                        </div>
-                        <div class="col-lg-2 form-group" id="lengthdiv">
-
-                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter Length" class="form-control noc-input-text" required>
-                            <span id="length_error"></span>
-                        </div>
-                        <div class="col-sm-2 hidden" id="otherdiv">
-
-                                <input type="number" class="form-control" name="dtQty" min="0" placeholder="Enter Qty" value="" id="Qty"/>
+                                <input type="number" class="form-control" name="dtQty" min="0" placeholder="Enter Qty" value="" id="Qty" />
                                 <span id="Qty_error"></span>
                             </div>
-                        <div class="col-lg-3 form-group">
-                            <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
-                                @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
-                                <input type="file" id="file" name="files" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control noc-input-upload filestyle" />
+                            <div class="col-lg-3 form-group">
+                                <div class="form-group col-lg-12" id="filediv" style="height: 10px;">
+                                    @*<label for="files-@item.iParCatId-@inneritem.iParCatSubId-@thirditem.iParUomid" class="btn">Upload Image</label>*@
+                                    <input type="file" id="file" name="files" onchange="return encodeImageFileAsURL(this)" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control noc-input-upload filestyle" />
 
-                                <input type="hidden" id="filedata" style="border: 0px solid #e8ebf3 ;" name="filedata" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
-                                <input type="hidden" id="sProfileExtension" value="">
+                                    <input type="hidden" id="filedata" style="border: 0px solid #e8ebf3 ;" name="filedata" data-input="true" data-buttonname="btn btn-info" data-iconname="fa fa-upload mr" class="form-control filestyle" />
+                                    <input type="hidden" id="sProfileExtension" value="">
+                                </div>
+                            </div>
+                            <div class="pull-right col-lg-2" style="text-align: end;">
+
+                                <button class="theme-discard-btn" id="reset"><i class="fas fa-sync-alt"></i> Reset</button>
+                                <button class="theme-button-mockup" id="save"><i class="fas fa-save"></i> Save </button>
                             </div>
                         </div>
-                        <div class="pull-right col-lg-2" style="text-align: end;">
+                        <div class="loader-div">
+                            <img class="loader-img" src="~/images/Stopwatch.gif" style="height: 120px;width: auto;" />
+                        </div>
+                        <div class="row noc-layouts-tbl p-0 m-0">
+                            <div class="form-group col-lg-12" style="overflow-x:auto;">
+                                <table class="table table-borderless table-striped table-hover" id="tblFacility">
+                                    <thead class="dark">
+                                        <tr>
+                                            <th>#No</th>
+                                            <th>Name</th>
+                                            <th>Width</th>
+                                            <th>length</th>
 
-                            <button class="theme-discard-btn" id="reset"><i class="fas fa-sync-alt"></i> Reset</button>
-                            <button class="theme-button-mockup" id="save"><i class="fas fa-save"></i> Save </button>
+                                            <th>Qty</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="pull-right" style="text-align: end;">
+                            <button class="theme-button-mockup" id="Final"><i class="fas fa-save"></i> Save & Next</button>
                         </div>
                     </div>
-                    <div class="loader-div">
-                        <img class="loader-img" src="~/images/Stopwatch.gif" style="height: 120px;width: auto;" />
-                    </div>
-                    <div class="row noc-layouts-tbl p-0 m-0">
-                        <div class="form-group col-lg-12" style="overflow-x:auto;">
-                            <table class="table table-borderless table-striped table-hover" id="tblFacility">
-                                <thead class="dark">
-                                    <tr>
-                                        <th>#No</th>
-                                        <th>Name</th>
-                                        <th>Width</th>
-                                        <th>Length</th>
 
-                                        <th>Qty</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="pull-right" style="text-align: end;">
-                        <button class="theme-button-mockup" id="Final"><i class="fas fa-save"></i> Save & Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Old information of Other Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row noc-layouts-tbl p-0 m-0">
+                    <div class="form-group col-lg-12" style="overflow-x:auto;">
+                        <table class="table table-borderless table-striped table-hover" id="tblFacility">
+                            <thead class="dark">
+                                <tr>
+                                    <th>#No</th>
+                                    <th>Name</th>
+                                    <th>Vlaue</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody id="oldtbody">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="savechanges">Save changes</button>*@
             </div>
         </div>
     </div>
@@ -351,7 +387,7 @@
         let sProfileExtension= $("#sProfileExtension").val();
         var Width = $("#Width").val();
         var length = $("#length").val();
-        var Qty = $("#Qty").val();
+        var Qty = $("#Qty").val() == "" ? '0' : $("#Qty").val();
         if (parseInt(Roomwidth) > parseInt(Width)) {
             var widtherror = `Please Enter Width More than or Equal to ${Roomwidth}`;
             $("#width_error").text(widtherror).css('color', 'red');
@@ -585,5 +621,48 @@
         }
         $("#tbody").html(tabletr1);
         Reset();
+    }
+
+    function OpenModel() {
+       
+        var VertinaryModal = {
+            clgID: parseInt('@colId'),
+            "type": "Other"
+           
+        }
+
+        var d = JSON.stringify(VertinaryModal);
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetOldData",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(VertinaryModal),
+            success: function (data) {
+                debugger;
+                var trolddata = '';
+                var i = 1;
+                console.log(data);
+             
+                var mainData = data.Data;
+              
+                mainData.forEach(function (item) {
+                    trolddata += `<tr><td>${i}</td><td>${item.Id}</td><td>${item.Text}</td>`
+                    i++;
+                })
+                $("#oldtbody").html(trolddata);
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+
+        $('#exampleModal').modal('show');
+        
     }
 </script>
