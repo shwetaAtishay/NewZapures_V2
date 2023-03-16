@@ -151,7 +151,7 @@
                         </div>
                         <div class="col-lg-2 form-group" id="lengthdiv">
 
-                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter length" class="form-control noc-input-text" >
+                            <input name="slength" id="length" type="number" value="" min="0" placeholder="Enter Length" class="form-control noc-input-text" required>
                             <span id="length_error"></span>
                         </div>
                         <div class="col-sm-2 hidden" id="otherdiv">
@@ -185,7 +185,7 @@
                                         <th>#No</th>
                                         <th>Name</th>
                                         <th>Width</th>
-                                        <th>length</th>
+                                        <th>Length</th>
 
                                         <th>Qty</th>
                                         <th>Action</th>
@@ -294,7 +294,7 @@
             //    "max": RoomCapacity
             //});
             $("#width_error").text(`Please Enter Width More than or Equal than ${Roomwidth}'`).css('color', '');
-            $("#length_error").text(`Please Enter length More than or Equal than ${Roomlength}`).css('color', '');
+            $("#length_error").text(`Please Enter Length More than or Equal than ${Roomlength}`).css('color', '');
            /* $("#Qty_error").text(`Please Enter Capacity less than or Equal than ${RoomCapacity}`).css('color', '');*/
         }
         else {

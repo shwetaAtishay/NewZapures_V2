@@ -118,14 +118,14 @@
                             @*<option value="0">Select Any One</option>*@
                             <option value="1001">College Level</option>
                             @*@{
-                                if (courses != null)
-                                {
-                                    foreach (var item in courses)
-                                    {
-                                        <option value=@item.Id>@item.text</option>
-                                    }
-                                }
-                            }*@
+                    if (courses != null)
+                    {
+                        foreach (var item in courses)
+                        {
+                            <option value=@item.Id>@item.text</option>
+                        }
+                    }
+                }*@
                         </select>
                         <span id="spnlandCourse" class="spanLabel" style="display:none">Please Select Courses or College level</span>
                     </div>
@@ -156,7 +156,7 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="select2-purple">
-                            <label for="example-text-input" class="noc-form-label" style=""><strong>Is Land converted to Institution/Education</strong></label>
+                            <label for="example-text-input" class="noc-form-label" style=""><strong>Is Your Land converted to Institution/Education</strong></label>
                             <select class="singleSelect noc-input-text" id="ddlLandConvert">
                                 <option value="0">Select Conversion</option>
                                 <option value="Fully Converted">Fully Converted</option>
@@ -169,28 +169,40 @@
                     <div class="col-lg-8" id="divConverted" style="display:none">
                         <div class="col-lg-12" style="display: flex;margin: 0;padding: 0;">
                             <div class="form-group col-lg-3">
-                                <label for="example-text-input" class="noc-form-label" style=""><strong>Order Number</strong></label>
+                                <label for="example-text-input" class="noc-form-label" style=""><strong>Land Conversion Order No</strong></label>
                                 <input type="text" class="form-control noc-input-text" id="txtOrderNo" autocomplete="off" />
                                 <span id="spnlandorderNumber" class="spanLabel" style="display:none">Please Enter Order Number</span>
                             </div>
 
                             <div class="col-lg-3 form-group">
-                                <label for="example-text-input" class="noc-form-label" style=""><strong>Order Date</strong></label>
+                                <label for="example-text-input" class="noc-form-label" style=""><strong>Land Conversion Order Date</strong></label>
                                 <input type="date" class="form-control noc-input-text" id="txtOrderDate" autocomplete="off" />
                                 <span id="spnOrderDate" class="spanLabel" style="display:none">Please Select Order Date</span>
                             </div>
-
-                            <div class="col-lg-3 form-group">
-                                <label for="example-text-input" class="noc-form-label" style=""><strong>Conversion file process</strong></label>
-                                <input type="file" class="form-control-file noc-input-upload" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
-                                <input type="hidden" id="hdnConvertedDoc" />
-                                <input type="hidden" id="hdnConvertedDocExten" />
+                            <div class="col-lg-3 form-group" id="OrderDocument">
+                                <label for="example-text-input" class="noc-form-label" style=""><strong>Conversion Order Document</strong></label>
+                                <input type="file" class="form-control-file noc-input-upload" id="OrderDocumentFile" onchange="return encodeImageFileAsURL(this,'hdnConvertedOrderDoc','hdnConvertedOrderDocExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                                <input type="hidden" id="hdnConvertedOrderDoc" />
+                                <input type="hidden" id="hdnConvertedOrderDocExten" />
                             </div>
-                            <div class="col-lg-3 form-group">
-                                <label for="example-text-input" class="noc-form-label" style=""><strong>Affidavit document for conversion</strong></label>
-                                <input type="file" class="form-control-file noc-input-upload" id="fluConvertedDocAffidavit" onchange="return encodeImageFileAsURL(this,'hdnConvertedDocAffidavit','hdnConvertedDocExtenAffidavit')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
-                                <input type="hidden" id="hdnConvertedDocAffidavit" />
-                                <input type="hidden" id="hdnConvertedDocExtenAffidavit" />
+                            <div id="fileprocess" class="col-lg-12 form-group">
+                                <div class="col-lg-3 form-group">
+                                    <label for="example-text-input" class="noc-form-label" style=""><strong>Conversion file process</strong></label>
+                                    <input type="file" class="form-control-file noc-input-upload" id="fluConvertedDoc" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                                    <input type="hidden" id="hdnConvertedDoc" />
+                                    <input type="hidden" id="hdnConvertedDocExten" />
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="example-text-input" class="noc-form-label" style=""><strong>Affidavit Date</strong></label>
+                                    <input type="date" class="form-control noc-input-text" id="txtAffidavitDate" autocomplete="off" />
+                                    <span id="spnOrderDate" class="spanLabel" style="display:none">Please Select Affidavit Date</span>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label for="example-text-input" class="noc-form-label" style=""><strong>Affidavit document for conversion</strong></label>
+                                    <input type="file" class="form-control-file noc-input-upload" id="fluConvertedDocAffidavit" onchange="return encodeImageFileAsURL(this,'hdnConvertedDocAffidavit','hdnConvertedDocExtenAffidavit')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                                    <input type="hidden" id="hdnConvertedDocAffidavit" />
+                                    <input type="hidden" id="hdnConvertedDocExtenAffidavit" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -213,40 +225,40 @@
                     </div>
 
                     <div class="col-lg-4 form-group">
-                        <label for="example-text-input" class="noc-form-label" style=""><strong>Owner Name</strong></label>
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Name of Owner Of Land</strong></label>
                         <input type="text" class="form-control noc-input-text" id="txtownerName" autocomplete="off" />
-                        <span id="spnowner" class="spanLabel" style="display:none">Please Enter Owner Name</span>
+                        <span id="spnowner" class="spanLabel" style="display:none">Please Enter Name of Owner Of Land</span>
                     </div>
 
                     <div class="col-lg-4 form-group">
-                        <label for="example-text-input" class="noc-form-label" style=""><strong>Land Area (sqMtr)</strong></label>
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Land Area (in Sq. Meter)</strong></label>
                         <input type="text" class="form-control noc-input-text" id="txtLandArea" oninput="numberOnly(this.id)" autocomplete="off" />
                         <span id="spnlandEntry" class="spanLabel" style="display:none">Please Enter Land Area</span>
                     </div>
                     @*<div class="col-lg-4">
-                            <label for="example-text-input" class="noc-form-label" style=""><strong>Land Accure Type</strong></label>
-                            <div style="display:flex">
-                                <div class="form-group custom-control custom-radio col-sm-4">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_owned" value="owned">
-                                    <label for="rbtn_owned" class="custom-control-label" style="width: max-content;">Owned</label>
-                                </div>
+            <label for="example-text-input" class="noc-form-label" style=""><strong>Land Accure Type</strong></label>
+            <div style="display:flex">
+                <div class="form-group custom-control custom-radio col-sm-4">
+                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_owned" value="owned">
+                    <label for="rbtn_owned" class="custom-control-label" style="width: max-content;">Owned</label>
+                </div>
 
-                                <div class="form-group custom-control custom-radio col-sm-4">
-                                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_rented" value="rented">
-                                    <label for="rbtn_rented" class="custom-control-label" style="width: max-content;">Rented</label>
-                                </div>
-                            </div>
-                            <span id="spnlandAccureType" class="spanLabel" style="display:none">Please Select Land Accure Type</span>
-                        </div>
+                <div class="form-group custom-control custom-radio col-sm-4">
+                    <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="lndAccureType" id="rbtn_rented" value="rented">
+                    <label for="rbtn_rented" class="custom-control-label" style="width: max-content;">Rented</label>
+                </div>
+            </div>
+            <span id="spnlandAccureType" class="spanLabel" style="display:none">Please Select Land Accure Type</span>
+        </div>
 
-                        <div class="col-lg-4">
-                            <label for="example-text-input" class="noc-form-label" style="" id="lblAccureType"><strong>Upload<span id="spnAccureType" style="text-transform:capitalize"></span> Certificate</strong></label>
-                            <input type="file" class="form-control-file" id="fluIsowned_RentedCertificate" onchange="return encodeImageFileAsURL(this,'hdnIsowned_RentedCertificate','hdnIsowned_RentedCertificateExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
-                            <input type="hidden" id="hdnIsowned_RentedCertificate" />
-                            <input type="hidden" id="hdnIsowned_RentedCertificateExten" />
-                        </div>*@
+        <div class="col-lg-4">
+            <label for="example-text-input" class="noc-form-label" style="" id="lblAccureType"><strong>Upload<span id="spnAccureType" style="text-transform:capitalize"></span> Certificate</strong></label>
+            <input type="file" class="form-control-file" id="fluIsowned_RentedCertificate" onchange="return encodeImageFileAsURL(this,'hdnIsowned_RentedCertificate','hdnIsowned_RentedCertificateExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+            <input type="hidden" id="hdnIsowned_RentedCertificate" />
+            <input type="hidden" id="hdnIsowned_RentedCertificateExten" />
+        </div>*@
                     <div class="col-lg-4" style="display:none" id="divLandNotConvert">
-                        <label for="example-text-input" class="noc-form-label"><strong>Land Not Converted Document</strong></label>
+                        <label for="example-text-input" class="noc-form-label"><strong>Conversion File Process Certificate</strong></label>
                         <input type="file" class="form-control-file" id="flulandNotConvert" onchange="return encodeImageFileAsURL(this,'hdnlandNotConvert','hdnlandNotConvertExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
                         <input type="hidden" id="hdnlandNotConvert" />
                         <input type="hidden" id="hdnlandNotConvertExten" />
@@ -265,6 +277,17 @@
                         <input type="hidden" id="hdnlandDocument" />
                         <input type="hidden" id="hdnlandDocumentExten" />
                     </div>
+                    <div class="col-lg-3">
+                        <label for="example-text-input" class="noc-form-label" style=""><strong>Affidavit Date</strong></label>
+                        <input type="date" class="form-control noc-input-text" id="txtNOTAffidavitDate" autocomplete="off" />
+                        <span id="spnOrderDate" class="spanLabel" style="display:none">Please Select Affidavit Date</span>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="example-text-input" class="noc-form-label"><strong>Affidavit Document for Conversion</strong></label>
+                        <input type="file" class="form-control-file" id="AffidavitDocumentNotConverted" onchange="return encodeImageFileAsURL(this,'hdnNotAffidavitDocument','hdnNotAffidavitDocumentExten')" accept=".png,.jpg,.jpeg,.gif,.pdf" autocomplete="off" />
+                        <input type="hidden" id="hdnNotAffidavitDocument" />
+                        <input type="hidden" id="hdnNotAffidavitDocumentExten" />
+                    </div>
                     <div class="col-lg-12">
                         <div class="row">
                             <div class="col-lg-3" id="divLandConvertDoc">
@@ -272,9 +295,9 @@
                                 <a href="~/LandDocuments/Affidavit Document for Coversion.pdf" class="noc-upload-btn" id="btnDownloadConvertedDoc" download="LandConversion"><i class="fa fa-download"></i> Download Conversion file process</a>
                             </div>
                             @*<div class="col-lg-3" id="divLandConvertDoc">
-                                <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
-                                <a href="~/LandDocuments/Affidavit Document for Coversion.pdf" class="noc-upload-btn" id="btnDownloadConvertedDoc" download="LandConversion"><i class="fa fa-download"></i> Download Affidavit document for conversion</a>
-                            </div>*@
+                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
+                    <a href="~/LandDocuments/Affidavit Document for Coversion.pdf" class="noc-upload-btn" id="btnDownloadConvertedDoc" download="LandConversion"><i class="fa fa-download"></i> Download Affidavit document for conversion</a>
+                </div>*@
                             <div class="col-lg-3" id="divLandTitleDoc">
                                 <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">&nbsp;</label>
                                 <a href="~/LandDocuments/Land Title Certificate.pdf" class="noc-upload-btn" id="btnDownloadLandTitle" download="LandTitle"><i class="fa fa-download"></i> Download Land Title Certificate File</a>
@@ -322,12 +345,16 @@
                                     <th>Is Convereted</th>
                                     <th>Order No</th>
                                     <th>Order Date</th>
+                                    <th>Affidavit Date Partially</th>
+                                    <th>Not Converted Affidavit Date </th>
                                     <th>Land Type</th>
                                     <th>Khasara Number</th>
                                     <th>Owner Name</th>
                                     <th hidden>Is Owned/Rented</th>
                                     <th>Land Area</th>
                                     <th>Total Area</th>
+                                    <th>Conversion Order Document</th>
+                                    <th>Affidavit Document for Conversion</th>
                                     <th>Conversion file process</th>
                                     <th>Converted Affidavit Doc</th>
                                     <th>Land Title Doc</th>
@@ -401,11 +428,12 @@
 
         SomeFunction();
         document.getElementById("txtOrderDate").max = new Date().toISOString().split("T")[0];
-
+       /* document.getElementById("txtAffidavitDate").max = new Date().toISOString().split("T")[0];*/
+       
 
         $('#ddlLandConvert').change(function () {
             var selectedItem = $(this).val();
-
+            debugger
             if (selectedItem == 0) {
                 $('#spnlandconvert').css('display', 'block');
                 $('#divConverted').css('display', 'none');
@@ -413,10 +441,23 @@
                     $('#divLandTitleDoc').removeClass('col-lg-4').addClass('col-lg-6');
                     $('#divLandDoc').removeClass('col-lg-4').addClass('col-lg-6');
             }
+            else if (selectedItem == 'Fully Converted') {
+                $('#spnlandconvert').css('display', 'none');
+                $('#divConverted').css('display', 'flex');
+                $('#divLandNotConvert').css('display', 'none');
+                $('#OrderDocument').css('display', 'block');
+                $('#fileprocess').css('display', 'none');
+                //    $('#divLandConvertDoc').css('display', 'block')//.addClass('col-lg-4');
+                //    $('#divLandTitleDoc').removeClass('col-lg-6')//.addClass('col-lg-4');
+                //$('#divLandDoc').removeClass('col-lg-6').addClass('col-lg-4');
+            }
             else if (selectedItem != 'Not Converted') {
                 $('#spnlandconvert').css('display', 'none');
                 $('#divConverted').css('display', 'flex');
                 $('#divLandNotConvert').css('display', 'none');
+                $('#OrderDocument').css('display', 'none');
+                $('#fileprocess').css('display', 'block');
+               
                 //    $('#divLandConvertDoc').css('display', 'block')//.addClass('col-lg-4');
                 //    $('#divLandTitleDoc').removeClass('col-lg-6')//.addClass('col-lg-4');
                 //$('#divLandDoc').removeClass('col-lg-6').addClass('col-lg-4');
@@ -435,16 +476,20 @@
         $('#btnAdd').click(function () {
             var htmlString = "";
             if (CheckValidation()) {
+                debugger
                 var landArea = $('#ddlLandArea option:selected').text().trim();
                 var landDocType = $('#ddlLandDocType option:selected').text().trim();
                 var landConverted = $('#ddlLandConvert option:selected').text().trim();
                 var landType = $('#ddlLandType option:selected').text().trim();
                 var orderNo = $('#txtOrderNo').val().trim();
                 var orderDate = $('#txtOrderDate').val().trim();
+               
                 var khasaraNo = $('#txtkhasaraNo').val().trim();
                 var ownerName = $('#txtownerName').val().trim();
                 var landAreaUnit = $('#txtLandArea').val().trim();
                 var totalArea = $('#txtTotalArea').val().trim();
+                var AffidavitorderDate = $('#txtAffidavitDate').val().trim();
+                var NOTAffidavitDate = $('#txtNOTAffidavitDate').val().trim();
                 var courseID = 0;
                 var courseName = "College Level";
                 var lndAccureType = "";//$('input[name="lndAccureType"]:checked').val();
@@ -503,6 +548,25 @@
                 }
                 var landNotConvertedDocFullURL = $('#hdnlandNotConvert').val();
 
+                //Conversion Order Document Fully Converted
+                var ConvertedOrderDoc = $('#hdnConvertedOrderDoc').val().split(',')[1];
+                var ConvertedOrderDocExten = ($('#hdnConvertedOrderDocExten').val().split('.')[1] === undefined || $('#hdnConvertedOrderDocExten').val().split('.')[1] === null) ? "" : "." + $('#hdnConvertedOrderDocExten').val().split('.')[1];
+                var OrderDocContent = $('#hdnConvertedOrderDoc').val().split(',')[0];
+                if (OrderDocContent.length > 0) {
+                    OrderDocContent = OrderDocContent.split(':')[1];
+                    OrderDocContent = OrderDocContent.split(';')[0];
+                }
+                var OrderDocFullURL = $('#hdnConvertedOrderDoc').val();
+
+                 //Land Not Converted Affidavit Document for Conversion
+                var NotConvertedAffidavit = $('#hdnNotAffidavitDocument').val().split(',')[1];
+                var NotConvertedAffidavitExten = ($('#hdnNotAffidavitDocumentExten').val().split('.')[1] === undefined || $('#hdnNotAffidavitDocumentExten').val().split('.')[1] === null) ? "" : "." + $('#hdnNotAffidavitDocumentExten').val().split('.')[1];
+                var NotConvertedAffContent = $('#hdnNotAffidavitDocument').val().split(',')[0];
+                if (NotConvertedAffContent.length > 0) {
+                    NotConvertedAffContent = NotConvertedAffContent.split(':')[1];
+                    NotConvertedAffContent = NotConvertedAffContent.split(';')[0];
+                }
+                var NotConvertedAffFullURL = $('#hdnNotAffidavitDocument').val();
                 //Land Accure Document
                 //var landAccureDoc = $('#hdnIsowned_RentedCertificate').val().split(',')[1];
                 //var landAccureDocExte = ($('#hdnIsowned_RentedCertificateExten').val().split('.')[1] === undefined || $('#hdnIsowned_RentedCertificateExten').val().split('.')[1] === null) ? "" : "." + $('#hdnIsowned_RentedCertificateExten').val().split('.')[1];
@@ -530,6 +594,8 @@
                     sIsLndCnvrted: landConverted,
                     sOrdrNo: (orderNo.length <= 0) ? "": orderNo,
                     dtOrdrDate: (orderDate.length <= 0) ? "" : orderDate,
+                    dtAffidavitDate: (AffidavitorderDate.length <= 0) ? "" : AffidavitorderDate,
+                    dtNOTAffidavitDate: (NOTAffidavitDate.length <= 0) ? "" : NOTAffidavitDate,
                     sLndTyp: landType,
                     sKhasaraNo: khasaraNo,
                     dLndArea: landAreaUnit,
@@ -562,6 +628,19 @@
                     UploadLandNotConvertDocContent: landNotConvertedDocContent,
                     landNotConvertDocURL: (landNotConvertedDocFullURL.length <= 0) ? "#" : landNotConvertedDocFullURL,
 
+                    // Order Doc Fully
+
+                    UploadorderDoc: (ConvertedOrderDoc === undefined || ConvertedOrderDoc === null) ? "" : ConvertedOrderDoc,
+                    UploadorderDocExtension: ConvertedOrderDocExten,
+                    UploadOrderDocContentt: OrderDocContent,
+                    OrderDocURL: (OrderDocFullURL.length <= 0) ? "#" : OrderDocFullURL,
+
+                    // Not Converted Affidavit
+
+                    UploadAffidavitNotDoc: (NotConvertedAffidavit === undefined || NotConvertedAffidavit === null) ? "" : NotConvertedAffidavit,
+                    UploadAffidavitNotExtension: NotConvertedAffidavitExten,
+                    UploadAffidavitNotContentt: NotConvertedAffContent,
+                    AffidavitNotURL: (NotConvertedAffFullURL.length <= 0) ? "#" : NotConvertedAffFullURL,
 
                     //UploadLandAccureTypeDoc: (landAccureDoc === undefined || landAccureDoc === null) ? "" : landAccureDoc,
                     //UploadLandAccureTypeDocExtension: landAccureDocExte,
@@ -594,6 +673,8 @@
                         var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc =='') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
                         var landNotConvertDocumentURL = (item.UploadLandNotConvertDoc == null || item.UploadLandNotConvertDoc == '') ? `NA` : `<a href="${item.UploadLandNotConvertDoc}" download="${item.sKhasaraNo}_LandNotConvertDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
                         var landConvertedURLAffidavit = (item.UploadConvertedDocumentAffidavit == null || item.UploadConvertedDocumentAffidavit == '') ? `NA` : `<a href="${item.UploadConvertedDocumentAffidavit}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var orderDoc = (item.UploadorderDoc == null || item.UploadorderDoc == '') ? `NA` : `<a href="${item.UploadorderDoc}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                        var AffidavitNotDoc = (item.UploadAffidavitNotDoc == null || item.UploadAffidavitNotDoc == '') ? `NA` : `<a href="${item.UploadAffidavitNotDoc}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
                         htmlString += `<tr><td>${index + 1}</td>
                                             <td><span style="padding: 8px;background: red;color: white;border-radius: 18px;" onclick="deleteRow('${item.UnQID}')"><i class="far fa-trash-alt"></i></span></td>
                                             <td>${item.Course}</td>
@@ -602,14 +683,19 @@
                                             <td>${item.sIsLndCnvrted}</td>
                                             <td>${item.sOrdrNo}</td>
                                             <td>${item.dtOrdrDate}</td>
+                                            <td>${item.dtAffidavitDate}</td>
+                                            <td>${item.dtNOTAffidavitDate}</td>
                                             <td>${item.sLndTyp}</td>
                                             <td>${item.sKhasaraNo}</td>
                                             <td>${item.sOwnerName}</td>
                                             <td hidden>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${orderDoc}</span></td>
+                                            <td class="text-center"><span>${AffidavitNotDoc}</span></td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>
                                             <td class="text-center"><span>${landConvertedURLAffidavit}</span></td>
+                                          
                                             <td class="text-center"><span>${landTitleURL}</span></td>
                                             <td class="text-center"><span>${landDocumentURL}</span></td>
                                             <td class="text-center"><span>${landNotConvertDocumentURL}</span></td>
@@ -698,6 +784,18 @@
             var landAreaID = $(this).val();
 
                 $('#spnOrderDate').css('display', 'none');
+
+        })
+        $('#txtAffidavitDate').change(function () {
+            var landAreaID = $(this).val();
+
+            $('#spnOrderDate').css('display', 'none');
+
+        })
+        $('#txtNOTAffidavitDate').change(function () {
+            var landAreaID = $(this).val();
+
+            $('#spnOrderDate').css('display', 'none');
 
         })
 
@@ -798,6 +896,8 @@
             var landDocumentURL = (item.UploadLandDoc ==null) ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
             var landNotConvertDocumentURL = (item.UploadLandNotConvertDoc == null) ? `NA` : `<a href="${item.UploadLandNotConvertDoc}" download="${item.sKhasaraNo}_LandNotConvertDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
             var landConvertedURLAffidavit = (item.UploadConvertedDocumentAffidavit == null) ? `NA` : `<a href="${item.UploadConvertedDocumentAffidavit}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var orderDoc = (item.UploadorderDoc == null || item.UploadorderDoc == '') ? `NA` : `<a href="${item.UploadorderDoc}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+            var AffidavitNotDoc = (item.UploadAffidavitNotDoc == null || item.UploadAffidavitNotDoc == '') ? `NA` : `<a href="${item.UploadAffidavitNotDoc}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
             item.UnQID = CreateGuid();
             console.log(item)
             htmlString += `<tr><td>${index + 1}</td>
@@ -808,12 +908,16 @@
                                             <td>${item.sIsLndCnvrted}</td>
                                             <td>${item.sOrdrNo}</td>
                                             <td>${item.dtOrdrDate}</td>
+                                            <td>${item.dtAffidavitDate}</td>
+                                            <td>${item.dtNOTAffidavitDate}</td>
                                             <td>${item.sLndTyp}</td>
                                             <td>${item.sKhasaraNo}</td>
                                             <td>${item.sOwnerName}</td>
                                             <td hidden>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${item.dTotalArea}</td>
+                                            <td class="text-center"><span>${orderDoc}</span></td>
+                                            <td class="text-center"><span>${AffidavitNotDoc}</span></td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>
                                             <td class="text-center"><span>${landConvertedURLAffidavit}</span></td>
                                             <td class="text-center"><span>${landTitleURL}</span></td>
@@ -921,6 +1025,8 @@
         $('#flulandTitleCertificate').val('');
         $('#fluConvertedDoc').val('');
         $('#fluConvertedDocAffidavit').val('');
+        $('#OrderDocumentFile').val('');
+        $('#AffidavitDocumentNotConverted').val('');
 
         //$('#fluIsowned_RentedCertificate').val('');
 
@@ -985,6 +1091,8 @@
         var landType = $('#ddlLandType option:selected').text().trim();
         var orderNo = $('#txtOrderNo').val().trim();
         var orderDate = $('#txtOrderDate').val().trim();
+        var AffidavitDate = $('#txtAffidavitDate').val().trim();
+        var NOTAffidavitDate = $('#txtNOTAffidavitDate').val().trim();
         var khasaraNo = $('#txtkhasaraNo').val().trim();
         var ownerName = $('#txtownerName').val().trim();
         var landAreaUnit = $('#txtLandArea').val().trim();
@@ -1057,6 +1165,32 @@
                 status = false;
             }
            else if (orderDate.length <= 0) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Enter Order Date..!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false
+                //})
+
+                $('#spnOrderDate').css('display', 'block');
+                status = false;
+            }
+            else if (AffidavitDate.length <= 0) {
+                //Swal.fire({
+                //    position: 'center',
+                //    icon: 'error',
+                //    title: 'Please Enter Order Date..!',
+                //    allowOutsideClick: false,
+                //    showCloseButton: true,
+                //    showConfirmButton: false
+                //})
+
+                $('#spnOrderDate').css('display', 'block');
+                status = false;
+            }
+            else if (NOTAffidavitDate.length <= 0) {
                 //Swal.fire({
                 //    position: 'center',
                 //    icon: 'error',
@@ -1208,7 +1342,7 @@
             debugger;
             landInfoData.forEach(function (item) {
                 if (landConverted != "Not Converted") {
-                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && (orderNo == item.sOrdrNo || item.sOrdrNo == "NA") && (orderDate == item.dtOrdrDate || item.dtOrdrDate == "NA") && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
+                    if (landArea == item.sLndArea && landDocType == item.sLndDocType && landConverted == item.sIsLndCnvrted && (orderNo == item.sOrdrNo || item.sOrdrNo == "NA") && (orderDate == item.dtOrdrDate || item.dtOrdrDate == "NA") && (AffidavitDate == item.dtAffidavitDate || item.dtAffidavitDate == "NA") && (NOTAffidavitDate == item.dtNOTAffidavitDate || item.dtNOTAffidavitDate == "NA") && landType == item.sLndTyp && khasaraNo == item.sKhasaraNo && landAreaUnit == item.dLndArea) {
                         Swal.fire({
                             position: 'center',
                             icon: 'error',
@@ -1416,6 +1550,8 @@
                 var landDocumentURL = (item.UploadLandDoc == null || item.UploadLandDoc == '') ? `NA` : `<a href="${item.UploadLandDoc}" download="${item.sKhasaraNo}_LandDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
                 var landNotConvertDocumentURL = (item.UploadLandNotConvertDoc == null || item.UploadLandNotConvertDoc == '') ? `NA` : `<a href="${item.UploadLandNotConvertDoc}" download="${item.sKhasaraNo}_LandNotConvertDoc" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
                 var landConvertedURLAffidavit = (item.UploadConvertedDocumentAffidavit == null) ? `NA` : `<a href="${item.UploadConvertedDocumentAffidavit}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var orderDoc = (item.UploadorderDoc == null || item.UploadorderDoc == '') ? `NA` : `<a href="${item.UploadorderDoc}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
+                var AffidavitNotDoc = (item.UploadAffidavitNotDoc == null || item.UploadAffidavitNotDoc == '') ? `NA` : `<a href="${item.UploadAffidavitNotDoc}" download="${item.sKhasaraNo}_LandConvert" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a>`;
                 if (index == 0) {
 
                     totalLandAreaCal = parseInt(item.dLndArea);
@@ -1440,6 +1576,8 @@
                                             <td hidden>${item.slndAccureTyp}</td>
                                             <td>${item.dLndArea}</td>
                                             <td>${totalLandAreaCal}</td>
+                                            <td class="text-center"><span>${orderDoc}</span></td>
+                                            <td class="text-center"><span>${AffidavitNotDoc}</span></td>
                                             <td class="text-center"><span>${landConvertedURL}</span></td>
                                             <td class="text-center"><span>${landConvertedURLAffidavit}</span></td>
                                             <td class="text-center"><span>${landTitleURL}</span></td>
