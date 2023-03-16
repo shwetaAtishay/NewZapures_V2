@@ -212,7 +212,7 @@
                        <div class="col-lg-8">
                            <div class="row">
                                <div class="form-group col-lg-6">
-                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Select College Type<span style="color:red;">*</span></label>
+                                   <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Select College Type<span style="color:red;">*</span></label>
                                    <div>
                                        <select class="form-control" name="CollageType" id="CollageType">
                                            <option value="">Select College Type</option>
@@ -235,7 +235,7 @@
                                </div>
 
                                <div class="form-group col-lg-6">
-                                  
+                                   <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>
                                    @if (CollageDetails.AISHECodeStatus == "1")
                                    {
                                        <div class="form-check-inline my-1">
@@ -260,7 +260,7 @@
                                    @if (CollageDetails.AISHECodeStatus == "0")
                                    {
                                        <div class="form-check-inline my-1">
-                                           <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>
+                                           <!-- <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>-->
                                            <div class="custom-control custom-radio">
                                                <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input" checked>
                                                <label class="custom-control-label" for="customRadio18">No</label>
@@ -270,7 +270,7 @@
                                    else
                                    {
                                <div class="form-check-inline my-1">
-                                   <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>
+                                  <!--- <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>-->
                                    <div class="custom-control custom-radio">
                                        <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input">
                                        <label class="custom-control-label" for="customRadio18">No</label>
@@ -318,7 +318,7 @@
                                    </div>
                                </div>
                                <div class="form-group col-lg-6">
-                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Medium<span style="color:red;">*</span></label>
+                                   <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Medium<span style="color:red;">*</span></label>
                                    <div>
                                        <select class="form-control" name="collegeMedium" id="collegeMediumId">
                                            <option value="">Select College Medium</option>
@@ -403,7 +403,7 @@
                     </div>*@
             <div class="row">
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name In English<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Name In English<span style="color:red;">*</span></label>
                     <div>
                         <input class="form-control col-sm-12 alphaspace" type="text" id="txtCollegeName" name="CollegeName" value="@CollageDetails.CollegeName" autocomplete="off">
                     </div>
@@ -412,7 +412,7 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">College Name In Hindi<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">College Name In Hindi<span style="color:red;">*</span></label>
                     <div>
                         <input class="form-control col-sm-12 alphaspace" type="text" id="txtCollegeNamehindi" name="CollegeNamehindi" value="@CollageDetails.CollageNamehindi" autocomplete="off">
                     </div>
@@ -448,7 +448,7 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">University<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">University<span style="color:red;">*</span></label>
                     <div>
                         <select class="form-control" id="txtUniverSity" name="University">
                             @*<option value="">--University --</option>
@@ -472,25 +472,25 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Mobile Number<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Mobile Number<span style="color:red;">*</span></label>
                     <div>
                         <input class="form-control col-sm-12 numberonly" type="text" maxlength="10" id="txtMobileNumber" name="MobileNumber" value="@CollageDetails.MobileNumber" autocomplete="off">
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Email<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Email<span style="color:red;">*</span></label>
                     <div>
                         <input class="form-control col-sm-12" type="email" id="txtEmail" name="Email" autocomplete="off" value="@CollageDetails.Email">
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line1<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Address Line1<span style="color:red;">*</span></label>
                     <div>
                         <input type="text" class="form-control alphanumeric" name="AddressLine1" id="txtAddressLine1" autocomplete="off" value="@CollageDetails.AddressLine1" />
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Address Line2<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Address Line2<span style="color:red;">*</span></label>
                     <div>
                         <input type="text" class="form-control alphanumeric" name="AddressLine2" id="txtAddressLine2" autocomplete="off" value="@CollageDetails.AddressLine2" />
                     </div>
@@ -562,7 +562,7 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">District<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">District<span style="color:red;">*</span></label>
                     <div>
                         <select class="form-control singleselect" id="DistrictId" name="DistrictId">
                             <option value="0">Select District</option>
@@ -599,7 +599,7 @@
                 <div class="col-lg-8" id="divRural">
                     <div class="row">
                         <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Tehsil<span style="color:red;">*</span></label>
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Tehsil<span style="color:red;">*</span></label>
                             <div>
                                 <select class="form-control" id="TehsilId" name="TehsilId">
                                     <option value="0">Select Tehsil</option>
@@ -607,7 +607,7 @@
                             </div>
                         </div>
                         <div class="form-group col-lg-6">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Block<span style="color:red;">*</span></label>
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Block<span style="color:red;">*</span></label>
                             <div>
                                 <select class="form-control" id="BlockId" name="BlockId">
                                     <option value="0">Select Block</option>
@@ -641,7 +641,7 @@
                 <div class="col-lg-8" id="divUrban" style="display:none">
                     <div class="row">
                         <div class="form-group col-lg-4">
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">City<span style="color:red;">*</span></label>
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">City<span style="color:red;">*</span></label>
                             <div>
                                 <select class="form-control" id="CityId" name="CityId">
                                     <option value="0">Select City</option>
@@ -650,7 +650,7 @@
                         </div>
                         <div class="form-group col-lg-4">
 
-                            <label for="example-text-input" class="col-sm-12" style="margin-left:-10px">Ward No<span style="color:red;">*</span></label>
+                            <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Ward No<span style="color:red;">*</span></label>
                             <div>
                                 <input type="text" class="form-control" name="AddressLine2" id="WardNo" autocomplete="off" value="@CollageDetails.WardNo" />
                             </div>
