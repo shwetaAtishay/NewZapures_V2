@@ -1,0 +1,976 @@
+﻿@using NewZapures_V2.Models
+@model FeeMst
+@{
+    ViewBag.Title = "Fee Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var lstDepart = (List<AddDepartment>)ViewBag.Department;
+    //var feeTypes = (List<Dropdown>)ViewBag.feeType;
+    //var feeDataList = (List<FeeMaster>)ViewBag.feeDataList;
+
+    //List<AddDepartment> obj = new List<AddDepartment>();
+    //var lstDepart = obj;
+    //var feeTypes = (List<Dropdown>)ViewBag.feeType;
+    //var feeDataList = (List<FeeMaster>)ViewBag.feeDataList;
+    List<Dropdown> ApplicationType = new List<Dropdown>();
+    List<Dropdown> FormName = new List<Dropdown>();
+    List<FeeTRN> FeeTrns = new List<FeeTRN>();
+    if (ViewBag.ApplicationType != null)
+    {
+        ApplicationType = (List<Dropdown>)ViewBag.ApplicationType;
+    }
+    if (ViewBag.FormName != null)
+    {
+        FormName = (List<Dropdown>)ViewBag.FormName;
+    }
+    if (ViewBag.FeeTrns != null)
+    {
+        FeeTrns = (List<FeeTRN>)ViewBag.FeeTrns;
+    }
+}
+<style>
+    .Deleteclass {
+        cursor: pointer;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+<link href="~/Content/select2/css/select2.css" rel="stylesheet" />
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="float-right">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">NOC</li>
+                    <li class="breadcrumb-item">Master</li>
+                    <li class="breadcrumb-item active">Fee Master</li>
+                </ol>
+            </div>
+            <h4 class="page-title">@ViewBag.Title</h4>
+        </div><!--end page-title-box-->
+    </div><!--end col-->
+</div>
+<div class="row noc-layouts p-0 m-0 mb-5">
+    <div class="col-12 p-0">
+        <div class="card m-0 rounded-0" style="box-shadow:inherit; background:none;">
+            <div class="title-heading">
+                <h4 class="m-0 p-0 title-heading float-left">Fee Master</h4>
+
+                <input type="hidden" id="iPK_ID" value="@ViewBag.Id" />
+                <a href="@Url.Action("FeeMstIndex","Master")" id="backid" class="btn btn-gradient-primary float-right waves-effect waves-light"><i class="fa fa-arrow-left"></i>Back</a>
+
+            </div>
+            <div class="">
+                <div class="row card-body">
+
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="noc-form-label col-sm-12" style="margin-left:-10px">Select Department</label>
+                        <div>
+                            <select class="singleselect noc-input-text" id="ddldept" @(Model.iPK_ID != null ? " disabled" : "")>
+                                <option value="0">Select Department</option>
+
+                                @{
+                                    if (lstDepart != null)
+                                    {
+                                        foreach (var item in lstDepart)
+                                        {
+                                            <option @(Model != null && Model.DeptID == item.DepartmentID ? "Selected" : "") value=@item.DepartmentID>@item.DepartmentName</option>
+                                        }
+                                    }
+                                }
+
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Select Application Type</label>
+                        <div>
+                            <select class="singleselect noc-input-text" id="ddlNOC" @(Model.iPK_ID != null ? " disabled" : "")>
+                                @{
+                                    <option value=0>Select Application Type</option>
+                                    foreach (var item in ApplicationType)
+                                    {
+                                        <option @(Model != null && Model.NOCApplID.ToString() == item.Id.ToString() ? "Selected" : "") value=@item.Id>@item.Text</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="title-heading rounded-0">Date Configuration</div>
+                <div class="row card-body">
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Start Date 1</label>
+                        <input type="date" class="form-control noc-input-text dtInsertStrDt" name="dtStartdate1" id="dtStartdate_1" data-id="1" value="@(Model!=null && Model.dtStartdate1!=null?Model.dtStartdate1:"")" required />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">End Date 1</label>
+                        <input type="date" class="form-control noc-input-text dtEnddate" name="dtEnddate1" id="dtEnddate_1" data-id="1" value="@(Model!=null && Model.dtEnddate1!=null?Model.dtEnddate1:"")" @(Model != null && Model.dtEnddate1 != null ? "" : "disabled") required />
+                    </div>
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Start Date 2</label>
+                        <input type="date" class="form-control noc-input-text dtInsertStrDt" name="dtStartdate2" id="dtStartdate_2" data-id="2" value="@(Model!=null && Model.dtStartdate2!=null?Model.dtStartdate2:"")" @(Model != null && Model.dtStartdate2 != null ? "" : "disabled") required />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">End Date 2</label>
+                        <input type="date" class="form-control noc-input-text dtEnddate" name="dtEnddate2" id="dtEnddate_2" data-id="2" value="@(Model!=null && Model.dtEnddate2!=null?Model.dtEnddate2:"")" @(Model != null && Model.dtEnddate2 != null ? "" : "disabled") required />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Start Date 3</label>
+                        <input type="date" class="form-control noc-input-text dtInsertStrDt" name="dtStartdate3" id="dtStartdate_3" data-id="3" value="@(Model!=null && Model.dtStartdate3!=null?Model.dtStartdate3:"")" @(Model != null && Model.dtStartdate3 != null ? "" : "disabled") required />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">End Date 3</label>
+                        <input type="date" class="form-control noc-input-text dtEnddate" name="dtEnddate3" id="dtEnddate_3" data-id="3" value="@(Model!=null && Model.dtEnddate3!=null?Model.dtEnddate3:"")" @(Model != null && Model.dtEnddate3 != null ? "" : "disabled") required />
+                    </div>
+
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Extend Date</label>
+                        <input type="date" class="form-control noc-input-text dtInsertStrDt" name="dtExtendDate" id="dtStartdate_4" data-id="4" value="@(Model!=null && Model.dtExtendDate!=null?Model.dtExtendDate:"")" @(Model != null && Model.dtExtendDate != null ? "" : "disabled") required />
+                    </div>
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Submit Form Date</label>
+                        <input type="date" class="form-control noc-input-text dtEnddate" name="dtSubmitDate" id="dtEnddate_4" data-id="4" value="@(Model!=null && Model.dtSubmitDate!=null?Model.dtSubmitDate:"")" @(Model != null && Model.dtSubmitDate != null ? "" : "disabled") required />
+                    </div>
+
+                </div>
+
+                <div class="title-heading rounded-0">FDR Amount</div>
+                <div class="row card-body">
+                    <div class="form-group col-lg-3" id="divcoEdu">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left: -10px">For Co-Education</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dCoEdu.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtCoEDUFee">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3" id="divgirls">
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left: -10px">For Girls</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dGirls.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtgirlsFee">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3" id="divcutoff">
+                        <label for="example-text-input" class="noc-form-label" style="margin-left: -10px">For Co-ed College in Backward/Reserved Area</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dCoEdu_BR.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dCoEdu_BR">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3" id="divcutoff">
+                        <label for="example-text-input" class="noc-form-label" style="margin-left: -10px">For Girls College in Backward/Reserved Area</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dGirls_BR.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dGirls_BR">
+                        </div>
+                    </div>
+
+
+                    @*<div class="form-group col-lg-6" style="display: flex;align-items: end;">
+                            <button class="btn" id="btnCapitalAdd" style="color:white!important;background: #f953c6; /* fallback for old browsers */ background: -webkit-linear-gradient(to left, #b91d73, #f953c6); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to left, #b91d73, #f953c6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ "><i class="fa fa-plus"></i> ADD</button>
+                        </div>*@
+                </div>
+
+                <div class="title-heading rounded-0">Application Fees</div>
+                <div class="row card-body">
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">For UG (Course Wise)</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dUGFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dUGFee">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">For PG (Per Subject Wise)</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dPGFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="dPGFee">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Late Fee</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dLateFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtLateFee">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-lg-3">
+                        <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Additional Late Fee</label>
+                        <div>
+                            <input class="form-control noc-input-text" type="text" value="@(Model!=null?Model.dAddiLateFee.ToString():"")" oninput="numberOnly(this.id)" autocomplete="off" id="txtAddiLateFee">
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr />
+
+                <div class="row card-body">
+                    <div class="form-group col-lg-12">
+                        <div class="row">
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Select Form Name</label>
+                                <div>
+                                    <select class="singleselect noc-input-text" id="ddlNOCDetails">
+                                        @*@{
+                                            <option value=0>Select Form Name</option>
+
+                                            foreach (var item in FormName)
+                                            { var item2 = 0;
+                                                foreach(var inneritem in FeeTrns)
+                                                {
+                                                    if (inneritem.iFK_FrmID == Convert.ToInt32(item.Id))
+                                                    {
+                                                        item2 = 1;
+                                                    }
+
+                                                }
+                                                if (item2 == 0)
+                                                {
+                                                <option value=@item.Id>@item.Text</option>
+                                                    }
+                                                }
+                                            }*@
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Select Cases</label>
+                                <div>
+                                    <select class="singleselect noc-input-text" id="ddlNOCCases"></select>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="example-text-input" class="noc-form-label" style="margin-left:-10px">Charges</label>
+                                <div>
+                                    <input type="text" class="form-control noc-input-text" name="Charges" id="Charges" value="" required />
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6 row" style="
+    padding-left: 34px;
+">
+                                <div class="radio col-lg-4">
+                                    <input type="radio" name="iType" id="radio_1" value="UG">
+                                    <label for="radio_1" style="font-weight: bold; width: auto;" class="noc-general-form noc-form-label">
+                                        UG
+                                    </label>
+                                </div>
+                                <div class="radio col-lg-4">
+                                    <input type="radio" name="iType" id="radio_2" value="PG">
+                                    <label for="radio_2" style="font-weight: bold; width: auto;" class="noc-general-form noc-form-label">
+                                        PG
+                                    </label>
+                                </div>
+                                <div class="radio col-lg-4">
+                                    <input type="radio" name="iType" id="radio_3" value="Both">
+                                    <label for="radio_3" style="font-weight: bold; width: auto;" class="noc-general-form noc-form-label">
+                                        Both
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-6">
+                                @*<label for="example-text-input" class="noc-form-label" style="margin-left:-10px">&nbsp;</label>
+                                    <div>*@
+                                <button class="theme-button-mockup btnPrev" id="btnAdd"><i class="fas fa-plus"></i> ADD</button>
+                                @*</div>*@
+                            </div>
+                        </div>
+                        <div class="noc-layouts-tbl" style="overflow-x:auto">
+
+                            <table class="table table-borderless table-striped table-hover">
+                                <thead class="">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Department</th>
+                                        <th>Application Type</th>
+                                        <th>NOC Form Name</th>
+                                        <th>Cases</th>
+                                        <th>Type</th>
+                                        <th>Charges</th>
+
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    @{
+                                        var i = 1;
+                                        foreach (var item in FeeTrns)
+                                        {
+                                            <tr Id="tr-@item.sGuidid">
+                                                <td data-id="@item.sGuidid">@i</td>
+                                                <td>@item.DepartmentName</td>
+                                                <td>@item.ApplicationType</td>
+                                                <td data-id="@item.iFK_FrmID">@item.FormName</td>
+                                                <td data-id="@item.CaseId">@item.Casetext</td>
+                                                <td>@item.type</td>
+                                                <td>@item.dCharges</td>
+                                                <td> <a class="Deleteclass" onclick="DeleteData('@item.sGuidid')" title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-right card-body pt-0 pb-0">
+                    <div class="form-group col-lg-12">
+                        <button class="theme-button-mockup btnPrev" id="btnFinalSave"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/jquery/jquery.js"></script>
+<script src="~/Content/select2/js/select2.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.8/dist/sweetalert2.all.min.js"></script>
+<script src="~/Content/globalDomain.js"></script>
+<script type="text/javascript">
+    var isAdmin = 1;
+    var datalist = [];
+    var formarr = [];
+    debugger;
+
+    function e1() {
+        var u = '', i = 0;
+        while (i++ < 36) {
+            var c = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'[i - 1], r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            u += (c == '-' || c == '4') ? c : v.toString(16)
+        }
+        return u;
+    }
+
+    var DataForm = [];
+    function getNoCTypeDetails(nocTypeID) {
+        debugger;
+        var departid = $('#ddldept').val();
+        var NOCReq = {
+            "Deptid": parseInt(departid),
+            "ApplicationId": parseInt(nocTypeID)
+        }
+
+        var d = JSON.stringify(NOCReq);
+
+
+        //var lenth = formarr.length;
+        //formarr.splice(0, lenth);
+
+
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Master/BindApplication",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(NOCReq),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+                var NOCData = data.Data;
+                var NocSelectData = `<option value=0>Select Form Name</option>`;
+                if (NOCData.length > 0) {
+
+                    NOCData.forEach(function (item) {
+                        var obj = { Id: item.Id, Text: item.Text, ID1: item.ID1 };
+                        formarr.push(obj);
+                        NocSelectData += `<option id="Form-${item.Id}" value=${item.Id}>${item.Text} (${item.ID1})</option>`;
+                    })
+                }
+                console.log("formarr");
+                console.log(formarr);
+                $('#ddlNOCDetails').html('');
+                $('#ddlNOCDetails').html(NocSelectData);
+
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+    var id = $("#ddlNOC").val();
+
+    getNoCTypeDetails(id);
+    var i = 0;
+    var t = document.getElementById('tbody');
+    @*@FeeTrns.forEach(function (item) {
+        console.log("testing");
+        console.log(item);
+    });*@
+    $('table > tbody  > tr').each(function (index, tr) {
+        var deptid = $("#ddldept").val();
+        var ddlNOCid = $("#ddlNOC").val();
+        var val1 = $(t.rows[index].cells[3]).data('id');
+        var val1text = $(t.rows[index].cells[3]).text();
+        console.log(val1);
+        var val2 = $(t.rows[index].cells[6]).text();
+        var Guid = $(t.rows[index].cells[0]).data('id');
+        var CaseId = $(t.rows[index].cells[4]).data('id');
+        var Caetext = $(t.rows[index].cells[4]).text();
+        var type = $(t.rows[index].cells[5]).text();
+        console.log(val2);
+        datalist.push({
+            iFk_DeptID: deptid,
+            iFK_AppTypID: ddlNOCid,
+            iFK_FrmID: val1,
+            sFrmName: val1text,
+            dCharges: val2,
+            sGuidid: Guid,
+            iFK_FeeMstID: 0,
+            CaseId: CaseId,
+            Casetext: Caetext,
+            type: type
+        });
+       /* bindFormlist();*/
+    });
+    console.clear();
+    console.log("sffdsh");
+    console.log(datalist);
+
+    $(document).ready(function () {
+
+      /*  $("#dtStartdate_" + id).val('15-02-2023');*/
+        $(".singleselect").select2();
+
+        $(".dtInsertStrDt").change(function () {
+
+            var startdate = $(this).val();
+            var id = $(this).data('id');
+            $("#dtEnddate_" + id).prop('disabled', false);
+            $("#dtEnddate_" + id).val('');
+            document.getElementById("dtEnddate_" + id).min = startdate;
+
+        });
+        $(".dtEnddate").change(function () {
+            debugger;
+            var dtEnddate = $(this).val();
+            var days = 1;
+
+            var result = new Date(new Date(dtEnddate).setDate(new Date(dtEnddate).getDate() + days));
+
+            var id = $(this).data('id')+1;
+            for (var i = id; i <= 4; i++) {
+                $("#dtEnddate_" + id).prop('disabled', true);
+                $("#dtEnddate_" + id).val('');
+                $("#dtStartdate_" + id).prop('disabled', true);
+                $("#dtStartdate_" + id).val('');
+            }
+            $("#dtStartdate_" + id).prop('disabled', false);
+            $("#dtStartdate_" + id).val('');
+            document.getElementById("dtStartdate_" + id).min = result.toISOString().substr(0, 10);
+        });
+        function addDays(dateTime, count_days = 0) {
+            return new Date(new Date(dateTime).setDate(dateTime.getDate() + count_days));
+        }
+        $('#ddldept').change(function () {
+            var id = $(this).val();
+            getNoCForDept(id);
+            return false;
+        });
+
+        $('#ddlNOC').change(function () {
+            var id = $(this).val();
+            getNoCTypeDetails(id);
+            return false;
+        });
+        $("#ddlNOCDetails").change(function () {
+            var id = $(this).val();
+            getNoCCase(id);
+            return false;
+        })
+        $('input[name=customRadio]').change(function () {
+            var feeModal = $(this).val();
+            if (feeModal == 'late') {
+                $('#divboys').removeClass('col-lg-4').addClass('col-lg-3');
+                $('#divgirls').removeClass('col-lg-4').addClass('col-lg-3');
+                $('#divcoEdu').removeClass('col-lg-4').addClass('col-lg-3');
+                $('#divcutoff').css('display', 'block');
+            }
+            else {
+                $('#divboys').removeClass('col-lg-3').addClass('col-lg-4');
+                $('#divgirls').removeClass('col-lg-3').addClass('col-lg-4');
+                $('#divcoEdu').removeClass('col-lg-3').addClass('col-lg-4');
+                $('#divcutoff').css('display', 'none');
+            }
+        });
+    });
+
+    $('#btnAdd').click(function () {
+        debugger;
+        var deptid = $("#ddldept").val();
+        var depttext = $("#ddldept option:selected").text();
+        var ddlNOCid = $("#ddlNOC").val();
+        var ddlNOCtext = $("#ddlNOC option:selected").text();
+        var Guid = e1();
+        var FormId = $("#ddlNOCDetails").val();
+        var Formtext = $("#ddlNOCDetails option:selected").text();
+        var CaseId = $("#ddlNOCCases").val();
+        var Caetext = $("#ddlNOCCases option:selected").text() != "Select Cases" ? $("#ddlNOCCases option:selected").text():"N/A";
+        var Charges = $("#Charges").val();
+        var type = $('input[name="iType"]:checked').val();
+        datalist.push({
+            iFk_DeptID: deptid,
+            iFK_AppTypID: ddlNOCid,
+            iFK_FrmID: FormId,
+            sFrmName: Formtext,
+            dCharges: Charges,
+            sGuidid: Guid,
+            iFK_FeeMstID: 0,
+            CaseId: CaseId,
+            Casetext: Caetext,
+            type: type
+        });
+        var tabletr = ``;
+        var countitem = datalist.length;
+        for (var item = 0; item <= countitem - 1; item++) {
+
+            var iFK_FrmID = datalist[item].iFK_FrmID;
+          /*  $("#ddlNOCDetails #Form-" + iFK_FrmID).addClass('hidden');*/
+            var Ids = datalist[item].sGuidid;
+            var sFrmName1 = datalist[item].sFrmName;
+            var dCharges1 = datalist[item].dCharges;
+            var dCaetext = datalist[item].Casetext;
+            var dCaetype = datalist[item].type;
+            tabletr = `<tr Id="tr-${Ids}"><td>${item+1}</td><td>${depttext}</td><td>${ddlNOCtext}</td><td>${sFrmName1}</td>
+<td>${dCaetext}</td><td>${dCaetype}</td><td>${dCharges1}</td>
+<td>
+<a  class="Deleteclass" onclick="DeleteData('${Ids}')"  title="Delete"><i class="fas fa-times text-danger font-16"></i></a></td>
+</tr>`;
+
+        }
+
+        $("#tbody").append(tabletr);
+        $("#ddlNOCDetails").val('0');
+        $('#ddlNOCDetails').trigger('change');
+        $("#Charges").val('');
+
+
+        bindFormlist();
+    });
+    $("#btnFinalSave").one('click', () => {
+
+        var deptid = $("#ddldept").val();
+        var ddlNOCid = $("#ddlNOC").val();
+        var dtStartdate_1 = $("#dtStartdate_1").val();
+        var dtStartdate_2 = $("#dtStartdate_2").val();
+        var dtStartdate_3 = $("#dtStartdate_3").val();
+        var dtStartdate_4 = $("#dtStartdate_4").val();
+        var dtEnddate_1 = $("#dtEnddate_1").val();
+        var dtEnddate_2 = $("#dtEnddate_2").val();
+        var dtEnddate_3 = $("#dtEnddate_3").val();
+        var dtEnddate_4 = $("#dtEnddate_4").val();
+
+        var txtCoEDUFee = $("#txtCoEDUFee").val();
+        var txtgirlsFee = $("#txtgirlsFee").val();
+        var dGirls_BR = $("#dGirls_BR").val();
+        var dCoEdu_BR = $("#dCoEdu_BR").val();
+
+        var dPGFee = $("#dPGFee").val();
+        var dUGFee = $("#dUGFee").val();
+        var txtLateFee = $("#txtLateFee").val();
+        var txtAddiLateFee = $("#txtAddiLateFee").val();
+        var iPK_ID = $("#iPK_ID").val();
+
+        var FeeMstdata = [];
+        FeeMstdata.push({
+            iPK_ID: iPK_ID,
+            dtStartdate1: dtStartdate_1,
+            dtEnddate1: dtEnddate_1,
+            dtStartdate2: dtStartdate_2,
+            dtEnddate2: dtEnddate_2,
+            dtStartdate3: dtStartdate_3,
+            dtEnddate3: dtEnddate_3,
+            dtExtendDate: dtStartdate_4,
+            dtSubmitDate: dtEnddate_4,
+            DeptID: deptid,
+            NOCApplID: ddlNOCid,
+            dCoEdu_BR: dCoEdu_BR,
+            dGirls: txtgirlsFee,
+            dCoEdu: txtCoEDUFee,
+            dGirls_BR: dGirls_BR,
+            dUGFee: dUGFee,
+            dPGFee: dPGFee,
+            dLateFee: txtLateFee,
+            dAddiLateFee: txtAddiLateFee
+        });
+        var Params = JSON.stringify({
+            FeeMstdata: FeeMstdata,
+            datalist: datalist
+        });
+        $.ajax({
+            url: GetglobalDomain() + "/Master/InsertFee",
+            type: 'POST',
+            dataType: "json",
+            data: Params,
+            contentType: "application/json",
+            enctype: 'multipart/form-data',
+            success: function (response) {
+
+                if (response.IsValid = 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Record Save Successfully',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    window.location.href = GetglobalDomain()+"/Master/FeeMstIndex";
+                }
+            }
+
+
+        });
+    });
+
+    $('input[name=customRadio]').change(function () {
+        var isadmin = $(this).val();
+
+        if (isadmin == 'yes') {
+            $('#divAdminBlock').css('display', 'block');
+            isAdmin = 1;
+        }
+        else {
+            $('#divAdminBlock').css('display', 'none');
+            isAdmin=0
+        }
+    })
+
+    function validation() {
+        var status = true;
+
+        var feeModal = $('input[name=customRadio]:checked').val()//$('input[name=customRadio]').val();
+        var startDate = $('#dtInsertStrDt').val();
+        var endDate = $('#dtInsertEndDt').val();
+        var dept = $('#ddldept').val();
+        var nocType = $('#ddlNOC').val();
+        var feeType = $('#ddlFeeType').val();
+        var boys = $('#txtboysFee').val();
+        var girls = $('#txtgirlsFee').val();
+        var coEdu = $('#txtCoEDUFee').val();
+        var cutOff = $('#txtcutOff').val();
+
+        if (typeof feeModal === 'undefined' || feeModal === null) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Fee Model...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (startDate.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Start Date...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (endDate.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select End Date...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (dept == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Department...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (nocType == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select NOC Type...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (feeType == 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Select Fee Type...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (boys.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Fee For Boys...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (girls.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Fee For Girls...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (coEdu.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Fee For Co Education...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        else if (feeModal == 'late') {
+            if (cutOff.length <= 0) {
+            Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Error...!',
+                html: 'Please Enter Cut Off Fee...!',
+                allowOutsideClick: false,
+                showCloseButton: true,
+                showConfirmButton: false,
+            })
+            status = false;
+        }
+        }
+
+        return status;
+    }
+
+    function numberOnly(id) {
+        // Get element by id which passed as parameter within HTML element event
+        var element = document.getElementById(id);
+        // This removes any other character but numbers as entered by user
+        element.value = element.value.replace(/[^0-9]/gi, "");
+    }
+
+    $('#pinMyLocation').click(function () {
+
+        getLocation();
+
+
+    });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    let DeleteData = (id) => {
+
+        datalist.pop(x => x.sGuidid === id);
+        $("#tr-" + id).remove();
+        console.clear();
+      /*  console.log(datalist);*/
+        bindFormlist();
+    }
+    function showPosition(position) {
+       //alert("Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude)
+        var data = {
+            lat:position.coords.latitude,
+            long:position.coords.longitude
+        }
+
+        console.log(JSON.stringify(data));
+
+        $('#txtLocation').val(data.lat + '-' + data.long);
+        $('#txtLocation').attr('readonly', true);
+
+        //$('#hdf_longitudeData').val(position.coords.longitude)
+        //$('#hdf_latitudeData').val(position.coords.latitude)
+
+        //console.log('from inner');
+        //console.log("lat : " + $('#hdf_longitudeData').val());
+        //console.log("long : " + $('#hdf_latitudeData').val());
+    }
+
+    function getNoCForDept(deptID) {
+
+         var NOCReq = {
+                "Deptid": parseInt(deptID),
+            }
+
+        var d = JSON.stringify(NOCReq);
+            console.log(d);
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Master/BindApplication",
+                dataType: 'json',
+                type: 'Post',
+                cache: false,
+                data: JSON.stringify(NOCReq),
+                success: function (data) {
+                    //console.log('ajax');
+                    //console.log(data);
+                    var NOCData = data.Data;
+                    var NocSelectData = `<option value=0>Select Application Type</option>`;
+                    if (NOCData.length > 0) {
+
+                        NOCData.forEach(function (item) {
+                            NocSelectData += `<option value=${item.Id}>${item.Text}</option>`;
+                        })
+                    }
+                    $('#ddlNOC').html('');
+                    $('#ddlNOC').html(NocSelectData);
+                    $('#ddlNOCDetails').html('');
+                },
+                error: function (d) {
+                    console.log(d);
+                }
+            });
+    }
+
+    let bindFormlist = () => {
+        debugger;
+        var cut = datalist.length;
+        if (cut > 0) {
+
+            $("#ddldept").prop("disabled", true);
+            $("#ddlNOC").prop("disabled", true);
+
+        }
+        else {
+            $("#ddldept").prop("disabled", false);
+            $("#ddlNOC").prop("disabled", false);
+        }
+        var NocSelectData1 = `<option value=0>Select Form Name</option>`;
+        var Formitem = formarr.length;
+        for (var i = 0; i < Formitem; i++) {
+            console.log(formarr[i]);
+            var Idss = formarr[i].Id;
+            var datt = formarr[i].Text;
+
+            //var match = datalist.filter(x => x.iFK_FrmID === Idss);
+            //if (match.length == 0) {
+                NocSelectData1 += `<option id="Form-${formarr[i].Id}" value=${formarr[i].Id}>${formarr[i].Text} (${formarr[i].ID1})</option>`;
+           /* }*/
+        }
+        $('#ddlNOCDetails').html('');
+        $('#ddlNOCDetails').html(NocSelectData1);
+
+    }
+    function getNoCCase(NOCDeptId) {
+        debugger;
+        if (parseInt(NOCDeptId) == 0) {
+            $('#ddlNOCCases').html('<option value=0>Select Cases</option>');
+            return false;
+        }
+        var departid = $('#ddldept').val();
+        var applictionid = $('#ddlNOC').val();
+        var NOCReq = {
+            "Deptid": parseInt(departid),
+            "ApplicationId": parseInt(applictionid),
+            "NOCDeptId": parseInt(NOCDeptId)
+        }
+
+        var d = JSON.stringify(NOCReq);
+
+
+
+
+        console.log(d);
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Master/BindApplication",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(NOCReq),
+            success: function (data) {
+                //console.log('ajax');
+                //console.log(data);
+                var NOCData = data.Data;
+                var NocSelectData = `<option value=0>Select Cases</option>`;
+                if (NOCData.length > 0) {
+
+                    NOCData.forEach(function (item) {
+
+                        NocSelectData += `<option id="case-${item.Id}" value=${item.Id}>${item.Text}</option>`;
+                    })
+                }
+                console.log("formarr");
+                console.log(formarr);
+                $('#ddlNOCCases').html('');
+                $('#ddlNOCCases').html(NocSelectData);
+
+            },
+            error: function (d) {
+                console.log(d);
+            }
+        });
+    }
+</script>
+
+
+
+
