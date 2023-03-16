@@ -235,10 +235,11 @@
                                </div>
 
                                <div class="form-group col-lg-6">
-                                   <label for="example-text-input" class="col-sm-12" style="margin-left:-10px"></label>
+                                  
                                    @if (CollageDetails.AISHECodeStatus == "1")
                                    {
                                        <div class="form-check-inline my-1">
+                                           
                                            <div class="custom-control custom-radio">
                                                <input type="radio" id="customRadio17" value="1" name="AIESHCodeStatus" class="custom-control-input" checked>
                                                <label class="custom-control-label" for="customRadio17">Yes</label>
@@ -247,16 +248,19 @@
                                    }
                                    else
                                    {
-                                       <div class="form-check-inline my-1">
-                                           <div class="custom-control custom-radio">
-                                               <input type="radio" id="customRadio17" value="1" name="AIESHCodeStatus" class="custom-control-input">
-                                               <label class="custom-control-label" for="customRadio17">Yse</label>
-                                           </div>
-                                       </div>
+                               <div class="form-check-inline my-1">
+                                  
+                                   <div class="custom-control custom-radio">
+                                       <input type="radio" id="customRadio17" value="1" name="AIESHCodeStatus" class="custom-control-input">
+                                       <label class="custom-control-label" for="customRadio17">Yes</label>
+                                   </div>
+
+                               </div>
                                    }
                                    @if (CollageDetails.AISHECodeStatus == "0")
                                    {
                                        <div class="form-check-inline my-1">
+                                           <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>
                                            <div class="custom-control custom-radio">
                                                <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input" checked>
                                                <label class="custom-control-label" for="customRadio18">No</label>
@@ -265,12 +269,13 @@
                                    }
                                    else
                                    {
-                                       <div class="form-check-inline my-1">
-                                           <div class="custom-control custom-radio">
-                                               <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input">
-                                               <label class="custom-control-label" for="customRadio18">No</label>
-                                           </div>
-                                       </div>
+                               <div class="form-check-inline my-1">
+                                   <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">AISHE Code Status</label>
+                                   <div class="custom-control custom-radio">
+                                       <input type="radio" id="customRadio18" value="0" name="AIESHCodeStatus" class="custom-control-input">
+                                       <label class="custom-control-label" for="customRadio18">No</label>
+                                   </div>
+                               </div>
                                    }
                                    <div id="divAIESHCode">
                                        <input class="form-control col-sm-12 alphanumeric" type="text" id="txtAIESHCode" name="AIESHCode" value="@CollageDetails.CollegeName" autocomplete="off">
@@ -623,7 +628,7 @@
                     </div>
                 </div>
                 <div class="form-group col-lg-4">
-                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Legislative Area<span style="color:red;">*</span></label>
+                    <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Assembly Area<span style="color:red;">*</span></label>
                     <div>
                         <select class="form-control noc-input-text" id="LegislativeId" name="LegislativeId">
                             <option value="0">Select Legislative  Area</option>
@@ -657,7 +662,7 @@
             </div>
             <div class="col-3 text-center d-none align-items-center justify-content-center" style="align-items:flex-start !important">
                 <div class="">
-                    <h4 class="mt-0 header-title">Collage Logo</h4>
+                    <h4 class="mt-0 header-title">College Logo</h4>
                     @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
                     <input type="file" id="input-file-now" class="dropify" name="collageLogo" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
                     <input type="hidden" id="hdnConvertedDoc" value="@CollageDetails.CollageLogoContenttype,@CollageDetails.CollageLogo" />
@@ -679,11 +684,11 @@
                 <thead>
                     <tr>
                         <td>
-                            <input type="text" id="Name" name="Name" placeholder="ContactPerson" class="form-control alphaspace noc-input-text" maxlength="50">
+                            <input type="text" id="Name" name="Name" placeholder="Name Of Person" class="form-control alphaspace noc-input-text" maxlength="50">
                             @*<label for="error" class="col-sm-12" id="errorContactPerson" style="display:none;"></label>*@
                         </td>
                         <td>
-                            <input type="text" id="Number" name="Number" placeholder="Number" minlength="10" maxlength="10" class="form-control noc-input-text numberonly">
+                            <input type="text" id="Number" name="Number" placeholder="Contacts Number" minlength="10" maxlength="10" class="form-control noc-input-text numberonly">
                             @*<label for="error" class="col-sm-12" id="errorContactNumber" style="display:none;"></label>*@
                         </td>
                         <td>
@@ -696,8 +701,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th>ContactPerson</th>
-                        <th>Number</th>
+                        <th>Name Of Person</th>
+                        <th>Contact Number</th>
                         <th>Email Address</th>
                         <th>Action</th>
                     </tr>
@@ -874,7 +879,7 @@ else
                         </div>
                         <div class="col-lg-4">
                             <div class="form-group">
-                                <h4 class="mt-0 header-title">Collage Logo</h4>
+                                <h4 class="mt-0 header-title">College Logo</h4>
                                 @*<p class="text-muted mb-3">Upload Your Profile Photo</p>*@
                                 <input type="file" id="input-file-now" class="dropify" name="collageLogo" onchange="return encodeImageFileAsURL(this,'hdnConvertedDoc','hdnConvertedDocExten')" />
                                 <input type="hidden" id="hdnConvertedDoc" />
@@ -1107,10 +1112,10 @@ else
 
                             </div>
                             <div class="form-group col-lg-6">
-                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Legislative Area<span style="color:red;">*</span></label>
+                                <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Assembly Area<span style="color:red;">*</span></label>
                                 <div>
                                     <select class="form-control noc-input-text" id="LegislativeId" name="LegislativeId">
-                                        <option value="0">Select Legislative  Area</option>
+                                        <option value="0">Select Assembly Area</option>
                                     </select>
                                     <div>
                                         @*<label for="error" class="col-sm-12" id="errorBlock" style="display:none;"></label>*@
@@ -1210,11 +1215,11 @@ else
                 <thead>
                     <tr>
                         <td>
-                            <input type="text" id="Name" name="Name" placeholder="ContactPerson" class="form-control noc-input-text alphaspace" maxlength="50">
+                            <input type="text" id="Name" name="Name" placeholder="Name Of Person " class="form-control noc-input-text alphaspace" maxlength="50">
                             <label for="error" class="col-sm-12" id="errorContactPerson" style="display:none;"></label>
                         </td>
                         <td>
-                            <input type="text" id="Number" name="Number" placeholder="Number" minlength="10" maxlength="10" class="noc-input-text form-control numberonly">
+                            <input type="text" id="Number" name="Number" placeholder="Contact Number" minlength="10" maxlength="10" class="noc-input-text form-control numberonly">
                             <label for="error" class="col-sm-12" id="errorContactNumber" style="display:none;"></label>
                         </td>
                         <td>
@@ -1227,8 +1232,8 @@ else
                 </thead>
                 <tbody>
                     <tr>
-                        <th>ContactPerson</th>
-                        <th>Number</th>
+                        <th>Name Of Person</th>
+                        <th>Contact Number</th>
                         <th>Email Address</th>
                         <th>Action</th>
                     </tr>
@@ -1274,7 +1279,7 @@ else
             <div class="col-8">
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Mobile Number</label>
+                        <label for="example-text-input" class="col-sm-12 noc-form-label" style="margin-left:-10px">Contact Number</label>
                         <div>
                             <input type="text" class="form-control noc-input-text numberonly" maxlength="10" name="AddiMobileNumber" id="txtAddiMobileNumber" autocomplete="off" />
                         </div>

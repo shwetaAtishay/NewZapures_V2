@@ -36,7 +36,7 @@ namespace NewZapures_V2.Controllers
             Occupation = Common.GetCustomMastersList(49);
             ViewBag.Occupation = Occupation;
 
-            
+
 
             #region List Collage Apply List
             var clients = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/CollageListApply?TrustId=" + SessionModel.TrustId);
@@ -82,8 +82,8 @@ namespace NewZapures_V2.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(TrusteeBO.Trustee obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase Authfile, 
-            HttpPostedFileBase Educationfile,HttpPostedFileBase Letterfile,HttpPostedFileBase signaturefile)
+        public ActionResult Index(TrusteeBO.Trustee obj, HttpPostedFileBase aadhaarfile, HttpPostedFileBase panfile, HttpPostedFileBase profilefile, HttpPostedFileBase Authfile,
+            HttpPostedFileBase Educationfile, HttpPostedFileBase Letterfile, HttpPostedFileBase signaturefile)
         {
             obj.TrustInfoId = SessionModel.TrustId;
             byte[] Documentbyte;
@@ -194,7 +194,7 @@ namespace NewZapures_V2.Controllers
                 }
             }
             #endregion
-            
+
             #region Laterfile
             if (Letterfile != null)
             {
@@ -250,11 +250,11 @@ namespace NewZapures_V2.Controllers
                 ErrorBO objResponseData = _JsonSerializer.Deserialize<ErrorBO>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
-                    if(objResponseData.Messsage == "Alreday exists iIsPrimary")
+                    if (objResponseData.Messsage == "Alreday exists iIsPrimary")
                     {
                         TempData["isSavedexists"] = 1;
                         TempData["Messageexists"] = "Alreday exists iIsPrimary!";
-                        
+
                     }
                     else
                     {
@@ -262,7 +262,7 @@ namespace NewZapures_V2.Controllers
                         TempData["SwalMessage"] = "Data saved sussessfully!";
                         TempData["SwalTitleMsg"] = "Success...!";
                     }
-                    
+
                     //return RedirectToAction("Index");
                 }
                 else
@@ -387,7 +387,7 @@ namespace NewZapures_V2.Controllers
         }
         public ActionResult DeptMasterApplicationList()
         {
-            
+
             var departmentMstApplicationList = ZapurseCommonlist.GetDeptMasterApplication();
             ViewBag.deptMstList = departmentMstApplicationList;
             return View();
@@ -517,9 +517,9 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public JsonResult CancelDraftApplication(string applGUID,string Creason)
+        public JsonResult CancelDraftApplication(string applGUID, string Creason)
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/CancleDarftApplications?applGUID=" + applGUID+ "&Creason="+ Creason);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "BasicDataDetails/CancleDarftApplications?applGUID=" + applGUID + "&Creason=" + Creason);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -539,7 +539,7 @@ namespace NewZapures_V2.Controllers
             };
         }
         //public ActionResult EditApplication(string applicationNo, string trustName, int trustID, string clgName, string dptname, string cours, int deptID, int courseID,int clgID)
-        public ActionResult EditApplication(string applGUID)        
+        public ActionResult EditApplication(string applGUID)
         {
             var EditdraftedApplications = ZapurseCommonlist.GetDraftApplication(applGUID);
             ViewBag.applicationDetails = EditdraftedApplications[0];
@@ -581,6 +581,12 @@ namespace NewZapures_V2.Controllers
             ViewBag.trusteeMember = trusteeMember;
             ViewBag.usrid = servicesCollectiondata.PartyId;
             SessionModel.ApplicantGuid = applGUID;
+            return View();
+        }
+        public ActionResult ApplyNOCApplicationNew1()
+        {
+            var departmentList = ZapurseCommonlist.GetDepartmentlist();
+            ViewBag.departments = departmentList;
             return View();
         }
         public ActionResult ApplyNOCApplicationNew()
@@ -712,7 +718,7 @@ namespace NewZapures_V2.Controllers
         public JsonResult TrusteeGeneralInfo(TrusteeBO.TrusteeInfo obj)
         {
 
-            obj.TrusteeInfoId = SessionModel.TrustId;            
+            obj.TrusteeInfoId = SessionModel.TrustId;
             #region Add Trustee
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/AddTrusteeInfo");
             var request = new RestRequest(Method.POST);
@@ -811,7 +817,7 @@ namespace NewZapures_V2.Controllers
         public ActionResult CollageFacilitys()
         {
             TrusteeBO.CollageFacility modal = new TrusteeBO.CollageFacility();
-            modal.Guid = SessionModel.ApplicantGuid;           
+            modal.Guid = SessionModel.ApplicantGuid;
             //ViewBag.Guid = eGuid;
             List<CustomMaster> CourseList = new List<CustomMaster>();
             CourseList = ZapurseCommonlist.GetCourseListDropDown(modal.Guid);
@@ -917,9 +923,9 @@ namespace NewZapures_V2.Controllers
             RoleType = Common.GetCustomMastersList(29);
             ViewBag.RoleType = RoleType;
 
-           
 
-            List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();   
+
+            List<TrusteeBO.Trustee> trustees = new List<TrusteeBO.Trustee>();
             #region List Trustee
             client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/TrusteeList");
             request = new RestRequest(Method.GET);
@@ -936,7 +942,7 @@ namespace NewZapures_V2.Controllers
                 //    //return RedirectToAction("Index");
                 //}
             }
-            ViewBag.TrusteeList = trustees; 
+            ViewBag.TrusteeList = trustees;
             #endregion
             return View();
         }
@@ -1085,7 +1091,7 @@ namespace NewZapures_V2.Controllers
         {
             List<TrusteeBO.DocumentsDetails> _DOCList = new List<TrusteeBO.DocumentsDetails>();
 
-            TrusteeBO.DocumentsDetails _DocDetails = getDocdetails(obj.affidavit, "affidavit",0,obj.iFk_TrstId,obj.iFk_ClgId,obj.iFk_CourseId);
+            TrusteeBO.DocumentsDetails _DocDetails = getDocdetails(obj.affidavit, "affidavit", 0, obj.iFk_TrstId, obj.iFk_ClgId, obj.iFk_CourseId);
             _DOCList.Add(_DocDetails);
 
             _DocDetails = new TrusteeBO.DocumentsDetails();
@@ -1156,9 +1162,9 @@ namespace NewZapures_V2.Controllers
                 ResponseData objResponseData = _JsonSerializer.Deserialize<ResponseData>(response.Content);
                 if (objResponseData.ResponseCode == "1")
                 {
-                    if(_DOCList != null)
+                    if (_DOCList != null)
                     {
-                        foreach(TrusteeBO.DocumentsDetails item in _DOCList)
+                        foreach (TrusteeBO.DocumentsDetails item in _DOCList)
                         {
                             item.Id = objResponseData.ID;
                             item.EnumNo = 40;
@@ -1174,11 +1180,11 @@ namespace NewZapures_V2.Controllers
                             {
                             }
                         }
-                    } 
+                    }
                     TempData["SwalStatusMsg"] = "success";
                     TempData["SwalMessage"] = "Data saved sussessfully!";
                     TempData["SwalTitleMsg"] = "Success...!";
-                    return RedirectToAction("EditDetails", "Trustee", new { guid = SessionModel.ApplicantGuid, clgId =obj.iFk_ClgId, deptID =obj.iFk_DeptId, clgStatus =obj.clgStatus});
+                    return RedirectToAction("EditDetails", "Trustee", new { guid = SessionModel.ApplicantGuid, clgId = obj.iFk_ClgId, deptID = obj.iFk_DeptId, clgStatus = obj.clgStatus });
                     //return RedirectToAction("CollageAttachment",new { TrustId=obj.iFk_TrstId, CollageId=obj.iFk_ClgId,CourseId=obj.iFk_CourseId });
                 }
                 else
@@ -1246,7 +1252,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        public TrusteeBO.DocumentsDetails getDocdetails(HttpPostedFileBase file,string Filetype,int Isyes,int TrustId,int CollageId,int CourseId)
+        public TrusteeBO.DocumentsDetails getDocdetails(HttpPostedFileBase file, string Filetype, int Isyes, int TrustId, int CollageId, int CourseId)
         {
             TrusteeBO.DocumentsDetails _result = new TrusteeBO.DocumentsDetails();
             byte[] Documentbyte;
@@ -1371,9 +1377,9 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public JsonResult GetCourseForCollege(string collegeID,string type)
+        public JsonResult GetCourseForCollege(string collegeID, string type)
         {
-            var nocList = ZapurseCommonlist.GetCourseForCollege(collegeID,type);
+            var nocList = ZapurseCommonlist.GetCourseForCollege(collegeID, type);
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
@@ -1394,7 +1400,8 @@ namespace NewZapures_V2.Controllers
         }
         public JsonResult GetSubjectForCourse(string CourseID, string type, string CollegeId)
         {
-            var nocList = ZapurseCommonlist.GetSubjectForCourse(CourseID,type,CollegeId);
+
+            var nocList = ZapurseCommonlist.GetSubjectForCourse(CourseID, type, CollegeId);
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },
@@ -1533,12 +1540,12 @@ namespace NewZapures_V2.Controllers
                 ViewBag.applicationDetails = EditdraftedApplications[0];
             else
                 ViewBag.applicationDetails = new TrusteeBO.DraftApplication();
-           //Data To Preview
-           var StaffData = ZapurseCommonlist.ExistingNOCStaffDetails(obj);
+            //Data To Preview
+            var StaffData = ZapurseCommonlist.ExistingNOCStaffDetails(obj);
             var subjectData = ZapurseCommonlist.ExistingNOCGetSubjectList(obj);
             List<TrusteeMember> trusteeMember = new List<TrusteeMember>();
             if (EditdraftedApplications.Count > 0)
-              trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
+                trusteeMember = ZapurseCommonlist.GetTrusteeMember(EditdraftedApplications[0].iFKTst_ID);
             var LandData = ZapurseCommonlist.GetLandBuildingInfo(applGUID);
             var AcadmicData = ZapurseCommonlist.GetAcdmcData();
             //var subjectData = ZapurseCommonlist.GetStaffList(applGUID);
@@ -2274,7 +2281,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        
+
         public JsonResult GetApplicableSubjectForCollege(string clgID)
         {
             var nocList = ZapurseCommonlist.GetApplicableSubjectForCollege(clgID);
@@ -2285,7 +2292,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        
+
         public JsonResult AmmendmentDetailsForCollege(string clgID)
         {
             var nocList = ZapurseCommonlist.AmmendmentDetailsForCollege(clgID);
@@ -2343,7 +2350,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-        
+
         public JsonResult PaymentHistoryForApplication(string ApplicationNumber)
         {
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=paymentHistory" + "&MenuId=" + ApplicationNumber);
@@ -2365,7 +2372,7 @@ namespace NewZapures_V2.Controllers
                     //trusteeList = JsonConvert.DeserializeObject<List<paymentHistory>>(d);
                 }
             }
-         
+
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = daa, Failure = false, Message = objResponse.Message },
@@ -2411,8 +2418,9 @@ namespace NewZapures_V2.Controllers
             //m_RequestMPRInternDetail item = Context.m_RequestMPRInternDetail.Where(s => s.RequestMPRInternDetailId == id).FirstOrDefault();
 
         }
-
-        public JsonResult womencount(string CollegeId)
+        
+        
+       public JsonResult womencount(string CollegeId)
         {
             var trustId = SessionModel.TrustId;
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/WomenCount?CollegeId=" + CollegeId + "&TrustId=" + trustId);
@@ -2460,7 +2468,33 @@ namespace NewZapures_V2.Controllers
 
         }
 
-        public JsonResult chkIsPrime(string CollegeId, string IsPrime)
+public JsonResult CheckDraftValidationForEntry(int clgID, string courses, string subjects)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/CheckDraftValidationForEntry?clgID=" + clgID + "&courses=" + courses + "&subjects=" + subjects);
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            ResponseData objResponse = new ResponseData();
+
+            if (response.StatusCode.ToString() == "OK")
+            {
+                objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+
+            }
+
+            return new JsonResult
+            {
+                Data = new { StatusCode = objResponse.statusCode, Data = objResponse, Failure = false, Course = objResponse.Message, Subject = objResponse.ResponseCode },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+      public JsonResult chkIsPrime(string CollegeId, string IsPrime)
         {
             var trustId = SessionModel.TrustId;
             var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/chkIsPrime?trustId=" + trustId + "&CollegeId=" + CollegeId + "&IsPrime=" + IsPrime);
@@ -2506,6 +2540,63 @@ namespace NewZapures_V2.Controllers
 
         }
 
+        #region Apply NOC New Page Conditions
+        public JsonResult ApplyNOC_CollegeListForDepartment(string departID)
+        {
+            var trusID = SessionModel.TrustId;
+            var clgList = ZapurseCommonlist.GetClgListForDepartment(departID, "ApplyNOC_CollegeForDepartment", trusID); // gets only those colleges whose entry is there in MST_APLN table
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult ApplyNOC_NOCCategory(string departID)
+        {
+            var clgList = ZapurseCommonlist.ApplyNOC_NOCCategory(departID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "NOC Category List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        public JsonResult ApplyNOC_NOCForms(string departID, string categoryID)
+        {
+            var clgList = ZapurseCommonlist.ApplyNOC_NOCForms(departID, "ApplyNOC_NOCForms", categoryID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "NOC Forms List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult ApplyNOC_TNOCExtentionData(string collegeID)
+        {
+            var clgList = ZapurseCommonlist.ApplyNOC_TNOCExtentionData(collegeID, "ApplyNOC_TNOCExtention");
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "NOC TNOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult ApplyNOC_PNOC(string collegeID)
+        {
+            var clgList = ZapurseCommonlist.ApplyNOC_PNOC(collegeID, "ApplyNOC_PNOC");
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "NOC PNOC List" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+
+        #endregion
 
     }
 }

@@ -306,7 +306,8 @@
 
                 </div>
                 <div class="modal-footer" id="divModal">
-                    <a class="theme-discard-btn btnProceedtoEdit">Proceed For Entries</a>
+                    <a class="theme-discard-btn" id="btnCheckDraftEntry" onclick="CheckDraftValidationForEntry()">Proceed For Entries</a>
+                    <a class="theme-discard-btn" id="btnProceedtoEdit" style="display:none">Proceed For Entries</a>
                 </div>
             </div>
         </div>
@@ -323,6 +324,8 @@
 <script>
 
     var MAppDetails = [];
+    var isAllowed = 0;
+    var newSubjects = "";
     $(document).ready(function () {
 
         $('#ddlCourseList').select2();
@@ -360,7 +363,7 @@
         });
 
 
-        $('.btnProceedtoEdit').click(function () {
+        $('#btnProceedtoEdit').click(function () {
 
             var applicationType = $("input[name='ApplicationType']:checked").val();
             var collegeID = $('#hdnClgID_Name').val().split(',')[0];
@@ -376,6 +379,10 @@
             var subList = '';
             var corsList = '';
             var isAllCourseCovered = true;
+
+            var courseIDList = "";
+            var subjectIDList = "";
+
             // for selected subject name To be comma saperated
             for (var i = 0; i <= subjnameList.length - 1; i++) {
 
@@ -396,8 +403,9 @@
 
             corsnameList.forEach(function (item) {
                 //console.log('Corse Loop', item.id);
+                courseIDList = "";
+                subjectIDList = "";
                 MAppDetails.forEach(function (item1) {
-
                     /*console.log('Mapp Loop', item1.CourseID);*/
                     if (item1.CourseID != item.id) {
                         isAllCourseCovered = false;
@@ -408,54 +416,55 @@
                 })
             })
 
-            var d = JSON.stringify(MAppDetails)
-            if (isAllCourseCovered) {
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    url: GetglobalDomain() + "/Trustee/SaveDeptMst",
-                    dataType: 'json',
-                    type: 'Post',
-                    cache: false,
-                    data: d,
-                    success: function (data) {
-                        console.log(data);
-                        if (data.StatusCode == 1) {
 
-                            Swal.fire({
-                                position: 'center',
-                                icon: 'success',
-                                title: `Success`,
-                                html: `<p>${data.msg}</p>`,
-                                allowOutsideClick: false,
-                                showCloseButton: true,
-                                showConfirmButton: false,
-                            });
+                var d = JSON.stringify(MAppDetails)
+                if (isAllCourseCovered) {
+                     $.ajax({
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        url: GetglobalDomain() + "/Trustee/SaveDeptMst",
+                        dataType: 'json',
+                        type: 'Post',
+                        cache: false,
+                        data: d,
+                        success: function (data) {
+                            //console.log(data);
+                            if (data.StatusCode == 1) {
+
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'success',
+                                    title: `Success`,
+                                    html: `<p>${data.msg}</p>`,
+                                    allowOutsideClick: false,
+                                    showCloseButton: true,
+                                    showConfirmButton: false,
+                                });
+                            }
+
+                            setTimeout(function () {
+
+                                location.href = '@Url.Action("DraftApplication", "Trustee")';
+                            }, 1000)
+                        },
+                        error: function (d) {
+                            //alert(d);
                         }
-
-                        setTimeout(function () {
-
-                            location.href = '@Url.Action("DraftApplication", "Trustee")';
-                        }, 1000)
-                    },
-                    error: function (d) {
-                        //alert(d);
-                    }
-                });
-            }
-            else {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: `error`,
-                    html: `<p>"Dear applicant you have not selected subject against all the course you marked in course selection. Kindly add the subject or remove the course for which subjects are not marked"</p>`,
-                    allowOutsideClick: false,
-                    showCloseButton: true,
-                    showConfirmButton: false,
-                });
-            }
+                    });
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `error`,
+                        html: `<p>"Dear applicant you have not selected subject against all the course you marked in course selection. Kindly add the subject or remove the course for which subjects are not marked"</p>`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
         });
 
 
@@ -688,5 +697,110 @@
     //        }
     //    });
     //}
+
+    function CheckDraftValidationForEntry() {
+
+        var applicationType = $("input[name='ApplicationType']:checked").val();
+        var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+        var collegeName = $('#hdnClgID_Name').val().split(',')[1];
+
+        var cors = $('#ddlCourseList').val();
+        var corsname = $('#ddlCourseList option:selected').text();
+        var corsnameList = $('#ddlCourseList').select2("data");
+
+        var subjIDList = $('#ddlSubjectList').val();
+        var subjnameList = $('#ddlSubjectList').select2("data");
+
+        var subList = '';
+        var corsList = '';
+        var isAllCourseCovered = true;
+
+        var courseIDList = "";
+        var subjectIDList = "";
+
+        // for selected subject name To be comma saperated
+        for (var i = 0; i <= subjnameList.length - 1; i++) {
+
+            var ids = subjIDList[i];
+            var textes = subjnameList[i].text;
+
+            MAppDetails.push({
+                CollegeID: collegeID,
+                college: collegeName,
+                appType: applicationType,
+                CourseID: ids.split('-')[0],
+                SubjectID: ids.split('-')[1],
+                Course: textes.split(': ')[0].trim(),
+                Subject: textes.split(': ')[1].trim(),
+
+            })
+        }
+
+        MAppDetails.forEach(function (item) {
+
+        if (courseIDList.length > 0) {
+            if (!courseIDList.includes(item.CourseID))
+                courseIDList += ',' + item.CourseID;
+        }
+        else {
+            courseIDList = item.CourseID;
+        }
+
+        if (subjectIDList.length > 0) {
+
+            if (!subjectIDList.includes(item.SubjectID))
+                subjectIDList += ',' + item.SubjectID;
+        }
+        else {
+            subjectIDList = item.SubjectID;
+        }
+        })
+
+        var Data = {
+            clgID: parseInt(collegeID),
+            Courses: courseIDList,
+            Subjects: subjectIDList
+        }
+        var d = JSON.stringify(Data)
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/CheckDraftValidationForEntry",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                console.log(data);
+                var isAllowed = data.StatusCode;
+                var newSubject = data.Subject;
+                if (isAllowed == 1) {
+                    $('#btnProceedtoEdit').click();
+                }
+                else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `error`,
+                        html: `<div><p>Dear Applicant, Draft application already exist for this Courses and Subjects. You can proceed in same application, or first cancel existing draft and try again.</p><br/><p>We found <b>: ${newSubject}</b> is your new selection. Or else create new Application for this subject</p></div>`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                }
+                //localStorage.removeItem("AllowToAdd");
+                //localStorage.removeItem("NewSubjects");
+
+                //localStorage.setItem("AllowToAdd", data.StatusCode);
+                //localStorage.setItem("NewSubjects", data.Subject);
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+    }
 
 </script>
