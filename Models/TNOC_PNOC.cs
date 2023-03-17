@@ -10,6 +10,7 @@ namespace NewZapures_V2.Models
         public int iPK_Id { get; set; }
         public int iFK_CORS_ID { get; set; }
         public string sCorsName { get; set; }
+        public string CourseType { get; set; }
         public int iFK_Subj_ID { get; set; }
         public string sSubjName { get; set; }
         public int Fk_StatusId { get; set; }
