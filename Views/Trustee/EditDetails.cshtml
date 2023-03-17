@@ -202,8 +202,8 @@
                             <li><button class="applicationBtn" id="btn_Land" data-id="@Url.Action("Index", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Land Information</button></li>
                             <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
                             <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
-                            <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
-                            <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
+                            <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid,clgId=collegeID})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
+                            <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid,clgId=collegeID})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
                             <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
                             <li><button class="applicationBtn" id="btn_Staff" data-id="@Url.Action("Index", "Staff",new {guid=guiid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
                             <li><button class="applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst",new {guid=guiid,clgId=collegeID})"><i class="fa fa-school"></i> &nbsp;Academic Information</button></li>
@@ -223,8 +223,8 @@
                             <li><button class="applicationBtn" id="btn_Land" data-id="@Url.Action("Index", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Land Information</button></li>
                             <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
                             <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
-                            <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
-                            <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
+                            <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid,clgId=collegeID})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
+                            <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid,clgId=collegeID})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
                             <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
                         }
                     }
