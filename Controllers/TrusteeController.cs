@@ -2612,5 +2612,16 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
+
+        public JsonResult GetCollegeDetailsForPreview(int collegeID)
+        {
+            var clgList = ZapurseCommonlist.GetCollegeDetailsForPreview(collegeID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College Details" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
     }
 }

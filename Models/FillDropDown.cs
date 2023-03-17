@@ -61,6 +61,8 @@ namespace NewZapures_V2.Models
         public string CollegeType { get; set; }
         public string CourseName { get; set; }
         public string subjectName { get; set; }
+        public string Course_N_Subject_TNOC { get; set; }
+        public string Course_N_Subject_PNOC { get; set; }
         public string TNOCStatus { get; set; }
         public string PNOCStatus { get; set; }
         public string TNOCRuningStatus { get; set; }

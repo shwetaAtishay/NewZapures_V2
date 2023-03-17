@@ -2283,5 +2283,27 @@ namespace NewZapures_V2.Models
             }
             return trusteeList;
         }
+        
+        public static CollegeDetailsForPreview GetCollegeDetailsForPreview(int clgID)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetCollegeDetailsForPreview?clgID=" + clgID);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            CollegeDetailsForPreview details = new CollegeDetailsForPreview();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                ResponseData objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
+                if (objResponse.Data != null)
+                {
+                    details = JsonConvert.DeserializeObject<CollegeDetailsForPreview>(objResponse.Data.ToString());
+                }
+            }
+            return details;
+        }
     }
 }

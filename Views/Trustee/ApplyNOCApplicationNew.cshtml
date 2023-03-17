@@ -32,6 +32,10 @@
     #tblCourseSubject th {
         background: #d0d0d0;
     }
+    .noc-layouts-tbl{
+        overflow-y:scroll!important;
+    }
+
 </style>
 
 <!--<div class="row">
@@ -79,7 +83,7 @@
 
         </div>
         <hr />
-       
+
         <div class="row">
             <div class="col-lg-6">
                 <input type="hidden" id="hdnSubjectFor" />
@@ -184,14 +188,14 @@
                 <label for="noc-text-input " class="noc-form-label">NOC For</label>
                 <div class="row col-12" id="divAvailableNOCContainer">
                     @*<div class="form-group custom-control custom-radio col-sm-4">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollageType" id="rbtn_Noc">
-                        <label for="rbtn_Noc" class="custom-control-label" style="width: max-content;">NOC</label>
-                    </div>
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollageType" id="rbtn_Noc">
+                            <label for="rbtn_Noc" class="custom-control-label" style="width: max-content;">NOC</label>
+                        </div>
 
-                    <div class="form-group custom-control custom-radio col-sm-4">
-                        <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollageType" id="rbtn_inspection">
-                        <label for="rbtn_inspection" class="custom-control-label" style="width: max-content;">Only Inspection Fee</label>
-                    </div>*@
+                        <div class="form-group custom-control custom-radio col-sm-4">
+                            <input class="form-group col-sm-2 custom-control-input custom-control-input-primary" type="radio" name="CollageType" id="rbtn_inspection">
+                            <label for="rbtn_inspection" class="custom-control-label" style="width: max-content;">Only Inspection Fee</label>
+                        </div>*@
                 </div>
 
             </div>
@@ -201,11 +205,11 @@
                 <div>Inspection Fee : <span id="spnInsFee"></span></div>
             </div>
             @*<div class="col-lg-12 mt-4">
-                <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">PreView</button>
-                <button type="button" class="theme-button-mockup" id="btnSubmit" style="display:none">Submit</button>
-                <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;">Reset</button>
-                <a href="@Url.Action("DeptMasterApplicationList","Trustee")" type="button" class="theme-discard-btn" style="background: gray;border: 1px solid gray !important;float: right;">Back To List</a>
-            </div>
+                    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">PreView</button>
+                    <button type="button" class="theme-button-mockup" id="btnSubmit" style="display:none">Submit</button>
+                    <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;">Reset</button>
+                    <a href="@Url.Action("DeptMasterApplicationList","Trustee")" type="button" class="theme-discard-btn" style="background: gray;border: 1px solid gray !important;float: right;">Back To List</a>
+                </div>
             *@
         </div>
 
@@ -335,20 +339,20 @@
                         <div class="col-lg-6 form-group">
                             <label for="noc-text-input " class="noc-form-label" style="">Document for Consent of Management (Only pdf/image file) (Min. Size 500KB) (MAx. Size 2MB)</label>
                             @*<div>
-                            <input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />
-                        </div>*@
+                                    <input type="file" id="" class="form-control" name="" />
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />
+                                </div>*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
                         <div class="col-lg-6 form-group">
                             <label for="noc-text-input " class="noc-form-label" style="">Document for Consent of 25% parents of student (min.100) in this previous year (Only pdf/image file) (Min. Size 500KB) (MAx. Size 2MB)</label>
                             @*<div>
-                            <input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />
-                        </div>*@
+                                    <input type="file" id="" class="form-control" name="" />
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />
+                                </div>*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -378,8 +382,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
 
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
@@ -406,8 +410,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
                         </div>
@@ -415,8 +419,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Document for new place in same tehsil certified by Tehshildar</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
 
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
@@ -443,8 +447,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Document for Resolution of Management Committe</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
 
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
@@ -453,8 +457,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Document for Annexure 8 For Change Management</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
                         </div>
@@ -476,8 +480,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Proposal of Society for merger</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
 
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
@@ -486,8 +490,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">All NOCs issued in single pdf file</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
 
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
@@ -496,8 +500,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Latest University Affiliation of college</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
                         </div>
@@ -505,8 +509,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">NOC of the affiliating university for merger</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
                         </div>
@@ -514,8 +518,8 @@
                             <label for="noc-text-input " class="noc-form-label" style="">Affidavit of Consent of 100% Parents</label>
                             <div>
                                 @*<input type="file" id="" class="form-control" name="" />
-                            <input type="hidden" id="" />
-                            <input type="hidden" id="" />*@
+                                    <input type="hidden" id="" />
+                                    <input type="hidden" id="" />*@
 
                                 <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                             </div>
@@ -533,8 +537,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">All NOCs issued in single pdf file</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -543,8 +547,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">Latest University Affilliation of college</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
@@ -554,8 +558,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">NOC of the affiliating university for merger</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -564,8 +568,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">Affidavit of consent of 100% Parents</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -574,8 +578,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">Land title Certificate</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -584,8 +588,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">Blue print of building</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -594,8 +598,8 @@
                         <label for="noc-text-input " class="noc-form-label" style="">Staff information (Teaching and non-teaching)</label>
                         <div>
                             @*<input type="file" id="" class="form-control" name="" />
-                        <input type="hidden" id="" />
-                        <input type="hidden" id="" />*@
+                                <input type="hidden" id="" />
+                                <input type="hidden" id="" />*@
 
                             <a href="#" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a>
                         </div>
@@ -610,69 +614,69 @@
             </div>
 
             @*<div class="noc-layouts noc-layouts1">
-            <div class="title-heading d-flex align-items-center justify-content-between">
-                <h4 class="p-0 title-heading m-0 ">Add Course</h4>
-            </div>
-            <div class="card-body w-100 float-left">
-                <div class="row">
-                    <div class="col-lg-3 form-group">
-                        <label for="example-text-input" class="noc-form-label" style="">Course Name</label>
-                        <select class="form-control noc-input-text" name="" id="">
-                            <option value="">B.C.A</option>
-                            <option value=""></option>
-                            <option value=""></option>
-                        </select>
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Add Course</h4>
                     </div>
-                    <div class="col-lg-3 form-group">
-                    <div class="col-lg-3 form-group">
-                        <div class="">
-                            <label for="example-text-input" class="noc-form-label" style="">Subjects</label>
-                            <select class="form-control noc-input-text" name="" id="">
-                                <option value="">Computer Application</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                            </select>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-3 form-group">
+                                <label for="example-text-input" class="noc-form-label" style="">Course Name</label>
+                                <select class="form-control noc-input-text" name="" id="">
+                                    <option value="">B.C.A</option>
+                                    <option value=""></option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                            <div class="col-lg-3 form-group">
+                                <div class="">
+                                    <label for="example-text-input" class="noc-form-label" style="">Subjects</label>
+                                    <select class="form-control noc-input-text" name="" id="">
+                                        <option value="">Computer Application</option>
+                                        <option value=""></option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 w-100 float-left pt-3 text-right">
+                                <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-6 w-100 float-left pt-3 text-right">
-                        <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
-                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="noc-layouts noc-layouts1">
-            <div class="title-heading d-flex align-items-center justify-content-between">
-                <h4 class="p-0 title-heading m-0 ">Add New Subjects</h4>
-            </div>
-            <div class="card-body w-100 float-left">
-                <div class="row">
-                    <div class="col-lg-3 form-group">
-                        <label for="example-text-input" class="noc-form-label" style="">Course Name</label>
-                        <select class="form-control noc-input-text" name="" id="">
-                            <option value="">B.Sc.</option>
-                            <option value=""></option>
-                            <option value=""></option>
-                        </select>
+                <div class="noc-layouts noc-layouts1">
+                    <div class="title-heading d-flex align-items-center justify-content-between">
+                        <h4 class="p-0 title-heading m-0 ">Add New Subjects</h4>
                     </div>
-                    <div class="col-lg-3 form-group">
-                        <div class="">
-                            <label for="example-text-input" class="noc-form-label" style="">Subjects Name</label>
-                            <select class="form-control noc-input-text" name="" id="">
-                                <option value="">Adiotherapy Technology</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                            </select>
+                    <div class="card-body w-100 float-left">
+                        <div class="row">
+                            <div class="col-lg-3 form-group">
+                                <label for="example-text-input" class="noc-form-label" style="">Course Name</label>
+                                <select class="form-control noc-input-text" name="" id="">
+                                    <option value="">B.Sc.</option>
+                                    <option value=""></option>
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <div class="">
+                                    <label for="example-text-input" class="noc-form-label" style="">Subjects Name</label>
+                                    <select class="form-control noc-input-text" name="" id="">
+                                        <option value="">Adiotherapy Technology</option>
+                                        <option value=""></option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 w-100 float-left pt-3 text-right">
+                                <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-6 w-100 float-left pt-3 text-right">
-                        <a href="javascript:void(0)" class="theme-button-mockup"><i class="fas fa-save"></i> Save</a>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                </div>*@
 
 
             <a href="#" data-toggle="modal" data-target=".bd-example-modal-xl" id="openModal" style="display:none">Terms and Condition</a>
@@ -750,9 +754,9 @@
                                 </div>
 
                                 @*<div class="col-lg-6">
-                                <label for="example-text-input" style="">NOC Date</label>
-                                <input type="date" id="MtxtNOCDate" class="form-control-sm" />
-                            </div>*@
+                                        <label for="example-text-input" style="">NOC Date</label>
+                                        <input type="date" id="MtxtNOCDate" class="form-control-sm" />
+                                    </div>*@
                             </div>
 
                             <div class="row mt-3">
@@ -775,7 +779,8 @@
 </div>
 
 <div class="w-100 float-left mt-3 text-right">
-    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()">Preview</button>
+    <button type="button" class="theme-button-mockup" id="btnGetDetailsToPreview" onclick="BindDataForDetails()">Preview</button>
+    <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()" style="display:none">Preview</button>
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Submit</button>
     <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;margin:0px 5px">Clear Selection</button>
     <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="background: #dc331c; border: 1px solid #dc331c !important; float: right; margin: 0px 5px">Back To Draft</a>
@@ -788,21 +793,36 @@
 
 <div class="card noc-layouts mt-0" id="divPrint" style="display:none">
     <div class="title-heading p-0">
-        <h4 class="mt-0 title-heading float-left">Print PriView</h4>
+        <h4 class="mt-0 title-heading float-left">Preview</h4>
     </div>
     <div class="card-body">
-        <button class="btn btn-purple" onclick="printDiv('divPrintPreview')"><i class="fa fa-print"></i> Print Challan</button>
+        <button class="btn btn-purple" onclick="printDiv('divPrintPreview')" style="display:none"><i class="fa fa-print"></i> Print Preview</button>
         <div id="divPrintPreview">
             <div>
-                <table class="my-table" style="width:100%; text-align: center;border: 1px solid white;border-collapse: collapse" id="datatable1">
+                <table class="table table-bordered table-striped" style="width:100%;border: 1px solid white;border-collapse: collapse" id="tblPreviewDetails">
+                    <tr style="background: #c7d9f0;"><td class="text-center" colspan="4" style="font-size: 18px;font-weight: 600;color: black;"><span id="preClgName"></span></td></tr>
+                    <tr><th>Mobile</th><td><span id="preclgMobile" style="color: black;"></span></td><th>College Type</th><td><span id="preclgtype" style="color: black;"></span></td></tr>
+                    <tr><th>Collge Level</th><td><span id="preclglvl" style="color: black;"></span></td><th>Department</th><td><span id="preclgdept" style="color: black;"></span></td></tr>
+                    <tr><th>District</th><td><span id="preclgdist" style="color: black;"></span></td><th>Tehsil</th><td><span id="preclgteh" style="color: black;"></span></td></tr>
+                    <tr><th>Address</th><td><span id="preclgaddr" style="color: black;"></span></td><th>Trust Name</th><td><span id="preclgTrust" style="color: black;"></span></td></tr>
 
-                    <tr>
-                        <td style="width:100%; text-align: center;border: 1px solid white;border-collapse: collapse">
-                            <strong> GOVERNMENT OF RAJASTHAN</strong>
-                        </td>
-
-                    </tr>
                 </table>
+                <div style="width: 100%; padding: 10px 12px; font-size: 15px; background: #c7d9f0; color: black; font-weight: 600;">Trust Members</div>
+                <table class="table table-bordered table-striped" style="width:100%;border: 1px solid white;border-collapse: collapse" id="tblPreviewDetailsMembers">
+                    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Mobile</th></tr></thead>
+                    <tbody style="color: black;">
+
+                    </tbody>
+                </table>
+                @*<table class="my-table" style="width:100%; text-align: center;border: 1px solid white;border-collapse: collapse" id="datatable1">
+
+            <tr>
+                <td style="width:100%; text-align: center;border: 1px solid white;border-collapse: collapse">
+                    <strong> GOVERNMENT OF RAJASTHAN</strong>
+                </td>
+
+            </tr>
+        </table>*@
             </div>
             <div class="noc-layouts noc-layouts1" id="divNewCollegeDetailsContainerNew" style="display:none">
                 @*<div class="title-heading rounded-0 w-100 float-left">Collage Details</div>*@
@@ -1934,29 +1954,46 @@
         var courseCost = $('#spnNewCourseFee').text().split(' ')[1];
 
         var subList = '';
+        var subIDList = '';
 
-        for (var i = 0; i <= subjnameList.length - 1; i++) {
-            if (subList.length > 0) {
-                subList += ', ' + subjnameList[i].text;
-            }
-            else {
-                subList = subjnameList[i].text.split('-')[0];
-            }
+        if (subjnameList.length > 0) {
+            subjnameList.forEach(function (item) {
+
+                //console.log(item.text);
+                if (subList.length > 0) {
+                    subList += ', ' + item.text.split(':')[1];
+                }
+                else {
+                    subList = item.text.split(':')[1].trim();
+                }
+            })
+        }
+        if (subjIDList.length > 0) {
+            subjIDList.forEach(function (item) {
+                //console.log(item);
+                //console.log(item.text);
+                if (subIDList.length > 0) {
+                    subIDList += ', ' + item.split('-')[1];
+                }
+                else {
+                    subIDList = item.split('-')[1].trim();
+                }
+            })
         }
 
         courseDetails.push({
             nGuiD : CreateGuid(),
             courseID: cors,
             courseName: corsname,
-            subjectIdList: subjIDList.toString().split('-')[1],
-            subjNameList: subList.split(':')[1].trim(),
+            subjectIdList: subIDList,
+            subjNameList: subList,
             TypeId : AddCourseID
         })
-        console.table(courseDetails);
+
         if (courseDetails.length > 0) {
             courseDetails.forEach(function (item, index) {
                 if (item.courseID != null) {
-                courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+                courseTableHtml += `<tr><td>${index}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
 
                 if (!distinctCourse.includes(item.courseID)) {
                     if (distinctCourse.length > 0) {
@@ -1971,7 +2008,6 @@
             $('#chkbtn_1').attr('disabled', true);
         }
 
-        //console.log('distinct Course', distinctCourse);
         var xyz = distinctCourse.split(',');
         if (xyz.length > 1) {
             MulticourseCost = parseFloat(courseCost) * xyz.length;
@@ -1987,7 +2023,9 @@
         var courseTableHtmlprint = '';
         if (courseDetails.length > 0) {
             courseDetails.forEach(function (item, index) {
-                courseTableHtmlprint += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td></tr>`
+                if (item.courseID != null) {
+                    courseTableHtmlprint += `<tr><td>${index}</td><td>${item.courseName}</td><td>${item.subjNameList}</td></tr>`
+                }
             });
         }
         else {
@@ -2015,26 +2053,50 @@
 
         var subjectCost = $('#spnNewSubjectFee').text().split(' ')[1];
         var subList = '';
+        var sbIDList = '';
 
-        for (var i = 0; i <= subjnameList.length - 1; i++) {
-            if (subList.length > 0) {
-                subList += ', ' + subjnameList[i].text;
-            }
-            else {
-                subList = subjnameList[i].text;
-            }
+        if (subjnameList.length > 0) {
+            subjnameList.forEach(function (item) {
+
+                console.log(item.text);
+                if (subList.length > 0) {
+                    subList += ', ' + item.text.split(':')[1];
+                }
+                else {
+                    subList = item.text.split(':')[1].trim();
+                }
+            })
         }
+
+
+
+        //console.log(subjIDList);
+
+        if (subjIDList.length > 0) {
+            subjIDList.forEach(function (item) {
+                console.log('length', sbIDList.length);
+                if (sbIDList.length > 0) {
+                    sbIDList += ', ' + item.split('-')[1];
+                }
+                else {
+                    sbIDList = item.split('-')[1];
+                }
+
+            });
+        }
+
+
 
         subjectDetails.push({
             nGuiD: CreateGuid(),
             courseID: cors,
             courseName: corsname,
-            subjectIdList: subjIDList.toString(),
+            subjectIdList: sbIDList,
             subjNameList: subList,
             TypeId: AddSubjectID
         })
 
-        //console.table(courseDetails);
+        //console.table(subjectDetails);
         //if (subjectDetails.length > 1) {
         //    MultiSubjectCost = parseFloat(subjectCost) * subjectDetails.length;
 
@@ -2049,7 +2111,7 @@
             subjectDetails.forEach(function (item, index) {
                 if (item.courseID != null) {
 
-                subjectTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+                subjectTableHtml += `<tr><td>${index}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
                 }
             });
             $('#chkbtn_2').attr('disabled', true);
@@ -2060,7 +2122,10 @@
         var subjectTableHtmlprint = '';
         if (subjectDetails.length > 0) {
             subjectDetails.forEach(function (item, index) {
-                subjectTableHtmlprint += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td></tr>`
+                if (item.courseID != null) {
+
+                subjectTableHtmlprint += `<tr><td>${index}</td><td>${item.courseName}</td><td>${item.subjNameList}</td></tr>`
+                }
             });
             $('#chkbtn_2').attr('disabled', true);
         }
@@ -2302,7 +2367,7 @@
                 }
                     $('#tblTNOCList tbody').html('');
                     $('#tblTNOCList tbody').html(htmlString);
-               
+
                 DisableTNOC();
             },
             error: function (d) {
@@ -2358,7 +2423,7 @@
                                 htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox"  id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                             }
                         }
-                        
+
                         else {
 
                             if (nocFile == "NA") {
@@ -2444,7 +2509,7 @@
     function GetUpdatedFeeForPNOC(item, itemStatus, isUGorPG, courseID, subjectID, pkID, arrGuid, CourseType) {
         //alert(item);
         $(item).attr('checked', true);
-        
+
         if ($(item).is(':checked')) {
 
             item = item.replace('PNOC', 'TNOC');
@@ -2480,6 +2545,7 @@
                 subID: subjectID,
                 pkId: pkID
             })
+            //console.log('Added Item');
             //console.table(PNOCDetails);
         }
         else {
@@ -2492,7 +2558,7 @@
             $(item).prop('disbaled', false);
 
             var PNOCDefaultFee = $('#spnPNOCFee').text().split(' ')[1];
-            
+
             var s = PNOCFeeCollection.filter(function (item) {
                 return item.FeeFor == isUGorPG;
             })
@@ -2502,11 +2568,13 @@
             }
 
             if (init3 == 0) {
-                finalFee = parseFloat(PNOCDefaultFee) - parseFloat(s[0].FeeAmt);
+                if (finalFee > 0)
+                    finalFee = parseFloat(PNOCDefaultFee) - parseFloat(s[0].FeeAmt);
             }
 
             if (itemStatus == 1 && isUGorPG == "PG") {
-                finalFee = parseFloat(PNOCDefaultFee) - parseFloat(s[0].FeeAmt);
+                if (finalFee > 0)
+                    finalFee = parseFloat(PNOCDefaultFee) - parseFloat(s[0].FeeAmt);
             }
 
             MultiplePNOCCost = finalFee;
@@ -2517,7 +2585,7 @@
             PNOCDetails = PNOCDetails.filter(function (item) {
                 return item.pGUID != arrGuid;
             })
-
+            //console.log('After Removing');
             //console.table(PNOCDetails);
         }
     }
@@ -2540,6 +2608,7 @@
                 subID: subjectID,
                 pkId: pkID
             })
+            //console.log('Item Added');
             //console.table(TNOCDetails);
         }
         else {
@@ -2554,7 +2623,7 @@
             TNOCDetails = TNOCDetails.filter(function (item) {
                 return item.tGUID != arrGuid;
             })
-
+            //console.log('After removing ID');
             //console.table(TNOCDetails);
         }
         //console.table(TNOCDetails);
@@ -3719,7 +3788,7 @@
                             });
                         })
                     }
-                    
+
                     //console.table(PNOCFeeCollection);
                 }
 
@@ -3778,6 +3847,8 @@
                 distinctCourse = "";
                 courseTableHtml = '';
                 courseDetails.forEach(function (item, index) {
+                    if (item.courseID != null) {
+
                     courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
 
                     if (!distinctCourse.includes(item.courseID)) {
@@ -3787,6 +3858,7 @@
                         else {
                             distinctCourse = item.courseID;
                         }
+                    }
                     }
                 });
                 $('#chkbtn_1').attr('disabled', true);
@@ -3838,7 +3910,10 @@
             if (subjectDetails.length > 0) {
                 subjectTableHtml = '';
                 subjectDetails.forEach(function (item, index) {
+                    if (item.courseID != null) {
+
                     subjectTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+                    }
                 });
                 $('#chkbtn_2').attr('disabled', true);
             }
@@ -4113,11 +4188,11 @@
 
         if (typeID == 38) {
             //checks TNOC array must be empty
-            if (TNOCDetails.length > 0) {
+            if (TNOCDetails.length > 1) {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Please untick the selected TNOC to uncheck this option',
+                    title: 'We found that you have selected courses for this section in your application. If you want to cancel it, kindly uncheck your selections.',
                     allowOutsideClick: false,
                     showCloseButton: true,
                     showConfirmButton: false,
@@ -4151,11 +4226,11 @@
         }
         if (typeID == 40) {
             //checks PNOC array must be empty
-            if (PNOCDetails.length > 0) {
+            if (PNOCDetails.length > 1) {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
-                    title: 'Please untick the selected TNOC to uncheck this option',
+                    title: 'We found that you have selected courses for this section in your application. If you want to cancel it, kindly uncheck your selections.',
                     allowOutsideClick: false,
                     showCloseButton: true,
                     showConfirmButton: false,
@@ -4380,6 +4455,72 @@
         }
     }
 
+
+    function BindDataForDetails() {
+        var collgeID = $("#ddlClgList option:selected").val();
+        var applicationModal = {
+            "collegeID": parseInt(collgeID)
+        }
+
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetCollegeDetailsForPreview",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(applicationModal),
+            success: function (data) {
+                var mainData = data.Data;
+                var htmsrt = "";
+                console.log(mainData);
+                console.log(mainData.TrustMembers);
+                var members = mainData.TrustMembers; 
+
+                $('#preClgName').html('');
+                $('#preclgMobile').html('');
+                $('#preclgtype').html('');
+                $('#preclglvl').html('');
+                $('#preclgdept').html('');
+                $('#preclgdist').html('');
+                $('#preclgteh').html('');
+                $('#preclgaddr').html('');
+                $('#preclgTrust').html('');
+
+
+                $('#preClgName').html(mainData.CollegeName);
+                $('#preclgMobile').html(mainData.Mobile);
+                $('#preclgtype').html(mainData.CollegeType);
+                $('#preclglvl').html(mainData.CollegeLevel);
+                $('#preclgdept').html(mainData.DepartmentName);
+                $('#preclgdist').html(mainData.DistrictName);
+                $('#preclgteh').html(mainData.TehsilName.trim());
+                $('#preclgaddr').html(mainData.Address);
+                $('#preclgTrust').html(mainData.TrustName);
+
+                if (members.length > 0) {
+                    members.forEach(function (item, index) {
+                        htmsrt += `<tr><td>${index + 1}</td><td>${item.Name}</td><td>${item.Email}</td><td>${item.Mobile}</td></tr>`;
+                    })
+                }
+                else {
+                    htmsrt = `<tr><td class="text-center" colspan="4">No Members Available</td></tr>`;
+                }
+
+                $('#tblPreviewDetailsMembers tbody').html('');
+                $('#tblPreviewDetailsMembers tbody').html(htmsrt);
+
+                setTimeout(function () { $('#btnPreview').click(); }, 1000);
+            },
+            error: function (d) {
+                //console.log(d);
+            }
+        });
+
+    }
+
  //   function encodeImageFileAsURL(element, hdnId, hdnExtnID) {
  //       var elementID = element.id;
  //       var file = element.files[0];
@@ -4452,6 +4593,7 @@
                 $("#dtnSubmit").show();
                 $("#divPrint").show();
                 $("#btnPreview").hide();
+                $("#btnGetDetailsToPreview").hide();
                 $("#divMain").hide();
 
                 //$("#tblLandInfo tbody").html(Data.LandData);

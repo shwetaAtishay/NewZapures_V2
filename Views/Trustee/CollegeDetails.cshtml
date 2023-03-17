@@ -107,6 +107,7 @@
     </div>
     <div class="card-body p-0 noc-layouts-tbl">
         <input type="hidden" id="hdnClgID_Name" />
+        <input type="hidden" id="hdnPNOCStatus" />
         <div class="row col-lg-12" style="place-content: end;gap: 15px;padding: 10px 0px;font-size: 15px;font-weight: 600;">
             <span style="color: #007bff;"><i class="fas fa-file-edit"></i> Fill New Application</span>
             <span style="color: #f96363;border-left: 1px solid red;padding: 0px 10px;"> <i class="fas fa-file-invoice"></i> College Amendment</span>
@@ -128,56 +129,32 @@
                     @{
                         if (collegeList != null && collegeList.Count > 0)
                         {
+
+
                             var i = 1;
                             foreach (var item in collegeList)
                             {
-                                if (item.TNOCStatus == "Active")
-                                {
-                                    <tr>
-                                        <td>@i</td>
-                                        <td>@item.Text</td>
-                                        <td>
-                                            @item.CourseName :- <br />
-                                            @item.subjectName   @*item.TNOCStatus *@
-                                        </td>
-                                        <td> @item.PNOCStatus</td>
-
-                                        <td class="text-center">
-                                            <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text','@item.Id');"><i class="fas fa-file-edit"></i></button>
-                                            <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
-                                            @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
-
-
-                                            @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
-                                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
-                                        </td>
-                                    </tr>
-                                    i++;
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td>@i</td>
-                                        <td>@item.Text</td>
-                                        <td>
-                                            @item.TNOCStatus
-                                        </td>
-                                        <td>  @item.CourseName :-<br /> @item.subjectName</td>
-
-                                        <td class="text-center">
-                                            <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text','@item.Id');"><i class="fas fa-file-edit"></i></button>
-                                            <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
-                                            @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
+                                var TnocCourse = item.Course_N_Subject_TNOC.Split('|')[0];
+                                var TnocSubject = item.Course_N_Subject_TNOC.Split('|')[1];
+                                
+                                var PnocCourse = item.Course_N_Subject_PNOC.Split('|')[0];
+                                var PnocSubject = item.Course_N_Subject_PNOC.Split('|')[1];
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Text</td>
+                                    <td>@TnocCourse <br/> @TnocSubject</td>
+                                    <td>@PnocCourse <br/> @PnocSubject</td>
+                                    <td class="text-center">
+                                        <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text', '@item.Id', '@item.ID1');"><i class="fas fa-file-edit"></i></button>
+                                        <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
+                                        @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
 
 
-                                            @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
-                                                <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
-                                        </td>
-                                    </tr>
-                                    i++;
-                                }
-
-
+                                        @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
+                                            <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
+                                    </td>
+                                </tr>
+                                i++;
 
                             }
                         }
@@ -215,7 +192,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="appSummaryTitle">Select Appropriate Combination to Proceed</h3>
+                    <h3 class="modal-title" id="appSummaryTitle"></h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -359,7 +336,31 @@
 
         $('#ddlCourseList').change(function () {
             var deptID = $(this).val();
+            var CourseType = $('#ddlCourseList option:selected').text();
+            CourseType = CourseType.split('[')[1];
+
+            CourseType = CourseType.replace(']', ' ').trim();
+            console.log(CourseType);
+            var PNOCStatus = $('#hdnPNOCStatus').val();
+
+            console.log(PNOCStatus);
+
+            if (PNOCStatus == 0 && CourseType == "PG") {
+                Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: `Error`,
+                        html: `<p>You are not allowed to apply for PG Course as your college is not PNOC Holder</p>`,
+                        allowOutsideClick: false,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                    });
+                $('#ddlCourseList').val('');
+            } else {
+
             GetSubjectForCourse(deptID.toString());
+            }
+
         });
 
 
@@ -522,7 +523,7 @@
 
     });
 
-    function openModal(collgeName, collegeID) {
+    function openModal(collgeName, collegeID,PNOC) {
 
         var collegeIdName = `${collegeID},${collgeName}`;
 
@@ -538,6 +539,9 @@
 
         $('#hdnClgID_Name').val('')
         $('#hdnClgID_Name').val(collegeIdName);
+
+        $('#hdnPNOCStatus').val('')
+        $('#hdnPNOCStatus').val(PNOC);
 
 
         //console.log($('#hdnClgID_Name').val());
