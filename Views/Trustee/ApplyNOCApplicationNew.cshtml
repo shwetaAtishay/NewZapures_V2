@@ -171,6 +171,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr><td class="text-center" colspan="3">No Data Available</td></tr>
                         </tbody>
 
                     </table>
@@ -228,6 +229,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr><td class="text-center" colspan="4">No Data Available</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -252,6 +254,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr><td class="text-center" colspan="4">No Data Available</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1565,11 +1568,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.print/1.6.2/jQuery.print.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 }
 <script type="text/javascript">
-    var courseDetails = [];
-    var subjectDetails = [];
+    var courseDetails = [{
+        nGuiD: null,
+        courseID: null,
+        courseName: null,
+        subjectIdList: null,
+        subjNameList: null,
+        TypeId: null
+    }];
+    var subjectDetails = [{
+        nGuiD: null,
+        courseID: null,
+        courseName: null,
+        subjectIdList: null,
+        subjNameList: null,
+        TypeId: null
+    }];
 
-    var PNOCDetails = [];
-    var TNOCDetails = [];
+    var PNOCDetails = [{
+        pGUID: null,
+        typeID: null,
+        courseID: null,
+        CourseType:null,
+        subID: null,
+        pkId: null
+    }];
+    var TNOCDetails = [{
+        tGUID: null,
+        typeID: null,
+        courseID: null,
+        CourseType: null,
+        subID: null,
+        pkId: null
+    }];
 
     var TypeId = [];
     var finalFee = 0;
@@ -1891,6 +1922,7 @@
     }
 
     function AddCourse() {
+        var distinctCourse = "";
         var courseTableHtml = '';
         var cors = $('#ddlCourseList').val();
         var corsname = $('#ddlCourseList option:selected').text();
@@ -1916,30 +1948,41 @@
             nGuiD : CreateGuid(),
             courseID: cors,
             courseName: corsname,
-            subjectIdList: subjIDList.toString(),
-            subjNameList: subList,
+            subjectIdList: subjIDList.toString().split('-')[1],
+            subjNameList: subList.split(':')[1].trim(),
             TypeId : AddCourseID
         })
         console.table(courseDetails);
-        //if (courseDetails.length > 1) {
-        //    MulticourseCost = parseFloat(courseCost) * courseDetails.length;
-
-        //    $('#spnNewCourseFee').html('');
-        //    $('#spnNewCourseFee').html(`&#8377; ${courseCost} x ${courseDetails.length} = &#8377; ${MulticourseCost}`);
-        //}
-        //else {
-            MulticourseCost = courseCost;
-        //}
-        //console.table(courseDetails);
-
-
         if (courseDetails.length > 0) {
             courseDetails.forEach(function (item, index) {
-
+                if (item.courseID != null) {
                 courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+
+                if (!distinctCourse.includes(item.courseID)) {
+                    if (distinctCourse.length > 0) {
+                        distinctCourse += "," + item.courseID;
+                    }
+                    else {
+                        distinctCourse =  item.courseID;
+                    }
+                }
+                }
             });
             $('#chkbtn_1').attr('disabled', true);
         }
+
+        //console.log('distinct Course', distinctCourse);
+        var xyz = distinctCourse.split(',');
+        if (xyz.length > 1) {
+            MulticourseCost = parseFloat(courseCost) * xyz.length;
+
+            $('#spnNewCourseFee').html('');
+            $('#spnNewCourseFee').html(`&#8377; ${courseCost} x ${xyz.length} = &#8377; ${MulticourseCost}`);
+        }
+        else {
+            MulticourseCost = courseCost;
+        }
+
 
         var courseTableHtmlprint = '';
         if (courseDetails.length > 0) {
@@ -1947,7 +1990,9 @@
                 courseTableHtmlprint += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td></tr>`
             });
         }
-
+        else {
+            courseTableHtml = `<tr><td class="text-center" colspan="4">No Data Available</td></tr>`;
+        }
         //console.log(courseTableHtml);
         $('#tblCourse tbody').html('');
         $('#tblCourse tbody').html(courseTableHtml);
@@ -2002,9 +2047,15 @@
 
         if (subjectDetails.length > 0) {
             subjectDetails.forEach(function (item, index) {
+                if (item.courseID != null) {
+
                 subjectTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+                }
             });
             $('#chkbtn_2').attr('disabled', true);
+        }
+        else {
+            subjectTableHtml = `<tr><td class="text-center" colspan="4">No Data Available</td></tr>`;
         }
         var subjectTableHtmlprint = '';
         if (subjectDetails.length > 0) {
@@ -2088,7 +2139,7 @@
             data: JSON.stringify(Data),
             success: function (data) {
                 var mainData = data.Data;
-                console.log(mainData);
+                //console.log(mainData);
                 if (mainData != null && mainData.length > 0) {
                     mainData.forEach(function (item) {
                         if (item.Id == "0") {
@@ -2175,7 +2226,7 @@
             data: JSON.stringify(Data),
             success: function (data) {
                 var mainData = data.Data;
-                console.log(mainData);
+                //console.log(mainData);
                 if (mainData != null && mainData.length>0) {
                     mainData.forEach(function (mainDataItem) {
 
@@ -2228,7 +2279,7 @@
             data: JSON.stringify(Data),
             success: function (data) {
                 var mainData = data.Data;
-                console.log(mainData);
+                //console.log(mainData);
                 if (mainData != null && mainData.length > 0) {
                     mainData.forEach(function (item, index) {
                         var nocNo = item.sNOCNo == null ? "NA" : item.sNOCNo;
@@ -2236,15 +2287,15 @@
                         var nocFile = item.sAttachFile == null ? "NA" : item.sAttachFile;
 
                         if (item.iPK_Id == 0) {
-                            htmlString += `<tr><td>${index + 1}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox" name="" id="checkNOCData_${item.iFK_Subj_ID}_TNOC" onchange="GetUpdatedFeeForTNOC('#checkNOCData_${item.iFK_Subj_ID}_TNOC','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/></td></tr>`;
+                            htmlString += `<tr><td>${index + 1}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox" name="" id="checkNOCData_${item.iFK_Subj_ID}_TNOC" onchange="GetUpdatedFeeForTNOC('#checkNOCData_${item.iFK_Subj_ID}_TNOC','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                         }
                         else {
                             if (nocFile == "NA") {
-                                htmlString += `<tr><td>${index + 1}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox" name="" id="checkNOCData_${item.iFK_Subj_ID}_TNOC" onchange="GetUpdatedFeeForTNOC('#checkNOCData_${item.iFK_Subj_ID}_TNOC','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/></td></tr>`;
+                                htmlString += `<tr><td>${index + 1}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox" name="" id="checkNOCData_${item.iFK_Subj_ID}_TNOC" onchange="GetUpdatedFeeForTNOC('#checkNOCData_${item.iFK_Subj_ID}_TNOC','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                             }
                             else {
 
-                                htmlString += `<tr><td>${index + 1}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td><a href="${item.sAttachFile}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td style='text-align:center'><input type="checkbox" name="" id="checkNOCData_${item.iFK_Subj_ID}_TNOC" onchange="GetUpdatedFeeForTNOC('#checkNOCData_${item.iFK_Subj_ID}_TNOC','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/></td></tr>`;
+                                htmlString += `<tr><td>${index + 1}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td><a href="${item.sAttachFile}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td style='text-align:center'><input type="checkbox" name="" id="checkNOCData_${item.iFK_Subj_ID}_TNOC" onchange="GetUpdatedFeeForTNOC('#checkNOCData_${item.iFK_Subj_ID}_TNOC','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                             }
                         }
                     })
@@ -2288,7 +2339,7 @@
             data: JSON.stringify(Data),
             success: function (data) {
                 var mainData = data.Data;
-                //console.table(mainData);
+                console.table(mainData);
                 if (mainData != null && mainData.length > 0) {
                     mainData.forEach(function (item, index) {
                         var nocNo = item.sNOCNo == null ? "NA" : item.sNOCNo;
@@ -2299,23 +2350,23 @@
 
                         if (item.iPK_Id == 0) {
                             if (item.Fk_StatusId == 3) {
-                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox"  id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/><td></tr>`;
+                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox"  id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/><td></tr>`;
 
                             }
                             if (item.Fk_StatusId == 1) {
 
-                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox"  id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/></td></tr>`;
+                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox"  id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                             }
                         }
                         
                         else {
 
                             if (nocFile == "NA") {
-                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox" id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/></td></tr>`;
+                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td>NA</td><td style='text-align:center'><input type="checkbox" id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                             }
                             else {
 
-                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td><a href="${item.sAttachFile}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td style='text-align:center'><input type="checkbox" id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}')"/></td></tr>`;
+                                htmlString += `<tr><td>${index + 1}</td><td>${item.Fk_StatusId}</td><td hidden>${item.iPK_Id}</td><td hidden>${item.iFK_CORS_ID}</td><td>${item.sCorsName}</td><td hidden>${item.iFK_Subj_ID}</td><td>${item.sSubjName}</td><td>${nocNo}</td><td>${nocDate}</td><td><a href="${item.sAttachFile}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td style='text-align:center'><input type="checkbox" id="checkNOCData_${item.iFK_Subj_ID}_PNOC" onchange="GetUpdatedFeeForPNOC('#checkNOCData_${item.iFK_Subj_ID}_PNOC','${item.Fk_StatusId}','${UGorPG}','${item.iFK_CORS_ID}','${item.iFK_Subj_ID}','${item.iPK_Id}','${CreateGuid()}','${item.CourseType}')"/></td></tr>`;
                             }
                         }
                     })
@@ -2349,7 +2400,7 @@
             data: JSON.stringify(Data),
             success: function (data) {
                 var mainData = data.Data;
-                console.log(mainData);
+                //console.log(mainData);
                 if (mainData != null && mainData.length > 0) {
                     mainData.forEach(function (item, index) {
                         htmlString += `<tr><td>${index + 1}</td><td hidden>${item.PKID}</td><td hidden>${item.courseID}</td><td>${item.courseName}</td><td hidden>${item.iFk_SbjID}</td><td>${item.SubjectName}</td><td>${item.NOCStatus}</td><td>${item.NOCNo}</td><td>${item.NOCOrderDate}</td><td><a href="${item.NOCDocument}" download class="noc-upload-btn" style="padding:5px 10px;"><i class="fas fa-download"></i></a></td><td><input type="checkbox" name="" id="checkNOCData_${item.iFk_SbjID}_${selectionType}" onChange="CreateNOCData(this,'${selectionType}','${item.PKID}','${item.courseID}','${item.iFk_SbjID}')" /></td></tr>`;
@@ -2390,7 +2441,7 @@
 
     }
 
-    function GetUpdatedFeeForPNOC(item, itemStatus, isUGorPG,courseID,subjectID,pkID,arrGuid) {
+    function GetUpdatedFeeForPNOC(item, itemStatus, isUGorPG, courseID, subjectID, pkID, arrGuid, CourseType) {
         //alert(item);
         $(item).attr('checked', true);
         
@@ -2416,19 +2467,20 @@
             if (itemStatus == 1 && isUGorPG == "PG") {
                 finalFee = parseFloat(PNOCDefaultFee) + parseFloat(s[0].FeeAmt);
             }
-            
+
+            MultiplePNOCCost = finalFee;
             $('#spnPNOCFee').html('');
             $('#spnPNOCFee').html('&#8377; ' + finalFee);
-
 
             PNOCDetails.push({
                 pGUID: arrGuid,
                 typeID: AddPNOCID,
                 courseID: courseID,
+                CourseType: CourseType,
                 subID: subjectID,
                 pkId: pkID
             })
-            console.table(PNOCDetails);
+            //console.table(PNOCDetails);
         }
         else {
             $(item).removeAttr('checked');
@@ -2457,6 +2509,8 @@
                 finalFee = parseFloat(PNOCDefaultFee) - parseFloat(s[0].FeeAmt);
             }
 
+            MultiplePNOCCost = finalFee;
+
             $('#spnPNOCFee').html('');
             $('#spnPNOCFee').html('&#8377; ' + finalFee);
 
@@ -2464,14 +2518,15 @@
                 return item.pGUID != arrGuid;
             })
 
-            console.table(PNOCDetails);
+            //console.table(PNOCDetails);
         }
     }
 
-    function GetUpdatedFeeForTNOC(item, courseID, subjectID, pkID, arrGuid) {
+    function GetUpdatedFeeForTNOC(item, courseID, subjectID, pkID, arrGuid,CourseType) {
         //alert(item);
         $(item).attr('checked', true);
-       
+        var TNOCCost = $('#spnTNOCFee').text().split(' ')[1];
+        MultipleTNOCCost = TNOCCost;
         if ($(item).is(':checked')) {
             item = item.replace('TNOC', 'PNOC');
 
@@ -2481,10 +2536,11 @@
                 tGUID: arrGuid,
                 typeID: AddTNOCID,
                 courseID: courseID,
+                CourseType: CourseType,
                 subID: subjectID,
                 pkId: pkID
             })
-            console.table(TNOCDetails);
+            //console.table(TNOCDetails);
         }
         else {
             $(item).removeAttr('checked');
@@ -2499,8 +2555,11 @@
                 return item.tGUID != arrGuid;
             })
 
-            console.table(TNOCDetails);
+            //console.table(TNOCDetails);
         }
+        //console.table(TNOCDetails);
+        $('#spnTNOCFee').html('');
+        $('#spnTNOCFee').html(`&#8377; ${MultipleTNOCCost}`);
     }
 
     function CreateNOCData(chkItem, typeSelection, ipkID,corseID,subjID) {
@@ -2675,11 +2734,11 @@
             cache: false,
             data: JSON.stringify(Data),
             success: function (data) {
-                console.log(data.Type);
-                console.log(data);
+                //console.log(data.Type);
+                //console.log(data);
 
                 var mainData = data.Data;
-                console.log(mainData);
+                //console.log(mainData);
                 if (mainData != null && mainData.length>0) {
                     mainData.forEach(function (item) {
                         var sdate = item.StartDate;
@@ -2735,8 +2794,8 @@
             cache: false,
             data: JSON.stringify(Data),
             success: function (data) {
-                console.log(data.Type);
-                console.log(data);
+                //console.log(data.Type);
+                //console.log(data);
 
                 var mainData = data.Data;
                 if (mainData != null && mainData.length>0) {
@@ -2806,7 +2865,7 @@
                 "type": type
             }
 
-            console.log(JSON.stringify(applicationModal));
+            //console.log(JSON.stringify(applicationModal));
 
             $.ajax({
                 headers: {
@@ -2820,8 +2879,8 @@
                 data: JSON.stringify(applicationModal),
                 success: function (data) {
                     //console.log('ajax');
-                    console.log(data);
-                    console.log(data.Data.UserID);
+                    //console.log(data);
+                    //console.log(data.Data.UserID);
                     var applicationNumber = data.Data.UserID
                     //if (data.StatusCode == 1) {
 
@@ -2840,6 +2899,8 @@
 
                     /*if (type == 'NOC') {*/
 
+                    $('#dtnSubmit').css('cursor','wait');
+                    $('#dtnSubmit').attr('disabled',true);
                     //$('#btnSubmit').removeAttr('disabled');
                     //$('#btnSubmit').css('cursor', 'pointer');
                     //var s = $('#btnSubmit').text();
@@ -2877,14 +2938,14 @@
     }
 
     function getFee(applNo, Applicationtype) {
-
+        var initPnoc = 0;
         if (Applicationtype == 'NOC') {
 
             var applicationModal = {
                 "ApplicationId": applNo
             }
 
-            console.log(JSON.stringify(applicationModal));
+            //console.log(JSON.stringify(applicationModal));
 
             $.ajax({
                 headers: {
@@ -2900,7 +2961,7 @@
                     //console.log('ajax');
                     var htmlString = `<tr><th>Form Name</th><th>Amount</th></tr>`;
                     var mainData = data.Data
-                    console.log(mainData);
+                    //console.log(mainData);
                     if (mainData.length > 0) {
                     var totalAMT = 0;
                         mainData.forEach(function (item) {
@@ -2919,11 +2980,12 @@
                                 tdOnly = `<td>${item.ID1}</td><td>${MultiSubjectCost}</td>`;
                             }
 
-                            if (item.PartyId == "PNOC") {
+                            if (item.PartyId == "PNOC" && initPnoc==0) {
                                 //var updatedAMT = $('#spnPNOCFee').text().split(' ')[1];
                                 //$('#spn_PNOC_Of_Subject_AMT').html('');
                                 //$('#spn_PNOC_Of_Subject_AMT').html(updatedAMT);
                                 tdOnly = `<td>${item.ID1}</td><td>${MultiplePNOCCost}</td>`;
+                                initPnoc = initPnoc + 1;
                             }
 
                             if (item.PartyId == "TNOC_Extension") {
@@ -2993,7 +3055,7 @@
 
                             htmlString += `<tr>${tdOnly}</tr>`
                         });
-                        console.log(htmlString);
+                        //console.log(htmlString);
                         UpdateFee(applNo, totalAMT);
                     }
 
@@ -3012,7 +3074,7 @@
                             icon: 'sucess',
                             title: `Fee Summary`,
                               //html: `<table class="table table-striped" style="text-align: initial;">${htmlString}</table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-sm btn-primary col-lg-5" onclick="OpenChallan('${applNo}','${totalAMT}')">Get Challan</button> <a class="col-lg-5 btn-sm btn-dark" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Upload Reciept</a></div>`,
-                            html: `<table class="table table-striped" style="text-align: initial;">${htmlString}</table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applNo}','${totalAMT}')">Get Challan</button></div>`,
+                            html: `<table class="table table-striped" style="text-align: initial;">${htmlString}</table><br/><div><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applNo}','${totalAMT}')"><i class="fa fa-file-pdf" style="margin-right: 5px;"></i> Get Challan</button></div>`,
                             allowOutsideClick: false,
                             showCloseButton: true,
                             showConfirmButton: false,
@@ -3072,7 +3134,7 @@
                             position: 'center',
                             icon: 'sucess',
                            //html: `<table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-sm btn-primary col-lg-5" onclick="OpenChallan('${applicationNum}','${fee}')">Get Challan</button> <a class="col-lg-5 btn-sm btn-dark" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Upload Reciept</a></div>`,
-                            html: `<table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applicationNum}','${fee}')">Get Challan</button></div>`,
+                            html: `<table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table><br/><div><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applicationNum}','${fee}')"><i class="fa fa-file-pdf" style="margin-right: 5px;"></i> Get Challan</button></div>`,
                             allowOutsideClick: false,
                             showCloseButton: true,
                             showConfirmButton: false,
@@ -3084,7 +3146,7 @@
 
                 },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -3123,7 +3185,7 @@
 
                 },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -3142,7 +3204,7 @@
                     position: 'center',
                     icon: 'sucess',
                     title: `Fee Summary`,
-                    html: `<table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>New College Price</td><td>${newCollegeFee}</td></tr></table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applicationNum}','${newCollegeFee}')">Get Challan</button></div>`,
+                    html: `<table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>New College Price</td><td>${newCollegeFee}</td></tr></table><br/><div><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applicationNum}','${newCollegeFee}')"><i class="fa fa-file-pdf" style="margin-right: 5px;"></i> Get Challan</button></div>`,
                     allowOutsideClick: false,
                     showCloseButton: true,
                     showConfirmButton: false,
@@ -3159,7 +3221,7 @@
             "formID": parseInt(formID),
             "clgID": parseInt(clg)
         }
-        console.log(JSON.stringify(applicationModal));
+        //console.log(JSON.stringify(applicationModal));
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -3171,7 +3233,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
 
@@ -3184,7 +3246,7 @@
 
                 },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
     }
@@ -3207,7 +3269,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
                 $('#txtChangePlace').val('');
@@ -3215,7 +3277,7 @@
 
                 },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
     }
@@ -3238,7 +3300,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
                 $('#txtChangeSociety').val('');
@@ -3246,7 +3308,7 @@
 
                 },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
     }
@@ -3271,8 +3333,8 @@
                 var htmlString = '';
                 var mainData = data.Data;
                 var courseSubject = mainData.courseSubjects;
-                console.log(mainData);
-                console.log(courseSubject);
+                //console.log(mainData);
+                //console.log(courseSubject);
 
                 $('#spnNewCLGName').html('');
                 $('#spnNewCLGName').html(mainData.sNameOfClg);
@@ -3343,7 +3405,7 @@
 
                 },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
     }
@@ -3628,7 +3690,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
                 if (typeName =='newCourse') {
                     $('#spnNewCourseFee').html('');
@@ -3658,7 +3720,7 @@
                         })
                     }
                     
-                    console.table(PNOCFeeCollection);
+                    //console.table(PNOCFeeCollection);
                 }
 
                 if (typeName == 'changeName') {
@@ -3688,7 +3750,7 @@
 
             },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
     }
@@ -3710,29 +3772,42 @@
 
             var courseCost = $('#spnNewCourseFee').text().split(' ')[1];
 
-            if (courseDetails.length > 1) {
-                MulticourseCost = parseFloat(courseCost) * courseDetails.length;
-
-                $('#spnNewCourseFee').html('');
-                $('#spnNewCourseFee').html(`&#8377; ${courseCost} x ${courseDetails.length} = &#8377; ${MulticourseCost}`);
-            }
-            else {
-                MulticourseCost = courseCost;
-                $('#spnNewCourseFee').html('');
-                $('#spnNewCourseFee').html(`&#8377; ${courseCost} Per Course`);
-            }
             //console.table(courseDetails);
 
             if (courseDetails.length > 0) {
+                distinctCourse = "";
                 courseTableHtml = '';
                 courseDetails.forEach(function (item, index) {
-
                     courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+
+                    if (!distinctCourse.includes(item.courseID)) {
+                        if (distinctCourse.length > 0) {
+                            distinctCourse += "," + item.courseID;
+                        }
+                        else {
+                            distinctCourse = item.courseID;
+                        }
+                    }
                 });
                 $('#chkbtn_1').attr('disabled', true);
+
+                //console.log('distinct Course', distinctCourse);
+                var xyz = distinctCourse.split(',');
+                if (xyz.length > 1) {
+                    MulticourseCost = parseFloat(courseCost) * xyz.length;
+
+                    $('#spnNewCourseFee').html('');
+                    $('#spnNewCourseFee').html(`&#8377; ${courseCost} x ${xyz.length} = &#8377; ${MulticourseCost}`);
+                }
+                else {
+                    MulticourseCost = courseCost;
+                    $('#spnNewCourseFee').html(`&#8377; ${courseCost}`);
+                }
+
             }
             else {
-                courseTableHtml = '';
+                distinctCourse = "";
+               courseTableHtml = `<tr><td class="text-center" colspan="4">No Data Available</td></tr>`;
             }
 
             //console.log(courseTableHtml);
@@ -3757,7 +3832,7 @@
             else {
                 MultiSubjectCost = subjectCost;
                 $('#spnNewSubjectFee').html('');
-                $('#spnNewSubjectFee').html(`&#8377; ${subjectCost} Per Subject`);
+                $('#spnNewSubjectFee').html(`&#8377; ${subjectCost}`);
             }
 
             if (subjectDetails.length > 0) {
@@ -3768,7 +3843,7 @@
                 $('#chkbtn_2').attr('disabled', true);
             }
             else {
-                subjectTableHtml = '';
+                subjectTableHtml = `<tr><td class="text-center" colspan="4">No Data Available</td></tr>`;
             }
 
             //console.log(courseTableHtml);
@@ -3795,11 +3870,11 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
 
             },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -3822,7 +3897,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
                         var courseAvaialble = "";
@@ -3847,7 +3922,7 @@
 
             },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -3869,7 +3944,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
                 var subjectAvaialble = "";
@@ -3893,7 +3968,7 @@
                 }
             },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -3916,7 +3991,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
                 var subjectAvaialble = `<ul style="margin-left: -25px">`;
@@ -3950,7 +4025,7 @@
 
             },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -3973,7 +4048,7 @@
             cache: false,
             data: JSON.stringify(applicationModal),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var mainData = data.Data;
 
                 var CourseAvaialble = `<ul style="margin-left: -25px">`;
@@ -4004,7 +4079,7 @@
 
             },
             error: function (d) {
-                console.log(d);
+                //console.log(d);
             }
         });
 
@@ -4012,7 +4087,7 @@
 
     function removeType(typeID, typeDivID) {
         TypeId = TypeId.filter(function (item) {
-            console.log(item);
+            //console.log(item);
             return item != typeID
         });
 
@@ -4273,7 +4348,7 @@
             //noPrintSelector: ".remove_me",
             //Log to console when printing is done via a deffered callback
             deferred: $.Deferred().done(function () {
-                console.log('Printing done', arguments);
+                //console.log('Printing done', arguments);
             })
         });
     }
@@ -4348,7 +4423,7 @@
             TypeOfNOC: TypeOfNOC,
             CourseId: Course
         }
-        console.log(modal);
+        //console.log(modal);
         $.ajax({
             headers: {
                 'Accept': 'application/json',
@@ -4361,8 +4436,8 @@
             data: { TypeOfNOC: TypeOfNOC, ColgId: colg, DeptId: department, CourseId: Course },
             success: function (Data) {
                 // Land Data
-                debugger;
-                console.log(Data.Landhtml);
+                /*debugger;*/
+                //console.log(Data.Landhtml);
                 $("#tblLandInfo tbody").html(Data.Landhtml);
                 $("#tblStaffInfo tbody").html(Data.Staffhtml);
                 $("#tblAcadmicInfo tbody").html(Data.Acdhtml);
