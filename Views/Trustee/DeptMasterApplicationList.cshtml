@@ -72,7 +72,7 @@
 </div>
 <div class="card">
     <div class="card-header">
-        <h4 class="mt-0 header-title float-left">Application List</h4>
+        <h4 class="mt-0 header-title float-left" style="color: white;">Application List</h4>
     </div>
     <input type="hidden" id="hdnGUID" />
     <input type="hidden" id="hdnDueAMT" />
@@ -110,10 +110,10 @@
                                 var stype = item.stypeName.Split(',');
                                 var stypeForModal = "";
                                 <tr>
-                                    <td>@i</td>
+                                    <td>@i.</td>
                                     <td hidden>@item.ipkMstID</td>
                                     <td><span style="color: deepskyblue;font-size: 18px;font-weight: 600;cursor: pointer;" onclick="OpenPayModal('@item.sApplID')">@item.sApplID</span></td>
-                                    <td style="display:flex;gap: 10px;flex-wrap: wrap;">
+                                    <td style="display:flex;gap: 10px;flex-wrap: wrap;margin-top: 10px;">
                                         @{
                                             if (stype.Length > 0)
                                             {
