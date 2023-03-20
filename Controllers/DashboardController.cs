@@ -169,27 +169,37 @@ namespace Metrica.Controllers
                 }
                 else
                 {
-                    return new JsonResult
+                    var trustData = ZapurseCommonlist.GetTrustDetailsFromRegNO(modal.RegistrationNo);
+                    if (trustData != null)
                     {
-                        Data = new { Success = false, Message = "Enter Correct Registration Number", res = _trustapi },
-                        ContentEncoding = System.Text.Encoding.UTF8,
-                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    };
+                        return new JsonResult
+                        {
+                            Data = new { Success = true, Message = "Details Found", res = trustData },
+                            ContentEncoding = System.Text.Encoding.UTF8,
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
+                    else
+                    {
+                        return new JsonResult
+                        {
+                            Data = new { Success = false, Message = "Enter Correct Registration Number", res = _trustapi },
+                            ContentEncoding = System.Text.Encoding.UTF8,
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
                 }
             }
-            //Console.WriteLine(response.Content);
-            #endregion
-
-
-
-
-
-            return new JsonResult
+            else
             {
-                Data = new { Success = false, Message = "Error" },
-                ContentEncoding = System.Text.Encoding.UTF8,
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
-            };
+                return new JsonResult
+                {
+                    Data = new { Success = false, Message = "Error" },
+                    ContentEncoding = System.Text.Encoding.UTF8,
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+            #endregion
         }
         public ErrorBO Verificationdata(TrustRoot modal)
         {
@@ -263,7 +273,7 @@ namespace Metrica.Controllers
                     {
                         Session[TrustVerify_REQEUST_OTP] = otp.ToString();
                         SessionModel.TrustRegNo = RegNo;
-                        SessionModel.TrustTypeName = _res.TrustType;                       
+                        SessionModel.TrustTypeName = _res.TrustType;
                         //return NewtonSoftJsonResult(new RequestOutcome<string> { IsSuccess = true, Data = string.Format("OTP was sent on mobile no. {0}", base.CurrentUser.Mobile) });
                         return new JsonResult
                         {

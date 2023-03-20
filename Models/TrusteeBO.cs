@@ -559,6 +559,7 @@ namespace NewZapures_V2.Models
             public string PaidAmnt { get; set; }
             public string DueAMT { get; set; }
             public string stypeName { get; set; }
+            public string applStatus { get; set; }
 
         }
         public class CollageAttachmentList

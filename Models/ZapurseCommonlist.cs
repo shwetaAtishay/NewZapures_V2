@@ -12,6 +12,7 @@ using System.Device.Location;
 using static NewZapures_V2.Models.TrusteeBO;
 using RestSharp.Serializers;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 
 namespace NewZapures_V2.Models
 {
@@ -2304,6 +2305,24 @@ namespace NewZapures_V2.Models
                 }
             }
             return details;
+        }
+
+        public static TrusteeBO.TrusteeInfo GetTrustDetailsFromRegNO(string regNo)
+        {
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + regNo);
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", "", ParameterType.RequestBody);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", "application/json");
+            IRestResponse response = client.Execute(request);
+            TrusteeBO.TrusteeInfo trusteeList = new TrusteeBO.TrusteeInfo();
+            if (response.StatusCode.ToString() == "OK")
+            {
+                trusteeList = JsonConvert.DeserializeObject<TrusteeBO.TrusteeInfo>(response.Content);
+            }
+            return trusteeList;
         }
     }
 }

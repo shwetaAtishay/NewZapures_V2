@@ -19,6 +19,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
 <link href="~/plugins/animate/animate.css" rel="stylesheet" type="text/css">
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
 }
 <style>
     .sticky {
@@ -76,9 +77,9 @@
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
     }
-    .card-header
-    {
-        background-color:unset !important;
+
+    .card-header {
+        background-color: unset !important;
     }
 </style>
 <div class="row">
@@ -295,7 +296,7 @@
                 success: function (response) {
                     var AddedId = Number(response.Data);
     //                alert("Hello");
-    //                
+    //
     //
     //                var ids = 'delete_' + AddedId;
 
@@ -337,7 +338,7 @@
         $(document).ready(function () {
             var currentRequest = null;
             $(".delete").click(function () {
-                
+
                 var data = $(this).data("id");
                 var deletedata = data.split('-');
 
@@ -365,7 +366,7 @@
                                     deteleId: i
 
                                 });
-                                
+
                                 $.ajax({
                                     url: "@Url.Action("DeleteCustomSentence", "Admin")",
                                     type: 'POST',
@@ -373,10 +374,10 @@
                                     data: Params,
                                     contentType: "application/json",
                                     success: function (response) {
-                                        
+
 
                                         if (response.IsValid = 1) {
-                                            
+
                                             //if (j == 36) {
                                             //  var row = "#Hotel #tbody_HotelSubCategory" + " #delete_" + i;
                                             //var row = "#table_" + k + "  #tbody_" + k + " #delete_" + i;

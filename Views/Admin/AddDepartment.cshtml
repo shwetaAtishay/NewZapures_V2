@@ -10,6 +10,7 @@
 <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
 
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -154,7 +155,7 @@
     <script src="~/Content/globalDomain.js"></script>
     <script type="text/javascript">
         $(".ChangeStatus").change(function () {
-            
+
             var id = $(this).data("id");
             var item = id.split('-');
             var type = parseInt($(this).val());
@@ -178,7 +179,7 @@
                 contentType: "application/json",
                 data: Params,
                 success: function (response) {
-                    
+
                     if (response.isvalid == 1) {
                         Swal.fire({
                             position: 'center',
@@ -236,7 +237,7 @@
                                 success: function (response) {
 
 
-                                    
+
                                     if (response.IsValid = 1) {
                                         Swal.fire({
                                             position: 'center',
@@ -268,7 +269,7 @@
 
 <script>
     function SaveDepartment() {
-        
+
         var type = $('#btnSave').text();
         var departmentID = $('#hddtxtDepartment').val();
 
@@ -288,7 +289,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                url: GetglobalDomain()+ "/Admin/AddDepartment",
+                url: GetglobalDomain() + "/Admin/AddDepartment",
                 dataType: 'json',
                 type: 'Post',
                 cache: false,

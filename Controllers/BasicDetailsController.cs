@@ -258,7 +258,8 @@ namespace NewZapures_V2.Controllers
         public ActionResult CollageList()
         {
             #region List Collage Apply List
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/CollageListApply?TrustId=" + SessionModel.TrustId);
+            //var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/CollageListApply?TrustId=" + SessionModel.TrustId); //Commented by vivek on 18.03.2023 to check the college against the trust regNO
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseURL"] + "Trustee/CollageListApply?TrustId=" + SessionModel.TrustRegNo);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

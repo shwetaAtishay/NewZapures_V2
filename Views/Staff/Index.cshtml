@@ -191,32 +191,6 @@
     <div class="card-body row">
         <div class="col-lg-12">
             <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <lable class="noc-form-label"><strong>Course</strong></lable>
-                        <span style="color:red;">*</span>
-                        <select class="form-control noc-input-text" id="Course" name="Course" required>
-                            <option value="0">Select Course</option>
-                            @{
-                                foreach (var item in CourseList)
-                                {
-                                    <option value="@item.Id">@item.text</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <lable class="noc-form-label"><strong>Subject</strong></lable>
-                        <span style="color:red;">*</span>
-                        <select class="form-control noc-input-text" id="SubjectWITHcOURSE" name="SubjectWITHcOURSE" required>
-                            <option value="0">Select Subject</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="form-group col-lg-4">
                     <label for="" class="col-sm-12 noc-form-label"><strong>Select Type</strong></label>
                     <div class="form-check-inline my-1">
@@ -232,6 +206,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4" id="divCourse">
+                    <div class="form-group">
+                        <lable class="noc-form-label"><strong>Course</strong></lable>
+                        <span style="color:red;">*</span>
+                        <select class="form-control noc-input-text" id="Course" name="Course" required>
+                            <option value="0">Select Course</option>
+                            @{
+                                foreach (var item in CourseList)
+                                {
+                                    <option value="@item.Id">@item.text</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4" id="divSubject">
+                    <div class="form-group">
+                        <lable class="noc-form-label"><strong>Subject</strong></lable>
+                        <span style="color:red;">*</span>
+                        <select class="form-control noc-input-text" id="SubjectWITHcOURSE" name="SubjectWITHcOURSE" required>
+                            <option value="0">Select Subject</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
                 <div class="col-lg-4">
                     <div class="form-group">
                         <lable class="noc-form-label"><strong>Name of Person</strong></lable>
@@ -239,7 +240,7 @@
                         <input class="form-control noc-input-text alphaspace" type="text" autocomplete="off" id="Name" name="Name" required>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4" id="divRole">
                     <div class="form-group">
                         <lable class="noc-form-label"><strong>Role</strong></lable>
                         <span style="color:red;">*</span>
@@ -323,7 +324,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="form-group" id="filediv">
-                        <label class="noc-form-label" for="file2"><strong>Experience</strong></label>
+                        <label class="noc-form-label" for="file2"><strong>Experience Certificate</strong></label>
                         <div>
                             <input type="file" id="experiencefile" class="form-control" name="experiencefile" onchange="return encodeImageFileAsURL(this,'hdnexperiencefileDoc','hdnexperiencefileDocExten')" />
                             <input type="hidden" id="hdnexperiencefileDoc" />
@@ -365,7 +366,7 @@
                         <input class="form-control noc-input-text alphaspace" type="text" autocomplete="off" id="Specialization" name="Specialization" required>
                     </div>
                     <div id="divRollmapping" style="display:none">
-                        <lable for="example-text-input" class="noc-form-label" style="margin-left:-10px"><strong>Roll mapping</strong></lable>
+                        <lable for="example-text-input" class="noc-form-label" style="margin-left:-10px"><strong>Role mapping</strong></lable>
                         <span style="color:red;">*</span>
                         <input class="form-control noc-input-text alphaspace" type="text" autocomplete="off" id="Rollmapping" name="Rollmapping" required>
                     </div>
@@ -453,7 +454,7 @@
                             <td><input type="text" id="Subject" name="Subject" placeholder="Stream/Subject*" class="form-control noc-input-text alphaspace" maxlength="50"></td>
                             <td><input type="text" id="Institute" name="Institute" placeholder="University/Board/ Institution*" maxlength="50" class="form-control noc-input-text alphaspace"></td>
 
-                            <td><input type="text" id="PassingYear" name="PassingYear" placeholder="Passing Year*" minlength="50" maxlength="50" class="form-control noc-input-text numberonly"></td>
+                            <td><input type="text" id="PassingYear" name="PassingYear" placeholder="Passing Year*" minlength="4" maxlength="4" class="form-control noc-input-text numberonly"></td>
 
                             <td>
                                 <input type="text" id="MarksInPercentage" name="MarksInPercentage" placeholder="Marks In Percentage/Grade*" minlength="50" maxlength="50" class="form-control noc-input-text alphanumeric">
@@ -559,34 +560,34 @@
                         </thead>
                         <tbody>
                             @*@if (stafflist != null)
-                    {
-                        int i = 1;
-                        foreach (var item in stafflist)
-                        {
-                            <tr>
-                                <td>@i</td>
-                                <td>@item.Name</td>
-                                <td>@item.Role</td>
-                                <td>@item.Mobile</td>
-                                <td>@item.Email</td>
-                                <td>@item.Qualification</td>
-                                <td>@item.Type</td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Profile })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Experience })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
-                                <td style="text-align:center"> <a href="@Url.Action("Delete", "Staff", new { id = item.Id })"><i class="fas fa-trash" style="color:red"></i></a></td>
+                                {
+                                    int i = 1;
+                                    foreach (var item in stafflist)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Role</td>
+                                            <td>@item.Mobile</td>
+                                            <td>@item.Email</td>
+                                            <td>@item.Qualification</td>
+                                            <td>@item.Type</td>
+                                            <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Aadhaar })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                            <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Pan })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                            <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Profile })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                            <td style="text-align:center"><a href="@Url.Action("DownloadDocuments", "Trustee", new { id = item.Experience })" target="_blank" alt="Red dot"><i class="fa fa-download"></i></a></td>
+                                            <td style="text-align:center"> <a href="@Url.Action("Delete", "Staff", new { id = item.Id })"><i class="fas fa-trash" style="color:red"></i></a></td>
 
-                            </tr>
-                            i++;
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="8" style="text-align: center;">No Data Available</td>
-                        </tr>
-                    }*@
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" style="text-align: center;">No Data Available</td>
+                                    </tr>
+                                }*@
                         </tbody>
                     </table>
                 </div>
@@ -668,13 +669,14 @@
 <script type="text/javascript">
 
     $("#Qualification").change(function () {
-        alert($('option:selected', $(this)).text());
+        //alert($('option:selected', $(this)).text());
         if ($('option:selected', $(this)).text() == "PHD") {
-            $("#customRadio19").prop("checked");
+            $("#customRadio19").prop("checked", true);
             $("#customRadio20").attr("disabled", true);
         }
         else {
-            $("#customRadio20").attr("disabled", false);
+            $("#customRadio19").attr("disabled", true);
+            $("#customRadio20").prop("checked", true);
         }
     });
 
@@ -788,10 +790,17 @@
             $('#divSpecialization').show();
             $('#divRollmapping').hide();
             $('#Rollmapping').val('');
+            $('#divCourse').show();
+            $('#divSubject').show();
+            $('#divRole').show();
         } else if ($(this).val() === '2') {
             $('#divSpecialization').hide();
             $('#divRollmapping').show();
             $('#Specialization').val('');
+
+            $('#divCourse').hide();
+            $('#divSubject').hide();
+            $('#divRole').hide();
         }
         // Do something interesting here
     });
@@ -870,9 +879,9 @@
              var tech = 0;
              staffInfoData.forEach(function (item, index) {
 
-                 if (item.Type == "Technical")
+                 if (item.Type == "Teaching")
                      tech = tech + 1;
-                 else if (item.Type == "Non Technical")
+                 else if (item.Type == "Non Teaching")
                      non = non + 1;
 
                  tot = tot + 1;
@@ -944,24 +953,41 @@
 <script type="text/javascript">
 
     function CheckValid() {
+
+        var teachingNonTeaching = $("input[name='Type']:checked").val();
+        //alert(teachingNonTeaching);
         var status = true;
         debugger;
-        var Course = $('#Course').val();
-        if (Course == "0") {
-            $('#Course').removeClass('sucess-highlight').addClass('errr-highlight');
-            status = false;
+        if (teachingNonTeaching != 2) {
+
+            var Course = $('#Course').val();
+            if (Course == "0") {
+                $('#Course').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Course').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+            var SubjectC = $('#SubjectWITHcOURSE').val();
+            if (SubjectC == "0") {
+                $('#SubjectWITHcOURSE').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#SubjectWITHcOURSE').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
+
+            var Role = $('#Role').val();
+            if (Role <= 0) {
+                $('#Role').removeClass('sucess-highlight').addClass('errr-highlight');
+                status = false;
+            }
+            else {
+                $('#Role').removeClass('errr-highlight').addClass('sucess-highlight');
+            }
         }
-        else {
-            $('#Course').removeClass('errr-highlight').addClass('sucess-highlight');
-        }
-        var SubjectC = $('#SubjectWITHcOURSE').val();
-        if (SubjectC == "0") {
-            $('#SubjectWITHcOURSE').removeClass('sucess-highlight').addClass('errr-highlight');
-            status = false;
-        }
-        else {
-            $('#SubjectWITHcOURSE').removeClass('errr-highlight').addClass('sucess-highlight');
-        }
+
+
         var Name = $('#Name').val();
         if (Name == "") {
             $('#Name').removeClass('sucess-highlight').addClass('errr-highlight');
@@ -970,14 +996,7 @@
         else {
             $('#Name').removeClass('errr-highlight').addClass('sucess-highlight');
         }
-        var Role = $('#Role').val();
-        if (Role <= 0) {
-            $('#Role').removeClass('sucess-highlight').addClass('errr-highlight');
-            status = false;
-        }
-        else {
-            $('#Role').removeClass('errr-highlight').addClass('sucess-highlight');
-        }
+
         var Mobile = $('#Mobile').val();
         if (Mobile == "") {
             $('#Mobile').removeClass('sucess-highlight').addClass('errr-highlight');
@@ -1245,7 +1264,7 @@
             contactsInfo.push(contactInfo);
         });
         console.log(contactsInfo);
-
+        var teachingNonTeaching = $("input[name='Type']:checked").val();
         var modal = {
             Type: Type,
             Name: Name,
@@ -1280,8 +1299,8 @@
             ExperienceContentType: ExperContenttype,
             QualificationDetails: contactsInfo,
             Guid: guid,
-            Subject: Subject,
-            Course: Course,
+            Subject: teachingNonTeaching == "2" ? 0 : Subject,
+            Course: teachingNonTeaching == "2" ? 0 : Course,
             ExpNo: ExpNo
         }
         console.log(modal);
@@ -1334,7 +1353,7 @@
                     Swal.fire({
                         position: 'center',
                         icon: 'success',
-                        title: 'Data Deleted sussessfully!',
+                        title: 'Data de-activeted sussessfully!',
                         allowOutsideClick: false,
                         showCancelButton: false,
                         showCloseButton: true,

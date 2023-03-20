@@ -136,14 +136,14 @@
                             {
                                 var TnocCourse = item.Course_N_Subject_TNOC.Split('|')[0];
                                 var TnocSubject = item.Course_N_Subject_TNOC.Split('|')[1];
-                                
+
                                 var PnocCourse = item.Course_N_Subject_PNOC.Split('|')[0];
                                 var PnocSubject = item.Course_N_Subject_PNOC.Split('|')[1];
                                 <tr>
                                     <td>@i</td>
                                     <td>@item.Text</td>
-                                    <td>@TnocCourse <br/> @TnocSubject</td>
-                                    <td>@PnocCourse <br/> @PnocSubject</td>
+                                    <td>@TnocCourse <br /> @TnocSubject</td>
+                                    <td>@PnocCourse <br /> @PnocSubject</td>
                                     <td class="text-center">
                                         <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text', '@item.Id', '@item.ID1');"><i class="fas fa-file-edit"></i></button>
                                         <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
@@ -246,7 +246,7 @@
 
                 </div>
                 <div class="modal-footer" id="divModal">
-                    <a class="theme-discard-btn" id="btnProceedToNext" style="display:flex">Proceed For Entries</a>
+                    <a class="theme-discard-btn" id="btnProceedToNext" style="display:flex">Proceed To Next</a>
                 </div>
             </div>
         </div>
@@ -283,8 +283,8 @@
 
                 </div>
                 <div class="modal-footer" id="divModal">
-                    <a class="theme-discard-btn" id="btnCheckDraftEntry" onclick="CheckDraftValidationForEntry()">Proceed For Entries</a>
-                    <a class="theme-discard-btn" id="btnProceedtoEdit" style="display:none">Proceed For Entries</a>
+                    <a class="theme-discard-btn" id="btnCheckDraftEntry" onclick="CheckDraftValidationForEntry()">Proceed To Next</a>
+                    <a class="theme-discard-btn" id="btnProceedtoEdit" style="display:none">Proceed To Next</a>
                 </div>
             </div>
         </div>
@@ -704,6 +704,26 @@
 
     function CheckDraftValidationForEntry() {
 
+        Swal.fire({
+            icon: 'warning',
+            title: 'Are You Sure?',
+            html: `"is this all the courses and subjects you want to fill the application to apply noc, you will not be able to edit it once you confirm"`,
+            showDenyButton: true,
+            showCancelButton: false,
+            denyButtonText: 'No',
+            confirmButtonText: 'Yes',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                /*CancelApplication(applGUID);*/
+                CheckEntriesForDraft();
+            } else if (result.isDenied) {
+                location.href = '@Url.Action("CreateDetails", "AddCourse")';
+            }
+        });
+    }
+
+    function CheckEntriesForDraft()
+    {
         var applicationType = $("input[name='ApplicationType']:checked").val();
         var collegeID = $('#hdnClgID_Name').val().split(',')[0];
         var collegeName = $('#hdnClgID_Name').val().split(',')[1];
@@ -742,22 +762,22 @@
 
         MAppDetails.forEach(function (item) {
 
-        if (courseIDList.length > 0) {
-            if (!courseIDList.includes(item.CourseID))
-                courseIDList += ',' + item.CourseID;
-        }
-        else {
-            courseIDList = item.CourseID;
-        }
+            if (courseIDList.length > 0) {
+                if (!courseIDList.includes(item.CourseID))
+                    courseIDList += ',' + item.CourseID;
+            }
+            else {
+                courseIDList = item.CourseID;
+            }
 
-        if (subjectIDList.length > 0) {
+            if (subjectIDList.length > 0) {
 
-            if (!subjectIDList.includes(item.SubjectID))
-                subjectIDList += ',' + item.SubjectID;
-        }
-        else {
-            subjectIDList = item.SubjectID;
-        }
+                if (!subjectIDList.includes(item.SubjectID))
+                    subjectIDList += ',' + item.SubjectID;
+            }
+            else {
+                subjectIDList = item.SubjectID;
+            }
         })
 
         var Data = {
@@ -806,5 +826,6 @@
             }
         });
     }
+
 
 </script>

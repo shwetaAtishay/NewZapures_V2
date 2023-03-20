@@ -35,7 +35,8 @@ namespace NewZapures_V2.Controllers.User
                 if (response.StatusCode.ToString() == "OK")
                 {
                     objResponse = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                    registereduser = JsonConvert.DeserializeObject<List<RegistredUser>>(objResponse.Data.ToString());
+                    if(objResponse.Data!= null)
+                        registereduser = JsonConvert.DeserializeObject<List<RegistredUser>>(objResponse.Data.ToString());
                 }
                 ViewBag.UserDetails = registereduser;
 

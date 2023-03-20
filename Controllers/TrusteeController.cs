@@ -1836,6 +1836,7 @@ namespace NewZapures_V2.Controllers
                                             "<td style='border-right: solid 1px #000; border-bottom: solid 1px #000;'>" + item.PFDeduction + "</td>" +
                                             "<td style='border-right: solid 1px #000; border-bottom: solid 1px #000;'>" + item.PFNumber + "</td>" +
                                             "<td style='border-bottom: solid 1px #000;'>" + item.Specialization + "</td></tr>";
+                StaffSr++;
             }
 
             #endregion

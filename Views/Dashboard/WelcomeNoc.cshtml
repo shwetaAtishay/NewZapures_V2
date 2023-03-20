@@ -480,6 +480,7 @@
                             </div>
 
                             <button type="button" class="theme-button-mockup" style="width:150px;" onclick="VerifyOTP()"><i class="fas fa-save"></i> Save</button>
+                            @*<button type="button" class="theme-button-mockup" style="width:150px;" onclick="VerifyOTP()"><i class="fas fa-user-check"></i> Verify</button>*@
                         </div>
                     </div>
                     @*<div class="modal-footer">
@@ -515,6 +516,7 @@
             $("input[id='customRadio6']").click(function () {
                 $("#exisuser").show();
                 $("#NewUser").hide();
+                $("#RegistationNo").focus();
             });
             $("input[id='customRadio7']").click(function () {
                 $("#NewUser").show();

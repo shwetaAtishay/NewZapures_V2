@@ -188,8 +188,12 @@ namespace NewZapures_V2.Controllers
         //        JsonRequestBehavior = JsonRequestBehavior.AllowGet
         //    };
         //}
-        public JsonResult GetCollegeDropDownList(int Id, int trustid)
+
+
+        //public JsonResult GetCollegeDropDownList(int Id, int trustid) ------Commented by vivek on 18.03.2023 to get college against trust regNO
+        public JsonResult GetCollegeDropDownList(int Id)
         {
+            var trustid = SessionModel.TrustRegNo;
             List<CustomMaster> objUsermaster = new List<CustomMaster>();
             var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "BasicDataDetails/GetCollageDropDownListbytrustId?Id=" + Id + "&trustid=" + trustid);
             var request = new RestRequest(Method.GET);

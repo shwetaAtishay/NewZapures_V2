@@ -38,6 +38,7 @@ namespace NewZapures_V2.Models
         public string RegistrationNo { get; set; }
         public string profileImage { get; set; }
         public int RoleId { get; set; }
+        public string RoleName { get; set; }
         public int DepartmentId { get; set; }
         public int StateId { get; set; }
         public int DistrictId { get; set; }

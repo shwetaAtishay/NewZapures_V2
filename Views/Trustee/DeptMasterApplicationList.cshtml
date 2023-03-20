@@ -55,6 +55,9 @@
         .fop h4 {
             color: white !important;
         }
+    .table td{
+        color:black!important;
+    }
 </style>
 <div class="row">
     <div class="col-sm-12">
@@ -96,6 +99,7 @@
                         <th>Total Fee</th>
                         <th>Total Paid</th>
                         <th>Due Fee</th>
+                        <th class="text-center">Application Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -153,10 +157,17 @@
                                     <td>&#8377; @item.PaidAmnt</td>
                                     <td>&#8377; @item.DueAMT</td>
 
+                                    <td>@item.applStatus</td>
+
                                     <td>
+                                        @{
+                                            if (item.DueAMT != "0.0")
+                                            {
+                                                <button id="btnUpload" class="btn btn-sm btn-outline-dark" onclick="SetGUID('@item.sApplID','@item.DueAMT','@item.dTotalFee','@stypeForModal')"><i class="fas fa-upload"></i></button>
+                                                <button id="btnOpenModal" style="display:none" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal"><i class="fas fa-upload"></i></button>
+                                            }
+                                        }
                                         @*<a href="@Url.Action("PaymentDetails","PartiallyPayment")" id="btnUpload" class="btn btn-sm btn-outline-dark"><i class="fas fa-upload"></i></a>*@
-                                        <button id="btnUpload" class="btn btn-sm btn-outline-dark" onclick="SetGUID('@item.sApplID','@item.DueAMT','@item.dTotalFee','@stypeForModal')"><i class="fas fa-upload"></i></button>
-                                        <button id="btnOpenModal" style="display:none" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal"><i class="fas fa-upload"></i></button>
 
 
                                     </td>

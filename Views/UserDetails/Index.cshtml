@@ -12,6 +12,7 @@
     <link href="~/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/select2/css/select2.css" rel="stylesheet" />
     <link href="~/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/NocCustomCss/StyleNoc.css" rel="stylesheet" />
 }
 <div>
     <!-- Page-Title -->
@@ -85,8 +86,8 @@
                                     <td hidden>@item.ServiceList</td>
                                     <td hidden>@item.HardwareList</td>
                                     <td class="row" style="place-content: center;gap: 10px;align-items: center;">
-                                        <span onclick="OpenEditModal('@item.PartyId','@item.FirstName','@item.iRoleId')"><i class="fa fa-pen"></i></span>                                    
-    @*<span><a href="@Url.Action("AddSystemuser","Role",new { userID=item.PartyId})"> <i class="fa fa-pen"></i></a></span>*@
+                                        <span onclick="OpenEditModal('@item.PartyId','@item.FirstName','@item.iRoleId')"><i class="fa fa-pen"></i></span>
+                                        @*<span><a href="@Url.Action("AddSystemuser","Role",new { userID=item.PartyId})"> <i class="fa fa-pen"></i></a></span>*@
                                         <span class="custom-control custom-switch switch-success">
                                             <input type="checkbox" class="custom-control-input" id=@checkboxId @(item.IsActive == 1 ? "checked" : "") onchange="GetData(this, '@item.PartyId','@item.EmailId','@item.userName')"><label class="custom-control-label" for=@checkboxId></label>
                                         </span>
@@ -119,9 +120,9 @@
                 <div class="modal-body">
                     <div class="input-text" style="text-align: center;font-size: 20px;">
                         <label for="example-text-input" class="noc-form-label">SSO ID : </label><span id="spnSSOID"></span>
-                        
+
                     </div>
-                    
+
                     <div class="input-text">
                         <label for="example-text-input" class="noc-form-label">Select Role</label>
                         <select id="RoleId" class="form-control noc-input-text" name="RoleId">
