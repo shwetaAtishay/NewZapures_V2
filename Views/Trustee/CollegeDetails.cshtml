@@ -145,7 +145,7 @@
                                     <td>@TnocCourse <br /> @TnocSubject</td>
                                     <td>@PnocCourse <br /> @PnocSubject</td>
                                     <td class="text-center">
-                                        <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text', '@item.Id', '@item.ID1');"><i class="fas fa-file-edit"></i></button>
+                                        <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text', '@item.Id', '@item.ID1','#rbtn_@item.PNOCStatus');"><i class="fas fa-file-edit"></i></button>
                                         <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
                                         @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
 
@@ -263,7 +263,11 @@
                 </div>
                 <div class="modal-body" style="padding: 20px !important;">
                     <div class="row">
-                        <div class="col-lg-12 text-center">
+                        <div class="col-lg-12">
+                            <span style="font-weight: 600;color: red;text-decoration: underline;margin-top: 28px;">Disclaimer : आपके द्वारा पूर्व में चयनित नवीन कोर्स व नवीन विषय को यहां चुनना अनिवार्य है यदि आपके द्वारा उन कोर्सेज़ व विषयों का NOC कोर्सेज़ व विषयों का  चुनाव नहीं किया गया तो आप सत्र 2023 -24 के लिए पूर्व में चयनित किये गए कोर्सेज़ व विषयों हेतु आवेदन नहीं कर सकेंगे।</span>
+                        </div>
+
+                        <div class="col-lg-12 text-center mt-3">
                             <h4 id="spnExModalClgname" style="text-decoration: underline;"></h4>
                         </div>
 
@@ -306,33 +310,33 @@
     $(document).ready(function () {
 
         $('#ddlCourseList').select2();
-        $("input[name='ApplicationType']").change(function () {
+        //$("input[name='ApplicationType']").change(function () {
 
-            var deptID = $("input[name='ApplicationType']:checked").val();
-            var collegeID = $('#hdnClgID_Name').val().split(',')[0];
-            if (deptID == 'existing') {
+        //    var deptID = $("input[name='ApplicationType']:checked").val();
+        //    var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+        //    if (deptID == 'existing') {
 
-                GetCourseForCollege(collegeID,deptID);
+        //        GetCourseForCollege(collegeID,deptID);
 
-                $('#ddlSubjectList').select2({
-                    placeholder: "Select Subject"
-                });
-                $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#existingModal');
+        //        $('#ddlSubjectList').select2({
+        //            placeholder: "Select Subject"
+        //        });
+        //        $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#existingModal');
 
 
-                $('#btnProceedToNewEdit').css('display', 'none');
-                $('#btnProceedForNext').css('display', 'block');
-            }
-            else {
+        //        $('#btnProceedToNewEdit').css('display', 'none');
+        //        $('#btnProceedForNext').css('display', 'block');
+        //    }
+        //    else {
 
-                GetCourseForCollege(collegeID, deptID);
+        //        GetCourseForCollege(collegeID, deptID);
 
-                $('#btnProceedForNext').removeAttr('data-toggle').removeAttr('data-target');
+        //        $('#btnProceedForNext').removeAttr('data-toggle').removeAttr('data-target');
 
-                $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#newCollegeModal');
-            }
+        //        $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#newCollegeModal');
+        //    }
 
-        });
+        //});
 
         $('#ddlCourseList').change(function () {
             var deptID = $(this).val();
@@ -383,7 +387,7 @@
 
             var courseIDList = "";
             var subjectIDList = "";
-
+            MAppDetails = [];
             // for selected subject name To be comma saperated
             for (var i = 0; i <= subjnameList.length - 1; i++) {
 
@@ -523,8 +527,8 @@
 
     });
 
-    function openModal(collgeName, collegeID,PNOC) {
-
+    function openModal(collgeName, collegeID,PNOC,collegeStaus) {
+        console.log(collegeStaus);
         var collegeIdName = `${collegeID},${collgeName}`;
 
         $('#h2CollegeName').html('');
@@ -542,6 +546,41 @@
 
         $('#hdnPNOCStatus').val('')
         $('#hdnPNOCStatus').val(PNOC);
+
+        $('#rbtn_Existing').prop('checked',false);
+        $('#rbtn_New').prop('checked', false);
+
+        $('#rbtn_Existing').prop('disabled', true);
+        $('#rbtn_New').prop('disabled', true);
+
+        $(collegeStaus).prop('checked',true);
+        $(collegeStaus).prop('disabled',false);
+
+
+        var deptID = $("input[name='ApplicationType']:checked").val();
+        var collegeID = $('#hdnClgID_Name').val().split(',')[0];
+        if (deptID == 'existing') {
+
+            GetCourseForCollege(collegeID, deptID);
+
+            $('#ddlSubjectList').select2({
+                placeholder: "Select Subject"
+            });
+            $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#existingModal');
+
+
+            $('#btnProceedToNewEdit').css('display', 'none');
+            $('#btnProceedForNext').css('display', 'block');
+        }
+        else {
+
+            GetCourseForCollege(collegeID, deptID);
+
+            $('#btnProceedForNext').removeAttr('data-toggle').removeAttr('data-target');
+
+            $('#btnProceedForNext').attr('data-toggle', 'modal').attr('data-target', '#newCollegeModal');
+        }
+
 
 
         //console.log($('#hdnClgID_Name').val());
@@ -741,7 +780,7 @@
 
         var courseIDList = "";
         var subjectIDList = "";
-
+        MAppDetails = [];
         // for selected subject name To be comma saperated
         for (var i = 0; i <= subjnameList.length - 1; i++) {
 
@@ -786,7 +825,7 @@
             Subjects: subjectIDList
         }
         var d = JSON.stringify(Data)
-
+        console.table(MAppDetails);
         $.ajax({
             headers: {
                 'Accept': 'application/json',

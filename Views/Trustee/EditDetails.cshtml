@@ -120,13 +120,13 @@
                 </ol>
             </div>
             @* <h4 class="page-title">@ViewBag.Title</h4>*@
-        <div class="d-flex align-items-center justify-content-between w-100 float-left">
-            <h4 class="page-title"><a href="@Url.Action("DraftApplication", "Trustee")" class="theme-button-mockup"><i class="fa fa-arrow-left"></i> Back To Draft List</a></h4>
-            <div class="w-100 float-left mt-3 text-right">
-                <button class="theme-edit-btn" id="btnFinalSubmit"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
-                <button class="theme-button-mockup" id="btnFinalSubmitM" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal" style="display:none"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+            <div class="d-flex align-items-center justify-content-between w-100 float-left">
+                <h4 class="page-title"><a href="@Url.Action("DraftApplication", "Trustee")" class="theme-button-mockup"><i class="fa fa-arrow-left"></i> Back To Draft List</a></h4>
+                <div class="w-100 float-left mt-3 text-right">
+                    <button class="theme-edit-btn" id="btnFinalSubmit"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+                    <button class="theme-button-mockup" id="btnFinalSubmitM" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal" style="display:none"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+                </div>
             </div>
-        </div>
 
         </div><!--end page-title-box-->
     </div><!--end col-->
@@ -230,38 +230,38 @@
                     }
 
                     <!--<li><button class="applicationBtn" id="btn_Land" data-id="@Url.Action("Index", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Land Information</button></li>
-                <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
-                <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
-                @{
-                    if (departmentID != 8)
-                    {
-                        <li><button class="applicationBtn" data-id="@Url.Action("Index", "FeeDetails")"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
+                    <li><button class="applicationBtn" id="btn_Facility" data-id="@Url.Action("CollageFacilitys", "Trustee")"><i class="fa fa-smile"></i> &nbsp;Facility</button></li>
+                    <li><button class="applicationBtn" id="btn_Proof" data-id="@Url.Action("CollageAttachment", "Trustee" ,new {guid=guiid})"><i class="fa fa-address-card"></i> &nbsp;Required  Document</button></li>
+                    @{
+                        if (departmentID != 8)
+                        {
+                            <li><button class="applicationBtn" data-id="@Url.Action("Index", "FeeDetails")"><i class="fa fa-file-contract"></i> &nbsp;College Fee Structure</button></li>
+                        }
                     }
-                }
-                <li><button class="applicationBtn" id="btn_Staff" data-id="@Url.Action("Index", "Staff",new {guid=guiid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
+                    <li><button class="applicationBtn" id="btn_Staff" data-id="@Url.Action("Index", "Staff",new {guid=guiid})"><i class="fa fa-users"></i> &nbsp;Staff Details</button></li>
 
-                <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
+                    <li><button class="applicationBtn" id="btn_Building_Details" data-id="@Url.Action("ArchitecDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-building"></i> &nbsp;Room Details</button></li>
 
-                <li><button class="applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst",new {guid=guiid,clgId=collegeID})"><i class="fa fa-school"></i> &nbsp;Academic Information</button></li>
-                <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
-                <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
-                <li><button class="applicationBtn" id="btn_OldNOC" data-id="@Url.Action("OldNOC1", "Admin",new { guid=guiid,clgId=collegeID})"><i class="fa fa-paste"></i> &nbsp;OLD NOC Details</button></li>
-                @{
-                    if (departmentID == 12)
-                    {
+                    <li><button class="applicationBtn" id="btnEA_Acadmic" data-id="@Url.Action("Index", "AcdmcMst",new {guid=guiid,clgId=collegeID})"><i class="fa fa-school"></i> &nbsp;Academic Information</button></li>
+                    <li><button class="applicationBtn" id="btn_Other" data-id="@Url.Action("OtherDetails", "Trustee", new {AppGuid=guiid})"><i class="fa fa-list-alt"></i> &nbsp;Other Information</button></li>
+                    <li><button class="applicationBtn" id="btn_Building" data-id="@Url.Action("Building", "LandBuildingInfo",new { guid=guiid,clgId=collegeID})"><i class="fa fa-landmark"></i> &nbsp;Building Documents </button></li>
+                    <li><button class="applicationBtn" id="btn_OldNOC" data-id="@Url.Action("OldNOC1", "Admin",new { guid=guiid,clgId=collegeID})"><i class="fa fa-paste"></i> &nbsp;OLD NOC Details</button></li>
+                    @{
+                        if (departmentID == 12)
+                        {
 
-                        <li><button class="applicationBtn" id="btnEA_Vertinary" data-id="@Url.Action("Index", "Vertinary", new {AppGuid=guiid})"><i class="fa fa-kiwi-bird"></i> &nbsp;Vertinary Details</button></li>
-                    }
-                }-->
+                            <li><button class="applicationBtn" id="btnEA_Vertinary" data-id="@Url.Action("Index", "Vertinary", new {AppGuid=guiid})"><i class="fa fa-kiwi-bird"></i> &nbsp;Vertinary Details</button></li>
+                        }
+                    }-->
                     @*<li></li>*@
                 </ul>
             </div>
         </div>
         @*<a class="btn btn-primary" href="@Url.Action("ApplyNOCApplicationNew", "Trustee")" style="width: 100%;margin-top: 10px;"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</a>*@
-      @*  <div class="w-100 float-left mt-3 text-right">
-            <button class="theme-button-mockup" id="btnFinalSubmit"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
-            <button class="theme-button-mockup" id="btnFinalSubmitM" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal" style="display:none"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
-        </div>*@
+        @*  <div class="w-100 float-left mt-3 text-right">
+                <button class="theme-button-mockup" id="btnFinalSubmit"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+                <button class="theme-button-mockup" id="btnFinalSubmitM" data-toggle="modal" data-target="#ThankYou" data-dismiss="modal" style="display:none"><i class="fa fa-paper-plane"></i> &nbsp;Submit Your Application</button>
+            </div>*@
     </div>
     <div class="col-lg-12">
         <div class="noc-layouts">
@@ -296,8 +296,9 @@
 
                     <i class='far fa-3x fa-smile' style="color: #87b2d6"></i><br />
 
-                    <div style="margin-top: 20px;font-size:18px">
-                        Your application has been submited successfully :-)
+                    <div style="margin-top: 20px;font-size:15px;color: red;font-weight: 600;">
+                        @*Your application has been submited successfully :-)*@
+                        आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा।
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -376,14 +377,15 @@
             icon: 'warning',
             title: 'Are You Sure?',
             //html: `You Want To Cancel The Application : <b>"${applNumber}"</b> ?`,
-            html: `<div style="color: black;text-align: justify;background: #cdcdcd;padding: 15px;border-radius: 10px;">Dear Applicant, Are you sure you want to submit you application. Once the application is submitted you can't edit it. In case if you forget some information and wish to edit you need to create your application again.</div>`,
+            //html: `<div style="color: black;text-align: justify;background: #cdcdcd;padding: 15px;border-radius: 10px;">Dear Applicant, Are you sure you want to submit you application. Once the application is submitted you can't edit it. In case if you forget some information and wish to edit you need to create your application again.</div>`,
+            html: `<div style="text-align: justify;background: #cdcdcd;padding: 15px;border-radius: 10px;font-size: 15px;font-weight: 600;color: red;">आपके द्वारा NOC आवेदन के लिए भर दी गयी सूचनाएं यहां सेव करने के बाद सत्र 2023 -24 के लिए संशोधित नहीं की जा सकेगी यदि संशय है तो आप भरी गयी सूचनाएं पुनः जांच लें।</div>`,
             showDenyButton: true,
             showCancelButton: false,
             denyButtonText: '<i class="fa fa-thumbs-down"></i> &nbsp No, don`t submit',
             confirmButtonText: '<i class="fa fa-thumbs-up"></i> &nbsp Yes I am sure to submit my draft.',
         }).then((result) => {
             if (result.isConfirmed) {
-
+                //$('#btnFinalSubmitM').click();
                 ValidateApplicationSubmission();
 
 

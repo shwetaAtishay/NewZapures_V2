@@ -80,10 +80,11 @@ namespace NewZapures_V2.Models
             if (response.StatusCode.ToString() == "OK")
             {
                 var d = JsonConvert.DeserializeObject<ResponseData>(response.Content);
-                var objResponseData = JsonConvert.DeserializeObject<ListCustom>(d.Data.ToString());
-
-                objUsermaster = objResponseData.ListRequest;
-
+                if (d.Data != null)
+                {
+                    var objResponseData = JsonConvert.DeserializeObject<ListCustom>(d.Data.ToString());
+                    objUsermaster = objResponseData.ListRequest;
+                }
             }
             return objUsermaster;
         }
