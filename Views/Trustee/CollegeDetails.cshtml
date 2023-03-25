@@ -108,9 +108,10 @@
     <div class="card-body p-0 noc-layouts-tbl">
         <input type="hidden" id="hdnClgID_Name" />
         <input type="hidden" id="hdnPNOCStatus" />
+        <input type="hidden" id="hdnDepartment" />
         <div class="row col-lg-12" style="place-content: end;gap: 15px;padding: 10px 0px;font-size: 15px;font-weight: 600;">
             <span style="color: #007bff;"><i class="fas fa-file-edit"></i> Fill New Application</span>
-            <span style="color: #f96363;border-left: 1px solid red;padding: 0px 10px;"> <i class="fas fa-file-invoice"></i> College Amendment</span>
+            @*<span style="color: #f96363;border-left: 1px solid red;padding: 0px 10px;"> <i class="fas fa-file-invoice"></i> College Amendment</span>*@
             @*<span style="color: #316407;"><i class="far fa-file-alt"></i> OLD NOC Details</span>*@
         </div>
 
@@ -145,11 +146,19 @@
                                     <td>@TnocCourse <br /> @TnocSubject</td>
                                     <td>@PnocCourse <br /> @PnocSubject</td>
                                     <td class="text-center">
-                                        <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModal('@item.Text', '@item.Id', '@item.ID1','#rbtn_@item.PNOCStatus');"><i class="fas fa-file-edit"></i></button>
-                                        <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id, collegetype = item.CollegeType})" title="College Amendment" class="theme-delete-btn"><i class="fas fa-file-invoice"></i></a>
+                                        @{
+                                            if (Convert.ToInt32(item.TNOCRuningStatus) == 0)
+                                            {
+                                                <button class="theme-button-mockup" title="Fill New Application" type="button" onclick="openModaltoCheckNonRunningCourse('@item.Text','@item.Id')"><i class="fas fa-file-edit"></i></button>
+                                                <button class="theme-button-mockup" title="Fill New Application" type="button" id="btnOpenModalForEdit" onclick="openModal('@item.Text', '@item.Id', '@item.ID1','#rbtn_@item.PNOCStatus','@item.PartyId');" style="display:none"><i class="fas fa-file-edit"></i></button>
+                                            }
+                                            else
+                                            {
+                                                <span>NA</span>
+                                            }
+                                        }
+
                                         @*<a href="@Url.Action("OldNOC", "Admin",new {clgId=item.Id})" type="button" class="theme-edit-btn" title="Old NOC" style="background: #316407"><i class="far fa-file-alt"></i></a>*@
-
-
                                         @*<button class="theme-edit-btn" type="button" onclick="openModal('@item.Text','@item.Id');">Fill New Application</button>
                                             <a href="@Url.Action("DetailList", "CollegeAmendment", new {id=item.Id})" class="theme-delete-btn">College Ammendment</a>*@
                                     </td>
@@ -185,10 +194,49 @@
         </div>
     </div>
 
+    @*Modal Checking the NonRunning Courses*@
+    <a href="#" data-toggle="modal" data-target="#ModalNonRunning" id="openModalNonRunningCourse" style="display:none">Terms and Condition</a>
 
-    <a href="#" data-toggle="modal" data-target=".bd-example-modal-lg" id="openModal" style="display:none">Terms and Condition</a>
+    <div class="modal fade bd-example-modal-lg" id="ModalNonRunning" tabindex="-1" role="dialog" aria-labelledby="ModalNonRunning" data-backdrop="static" style="display:none;">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="ModalNonRunningTitle">Non Running Course</h3>
+                    <button type="button" style="display:none" class="close" data-dismiss="modal" id="runningModalClose" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <div class="modal-body" style="padding: 20px !important;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <span style="font-weight: 600;color: red;text-decoration: underline;margin-top: 28px;">Disclaimer : Kindly Confirm Status Of Course And Subjects</span>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                            <h4 id="h2CollegeNameNonRunning" style="text-decoration: underline;"></h4>
+                        </div>
+                        <div class="col-lg-12">
+                            <table class="table table-striped" id="tblNonRunningCourse">
+                                <thead style="background: #b4c8e7;font-size: 16px;">
+                                    <tr><th>#</th><th>Course</th><th>Subject</th></tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-    <div class="modal fade bd-example-modal-lg" id="appSummary" tabindex="-1" role="dialog" aria-labelledby="appSummary" data-backdrop="static" style="display:none;">
+                </div>
+                <div class="modal-footer">
+                    <a href="@Url.Action("CreateDetails","AddCourse")" class="theme-discard-btn">Go To Add Course</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Modal Checking the NonRunning Courses*@
+
+    <a href="#" data-toggle="modal" data-target="#ModalEdit" id="openModal" style="display:none">Terms and Condition</a>
+
+    <div class="modal fade bd-example-modal-lg" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="ModalEdit" data-backdrop="static" style="display:none;">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -344,10 +392,10 @@
             CourseType = CourseType.split('[')[1];
 
             CourseType = CourseType.replace(']', ' ').trim();
-            console.log(CourseType);
+            //console.log(CourseType);
             var PNOCStatus = $('#hdnPNOCStatus').val();
 
-            console.log(PNOCStatus);
+            //console.log(PNOCStatus);
 
             if (PNOCStatus == 0 && CourseType == "PG") {
                 Swal.fire({
@@ -367,26 +415,119 @@
 
         });
 
-
         $('#btnProceedtoEdit').click(function () {
 
             var applicationType = $("input[name='ApplicationType']:checked").val();
             var collegeID = $('#hdnClgID_Name').val().split(',')[0];
             var collegeName = $('#hdnClgID_Name').val().split(',')[1];
+            debugger;
 
-            var cors = $('#ddlCourseList').val();
+            var CourseStatusID = $('#ddlCourseList option:selected').data('id');
+            var Course3Allow = $('#ddlCourseList option:selected').data('partyid');
             var corsname = $('#ddlCourseList option:selected').text();
             var corsnameList = $('#ddlCourseList').select2("data");
+
+            var corslist = [];
+            var cors = $('#ddlCourseList').val();
+
+            if (cors.length > 0) {
+                cors.forEach(function (y) {
+                    var data1 = $('#data_' + y).data('id');
+
+                    var s1 = data1.split('-')[0];
+                    var s2 = data1.split('-')[1];
+                    var s3 = data1.split('-')[2];
+                    var s4 = data1.split('-')[3];
+
+                    corslist.push({
+                        id: s1,
+                        total: s2,
+                        count: s3,
+                        crsName: s4
+                    });
+                })
+            }
+            else {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: `error`,
+                    html: `<p>Please select atleast one course</p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+                return false;
+            }
 
             var subjIDList = $('#ddlSubjectList').val();
             var subjnameList = $('#ddlSubjectList').select2("data");
 
+            var sList = [];
+            if (subjIDList.length > 0) {
+                subjIDList.forEach(function (sm) {
+                    //alert(sm);
+                    var dk = sm.split('-')[0];
+                    sList.push(dk);
+                })
+            }
+
             var subList = '';
             var corsList = '';
-            var isAllCourseCovered = true;
+            var isAllCourseCovered = false;
 
             var courseIDList = "";
             var subjectIDList = "";
+            var kk = 0;
+            if (corslist.length > 0) {
+                corslist.forEach(function (df) {
+                    var kl = 0;
+                    debugger;
+                    sList.forEach(function (km) {
+                        if (km == df.id) {
+                            kl = kl + 1;
+                        }
+                    });
+                    if (df.count == "0") {
+                        if (df.total == "3") {
+
+                            if (kl < 3) {
+                                Swal.fire({
+                                    position: 'center',
+                                    icon: 'error',
+                                    title: `error`,
+                                    html: `<div><p>Please Select Atleast 3 Subjects For ${df.crsName}</p></div>`,
+                                    allowOutsideClick: false,
+                                    showCloseButton: true,
+                                    showConfirmButton: false,
+                                });
+                                kk = 1;
+                                return false;
+                            }
+                        }
+                    }
+                    if (kl == 0) {
+                        kk = 1;
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: `error`,
+                            html: `<div><p>Please Select Atleast 1 Subjects For ${df.crsName}</p></div>`,
+                            allowOutsideClick: false,
+                            showCloseButton: true,
+                            showConfirmButton: false,
+                        });
+                        return false;
+                    }
+                   /* kl = 0;*/
+                });
+            }
+
+            if (kk == 0) {
+                debugger;
+                isAllCourseCovered = true;
+            }
+
             MAppDetails = [];
             // for selected subject name To be comma saperated
             for (var i = 0; i <= subjnameList.length - 1; i++) {
@@ -406,20 +547,20 @@
                 })
             }
 
-            corsnameList.forEach(function (item) {
-                //console.log('Corse Loop', item.id);
-                courseIDList = "";
-                subjectIDList = "";
-                MAppDetails.forEach(function (item1) {
-                    /*console.log('Mapp Loop', item1.CourseID);*/
-                    if (item1.CourseID != item.id) {
-                        isAllCourseCovered = false;
-                    }
-                    else {
-                        isAllCourseCovered = true;
-                    }
-                })
-            })
+            //corsnameList.forEach(function (item) {
+            //    //console.log('Corse Loop', item.id);
+            //    courseIDList = "";
+            //    subjectIDList = "";
+            //    MAppDetails.forEach(function (item1) {
+            //        /*console.log('Mapp Loop', item1.CourseID);*/
+            //        if (item1.CourseID != item.id) {
+            //            isAllCourseCovered = false;
+            //        }
+            //        else {
+            //            isAllCourseCovered = true;
+            //        }
+            //    })
+            //})
 
 
                 var d = JSON.stringify(MAppDetails)
@@ -459,20 +600,8 @@
                         }
                     });
                 }
-                else {
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: `error`,
-                        html: `<p>"Dear applicant you have not selected subject against all the course you marked in course selection. Kindly add the subject or remove the course for which subjects are not marked"</p>`,
-                        allowOutsideClick: false,
-                        showCloseButton: true,
-                        showConfirmButton: false,
-                    });
-                }
+
         });
-
-
 
         $('#btnProceedToNewEdit').click(function () {
 
@@ -527,8 +656,14 @@
 
     });
 
-    function openModal(collgeName, collegeID,PNOC,collegeStaus) {
-        console.log(collegeStaus);
+    function openModaltoCheckNonRunningCourse(Collegename,collegeID) {
+        getNonRunningCourses(collegeID, Collegename);
+        return false;
+    }
+
+
+    function openModal(collgeName, collegeID, PNOC, collegeStaus, departmentID) {
+        //console.log(collegeStaus);
         var collegeIdName = `${collegeID},${collgeName}`;
 
         $('#h2CollegeName').html('');
@@ -546,6 +681,9 @@
 
         $('#hdnPNOCStatus').val('')
         $('#hdnPNOCStatus').val(PNOC);
+
+        $('#hdnDepartment').val('')
+        $('#hdnDepartment').val(departmentID);
 
         $('#rbtn_Existing').prop('checked',false);
         $('#rbtn_New').prop('checked', false);
@@ -590,7 +728,7 @@
     }
 
     function GetCourseForCollege(collegeID,applicationType) {
-        var htmlString = `<option value="0">Select Course</option>`;
+        var htmlString = `<option value="0" disabled>Select Course</option>`;
         var Data = {
             collegeID: collegeID,
             type:"GetCourseForCollege"
@@ -609,11 +747,15 @@
             data: JSON.stringify(Data),
             success: function (data) {
                 var mainData = data.Data;
-                console.log(mainData.length);
+                //console.log(mainData);
                 if (applicationType == "existing") {
                     if (mainData != null && mainData.length > 0) {
                         mainData.forEach(function (item) {
-                            htmlString += `<option value="${item.Id}">${item.Text}</option>`;
+                            var selectid = item.PartyId;
+                            if (item.PartyId == 3) {
+                                selectid=0
+                            }
+                            htmlString += `<option id="data_${item.Id}" value="${item.Id}" data-id="${item.Id}-${item.ID1}-${selectid}-${item.Text}" data-partyId="${item.PartyId}">${item.Text}</option>`;
                         })
                     }
                     $('#ddlCourseList').html('');
@@ -746,7 +888,7 @@
         Swal.fire({
             icon: 'warning',
             title: 'Are You Sure?',
-            html: `"is this all the courses and subjects you want to fill the application to apply noc, you will not be able to edit it once you confirm"`,
+            html: `"Is this all the courses and subjects you want to fill the application to apply noc, you will not be able to edit it once you confirm"`,
             showDenyButton: true,
             showCancelButton: false,
             denyButtonText: 'No',
@@ -754,7 +896,8 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 /*CancelApplication(applGUID);*/
-                CheckEntriesForDraft();
+                //CheckEntriesForDraft();
+                $('#btnProceedtoEdit').click();
             } else if (result.isDenied) {
                 location.href = '@Url.Action("CreateDetails", "AddCourse")';
             }
@@ -771,8 +914,40 @@
         var corsname = $('#ddlCourseList option:selected').text();
         var corsnameList = $('#ddlCourseList').select2("data");
 
+        //var corslist = [];
+        //var cors = $('#ddlCourseList').val();
+
+        //if (cors.length > 0) {
+        //    cors.forEach(function (y) {
+        //        var data1 = $('#data_' + y).data('id');
+
+        //        var s1 = data1.split('-')[0];
+        //        var s2 = data1.split('-')[1];
+        //        var s3 = data1.split('-')[2];
+        //        var s4 = data1.split('-')[3];
+
+        //        corslist.push({
+        //            id: s1,
+        //            total: s2,
+        //            count: s3,
+        //            crsName:s4
+        //        });
+        //    })
+        //}
+
+
         var subjIDList = $('#ddlSubjectList').val();
         var subjnameList = $('#ddlSubjectList').select2("data");
+
+        //var sList = [];
+        //if (subjIDList.length > 0) {
+        //    subjIDList.forEach(function (sm) {
+        //        //alert(sm);
+        //        var dk = sm.split('-')[0];
+        //        sList.push(dk);
+        //    })
+        //}
+
 
         var subList = '';
         var corsList = '';
@@ -780,6 +955,49 @@
 
         var courseIDList = "";
         var subjectIDList = "";
+
+
+        //if (corslist.length > 0) {
+        //    corslist.forEach(function (df) {
+        //        var kl = 0;
+        //        sList.forEach(function (km) {
+        //            if (km == df.id) {
+        //                kl = kl + 1;
+        //            }
+        //        });
+        //        if (df.count == "0") {
+        //            if (df.total == "3") {
+
+        //                if (kl < 3) {
+        //                    Swal.fire({
+        //                        position: 'center',
+        //                        icon: 'error',
+        //                        title: `error`,
+        //                        html: `<div><p>Please Select Atleast 3 Subjects For ${df.crsName}</p></div>`,
+        //                        allowOutsideClick: false,
+        //                        showCloseButton: true,
+        //                        showConfirmButton: false,
+        //                    });
+        //                    return false;
+        //                }
+        //            }
+        //        }
+        //        if (kl == 0) {
+        //            Swal.fire({
+        //                position: 'center',
+        //                icon: 'error',
+        //                title: `error`,
+        //                html: `<div><p>Please Select Atleast 1 Subjects For ${df.crsName}</p></div>`,
+        //                allowOutsideClick: false,
+        //                showCloseButton: true,
+        //                showConfirmButton: false,
+        //            });
+        //            return false;
+        //        }
+        //    });
+        //}
+
+
         MAppDetails = [];
         // for selected subject name To be comma saperated
         for (var i = 0; i <= subjnameList.length - 1; i++) {
@@ -866,5 +1084,46 @@
         });
     }
 
+    function getNonRunningCourses(ClgID,collegeName) {
+        var htmlstring = "";
+        var Data = {
+            collegeID: ClgID,
+        }
+        var d = JSON.stringify(Data)
+        console.table(MAppDetails);
+        return $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            url: GetglobalDomain() + "/Trustee/GetNonRunningCourse",
+            dataType: 'json',
+            type: 'Post',
+            cache: false,
+            data: JSON.stringify(Data),
+            success: function (data) {
+                var mainData = data.Data;
+                //console.log(mainData);
+
+                if (mainData.length > 0) {
+                    $('#h2CollegeNameNonRunning').html('');
+                    $('#h2CollegeNameNonRunning').html('College : ' + collegeName);
+                    $('#openModalNonRunningCourse').click();
+
+                    mainData.forEach(function (item, index) {
+                        htmlstring += `<tr><td>${index + 1}</td><td>${item.ID1}</td><td>${item.Text}</td></tr>`;
+                    })
+                    $('#tblNonRunningCourse tbody').html('');
+                    $('#tblNonRunningCourse tbody').html(htmlstring);
+                }
+                else {
+                    $('#btnOpenModalForEdit').click();
+                }
+            },
+            error: function (d) {
+                //alert(d);
+            }
+        });
+    }
 
 </script>

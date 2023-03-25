@@ -3361,6 +3361,7 @@
     <Content Include="Content\AdminLTE File\plugins\summernote\font\summernoted41d.eot" />
     <Content Include="LandDocuments\notconverteddoc.pdf" />
     <Content Include="bin\NewZapures_V2.dll.config" />
+    <Content Include="LandDocuments\Ann10.pdf" />
     <None Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1-vsdoc.js" />
     <Content Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1.js" />
     <Content Include="packages\jQuery.3.3.1\Content\Scripts\jquery-3.3.1.min.js" />

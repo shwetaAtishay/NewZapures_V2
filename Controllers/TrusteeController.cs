@@ -2498,7 +2498,7 @@ namespace NewZapures_V2.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
-
+        
         public JsonResult chkIsPrime(string CollegeId, string IsPrime)
         {
             var trustId = SessionModel.TrustId;
@@ -2620,6 +2620,17 @@ namespace NewZapures_V2.Controllers
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College Details" },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+        
+        public JsonResult GetNonRunningCourse(string collegeID)
+        {
+            var clgList = ZapurseCommonlist.GetNonRunningCourse(collegeID);
+            return new JsonResult
+            {
+                Data = new { StatusCode = 1, Data = clgList, Failure = false, Message = "College NonRunningCourse" },
                 ContentEncoding = System.Text.Encoding.UTF8,
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
