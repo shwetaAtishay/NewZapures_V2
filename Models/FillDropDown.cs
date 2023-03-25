@@ -65,6 +65,7 @@ namespace NewZapures_V2.Models
         public string PNOCStatus { get; set; }
         public string TNOCRuningStatus { get; set; }
         public string PNOCRunningStatus { get; set; }
+        public int? count { get; set; }
     }
     //Emitra Pages
     public class CustomList

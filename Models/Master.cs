@@ -322,4 +322,19 @@ namespace NewZapures_V2.Models
         public FeeMst feeMst { get; set; }
         public List<FeeTRN> feeTrn { get; set; }
     }
+    public class UniversityMap_Mst
+    {
+        public int? Id { get; set; }
+        public int? TagUniversity { get; set; }
+        public string TagDegrees { get; set; }
+        public int? TagCourse { get; set; }
+        public int? TagSubject { get; set; }
+    }
+    public class UniversityMap_View : UniversityMap_Mst
+    {
+        public string UniversityName { get; set; }
+        public string CourseName { get; set; }
+        public string SubjectName { get; set; }
+        public int? iStts { get; set; }
+    }
 }

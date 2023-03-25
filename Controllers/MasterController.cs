@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NewZapures_V2.Helper;
 using NewZapures_V2.Models;
 using RestSharp;
 using RestSharp.Serializers;
@@ -1414,5 +1415,94 @@ namespace NewZapures_V2.Controllers
             return departments;
         }
         #endregion
+
+        //University Mapping:18/03/2023
+
+        public ActionResult UniversityMapping()
+        {
+            int DeptId = Convert.ToInt32(SessionModel.DepartmentId)==0?8:0;
+            var ddldegree = CommonCode.GetCourses(48);
+            var ddlUnivarsity = CommonCode.GetCourses(26, DeptId);
+            List<UniversityMap_View> list = new List<UniversityMap_View>();
+            list = CommonCode.UniversityMap_Views();
+            ViewBag.UniversityList = ddlUnivarsity;
+            ViewBag.DegreeList=ddldegree;
+            return View(list);
+        }
+        public ActionResult UniversityMapDetails(int Id,int TagUniversity, string TagDegrees,int TagCourse,int TagSubject)
+        {
+            UniversityMap_Mst mst = new UniversityMap_Mst();
+            mst.Id = Id;
+            mst.TagUniversity= TagUniversity;
+            mst.TagDegrees= TagDegrees;
+            mst.TagCourse= TagCourse;
+            mst.TagSubject= TagSubject;
+            var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "Masters/GetUniversityMapDetails");
+            var request = new RestRequest(Method.POST);
+            request.AddHeader("cache-control", "no-cache");
+            //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
+            request.AddParameter("application/json", _JsonSerializer.Serialize(mst), ParameterType.RequestBody);
+            //CommitedMstview mstdata = new CommitedMstview();
+       
+            IRestResponse response = client.Execute(request);
+            try
+            {
+                if (response.StatusCode.ToString() == "OK")
+                {
+                    ResponseDataBO objResponseData = _JsonSerializer.Deserialize<ResponseDataBO>(response.Content);
+                    if (objResponseData.ResponseCode == "001")
+                    {
+                        return RedirectToAction("SignOut", "Home");
+                    }
+                    else
+                    if (objResponseData.ResponseCode == "000" && objResponseData.statusCode == 1)
+                    {
+                        TempData["SwalStatusMsg"] = "success";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "Success!";
+                        return RedirectToAction("UniversityMapping");
+                    }
+                    else if (objResponseData.ResponseCode == "001" && objResponseData.statusCode == 0)
+                    {
+                        TempData["SwalStatusMsg"] = "warning";
+                        TempData["SwalMessage"] = objResponseData.Message;
+                        TempData["SwalTitleMsg"] = "warning!";
+                        return RedirectToAction("UniversityMapping");
+                    }
+                    else
+                    {
+                        TempData["SwalStatusMsg"] = "error";
+                        TempData["SwalMessage"] = "Something wrong";
+                        TempData["SwalTitleMsg"] = "error!";
+                        return RedirectToAction("UniversityMapping");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["SwalStatusMsg"] = "error";
+                TempData["SwalMessage"] = "Something wrong";
+                TempData["SwalTitleMsg"] = "error!";
+
+            }
+            return RedirectToAction("UniversityMapping");
+
+        }
+        public JsonResult FillUniversityDropDown(string sDegree, int Courseid, int iFk_UniId)
+        {
+            List<Dropdown> departments = new List<Dropdown>();
+            departments = CommonCode.GetUnivercityCouser(sDegree, Courseid, iFk_UniId);
+            int isvalidval = 0;
+            if (departments.Count() > 0)
+            {
+                isvalidval = 1;
+            }
+            return new JsonResult
+            {
+                Data = new { Data = departments, failure = false, msg = "Success", isvalid = isvalidval },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
     }
 }

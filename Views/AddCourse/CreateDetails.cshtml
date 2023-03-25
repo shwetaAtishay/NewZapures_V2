@@ -318,18 +318,21 @@
             <div class="modal-body">
                 <div class="col-lg-12">
                     <input type="hidden" id="changeid" value="0" />
-                    <div class="form-group  is-empty ">
 
+                    <div class="form-group  is-empty ">
+                        <label for="radio_1" style="font-weight:bold;" class="col-sm-12" id="lable_4">
+                            Have you received the NOC or you want to send it to New Course
+                        </label>
                         <div class="radio space" style="width: auto;">
                             <input type="radio" name="iMark" id="radio_1" value="3" checked>
                             <label for="radio_1" style="font-weight:bold;" class="col-sm-6" id="lable_3">
-                                Apply As New Course
+                                Change to New Course
                             </label>
                         </div>
                         <div class="radio space" style="width: auto;">
                             <input type="radio" name="iMark" id="radio_2" value="1">
                             <label for="radio_2" style="font-weight:bold;" class="col-sm-6" id="lable_1">
-                                Apply As Running
+                                Got the NOC
                             </label>
                         </div>
 
@@ -374,12 +377,15 @@
                 var Id = $("#changeid").val();
                
                 var applyid = $('input:radio[name="iMark"]:checked').val();
-             
-                var data = $("#lable_" + applyid).html();
+                var data ="Are you sure you have not received the NOC for the Course/Subject ?"
+                if (parseInt(applyid)==1) {
+                    data ="Are you sure you have got the NOC for this Course/Subject?"
+                }
+        /*        var data = $("#lable_" + applyid).html();*/
                 $.confirm({
 
                     title: 'Apply Confirmation',
-                    content: `Are you sure to ${data}`,
+                    content: `${data}`,
                     type: 'red',
                     typeAnimated: true,
                     animation: 'rotate',
@@ -439,14 +445,16 @@
         $('#txtTagDegree').change(function () {
             var id = $(this).val();
             bindCollege(id);
-            bindCourse(id);
+       
         })
-        $("#IsdefaultCollegeId").change(function () {
-            //var id = $(this).val();
+            $("#IsdefaultCollegeId").change(function () {
+                debugger;
+            var id = $(this).val();
             //if (id != null) {
             //    bindSubject(id);
             //}
-            $('#TagSubject').html('');
+            bindCourse(id);
+          /*  $('#TagSubject').html('');*/
         });
         var isuserExists = '@TempData["isSaved"]'
         var message = '@TempData["msg"]'
@@ -517,6 +525,7 @@
                 cache: false,
                 data: JSON.stringify(VertinaryModal),
                 success: function (data) {
+                    debugger;
                     console.log('ajax');
                     console.log(data);
                     
@@ -526,10 +535,10 @@
                     mainData.forEach(function (item) {
                         $("#txtTagCourse").html("<option value = \"0\">Select Course</option>")
                         if (item.Id == id) {
-                            html += `<option data-id=${item.ID1} value=${item.Id} selected>${item.Text}</option>`
+                            html += `<option data-id=${item.ID1} data-rowcount=${item.count} value=${item.Id} selected>${item.Text}</option>`
                         }
                         else {
-                            html += `<option data-id=${item.ID1} value=${item.Id}>${item.Text}</option>`
+                            html += `<option data-id=${item.ID1}  data-rowcount=${item.count} value=${item.Id}>${item.Text}</option>`
                         }
 
                     })
@@ -704,25 +713,55 @@
             }
             debugger
             var checkid = $("#txtTagCourse").find(':selected').attr("data-id")
+            var rowcount = $("#txtTagCourse").find(':selected').attr("data-rowcount")
             var subjectlist = $("#TagSubject").val();
-            if (subjectlist != '') {
+            if (subjectlist == '' || subjectlist == undefined) {
+                $('#errorSubject').empty();
+                $('label[for="error"]').show();
+                errorSubject.textContent = "Please Select Subject "
+                errorSubject.style.color = "red"
+                TagSubject.style.border = "1px solid red"
+                $('#TagSubject').focus();
+                status = false;
+            }
+            else {
+                if (rowcount == 0) {
+                    var itemcount = subjectlist.length;
+                    if (checkid >= 1 && checkid <= 4 && itemcount < 3) {
+                        $('#errorSubject').empty();
+                        $('label[for="error"]').show();
+                        errorSubject.textContent = "Please Select Three Subject "
+                        errorSubject.style.color = "red"
+                        TagSubject.style.border = "1px solid red"
+                        $('#TagSubject').focus();
 
-                var itemcount = subjectlist.length;
-                if (checkid >= 1 && checkid <= 4 && itemcount < 3) {
-                    $('#errorSubject').empty();
-                    $('label[for="error"]').show();
-                    errorSubject.textContent = "Please Select Three Subject "
-                    errorSubject.style.color = "red"
-                    TagSubject.style.border = "1px solid red"
-                    $('#TagSubject').focus();
-
-                    status = false;
+                        status = false;
+                    }
                 }
                 else {
                     $('#errorSubject').remove();
                     $("#TagSubject").css({ 'border': '' });
                 }
-            }
+                }
+
+            //if (subjectlist != '') {
+
+            //    var itemcount = subjectlist.length;
+            //    if (checkid >= 1 && checkid <= 4 && itemcount < 3) {
+            //        $('#errorSubject').empty();
+            //        $('label[for="error"]').show();
+            //        errorSubject.textContent = "Please Select Three Subject "
+            //        errorSubject.style.color = "red"
+            //        TagSubject.style.border = "1px solid red"
+            //        $('#TagSubject').focus();
+
+            //        status = false;
+            //    }
+            //    else {
+            //        $('#errorSubject').remove();
+            //        $("#TagSubject").css({ 'border': '' });
+            //    }
+            //}
 
 
             //if (TagDegree.length > 0) {
@@ -778,7 +817,7 @@
         var d = JSON.stringify(Model);
         console.log(d);
         Swal.fire({
-            title: 'Are You Delete Confirmation ?',
+            title: 'Are you sure want to delete the course/subject and do not want apply NOC for the course/subject?',
             showDenyButton: true, showCancelButton: false,
             confirmButtonText: 'Yes',
             denyButtonText: 'No',
@@ -1041,11 +1080,13 @@
             $("#txtTagDegree").trigger("change");
             debugger;
             setTimeout(() => {
+                $("#myInputHidden").val(CourseId);
                 $("#IsdefaultCollegeId").val(CollegeId);
                 $("#IsdefaultCollegeId").trigger("change");
-
+               
             },700);
             setTimeout(() => {
+
              $("#txtTagCourse").val(CourseId);
             $("#txtTagCourse").trigger("change");
 

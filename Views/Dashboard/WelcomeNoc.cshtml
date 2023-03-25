@@ -84,7 +84,9 @@
             font-size: 20px;
             background: linear-gradient(135deg, #478bb8 0%, #9cb347 100%);
         }
-
+        .hidden {
+            display: none !important;
+        }
         .enlarge-menu .topbar .navbar-custom {
             margin-left: 70px !important;
         }
@@ -388,10 +390,19 @@
                                                     <div class="">
                                                         <input class="form-control noc-input-text" type="text" autocomplete="off" id="RegistationNo" name="RegistationNo" placeholder="Enter Your Valid Registration Number">
                                                     </div>
-                                                    <div class=" w-100 float-left text-center mt-4" style="display:none">
+                                                    <div class="hidden" id="collegelst">
+
+
+                                                            <select class="singleselect form-control" id="CollegeId" style="width: 100%; height: 31px; border-style: solid; margin-top: 10px; ">
+                                                                <option value="">Select Collage</option>
+                                                               
+                                                            </select>
+                                                     
+                                                    </div>
+                                                    <div class=" w-100 float-left text-center mt-4 hidden" style="display:none">
                                                         <a data-toggle="modal" data-target="#exampleModalCenter" class="theme-button-mockup" style="width:110px; margin:0 auto;" id="OTPpopup">Next</a>
                                                     </div>
-                                                    <div class="form-group col-lg-12 trstverifybox ">
+                                                    <div class="form-group col-lg-12 trstverifybox hidden" id="nxtbtn">
                                                         <a id="" class="apply theme-button-mockup" onclick="Next()" style="width:110px; margin:0 auto;">Next</a>
 
                                                     </div>
@@ -520,9 +531,9 @@
                 $("#NewUser").show();
                 $("#exisuser").hide();
             });
-            $("#RegistationNo").change(function () {
-                Verify();
-            });
+            //$("#RegistationNo").change(function () {
+            //    Verify();
+            //});
         });
 
     </script>
@@ -544,12 +555,25 @@
             $("#progressModel").modal('show');
         };
         function Next() {
+            debugger;
             var UserType = $('input[name="Usertype"]:checked').val();
             if (UserType == 'ExistingUser') {
 
                 var RegistrationNo = $("#RegistationNo").val();
+                var trustId = $("#CollegeId").val();
+                if (trustId == '') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Please Select College!',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    return false;
+                }
                 var modal1 = {
                     RegNo: RegistrationNo,
+                    trustId: trustId
                 }
                 $.ajax({
                     headers: {
@@ -560,7 +584,7 @@
                     dataType: 'json',
                     type: 'Get',
                     cache: false,
-                    data: { RegNo: RegistrationNo },
+                    data: { RegNo: RegistrationNo, trustId: trustId },
                     success: function (data) {
                         if (data.Success) {
                             /*Swal.fire(data.Message, '', 'success')*/
@@ -737,7 +761,8 @@
             });
         }
         function Countinue() {
-            var urlS = GetglobalDomain() + "/Dashboard/DashboardUser"
+            var TrustID = $("#CollegeId").val();
+            var urlS = GetglobalDomain() + "/Dashboard/DashboardUser?Id=" + TrustID
             window.location.href = urlS;
         }
         function Back() {
@@ -745,6 +770,74 @@
             window.location.href = url;
 
         }
+        $("#RegistationNo").blur(function () {
+       
+            var Regtext = $("#RegistationNo").val();
+            if (Regtext == '') {
+                $("#collegelst").addClass('hidden');
+                $("#nxtbtn").addClass('hidden');
+                return false;
+            }
+            var modal1 = {
+                Reg: Regtext,
+            }
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: GetglobalDomain() + "/Dashboard/FillCollegelist",
+                dataType: 'json',
+                type: 'Get',
+                cache: false,
+                data: { Reg: Regtext },
+                success: function (response) {
+                    debugger;
+                    if (response.isvalid == 0) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Sorry You not Registrated !',
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                    else {
+                        $("#RegistationNo").attr('disabled', 'disabled');
+                        var html = `<option value="">Select Course</option>`;
+                        var mainData = response.Data;
+                        $("#collegelst").removeClass('hidden');
+                        mainData.forEach(function (item) {
+                          
+                            html += `<option value=${item.Id}>${item.Text}</option>`
+                           
+
+                        })
+                        $("#CollegeId").html('');
+                        $("#CollegeId").html(html);
+                        $("#nxtbtn").removeClass('hidden');
+                    }
+                    //if (data.Success) {
+                    //    /*Swal.fire(data.Message, '', 'success')*/
+                    //    sweetAlert("title", "message sent Successfully", "error");
+                    //    //$('#exampleModalCenter').modal('show');
+                    //    $('#OtpText').html(data.Message);
+
+                    //}
+                    //else {
+                    //    //$('#exampleModalCenter').modal('show');
+                    //    //$('#continue').css("display", "none");
+                    //    //$('#btnCapitalAdd').css("display","block");
+                    //}
+
+                },
+                error: function (d) {
+                    console.log(d);
+                    //$('#continue').css("display", "none");
+                    //$('#btnCapitalAdd').css("display", "block");
+                }
+            });
+        })
     </script>
 </body>
 </html>

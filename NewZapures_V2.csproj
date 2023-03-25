@@ -163,6 +163,7 @@
     <Compile Include="Controllers\FeeController.cs" />
     <Compile Include="Controllers\User\UserDetailsController.cs" />
     <Compile Include="Controllers\VertinaryController.cs" />
+    <Compile Include="Helper\CommonCode.cs" />
     <Compile Include="Models\AcdmcMaster.cs" />
     <Compile Include="Models\AddCourseBO.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -4328,6 +4329,7 @@
     <Content Include="Views\Admin\OldNOC1.cshtml" />
     <Content Include="Views\Master\FeeMstIndex.cshtml" />
     <Content Include="Views\Trustee\ApplyNOCApplicationNew.cshtml" />
+    <Content Include="Views\Master\UniversityMapping.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

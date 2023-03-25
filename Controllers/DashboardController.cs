@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using NewZapures_V2.Helper;
 using NewZapures_V2.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
@@ -27,13 +29,13 @@ namespace Metrica.Controllers
             }
         }
 
-        public ActionResult DashboardUser()
+        public ActionResult DashboardUser(int Id)
         {
             ViewBag.DashboardReport = StatusCountDashboard();
             string RegNo = SessionModel.TrustRegNo;
             bool status = false;
             #region Get Trust Information
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" + RegNo);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "Trustee/GetTrustInfo?TrustId=" +Id +"&RegNo="+ RegNo);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
@@ -121,6 +123,23 @@ namespace Metrica.Controllers
         public ActionResult WelcomeNocNew()
         {
             return View();
+        }
+
+        public JsonResult FillCollegelist(string Reg)
+        {
+            List<Dropdown> departments = new List<Dropdown>();
+            departments = CommonCode.GetCollegelst(Reg);
+            int isvalidval = 0;
+            if (departments.Count() > 0)
+            {
+                isvalidval = 1;
+            }
+            return new JsonResult
+            {
+                Data = new { Data = departments, failure = false, msg = "Success", isvalid = isvalidval },
+                ContentEncoding = System.Text.Encoding.UTF8,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         [ActionName("crypto-index")]
@@ -242,14 +261,14 @@ namespace Metrica.Controllers
 
         #region OTP Varification
         [HttpGet]
-        public ActionResult SendReqeustOTP(string RegNo)
+        public ActionResult SendReqeustOTP(string RegNo,int trustId)
         {
             SmsResponseModel _res = new SmsResponseModel();
             try
             {
                 //int otp = new Random().Next(1000, 9999);
                 int otp = 9876;
-                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "SmsMail/SendSMsTrustVerificationOTP?RegNo=" + RegNo + "&otp=" + otp);
+                var client = new RestClient(ConfigurationManager.AppSettings["URL"] + "SmsMail/SendSMsTrustVerificationOTP?RegNo=" + RegNo + "&otp=" + otp + "&trustId="+ trustId);
                 var request = new RestRequest(Method.GET);
                 request.AddHeader("cache-control", "no-cache");
                 //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");
