@@ -1916,9 +1916,9 @@ namespace NewZapures_V2.Models
             }
             return MenusList;
         }
-        public static List<Dropdown> GetFeeForType(int MenuId, string Type = "GetFeeForType")
+        public static List<Dropdown> GetFeeForType(int MenuId, string partyID, string Type = "GetFeeForType")
         {
-            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId);
+            var client = new RestClient(ConfigurationManager.AppSettings["BaseUrl"] + "User/GetData?Type=" + Type + "&MenuId=" + MenuId + "&partyID=" + partyID);
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
             //request.AddHeader("authorization", "bearer " + CurrentSessions.Token + "");

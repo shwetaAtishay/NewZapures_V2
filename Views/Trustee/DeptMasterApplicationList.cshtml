@@ -307,6 +307,23 @@
     var imagebase64 = "";
 
     $(document).ready(function () {
+        $('#txtAmt').on('blur', () => {
+            var s = parseInt($('#txtAmt').val());
+
+            if (s < 0 || s==0) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: `Invalid Input`,
+                    html: `<p>Please Enter the valid amount, you have entered <b>${s}</b></p>`,
+                    allowOutsideClick: false,
+                    showCloseButton: true,
+                    showConfirmButton: false,
+                });
+                $('#txtAmt').val('');
+                $('#txtAmt').focus();
+            }
+        })
 
     });
     function Verify(applGUID, applNumber) {

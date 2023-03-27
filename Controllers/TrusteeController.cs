@@ -1693,9 +1693,9 @@ namespace NewZapures_V2.Controllers
             };
         }
 
-        public JsonResult GetFeeForType(int ApplicationType)
+        public JsonResult GetFeeForType(int ApplicationType,string DeptID)
         {
-            var nocList = ZapurseCommonlist.GetFeeForType(ApplicationType);
+            var nocList = ZapurseCommonlist.GetFeeForType(ApplicationType,DeptID);
             return new JsonResult
             {
                 Data = new { StatusCode = 1, Data = nocList, Failure = false, Message = "NOC List" },

@@ -782,10 +782,10 @@
     <button type="button" class="theme-button-mockup" id="btnGetDetailsToPreview" onclick="BindDataForDetails()">Preview</button>
     <button type="button" class="theme-button-mockup" id="btnPreview" onclick="PreViewDetails()" style="display:none">Preview</button>
     <button type="button" class="theme-button-mockup" id="dtnSubmit" onclick="SaveDetails()" style="display:none">Proceed to Payment</button>
-    <button type="button" class="theme-button-mockup" onclick="location.reload()" style="background: gray;border: 1px solid gray !important;margin:0px 5px">Clear Selection (Apply NOC)</button>
+    <button type="button" class="theme-button-mockup" onclick="location.reload()" id="btnClearSelection" style="background: gray;border: 1px solid gray !important;margin:0px 5px">Clear Selection (Apply NOC)</button>
     <a href="@Url.Action("DraftApplication","Trustee")" type="button" class="theme-discard-btn" style="display:none;background: #dc331c; border: 1px solid #dc331c !important; float: right; margin: 0px 5px">Back To Draft</a>
 
-    <button onclick="redirecturl()" class="theme-discard-btn" style="background: #2cad24; border: 1px solid #2cad24 !important; float: right; ">Edit Selection (Apply NOC)</button>
+    <button onclick="redirecturl()" class="theme-discard-btn" id="btnEditSelection" style="background: #2cad24; border: 1px solid #2cad24 !important; float: right; ">Edit Selection (Apply NOC)</button>
 
 
     <hr />
@@ -1642,6 +1642,7 @@
     var PNOCPKIDs = "";
 
     var PNOCFeeCollection = [];
+    var NewSubjectFeeCollection = [];
 
     var applicationDetails = {
         appltrustID: "",
@@ -1788,6 +1789,12 @@
         $('#btnSubmit').click(function () {
             $(this).attr('disabled', true);
             $(this).css('cursor', 'wait');
+
+
+            $('#btnClearSelection').attr('disabled', true);
+            $('#btnEditSelection').attr('disabled', true);
+
+
             var s = $(this).text();
             $(this).html(`<i class="spinner-border spinner-border-sm"></i> ${s}`);
             //$(this).html(`<i class="spinner-grow spinner-grow-sm"></i> ${s}`);
@@ -2139,18 +2146,18 @@
 
 
         //console.log(subjIDList);
-        if (courlist == 3 && k < 3 && courstatus == 0) {
-            Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: `error`,
-                html: `<p>Please select atleast 3 Subjects</p>`,
-                allowOutsideClick: false,
-                showCloseButton: true,
-                showConfirmButton: false,
-            });
-            return false;
-        }
+        //if (courlist == 3 && k < 3 && courstatus == 0) {
+        //    Swal.fire({
+        //        position: 'center',
+        //        icon: 'error',
+        //        title: `error`,
+        //        html: `<p>Please select atleast 3 Subjects</p>`,
+        //        allowOutsideClick: false,
+        //        showCloseButton: true,
+        //        showConfirmButton: false,
+        //    });
+        //    return false;
+        //}
 
         if (subjIDList.length > 0) {
             subjIDList.forEach(function (item) {
@@ -2176,7 +2183,7 @@
             TypeId: AddSubjectID
         })
 
-        //console.table(subjectDetails);
+        console.table(subjectDetails);
         //if (subjectDetails.length > 1) {
         //    MultiSubjectCost = parseFloat(subjectCost) * subjectDetails.length;
 
@@ -2190,7 +2197,16 @@
         if (subjectDetails.length > 0) {
             subjectDetails.forEach(function (item, index) {
                 if (item.courseID != null) {
-
+                    var courseStatus = item.courseName.split('[')[1];
+                    courseStatus = courseStatus.replace(']', '').trim();
+                    if (courseStatus == "PG") {
+                        var s = NewSubjectFeeCollection.filter(function (item) {
+                        return item.FeeFor == courseStatus;
+                        })
+                        MultiSubjectCost = parseFloat(subjectCost) + parseFloat(s[0].FeeAmt);
+                        $('#spnNewSubjectFee').html('');
+                        $('#spnNewSubjectFee').html(`&#8377; ${MultiSubjectCost}`);
+                    }
                 subjectTableHtml += `<tr><td>${index}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
                 }
             });
@@ -2903,7 +2919,7 @@
                         }
                     });
                 }
-                
+
                 if (mainData != null && mainData.length>0) {
                     mainData.forEach(function (item) {
                         var x = 0;
@@ -3156,6 +3172,7 @@
 
     function getFee(applNo, Applicationtype) {
         var initPnoc = 0;
+        var initNewSubject = 0;
         if (Applicationtype == 'NOC') {
 
             var applicationModal = {
@@ -3190,11 +3207,12 @@
                                 //$('#spn_New_Course_AMT').html(updatedAMT);
                             }
 
-                            if (item.PartyId == "New_Subjects") {
+                            if (item.PartyId == "New_Subjects" && initNewSubject==0) {
                                 //var updatedAMT = $('#spnNewSubjectFee').text().split(' ')[1];
                                 //$('#spn_New_Subjects_AMT').html('');
                                 //$('#spn_New_Subjects_AMT').html(updatedAMT);
                                 tdOnly = `<td>${item.ID1}</td><td>${MultiSubjectCost}</td>`;
+                                initNewSubject = initNewSubject + 1;
                             }
 
                             if (item.PartyId == "PNOC" && initPnoc==0) {
@@ -3302,7 +3320,7 @@
                             icon: 'sucess',
                             title: `Fee Summary`,
                               //html: `<table class="table table-striped" style="text-align: initial;">${htmlString}</table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-sm btn-primary col-lg-5" onclick="OpenChallan('${applNo}','${totalAMT}')">Get Challan</button> <a class="col-lg-5 btn-sm btn-dark" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Upload Reciept</a></div>`,
-                            html: `<div style="margin-top: 27px;font-size: 12px;color: red;font-weight: 600;text-align: justify;">आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा। </div><br/><table class="table table-striped" style="text-align: initial;">${htmlString}</table><br/><div><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applNo}','${totalAMT}')"><i class="fa fa-file-pdf" style="margin-right: 5px;"></i> Get Challan</button></div>`,
+                            html: `<div style="margin-top: 27px;font-size: 12px;color: red;font-weight: 600;text-align: justify;">आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा। </div><br/><table class="table table-striped" style="text-align: initial;">${htmlString}</table><br/><div><a class="col-lg-12 btn-sm btn-dark" style="width: 100%;display: flex; place-content: center;" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Go To Upload Reciept</a></div>`,
                             allowOutsideClick: false,
                             showCloseButton: true,
                             showConfirmButton: false,
@@ -3363,7 +3381,7 @@
                             icon: 'sucess',
                             title: `Fee Summary`,
                            //html: `<table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table><br/><div class="row" style="place-content: space-evenly;"><button class="btn btn-sm btn-primary col-lg-5" onclick="OpenChallan('${applicationNum}','${fee}')">Get Challan</button> <a class="col-lg-5 btn-sm btn-dark" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Upload Reciept</a></div>`,
-                            html: `<div style="margin-top: 27px;font-size: 12px;color: red;font-weight: 600;text-align: justify;">आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा। </div><br/><table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table><br/><div><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applicationNum}','${fee}')"><i class="fa fa-file-pdf" style="margin-right: 5px;"></i> Get Challan</button></div>`,
+                            html: `<div style="margin-top: 27px;font-size: 12px;color: red;font-weight: 600;text-align: justify;">आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा। </div><br/><table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>Inspection Fee</td><td>${fee}</td></tr></table><br/><div><a class="col-lg-12 btn-sm btn-dark" style="width: 100%;display: flex; place-content: center;" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Go To Upload Reciept</a></div>`,
                             allowOutsideClick: false,
                             showCloseButton: true,
                             showConfirmButton: false,
@@ -3433,7 +3451,7 @@
                     position: 'center',
                     icon: 'sucess',
                     title: `Fee Summary`,
-                    html: `<div style="margin-top: 27px;font-size: 12px;color: red;font-weight: 600;text-align: justify;">आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा। </div><br/><table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>New College Price</td><td>${newCollegeFee}</td></tr></table><br/><div><button class="btn btn-primary col-lg-12" onclick="OpenChallan('${applicationNum}','${newCollegeFee}')"><i class="fa fa-file-pdf" style="margin-right: 5px;"></i> Get Challan</button></div>`,
+                    html: `<div style="margin-top: 27px;font-size: 12px;color: red;font-weight: 600;text-align: justify;">आपके द्वारा भरा गया  आवेदन फॉर्म सेव हो चुका है कृपया  आवेदन प्रक्रिया पूर्ण करने के लिए आवश्यक राशि का चालान जमा करवाएं तथा चालान की pdf कॉपी पोर्टल पर अपलोड कर आवेदन को Lock and Submit अनिवार्य रूप से करें। यदि आपके द्वारा चालान राशि जमा करवाकर नियत तिथि तक आवेदन को Lock and Submit नहीं किया गया तो आपका सत्र 2023 -24 के लिए आवेदन रद्द माना जावेगा। </div><br/><table class="table table-striped" style="text-align: initial;"><tr><th>Form Name</th><th>Amount</th><tr><td>New College Price</td><td>${newCollegeFee}</td></tr></table><br/><div><a class="col-lg-12 btn-sm btn-dark" style="width: 100%;display: flex; place-content: center;" href="@Url.Action("DeptMasterApplicationList", "Trustee")">Go To Upload Reciept</a></div>`,
                     allowOutsideClick: false,
                     showCloseButton: true,
                     showConfirmButton: false,
@@ -3903,9 +3921,11 @@
     }
 
 
-    function getFeeForType(typeID,typeName) {
+    function getFeeForType(typeID, typeName) {
+        var dept = $('#ddlDeptList option:selected').val();
         var applicationModal = {
-            "ApplicationType": parseInt(typeID)
+            "ApplicationType": parseInt(typeID),
+            "DeptID": dept
         }
 
         $.ajax({
@@ -3927,8 +3947,20 @@
                 }
 
                 if (typeName == 'newSubject') {
+                    var s = mainData.filter(e => {
+                        return e.ID1 == "Both";
+                    });
                     $('#spnNewSubjectFee').html('');
-                    $('#spnNewSubjectFee').html(`&#8377; ${mainData[0].Text}`);
+                    $('#spnNewSubjectFee').html(`&#8377; ${s[0].Text}`);
+
+                    if (mainData.length > 0) {
+                        mainData.forEach(function (item) {
+                            NewSubjectFeeCollection.push({
+                                "FeeFor": item.ID1,
+                                "FeeAmt": item.Text
+                            });
+                        })
+                    }
                 }
 
                 if (typeName == 'TNOC') {
@@ -4003,22 +4035,22 @@
 
             //console.table(courseDetails);
 
-            if (courseDetails.length > 0) {
+            if (courseDetails.length > 1) {
                 distinctCourse = "";
                 courseTableHtml = '';
                 courseDetails.forEach(function (item, index) {
                     if (item.courseID != null) {
 
-                    courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+                        courseTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type="button" onClick="DeleteItem('${item.nGuiD}','Course')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
 
-                    if (!distinctCourse.includes(item.courseID)) {
-                        if (distinctCourse.length > 0) {
-                            distinctCourse += "," + item.courseID;
+                        if (!distinctCourse.includes(item.courseID)) {
+                            if (distinctCourse.length > 0) {
+                                distinctCourse += "," + item.courseID;
+                            }
+                            else {
+                                distinctCourse = item.courseID;
+                            }
                         }
-                        else {
-                            distinctCourse = item.courseID;
-                        }
-                    }
                     }
                 });
                 $('#chkbtn_1').attr('disabled', true);
@@ -4039,7 +4071,7 @@
             }
             else {
                 distinctCourse = "";
-               courseTableHtml = `<tr><td class="text-center" colspan="4">No Data Available</td></tr>`;
+                courseTableHtml = `<tr><td class="text-center" colspan="4">No Data Available</td></tr>`;
             }
 
             //console.log(courseTableHtml);
@@ -4048,31 +4080,51 @@
         }
 
         if (ArrayName == 'Subject') {
+            var subjectCost = $('#spnNewSubjectFee').text().split(' ')[1];
+
+            var subjectRemoved = subjectDetails.filter(function (e) {
+                return e.nGuiD == itemGuID;
+            })
+
+            if (subjectRemoved != null) {
+                var courseStatus = subjectRemoved[0].courseName.split('[')[1];
+                courseStatus = courseStatus.replace(']', '').trim();
+                if (courseStatus == "PG") {
+                    var s = NewSubjectFeeCollection.filter(function (item) {
+                        return item.FeeFor == courseStatus;
+                    })
+                    MultiSubjectCost = parseFloat(subjectCost) - parseFloat(s[0].FeeAmt);
+                    $('#spnNewSubjectFee').html('');
+                    $('#spnNewSubjectFee').html(`&#8377; ${MultiSubjectCost}`);
+                }
+            }
+
+
 
             subjectDetails = subjectDetails.filter(function (e) {
                 return e.nGuiD !== itemGuID;
             })
 
-            var subjectCost = $('#spnNewSubjectFee').text().split(' ')[1];
+            //var subjectCost = $('#spnNewSubjectFee').text().split(' ')[1];
+
+            //if (subjectDetails.length > 1) {
+            //    MultiSubjectCost = parseFloat(subjectCost) * subjectDetails.length;
+
+            //    $('#spnNewSubjectFee').html('');
+            //    $('#spnNewSubjectFee').html(`&#8377; ${subjectCost} x ${subjectDetails.length} = &#8377; ${MultiSubjectCost}`);
+            //}
+            //else {
+            //MultiSubjectCost = subjectCost;
+            //$('#spnNewSubjectFee').html('');
+            //$('#spnNewSubjectFee').html(`&#8377; ${subjectCost}`);
+            //}
 
             if (subjectDetails.length > 1) {
-                MultiSubjectCost = parseFloat(subjectCost) * subjectDetails.length;
-
-                $('#spnNewSubjectFee').html('');
-                $('#spnNewSubjectFee').html(`&#8377; ${subjectCost} x ${subjectDetails.length} = &#8377; ${MultiSubjectCost}`);
-            }
-            else {
-                MultiSubjectCost = subjectCost;
-                $('#spnNewSubjectFee').html('');
-                $('#spnNewSubjectFee').html(`&#8377; ${subjectCost}`);
-            }
-
-            if (subjectDetails.length > 0) {
                 subjectTableHtml = '';
                 subjectDetails.forEach(function (item, index) {
                     if (item.courseID != null) {
 
-                    subjectTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
+                        subjectTableHtml += `<tr><td>${index + 1}</td><td>${item.courseName}</td><td>${item.subjNameList}</td><td><button type='button' onClick="DeleteItem('${item.nGuiD}','Subject')" class="theme-delete-btn" style="padding:5px 10px;"><i class="fas fa-trash-alt"></i></button></td></tr>`
                     }
                 });
                 $('#chkbtn_2').attr('disabled', true);
@@ -4087,6 +4139,7 @@
 
         }
     }
+
 
     function UpdateFee(AppNo, totalFees) {
         var applicationModal = {
